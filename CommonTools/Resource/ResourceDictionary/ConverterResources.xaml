@@ -29,4 +29,5 @@
   <converter:FileNameConverter x:Key="FileNameConverter" />
   <converter:FileSizeConverter x:Key="FileSizeConverter" />
   <converter:AgeConverter x:Key="AgeConverter" />
+  <converter:TimeStampStringConverter x:Key="TimeStampStringConverter" />
 </ResourceDictionary>

@@ -454,15 +454,4 @@
     <Setter Property="FontSize" Value="{StaticResource NavigationContentHeaderFontSize}" />
     <Setter Property="FontWeight" Value="Bold" />
   </Style>
-  <!--  BorderHoverEffectStyle  -->
-  <Style x:Key="BorderHoverEffectStyle" TargetType="Border">
-    <Style.Triggers>
-      <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{StaticResource Gray3}" />
-      </Trigger>
-      <Trigger Property="IsMouseOver" Value="False">
-        <Setter Property="Background" Value="Transparent" />
-      </Trigger>
-    </Style.Triggers>
-  </Style>
 </ResourceDictionary>

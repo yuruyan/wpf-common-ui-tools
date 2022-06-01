@@ -13,6 +13,14 @@
         <ResourceDictionary Source="/Resource/ResourceDictionary/ConverterResources.xaml" />
         <ResourceDictionary Source="/Resource/ResourceDictionary/CommonResources.xaml" />
         <ResourceDictionary Source="/Resource/ResourceDictionary/StyleResources.xaml" />
+        <!--
+          CommonResources
+          ThemeResources
+          ConverterResources
+          StyleResources
+          HoverEffectResources
+          DateTemplateResources
+        -->
         <!--  Other merged dictionaries here  -->
       </ResourceDictionary.MergedDictionaries>
       <!--  Other app resources here  -->

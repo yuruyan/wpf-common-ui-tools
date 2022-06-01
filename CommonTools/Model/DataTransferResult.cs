@@ -23,7 +23,7 @@ public class DataTransferResult<T> {
         };
     }
 
-    public static DataTransferResult<T> Failed() {
+    public static DataTransferResult<T> Failed(string message = "") {
         return new DataTransferResult<T>();
     }
 
@@ -35,7 +35,7 @@ public class DataTransferResult<T> {
         return new DataTransferResult<T>() { Status = CommonStatus.SUCCESS, Data = data };
     }
 
-    public static DataTransferResult<T> Error() {
+    public static DataTransferResult<T> Error(string message = "") {
         return new DataTransferResult<T>() { Status = CommonStatus.ERROR };
     }
 
@@ -100,12 +100,20 @@ public class DataTransferResult {
         return new DataTransferResult();
     }
 
+    public static DataTransferResult Failed(string message) {
+        return new DataTransferResult() { Message = message };
+    }
+
     public static DataTransferResult Success() {
         return new DataTransferResult { Status = CommonStatus.SUCCESS };
     }
 
     public static DataTransferResult Error() {
         return new DataTransferResult { Status = CommonStatus.ERROR };
+    }
+
+    public static DataTransferResult Error(string message) {
+        return new DataTransferResult { Status = CommonStatus.ERROR, Message = message };
     }
 
     public override string ToString() {
