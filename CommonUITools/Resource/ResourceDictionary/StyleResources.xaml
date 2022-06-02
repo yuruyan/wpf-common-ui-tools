@@ -92,6 +92,10 @@
     <Setter Property="Background" Value="White" />
     <Setter Property="Width" Value="{DynamicResource ContextMenuWidth}" />
   </Style>
+  <Style BasedOn="{StaticResource DefaultMenuItemStyle}" TargetType="MenuItem">
+    <Setter Property="Height" Value="40" />
+    <Setter Property="Padding" Value="16,10" />
+  </Style>
   <!--  超链接 HyperLinkStyle  -->
   <Style
     x:Key="HyperLinkStyle"
@@ -457,5 +461,47 @@
   <!--  GlobalBorderStyle  -->
   <Style x:Key="GlobalBorderStyle" TargetType="Border">
     <Setter Property="CornerRadius" Value="8" />
+  </Style>
+  <!--  GridViewItemContainerStyleKey  -->
+  <Style
+    x:Key="GridViewItemContainerStyleKey"
+    BasedOn="{StaticResource DefaultListViewItemStyle}"
+    TargetType="ListViewItem">
+    <Setter Property="Padding" Value="6,0,6,0" />
+    <Setter Property="MinHeight" Value="{DynamicResource GridViewItemContainerMinHeight}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListViewItem">
+          <Border
+            x:Name="Bd"
+            Padding="{TemplateBinding Padding}"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            SnapsToDevicePixels="true">
+            <!--  remove the HorizontalAlignment due to HeaderRowPresenter does not have the ability to align to center or right  -->
+            <GridViewRowPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ListViewItemBackgroundPointerOver}" />
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+              <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ListViewItemBackgroundSelected}" />
+            </Trigger>
+            <MultiTrigger>
+              <MultiTrigger.Conditions>
+                <Condition Property="IsSelected" Value="True" />
+                <Condition Property="IsMouseOver" Value="True" />
+              </MultiTrigger.Conditions>
+              <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ListViewItemBackgroundSelectedPointerOver}" />
+            </MultiTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter TargetName="Bd" Property="Opacity" Value="{DynamicResource ListViewItemDisabledThemeOpacity}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
   </Style>
 </ResourceDictionary>
