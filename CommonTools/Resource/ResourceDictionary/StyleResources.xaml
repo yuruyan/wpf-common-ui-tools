@@ -90,7 +90,7 @@
     TargetType="ContextMenu">
     <Setter Property="utils:ScaleAnimationHelper.IsEnabled" Value="True" />
     <Setter Property="Background" Value="White" />
-    <!--<Setter Property="Width" Value="{DynamicResource ContextMenuWidth}" />-->
+    <Setter Property="Width" Value="{DynamicResource ContextMenuWidth}" />
   </Style>
   <!--  超链接 HyperLinkStyle  -->
   <Style
@@ -453,5 +453,9 @@
     TargetType="TextBlock">
     <Setter Property="FontSize" Value="{StaticResource NavigationContentHeaderFontSize}" />
     <Setter Property="FontWeight" Value="Bold" />
+  </Style>
+  <!--  GlobalBorderStyle  -->
+  <Style x:Key="GlobalBorderStyle" TargetType="Border">
+    <Setter Property="CornerRadius" Value="8" />
   </Style>
 </ResourceDictionary>
