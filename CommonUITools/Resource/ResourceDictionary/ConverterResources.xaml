@@ -24,6 +24,8 @@
   <converter:HideIfNotEmptyConverter x:Key="HideIfNotEmptyConverter" />
   <converter:HideIfZeroConverter x:Key="HideIfZeroConverter" />
   <converter:HideIfNotZeroConverter x:Key="HideIfNotZeroConverter" />
+  <converter:HideIfTrueConverter x:Key="HideIfTrueConverter" />
+  <converter:HideIfFalseConverter x:Key="HideIfFalseConverter" />
   <converter:HideIfNullConverter x:Key="HideIfNullConverter" />
   <converter:HideIfNotNullConverter x:Key="HideIfNotNullConverter" />
   <converter:FileNameConverter x:Key="FileNameConverter" />

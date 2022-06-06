@@ -134,6 +134,32 @@ public class HideIfNotEmptyConverter : IValueConverter {
 }
 
 /// <summary>
+/// 为True则隐藏
+/// </summary>
+public class HideIfTrueConverter : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        return System.Convert.ToBoolean(value) ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}
+
+/// <summary>
+/// 为False则隐藏
+/// </summary>
+public class HideIfFalseConverter : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        return !System.Convert.ToBoolean(value) ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}
+
+/// <summary>
 /// 为 Null 则隐藏
 /// </summary>
 public class HideIfNullConverter : IValueConverter {

@@ -23,6 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Resource\icon.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Resource\iconfont.ttf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
