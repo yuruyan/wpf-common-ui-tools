@@ -92,10 +92,14 @@
     <Setter Property="Background" Value="White" />
     <Setter Property="Width" Value="{DynamicResource ContextMenuWidth}" />
   </Style>
-  <Style BasedOn="{StaticResource DefaultMenuItemStyle}" TargetType="MenuItem">
-    <Setter Property="Height" Value="40" />
-    <Setter Property="Padding" Value="16,10" />
+  <!--  GlobalMenuItemStyle  -->
+  <Style
+    x:Key="GlobalMenuItemStyle"
+    BasedOn="{StaticResource DefaultMenuItemStyle}"
+    TargetType="MenuItem">
+    <Setter Property="Padding" Value="16,8" />
   </Style>
+  <Style BasedOn="{StaticResource GlobalMenuItemStyle}" TargetType="MenuItem" />
   <!--  超链接 HyperLinkStyle  -->
   <Style
     x:Key="HyperLinkStyle"
@@ -394,6 +398,13 @@
     <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
     <Setter Property="VerticalContentAlignment" Value="Top" />
     <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+  </Style>
+  <!--  多行 TextBlock  -->
+  <Style
+    x:Key="MultilineTextBlockStyle"
+    BasedOn="{StaticResource GlobalTextBlockStyle}"
+    TargetType="TextBlock">
+    <Setter Property="TextWrapping" Value="Wrap" />
   </Style>
   <!--  无边框 TextBox  -->
   <Style
