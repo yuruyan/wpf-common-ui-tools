@@ -540,3 +540,21 @@ public class TimeStampStringConverter : IValueConverter {
     }
 }
 
+/// <summary>
+/// Bool 条件转 String
+/// parameter 格式：trueValue|falseValue
+/// </summary>
+public class BoolToStringConverter : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        string sParam = parameter.ToString() ?? "|";
+        string[] values = sParam.Split('|');
+        if (System.Convert.ToBoolean(value)) {
+            return values[0];
+        }
+        return values[1];
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}

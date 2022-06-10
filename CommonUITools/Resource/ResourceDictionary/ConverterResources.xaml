@@ -32,4 +32,5 @@
   <converter:FileSizeConverter x:Key="FileSizeConverter" />
   <converter:AgeConverter x:Key="AgeConverter" />
   <converter:TimeStampStringConverter x:Key="TimeStampStringConverter" />
+  <converter:BoolToStringConverter x:Key="BoolToStringConverter" />
 </ResourceDictionary>
