@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CommonUITools.Utils;
 
@@ -16,11 +17,12 @@ public class CommonUtils {
     /// <summary>
     /// 当前时间戳(ms)
     /// </summary>
-    public static long CuruentMilliseconds {
-        get {
-            return DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        }
-    }
+    public static long CuruentMilliseconds => DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+    /// <summary>
+    /// 当前时间戳(s)
+    /// </summary>
+    public static long CuruentSeconds => DateTimeOffset.Now.ToUnixTimeSeconds();
 
     /// <summary>
     /// 拷贝对象
@@ -231,5 +233,18 @@ public class CommonUtils {
         return (T)GetSingletonInstance(type, init);
     }
 
+    /// <summary>
+    /// 路径分隔符正则
+    /// </summary>
+    private static readonly Regex PathSpliterRegex = new(@"[/\\]");
+
+    /// <summary>
+    /// 移除路径分隔符(\, /)
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    public static string RemovePathSpliter(string path) {
+        return PathSpliterRegex.Replace(path, "");
+    }
 }
 
