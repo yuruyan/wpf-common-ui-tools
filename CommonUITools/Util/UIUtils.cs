@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using NLog;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -27,6 +29,8 @@ namespace CommonUITools.Utils {
     }
 
     public class UIUtils {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// 左键是否单击
         /// </summary>
@@ -91,6 +95,40 @@ namespace CommonUITools.Utils {
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// 在文件资源管理器中异步打开文件
+        /// </summary>
+        /// <param name="path">文件绝对路径，路径分隔符为 '\'</param>
+        public static void OpenFileInDirectoryAsync(string path, Action<Exception>? failedCallback = null) {
+            try {
+                Process.Start("explorer.exe", "/select," + path);
+            } catch (Exception error) {
+                if (failedCallback != null) {
+                    failedCallback(error);
+                    return;
+                }
+                CommonUITools.Widget.MessageBox.Error("打开失败," + error.Message);
+                Logger.Info(error);
+            }
+        }
+
+        /// <summary>
+        /// 选择以什么方式异步打开文件
+        /// </summary>
+        /// <param name="path">文件绝对路径，路径分隔符为 '\'</param>
+        public static void OpenFileWithAsync(string path, Action<Exception>? failedCallback = null) {
+            try {
+                Process.Start("rundll32.exe", "shell32.dll, OpenAs_RunDLL " + path);
+            } catch (Exception error) {
+                if (failedCallback != null) {
+                    failedCallback(error);
+                    return;
+                }
+                CommonUITools.Widget.MessageBox.Error("打开失败," + error.Message);
+                Logger.Info(error);
+            }
         }
 
     }
