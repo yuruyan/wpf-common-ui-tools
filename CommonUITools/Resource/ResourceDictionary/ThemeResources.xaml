@@ -8,8 +8,11 @@
   <SolidColorBrush x:Key="ApplicationBackgroundDark3">#26756A</SolidColorBrush>
 
   <SolidColorBrush x:Key="ApplicationForeground">#ffffff</SolidColorBrush>
+  <SolidColorBrush x:Key="ApplicationBorderForeground">#CECECE</SolidColorBrush>
+  <SolidColorBrush x:Key="ApplicationAccentColor">#48000000</SolidColorBrush>
 
   <SolidColorBrush x:Key="ErrorBackground">#c6585a</SolidColorBrush>
+  <SolidColorBrush x:Key="ErrorForeground">#ffffff</SolidColorBrush>
   <SolidColorBrush x:Key="ErrorBackgroundLight1">#D35E60</SolidColorBrush>
   <SolidColorBrush x:Key="ErrorBackgroundLight2">#E06366</SolidColorBrush>
   <SolidColorBrush x:Key="ErrorBackgroundLight3">#EC696B</SolidColorBrush>
