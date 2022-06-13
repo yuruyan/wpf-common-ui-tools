@@ -215,17 +215,17 @@
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
               <Setter TargetName="Background" Property="Background" Value="{DynamicResource ApplicationBackgroundDark1}" />
-              <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ApplicationBackgroundDark1}" />
+              <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ApplicationBorderForeground}" />
               <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource ApplicationForeground}" />
             </Trigger>
             <Trigger Property="IsMouseOver" Value="False">
               <Setter TargetName="Background" Property="Background" Value="{DynamicResource ApplicationBackground}" />
-              <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ApplicationBackgroundDark1}" />
+              <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ApplicationBorderForeground}" />
               <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource ApplicationForeground}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
               <Setter TargetName="Background" Property="Background" Value="{DynamicResource ApplicationBackgroundDark2}" />
-              <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ApplicationBackgroundDark2}" />
+              <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ApplicationBorderForeground}" />
               <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource ApplicationForeground}" />
             </Trigger>
           </ControlTemplate.Triggers>
@@ -238,7 +238,7 @@
     x:Key="GlobalIconButtonStyle"
     BasedOn="{StaticResource GlobalButtonStyle}"
     TargetType="widget:IconButton" />
-  <Style BasedOn="{StaticResource GlobalButtonStyle}" TargetType="widget:IconButton" />
+  <Style BasedOn="{StaticResource GlobalIconButtonStyle}" TargetType="widget:IconButton" />
   <!--  ErrorButtonStyle  -->
   <Style
     x:Key="GlobalErrorButtonStyle"
