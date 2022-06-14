@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NLog;
 using System.Globalization;
-using System.Net;
-using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -156,23 +154,6 @@ public class CommonUtils {
         } catch {
             return defaultValue ?? default;
         }
-    }
-
-    /// <summary>
-    /// 获取本机 IP 地址
-    /// </summary>
-    /// <returns></returns>
-    public static string? GetLocalIpAddress() {
-        try {
-            using Socket socket = new(AddressFamily.InterNetwork, SocketType.Dgram, 0);
-            socket.Connect("8.8.8.8", 65530);
-            if (socket.LocalEndPoint is IPEndPoint endPoint) {
-                return endPoint.Address.ToString();
-            }
-        } catch (Exception e) {
-            Logger.Info(e);
-        }
-        return null;
     }
 
     /// <summary>
