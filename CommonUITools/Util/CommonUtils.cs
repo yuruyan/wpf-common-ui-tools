@@ -114,11 +114,48 @@ public class CommonUtils {
     /// <summary>
     /// 简化 try 代码块
     /// </summary>
-    /// <param name="action"></param>
-    public static void Try(Action action) {
+    /// <param name="task"></param>
+    public static void Try(Action task) {
         try {
-            action();
+            task();
         } catch { }
+    }
+
+    /// <summary>
+    /// 简化 try 代码块，以异步方式
+    /// </summary>
+    /// <param name="task"></param>
+    public static async void TryAsync(Func<Task> task) {
+        try {
+            await task();
+        } catch { }
+    }
+
+    /// <summary>
+    /// 简化 try 代码块
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="task"></param>
+    /// <param name="defaultValue">发生异常时的返回值</param>
+    /// <returns></returns>
+    public static T? Try<T>(Func<T> task, T? defaultValue = default) {
+        try {
+            return task();
+        } catch {
+            return defaultValue ?? default;
+        }
+    }
+
+    /// <summary>
+    /// 简化 try 代码块，以异步方式
+    /// </summary>
+    /// <param name="task"></param>
+    public static async Task<T?> TryAsync<T>(Func<Task<T>> task, T? defaultValue = default) {
+        try {
+            return await task();
+        } catch {
+            return defaultValue ?? default;
+        }
     }
 
     /// <summary>
