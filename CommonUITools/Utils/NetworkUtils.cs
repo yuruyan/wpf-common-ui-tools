@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
 namespace CommonUITools.Utils;
@@ -20,4 +21,19 @@ public class NetworkUtils {
         });
     }
 
+    /// <summary>
+    /// 获取正在使用的端口
+    /// </summary>
+    /// <returns></returns>
+    public static IList<int> GetInUsePorts() {
+        IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
+        // TCP 端口
+        IPEndPoint[] tcpEndPoints = ipProperties.GetActiveTcpListeners();
+        // UDP 端口
+        IPEndPoint[] udpEndPoints = ipProperties.GetActiveUdpListeners();
+        var ports = new List<int>(tcpEndPoints.Length + udpEndPoints.Length);
+        ports.AddRange(tcpEndPoints.Select(i => i.Port));
+        ports.AddRange(udpEndPoints.Select(i => i.Port));
+        return ports;
+    }
 }
