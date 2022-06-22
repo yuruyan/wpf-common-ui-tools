@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonUITools", "CommonUITo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfAppTest", "WpfAppTest\WpfAppTest.csproj", "{620EF3B9-0353-4630-8346-0E817DCA06BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTest", "ConsoleAppTest\ConsoleAppTest.csproj", "{19BBF7FA-B8A8-459C-B064-265E2150012A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{620EF3B9-0353-4630-8346-0E817DCA06BB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{620EF3B9-0353-4630-8346-0E817DCA06BB}.Release|x64.ActiveCfg = Release|Any CPU
 		{620EF3B9-0353-4630-8346-0E817DCA06BB}.Release|x64.Build.0 = Release|Any CPU
+		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Debug|x64.Build.0 = Debug|Any CPU
+		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Release|x64.ActiveCfg = Release|Any CPU
+		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
