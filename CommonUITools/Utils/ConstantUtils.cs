@@ -1,9 +1,6 @@
 ﻿namespace CommonUITools.Utils;
 
 public static class ConstantUtils {
-    public const byte UserRootDirId = 0; // 用户根目录 id
-    public const byte FileIdLength = 32; // 文件 id 长度
-    public const byte MaxFilenameLength = 255; // 最大文件名长度
     public const long OneMbSize = 1024 * 1024; // 1 MB 大小，以 byte 为单位
     public const long OneGbSize = 1024 * 1024 * 1024; // 1 GB 大小，以 byte 为单位
     public const int HalfHourSecond = 1800; // 半小时的秒数
@@ -12,6 +9,4 @@ public static class ConstantUtils {
     public const int OneHourMillisecond = 3600000; // 1小时的毫秒数
     public const int OneDaySecond = 86400; // 1天的秒数
     public const int OneDayMillisecond = 86400000; // 1天的毫秒数
-    public const int SqlExecutionFailed = -1; // sql 执行失败
-    public const int ParameterInvalid = -1; // 参数错误
 }
