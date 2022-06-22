@@ -86,7 +86,17 @@ public class ThrottleUtils {
     /// <param name="identifier">标识</param>
     /// <param name="callback"></param>
     public static void Throttle(object identifier, Action callback) {
-        if (!CheckStateAndSet(identifier)) {
+        Throttle(identifier, callback, Interval);
+    }
+
+    /// <summary>
+    /// 同步节流
+    /// </summary>
+    /// <param name="identifier">标识</param>
+    /// <param name="callback"></param>
+    /// <param name="interval">间隔多长时间才允许再次调用</param>
+    public static void Throttle(object identifier, Action callback, int interval) {
+        if (!CheckStateAndSet(identifier, interval)) {
             return;
         }
         callback();
@@ -98,8 +108,18 @@ public class ThrottleUtils {
     /// </summary>
     /// <param name="identifier">标识</param>
     /// <param name="callback"></param>
-    public static async void ThrottleAsync(object identifier, Func<Task> callback) {
-        if (!CheckStateAndSet(identifier)) {
+    public static void ThrottleAsync(object identifier, Func<Task> callback) {
+        ThrottleAsync(identifier, callback, Interval);
+    }
+
+    /// <summary>
+    /// 异步节流
+    /// </summary>
+    /// <param name="identifier">标识</param>
+    /// <param name="callback"></param>
+    /// <param name="interval">间隔多长时间才允许再次调用</param>
+    public static async void ThrottleAsync(object identifier, Func<Task> callback, int interval) {
+        if (!CheckStateAndSet(identifier, interval)) {
             return;
         }
         await callback();
