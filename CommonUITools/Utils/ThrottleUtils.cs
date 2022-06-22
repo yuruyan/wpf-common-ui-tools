@@ -10,7 +10,7 @@ public class ThrottleUtils {
     /// <summary>
     /// 默认调用间隔时间 ms
     /// </summary>
-    private static readonly int Interval = 300;
+    private const int Interval = 300;
 
     /// <summary>
     /// 合法化 interval
@@ -27,7 +27,7 @@ public class ThrottleUtils {
     /// <param name="identifier">标识</param>
     /// <param name="interval">调用时间间隔</param>
     /// <returns>通过则返回 true，否则 false</returns>
-    public static bool CheckStateAndSet(object identifier, int interval) {
+    public static bool CheckStateAndSet(object identifier, int interval = Interval) {
         // 首次调用
         if (!ThrottleDict.ContainsKey(identifier)) {
             ThrottleDict[identifier] = new();
@@ -40,22 +40,12 @@ public class ThrottleUtils {
         }
         var invokeTime = DateTime.Now;
         // 验证通过
-        //if (invokeTime - validateInterval(interval) >= state.LastInvokeTime) {
         if (invokeTime.AddMilliseconds(validateInterval(interval)) >= state.LastInvokeTime) {
             state.IsFinished = false;
             state.LastInvokeTime = invokeTime;
             return true;
         }
         return false;
-    }
-
-    /// <summary>
-    /// 检查状态并设置
-    /// </summary>
-    /// <param name="identifier">标识</param>
-    /// <returns>通过则返回 true，否则 false</returns>
-    public static bool CheckStateAndSet(object identifier) {
-        return CheckStateAndSet(identifier, Interval);
     }
 
     /// <summary>
@@ -85,17 +75,8 @@ public class ThrottleUtils {
     /// </summary>
     /// <param name="identifier">标识</param>
     /// <param name="callback"></param>
-    public static void Throttle(object identifier, Action callback) {
-        Throttle(identifier, callback, Interval);
-    }
-
-    /// <summary>
-    /// 同步节流
-    /// </summary>
-    /// <param name="identifier">标识</param>
-    /// <param name="callback"></param>
     /// <param name="interval">间隔多长时间才允许再次调用</param>
-    public static void Throttle(object identifier, Action callback, int interval) {
+    public static void Throttle(object identifier, Action callback, int interval = Interval) {
         if (!CheckStateAndSet(identifier, interval)) {
             return;
         }
@@ -108,17 +89,8 @@ public class ThrottleUtils {
     /// </summary>
     /// <param name="identifier">标识</param>
     /// <param name="callback"></param>
-    public static void ThrottleAsync(object identifier, Func<Task> callback) {
-        ThrottleAsync(identifier, callback, Interval);
-    }
-
-    /// <summary>
-    /// 异步节流
-    /// </summary>
-    /// <param name="identifier">标识</param>
-    /// <param name="callback"></param>
     /// <param name="interval">间隔多长时间才允许再次调用</param>
-    public static async void ThrottleAsync(object identifier, Func<Task> callback, int interval) {
+    public static async void ThrottleAsync(object identifier, Func<Task> callback, int interval = Interval) {
         if (!CheckStateAndSet(identifier, interval)) {
             return;
         }
