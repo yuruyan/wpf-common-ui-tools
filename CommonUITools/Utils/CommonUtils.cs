@@ -8,9 +8,7 @@ namespace CommonUITools.Utils;
 
 public class CommonUtils {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-    private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-    private static readonly Random Random = new();
+    private static readonly DateTime Epoch = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
     /// <summary>
     /// 当前时间戳(ms)
@@ -292,5 +290,15 @@ public class CommonUtils {
         }
     }
 
+    /// <summary>
+    /// 检查 null，用以消除 warning
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static T NullCheck<T>(T? value) {
+        ArgumentNullException.ThrowIfNull(value);
+        return value;
+    }
 }
 
