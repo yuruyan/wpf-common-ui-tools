@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# ToStringGenerator: Type name does not contains ToString()
+dotnet_diagnostic.ToStringGenerator.severity = silent

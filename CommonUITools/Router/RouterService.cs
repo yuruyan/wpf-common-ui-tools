@@ -15,7 +15,7 @@ public class RouterService {
             ClassType = classType;
         }
         public Type ClassType { get; set; }
-        public object Instance { get; set; }
+        public object? Instance { get; set; }
     }
 
     /// <summary>
@@ -30,7 +30,9 @@ public class RouterService {
         Routers[path].Instance = (
             Routers[path].Instance ?? Activator.CreateInstance(Routers[path].ClassType)
         ) ?? throw new NullReferenceException($"对象 {path.GetType()} 创建失败");
+#pragma warning disable CS8603 // Possible null reference return.
         return Routers[path].Instance;
+#pragma warning restore CS8603 // Possible null reference return.
     }
 
     public RouterService(Frame frame, IEnumerable<Type> routers) {

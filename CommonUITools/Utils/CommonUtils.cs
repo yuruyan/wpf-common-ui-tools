@@ -28,7 +28,7 @@ public class CommonUtils {
     /// <typeparam name="T"></typeparam>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static T Copy<T>(T obj) {
+    public static T? Copy<T>(T obj) {
         return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(obj));
     }
 

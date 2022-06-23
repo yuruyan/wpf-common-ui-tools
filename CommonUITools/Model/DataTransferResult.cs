@@ -7,7 +7,7 @@ public enum CommonStatus {
 public class DataTransferResult<T> {
     public CommonStatus Status { get; set; } = CommonStatus.FAILED;
     public string Message { get; set; } = string.Empty;
-    public T Data { get; set; }
+    public T? Data { get; set; }
 
     /// <summary>
     /// 根据 result 创建 DataTransferResult

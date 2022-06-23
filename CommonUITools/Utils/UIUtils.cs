@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace CommonUITools.Utils {
     public class Loading {
-        private static ProgressBar ProgressBar;
+        private static ProgressBar? ProgressBar;
 
         public Loading(ProgressBar progressBar) {
             if (ProgressBar == null) {

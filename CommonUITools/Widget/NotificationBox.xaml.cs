@@ -58,8 +58,8 @@ namespace CommonUITools.Widget {
         /// <summary>
         /// 点击回调
         /// </summary>
-        public Action ClickCallback {
-            get { return (Action)GetValue(ClickCallbackProperty); }
+        public Action? ClickCallback {
+            get { return (Action?)GetValue(ClickCallbackProperty); }
             set { SetValue(ClickCallbackProperty, value); }
         }
 

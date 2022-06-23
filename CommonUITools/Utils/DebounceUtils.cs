@@ -1,7 +1,6 @@
 ﻿namespace CommonUITools.Utils;
 
 public class DebounceUtils {
-
     private static readonly IDictionary<Delegate, State> DebounceStateDict = new Dictionary<Delegate, State>();
 
     /// <summary>
@@ -24,11 +23,9 @@ public class DebounceUtils {
             }
             // 初始化
             System.Timers.Timer timer = new(interval);
-            DebounceStateDict[wrappedCallback] = new() {
+            DebounceStateDict[wrappedCallback] = new(wrappedCallback, timer, arg) {
                 Interval = interval,
-                Callback = wrappedCallback,
                 IsUpdated = true,
-                Timer = timer
             };
             timer.Elapsed += (o, e) => {
                 State state = DebounceStateDict[wrappedCallback];
@@ -36,7 +33,7 @@ public class DebounceUtils {
                 if (state.IsUpdated && CommonUtils.CuruentMilliseconds - state.LastInvokeTime > state.Interval) {
                     // 重置
                     state.IsUpdated = false;
-                    wrappedCallback((T?)state.Arg);
+                    wrappedCallback((T)state.Arg);
                 }
             };
             timer.Start();
@@ -45,12 +42,18 @@ public class DebounceUtils {
     }
 
     private record State {
-        public int Interval { get; set; }
+        public State(Delegate callback, System.Timers.Timer timer, object arg) {
+            Callback = callback;
+            Timer = timer;
+            Arg = arg;
+        }
+
+        public int Interval { get; set; } = 500;
         public long LastInvokeTime { get; set; } = CommonUtils.CuruentMilliseconds;
         public bool IsUpdated { get; set; }
         public Delegate Callback { get; set; }
         public System.Timers.Timer Timer { get; set; }
         // 保存参数
-        public object? Arg { get; set; }
+        public object Arg { get; set; }
     }
 }

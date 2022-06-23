@@ -112,7 +112,7 @@ public class HideIfNotZeroConverter : IValueConverter {
 /// </summary>
 public class HideIfEmptyConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return value.ToString().Any() ? Visibility.Visible : Visibility.Collapsed;
+        return (value.ToString() ?? string.Empty).Any() ? Visibility.Visible : Visibility.Collapsed;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -125,7 +125,7 @@ public class HideIfEmptyConverter : IValueConverter {
 /// </summary>
 public class HideIfNotEmptyConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return value.ToString().Any() ? Visibility.Collapsed : Visibility.Visible;
+        return (value.ToString() ?? string.Empty).Any() ? Visibility.Collapsed : Visibility.Visible;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -383,18 +383,14 @@ public class VisibilityEqualConverter : IValueConverter {
 /// </summary>
 public class VisibilityIncludesConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        if (value == null) {
-            throw new ArgumentNullException($"value is null");
-        }
-        if (parameter == null) {
-            throw new ArgumentNullException($"parameter is null");
-        }
-        string[] ls = parameter.ToString().Split("|");
+        ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(parameter);
+        string[] ls = (parameter.ToString() ?? "|").Split("|");
         if (ls.Length != 2) {
             throw new ArgumentException("content of parameter is invalid");
         }
         var values = ls[0][1..^1].Split(" ").Select(v => v.ToLower()).ToHashSet();
-        if (values.Contains(value.ToString().ToLower())) {
+        if (values.Contains((value.ToString() ?? "").ToLower())) {
             // 遍历 Visibility，找到相同的
             foreach (Visibility item in Enum.GetValues(typeof(Visibility))) {
                 if (item.ToString().ToLower() == ls[1].ToLower()) {
@@ -417,18 +413,14 @@ public class VisibilityIncludesConverter : IValueConverter {
 /// </summary>
 public class VisibilityNotIncludesConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        if (value == null) {
-            throw new ArgumentNullException($"value is null");
-        }
-        if (parameter == null) {
-            throw new ArgumentNullException($"parameter is null");
-        }
-        string[] ls = parameter.ToString().Split("|");
+        ArgumentNullException.ThrowIfNull(value);
+        ArgumentNullException.ThrowIfNull(parameter);
+        string[] ls = (parameter.ToString() ?? "|").Split("|");
         if (ls.Length != 2) {
             throw new ArgumentException("content of parameter is invalid");
         }
         var values = ls[0][1..^1].Split(" ").Select(v => v.ToLower()).ToHashSet();
-        if (!values.Contains(value.ToString().ToLower())) {
+        if (!values.Contains((value.ToString() ?? "").ToLower())) {
             // 遍历 Visibility，找到相同的
             foreach (Visibility item in Enum.GetValues(typeof(Visibility))) {
                 if (item.ToString().ToLower() == ls[1].ToLower()) {
