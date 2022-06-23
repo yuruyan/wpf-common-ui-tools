@@ -264,5 +264,33 @@ public class CommonUtils {
     public static string RemovePathSpliter(string path) {
         return PathSpliterRegex.Replace(path, "");
     }
+
+    /// <summary>
+    /// 调用过的方法 Set
+    /// </summary>
+    private static readonly ISet<object> MethodCalledSet = new HashSet<object>();
+
+    /// <summary>
+    /// 确保方法只调用一次
+    /// </summary>
+    /// <param name="identifier">唯一标识</param>
+    /// <param name="callback">回调方法</param>
+    /// <returns>返回 true 则未调用过，否则返回 false</returns>
+    public static bool EnsureCalledOnce(object identifier, Delegate callback) {
+        ArgumentNullException.ThrowIfNull(identifier);
+        if (MethodCalledSet.Contains(identifier)) {
+            return false;
+        }
+        lock (identifier) {
+            if (MethodCalledSet.Contains(identifier)) {
+                return false;
+            }
+            callback.DynamicInvoke();
+            // 调用成功后再 Add
+            MethodCalledSet.Add(identifier);
+            return true;
+        }
+    }
+
 }
 
