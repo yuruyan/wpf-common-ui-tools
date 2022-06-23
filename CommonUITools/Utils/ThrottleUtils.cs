@@ -97,4 +97,19 @@ public class ThrottleUtils {
         await callback();
         SetFinished(identifier);
     }
+
+    /// <summary>
+    /// 异步节流
+    /// </summary>
+    /// <param name="identifier">标识</param>
+    /// <param name="callback"></param>
+    /// <param name="interval">间隔多长时间才允许再次调用</param>
+    public static async Task<T?> ThrottleAsync<T>(object identifier, Func<Task<T>> callback, int interval = Interval) {
+        if (!CheckStateAndSet(identifier, interval)) {
+            return default;
+        }
+        T? result = await callback();
+        SetFinished(identifier);
+        return result;
+    }
 }
