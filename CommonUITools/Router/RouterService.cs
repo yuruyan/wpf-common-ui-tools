@@ -10,18 +10,26 @@ public class RouterService {
     private readonly FieldInfo? TransitionFieldInfo; // 通过反射设置过渡动画
     private readonly NavigationTransitionInfo _TransitionInfo = new DrillInNavigationTransitionInfo();
 
-    private class RouterInfo {
-        public Type ClassType { get; set; } = typeof(object);
+    private record RouterInfo {
+        public RouterInfo(Type classType) {
+            ClassType = classType;
+        }
+        public Type ClassType { get; set; }
         public object Instance { get; set; }
     }
 
     /// <summary>
-    /// 获取实例对象
+    /// 获取实例对象，对象未创建则会动态创建
     /// </summary>
     /// <param name="path"></param>
     /// <returns></returns>
     public object GetInstance(Type path) {
-        Routers[path].Instance = Routers[path].Instance ?? Activator.CreateInstance(Routers[path].ClassType);
+        if (!Routers.ContainsKey(path)) {
+            throw new KeyNotFoundException("View 不存在");
+        }
+        Routers[path].Instance = (
+            Routers[path].Instance ?? Activator.CreateInstance(Routers[path].ClassType)
+        ) ?? throw new NullReferenceException($"对象 {path.GetType()} 创建失败");
         return Routers[path].Instance;
     }
 
@@ -29,7 +37,7 @@ public class RouterService {
         Frame = frame;
         // 添加路由信息
         foreach (var item in routers) {
-            Routers.Add(item, new() { ClassType = item });
+            Routers.Add(item, new(item));
         }
         TransitionFieldInfo = frame
                               .GetType()
@@ -44,7 +52,12 @@ public class RouterService {
     /// <param name="path">路由</param>
     /// <param name="transitionInfo">过渡动画</param>
     public void Navigate(Type path, NavigationTransitionInfo? transitionInfo = null) {
-        Routers[path].Instance = Routers[path].Instance ?? Activator.CreateInstance(Routers[path].ClassType);
+        if (!Routers.ContainsKey(path)) {
+            throw new KeyNotFoundException("View 不存在");
+        }
+        Routers[path].Instance = (
+            Routers[path].Instance ?? Activator.CreateInstance(Routers[path].ClassType)
+        ) ?? throw new NullReferenceException($"对象 {path.GetType()} 创建失败");
         if (transitionInfo == null) {
             Frame.Navigate(Routers[path].Instance);
             return;
