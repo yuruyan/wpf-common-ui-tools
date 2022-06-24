@@ -22,6 +22,6 @@
     <TextBox
       MinWidth="200"
       DockPanel.Dock="Right"
-      Text="{Binding DetailText}" />
+      Text="{Binding DetailText, UpdateSourceTrigger=PropertyChanged}" />
   </DockPanel>
 </local:BaseDialog>
