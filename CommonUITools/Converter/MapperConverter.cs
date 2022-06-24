@@ -11,6 +11,25 @@ using System.Threading.Tasks;
 /// </summary>
 namespace CommonUITools.Converter;
 
+public static class MapperUtils {
+    /// <summary>
+    /// 添加常见类型转换器
+    /// </summary>
+    /// <param name="cfg"></param>
+    public static void AddCommonConverters(IMapperConfigurationExpression cfg) {
+        cfg.CreateMap<long, DateTime>().ConvertUsing(new LongToDateTimeTypeConverter());
+        cfg.CreateMap<DateTime, long>().ConvertUsing(new DateTimeToLongTypeConverter());
+        cfg.CreateMap<string, int>().ConvertUsing(new StringToIntTypeConverter());
+        cfg.CreateMap<int, string>().ConvertUsing(new IntToStringTypeConverter());
+        cfg.CreateMap<string, long>().ConvertUsing(new StringToLongTypeConverter());
+        cfg.CreateMap<long, string>().ConvertUsing(new LongToStringTypeConverter());
+        cfg.CreateMap<string, uint>().ConvertUsing(new StringToUintTypeConverter());
+        cfg.CreateMap<uint, string>().ConvertUsing(new UintToStringTypeConverter());
+        cfg.CreateMap<string, ulong>().ConvertUsing(new StringToUlongTypeConverter());
+        cfg.CreateMap<ulong, string>().ConvertUsing(new UlongToStringTypeConverter());
+    }
+}
+
 /// <summary>
 /// 时间戳 ms 转 DateTime
 /// </summary>
