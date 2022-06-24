@@ -20,8 +20,8 @@
       TextWrapping="Wrap"
       Visibility="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Text, Converter={StaticResource VisibilityEqualConverter}, ConverterParameter='|Collapsed'}" />
     <TextBox
-      Name="TargetTextBlock"
       MinWidth="200"
-      DockPanel.Dock="Right" />
+      DockPanel.Dock="Right"
+      Text="{Binding DetailText}" />
   </DockPanel>
 </local:BaseDialog>

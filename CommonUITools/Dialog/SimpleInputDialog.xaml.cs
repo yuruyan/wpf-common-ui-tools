@@ -1,5 +1,4 @@
 ﻿using ModernWpf.Controls;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace CommonUITools.View {
@@ -21,7 +20,7 @@ namespace CommonUITools.View {
             InitializeComponent();
             Title = title;
             Header = header;
-            TargetTextBlock.Text = text;
+            DetailText = text;
         }
 
         /// <summary>
@@ -33,7 +32,7 @@ namespace CommonUITools.View {
             return new DialogResult<string>() {
                 // 放在第一位
                 Result = result,
-                Data = TargetTextBlock.Text
+                Data = DetailText
             };
         }
     }
