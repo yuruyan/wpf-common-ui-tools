@@ -4,39 +4,39 @@ public enum CommonStatus {
     SUCCESS, FAILED, ERROR
 }
 
-public class DataTransferResult<T> {
+public class DTResult<T> {
     public CommonStatus Status { get; set; } = CommonStatus.FAILED;
     public string Message { get; set; } = string.Empty;
     public T? Data { get; set; }
 
     /// <summary>
-    /// 根据 result 创建 DataTransferResult
+    /// 根据 result 创建 DTResult
     /// </summary>
     /// <typeparam name="Source"></typeparam>
     /// <typeparam name="Destination"></typeparam>
     /// <param name="result"></param>
     /// <returns></returns>
-    public static DataTransferResult<T> FromResult<Source>(DataTransferResult<Source> result) {
-        return new DataTransferResult<T> {
+    public static DTResult<T> FromResult<Source>(DTResult<Source> result) {
+        return new DTResult<T> {
             Status = result.Status,
             Message = result.Message
         };
     }
 
-    public static DataTransferResult<T> Failed(string message = "") {
-        return new DataTransferResult<T>();
+    public static DTResult<T> Failed(string message = "") {
+        return new DTResult<T>();
     }
 
-    public static DataTransferResult<T> Success() {
-        return new DataTransferResult<T>() { Status = CommonStatus.SUCCESS };
+    public static DTResult<T> Success() {
+        return new DTResult<T>() { Status = CommonStatus.SUCCESS };
     }
 
-    public static DataTransferResult<T> Success(T data) {
-        return new DataTransferResult<T>() { Status = CommonStatus.SUCCESS, Data = data };
+    public static DTResult<T> Success(T data) {
+        return new DTResult<T>() { Status = CommonStatus.SUCCESS, Data = data };
     }
 
-    public static DataTransferResult<T> Error(string message = "") {
-        return new DataTransferResult<T>() { Status = CommonStatus.ERROR };
+    public static DTResult<T> Error(string message = "") {
+        return new DTResult<T>() { Status = CommonStatus.ERROR };
     }
 
     public override string ToString() {
@@ -80,40 +80,40 @@ public class DataTransferResults<T> {
     }
 }
 
-public class DataTransferResult {
+public class DTResult {
     public CommonStatus Status { get; set; } = CommonStatus.FAILED;
     public string Message { get; set; } = string.Empty;
 
     /// <summary>
-    /// 根据 result 创建 DataTransferResult
+    /// 根据 result 创建 DTResult
     /// </summary>
     /// <param name="result"></param>
     /// <returns></returns>
-    public static DataTransferResult FromResult(DataTransferResult result) {
-        return new DataTransferResult {
+    public static DTResult FromResult(DTResult result) {
+        return new DTResult {
             Status = result.Status,
             Message = result.Message
         };
     }
 
-    public static DataTransferResult Failed() {
-        return new DataTransferResult();
+    public static DTResult Failed() {
+        return new DTResult();
     }
 
-    public static DataTransferResult Failed(string message) {
-        return new DataTransferResult() { Message = message };
+    public static DTResult Failed(string message) {
+        return new DTResult() { Message = message };
     }
 
-    public static DataTransferResult Success() {
-        return new DataTransferResult { Status = CommonStatus.SUCCESS };
+    public static DTResult Success() {
+        return new DTResult { Status = CommonStatus.SUCCESS };
     }
 
-    public static DataTransferResult Error() {
-        return new DataTransferResult { Status = CommonStatus.ERROR };
+    public static DTResult Error() {
+        return new DTResult { Status = CommonStatus.ERROR };
     }
 
-    public static DataTransferResult Error(string message) {
-        return new DataTransferResult { Status = CommonStatus.ERROR, Message = message };
+    public static DTResult Error(string message) {
+        return new DTResult { Status = CommonStatus.ERROR, Message = message };
     }
 
     public override string ToString() {

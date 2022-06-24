@@ -1,6 +1,6 @@
 ﻿namespace CommonUITools.Model;
 
-public class GeneralResponse<T> {
+public class JsonResponse<T> {
     public int code { get; set; }
     public string message { get; set; } = string.Empty;
     public T? data { get; set; }
@@ -10,7 +10,7 @@ public class GeneralResponse<T> {
     }
 }
 
-public class GeneralResponse {
+public class JsonResponse {
     public int code { get; set; }
     public string message { get; set; } = string.Empty;
 
