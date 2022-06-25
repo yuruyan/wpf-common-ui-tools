@@ -327,3 +327,63 @@ public class MouseEventScaleAnimationHelper {
         return transform;
     }
 }
+
+/// <summary>
+/// 淡入动画
+/// </summary>
+// todo 设置 duration
+public class FadeInAnimationHelper {
+    public static bool GetEnabled(DependencyObject obj) {
+        return (bool)obj.GetValue(EnabledProperty);
+    }
+    public static void SetEnabled(DependencyObject obj, bool value) {
+        obj.SetValue(EnabledProperty, value);
+    }
+
+    public static readonly DependencyProperty EnabledProperty = DependencyProperty.RegisterAttached("Enabled", typeof(bool), typeof(FadeInAnimationHelper), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
+    private static readonly Dictionary<FrameworkElement, Storyboard> StoryBoardDict = new();
+
+    /// <summary>
+    /// IsEnabled 改变
+    /// </summary>
+    /// <param name="d"></param>
+    /// <param name="e"></param>
+    private static void IsEnabledPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is FrameworkElement element) {
+            if ((bool)e.NewValue) {
+                element.IsVisibleChanged += IsVisibleChangedHandler;
+            } else {
+                element.IsVisibleChanged -= IsVisibleChangedHandler;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 播放动画
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private static void IsVisibleChangedHandler(object sender, DependencyPropertyChangedEventArgs e) {
+        if (sender is FrameworkElement element && Convert.ToBoolean(e.NewValue)) {
+            element.BeginStoryboard(GetStoryboard(element));
+        }
+    }
+
+    /// <summary>
+    /// 获取 Storyboard
+    /// </summary>
+    /// <param name="element"></param>
+    /// <returns></returns>
+    private static Storyboard GetStoryboard(FrameworkElement element) {
+        if (!StoryBoardDict.TryGetValue(element, out var storyboard)) {
+            DoubleAnimation doubleAnimation = new(0, 1, new(TimeSpan.FromMilliseconds(200)));
+            Storyboard.SetTarget(doubleAnimation, element);
+            Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath("Opacity"));
+            storyboard = new Storyboard() {
+                Children = new(new Timeline[] { doubleAnimation })
+            };
+            StoryBoardDict[element] = storyboard;
+        }
+        return storyboard;
+    }
+}
