@@ -331,15 +331,35 @@ public class MouseEventScaleAnimationHelper {
 /// <summary>
 /// 淡入动画
 /// </summary>
-// todo 设置 duration
 public class FadeInAnimationHelper {
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static bool GetEnabled(DependencyObject obj) {
         return (bool)obj.GetValue(EnabledProperty);
     }
     public static void SetEnabled(DependencyObject obj, bool value) {
         obj.SetValue(EnabledProperty, value);
     }
+    /// <summary>
+    /// 持续时间 ms
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static int GetDuration(DependencyObject obj) {
+        return (int)obj.GetValue(DurationProperty);
+    }
+    public static void SetDuration(DependencyObject obj, int value) {
+        obj.SetValue(DurationProperty, value);
+    }
 
+    /// <summary>
+    /// 默认动画持续时间
+    /// </summary>
+    public const int DefaultDuration = 250;
+    public static readonly DependencyProperty DurationProperty = DependencyProperty.RegisterAttached("Duration", typeof(int), typeof(FadeInAnimationHelper), new PropertyMetadata(DefaultDuration, DurationPropertyChangedHandler));
     public static readonly DependencyProperty EnabledProperty = DependencyProperty.RegisterAttached("Enabled", typeof(bool), typeof(FadeInAnimationHelper), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
     private static readonly Dictionary<FrameworkElement, Storyboard> StoryBoardDict = new();
 
@@ -359,6 +379,19 @@ public class FadeInAnimationHelper {
     }
 
     /// <summary>
+    /// Duration 改变
+    /// </summary>
+    /// <param name="d"></param>
+    /// <param name="e"></param>
+    private static void DurationPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is FrameworkElement element) {
+            // 重新生成
+            StoryBoardDict.Remove(element);
+            _ = GetStoryboard(element);
+        }
+    }
+
+    /// <summary>
     /// 播放动画
     /// </summary>
     /// <param name="sender"></param>
@@ -370,13 +403,13 @@ public class FadeInAnimationHelper {
     }
 
     /// <summary>
-    /// 获取 Storyboard
+    /// 获取 Storyboard，未获取到则自动设置
     /// </summary>
     /// <param name="element"></param>
     /// <returns></returns>
     private static Storyboard GetStoryboard(FrameworkElement element) {
         if (!StoryBoardDict.TryGetValue(element, out var storyboard)) {
-            DoubleAnimation doubleAnimation = new(0, 1, new(TimeSpan.FromMilliseconds(200)));
+            DoubleAnimation doubleAnimation = new(0, 1, new(TimeSpan.FromMilliseconds(GetDuration(element))));
             Storyboard.SetTarget(doubleAnimation, element);
             Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath("Opacity"));
             storyboard = new Storyboard() {
