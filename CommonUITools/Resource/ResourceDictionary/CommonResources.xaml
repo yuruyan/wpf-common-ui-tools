@@ -57,4 +57,8 @@
   <Thickness x:Key="NavigationMargin" Top="30" />
   <!--  UserAvatar Height  -->
   <GridLength x:Key="UserAvatarHeight">90</GridLength>
+
+  <!--#region 覆盖样式-->
+  <SolidColorBrush x:Key="FlyoutPresenterBackground" Color="White" />
+  <!--#endregion-->
 </ResourceDictionary>
