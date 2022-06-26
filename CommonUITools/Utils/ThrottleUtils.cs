@@ -40,7 +40,7 @@ public class ThrottleUtils {
         }
         var invokeTime = DateTime.Now;
         // 验证通过
-        if (invokeTime.AddMilliseconds(validateInterval(interval)) >= state.LastInvokeTime) {
+        if (state.LastInvokeTime.AddMilliseconds(validateInterval(interval)) <= invokeTime) {
             state.IsFinished = false;
             state.LastInvokeTime = invokeTime;
             return true;
