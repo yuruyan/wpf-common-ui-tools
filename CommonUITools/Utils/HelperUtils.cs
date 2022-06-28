@@ -161,19 +161,8 @@ public class ScaleAnimationHelper {
         }
 
         private static ScaleTransform CreateCenterScaleTransform(FrameworkElement element) {
-            ScaleTransform transform = new();
-            IValueConverter divideTwoConverter = new DivideTwoConverter();
-            Binding widthBinding = new("ActualWidth") {
-                Source = element,
-                Converter = divideTwoConverter,
-            };
-            Binding heightBinding = new("ActualHeight") {
-                Source = element,
-                Converter = divideTwoConverter,
-            };
-            BindingOperations.SetBinding(transform, ScaleTransform.CenterXProperty, widthBinding);
-            BindingOperations.SetBinding(transform, ScaleTransform.CenterYProperty, heightBinding);
-            return transform;
+            element.RenderTransformOrigin = new Point(0.5, 0.5);
+            return new();
         }
 
         private static ScaleTransform CreateTopLeftScaleTransform(FrameworkElement element) {
@@ -312,19 +301,8 @@ public class MouseEventScaleAnimationHelper {
     /// <param name="element"></param>
     /// <returns></returns>
     private static ScaleTransform CreateScaleTransform(FrameworkElement element) {
-        ScaleTransform transform = new();
-        IValueConverter divideTwoConverter = new DivideTwoConverter();
-        Binding widthBinding = new("ActualWidth") {
-            Source = element,
-            Converter = divideTwoConverter,
-        };
-        Binding heightBinding = new("ActualHeight") {
-            Source = element,
-            Converter = divideTwoConverter,
-        };
-        BindingOperations.SetBinding(transform, ScaleTransform.CenterXProperty, widthBinding);
-        BindingOperations.SetBinding(transform, ScaleTransform.CenterYProperty, heightBinding);
-        return transform;
+        element.RenderTransformOrigin = new Point(0.5, 0.5);
+        return new();
     }
 }
 
