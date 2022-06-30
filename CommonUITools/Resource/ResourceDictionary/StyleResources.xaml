@@ -412,28 +412,22 @@
     x:Key="BorderlessTextBoxStyle"
     BasedOn="{StaticResource GlobalTextBoxStyle}"
     TargetType="TextBox">
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="TextBox">
-          <ScrollViewer
-            x:Name="PART_ContentHost"
-            Margin="{TemplateBinding BorderThickness}"
-            Padding="{TemplateBinding Padding}"
-            VerticalAlignment="{TemplateBinding VerticalAlignment}"
-            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-            Background="{TemplateBinding Background}"
-            Focusable="False"
-            FontSize="{TemplateBinding FontSize}"
-            HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
-            IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
-            IsTabStop="False"
-            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-            Style="{DynamicResource TextControlContentHostStyle}"
-            VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" />
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
+    <Style.Resources>
+      <Thickness
+        x:Key="TextControlBorderThemeThickness"
+        Bottom="0"
+        Left="0"
+        Right="0"
+        Top="0" />
+      <Thickness
+        x:Key="TextControlBorderThemeThicknessFocused"
+        Bottom="0"
+        Left="0"
+        Right="0"
+        Top="0" />
+      <SolidColorBrush x:Key="TextControlButtonBorderBrushPressed" Color="Transparent" />
+    </Style.Resources>
+    <Setter Property="BorderThickness" Value="0" />
   </Style>
   <!--  ItemsControl Virtualization  -->
   <Style x:Key="VirtualizationItemsControlStyle" TargetType="ItemsControl">
