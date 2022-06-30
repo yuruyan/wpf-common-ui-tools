@@ -8,7 +8,7 @@ public class RouterService {
     private readonly Frame Frame;
     private readonly Dictionary<Type, RouterInfo> Routers = new();
     private readonly FieldInfo? TransitionFieldInfo; // 通过反射设置过渡动画
-    private readonly NavigationTransitionInfo _TransitionInfo = new DrillInNavigationTransitionInfo();
+    public readonly NavigationTransitionInfo DrillInTransitionInfo = new DrillInNavigationTransitionInfo();
 
     private record RouterInfo {
         public RouterInfo(Type classType) {
@@ -45,7 +45,7 @@ public class RouterService {
                               .GetType()
                               .GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
                               .FirstOrDefault(f => f.Name == "_transitionInfoOverride");
-        TransitionFieldInfo?.SetValue(Frame, _TransitionInfo);
+        //TransitionFieldInfo?.SetValue(Frame, DrillInTransitionInfo);
     }
 
     /// <summary>
