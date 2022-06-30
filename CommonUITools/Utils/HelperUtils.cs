@@ -1,6 +1,5 @@
-﻿using CommonUITools.Converter;
-using System.Windows;
-using System.Windows.Data;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
@@ -396,5 +395,40 @@ public class FadeInAnimationHelper {
             StoryBoardDict[element] = storyboard;
         }
         return storyboard;
+    }
+}
+
+/// <summary>
+/// GridViewColumnHelper
+/// </summary>
+public class GridViewColumnHelper {
+
+    public static double GetHeaderMinWidth(DependencyObject obj) {
+        return (double)obj.GetValue(HeaderMinWidthProperty);
+    }
+    public static void SetHeaderMinWidth(DependencyObject obj, double value) {
+        obj.SetValue(HeaderMinWidthProperty, value);
+    }
+    /// <summary>
+    /// Header 最小宽度
+    /// </summary>
+    public static readonly DependencyProperty HeaderMinWidthProperty = DependencyProperty.RegisterAttached("HeaderMinWidth", typeof(double), typeof(GridViewColumnHelper), new PropertyMetadata(0.0, HeaderMinWidthPropertyChangedHandler));
+
+    private static void HeaderMinWidthPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is GridViewColumnHeader header) {
+            // 设置 SizeChanged 事件
+            CommonUtils.EnsureCalledOnce(header, () => {
+                header.SizeChanged += (sender, args) => {
+                    if (args.NewSize.Width <= GetHeaderMinWidth(header)) {
+                        // 可能为 null
+                        if (header.Column is null) {
+                            return;
+                        }
+                        header.Column.Width = GetHeaderMinWidth(header);
+                        args.Handled = true;
+                    }
+                };
+            });
+        }
     }
 }

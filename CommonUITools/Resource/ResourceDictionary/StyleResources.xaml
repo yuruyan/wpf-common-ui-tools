@@ -511,4 +511,8 @@
       </Setter.Value>
     </Setter>
   </Style>
+  <!--  GridViewColumnHeader  -->
+  <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="GridViewColumnHeader">
+    <Setter Property="utils:GridViewColumnHelper.HeaderMinWidth" Value="50" />
+  </Style>
 </ResourceDictionary>
