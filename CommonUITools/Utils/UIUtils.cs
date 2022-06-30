@@ -100,11 +100,11 @@ namespace CommonUITools.Utils {
         /// <summary>
         /// 在文件资源管理器中异步打开文件
         /// </summary>
-        /// <param name="path">文件绝对路径，路径分隔符为 '\'</param>
+        /// <param name="path">文件绝对路径</param>
         /// <param name="failedCallback">发生异常回调</param>
         public static void OpenFileInDirectoryAsync(string path, Action<Exception>? failedCallback = null) {
             try {
-                Process.Start("explorer.exe", "/select," + path);
+                Process.Start("explorer.exe", "/select," + path.Replace('/', '\\'));
             } catch (Exception error) {
                 if (failedCallback != null) {
                     failedCallback(error);
@@ -118,11 +118,11 @@ namespace CommonUITools.Utils {
         /// <summary>
         /// 选择以什么方式异步打开文件
         /// </summary>
-        /// <param name="path">文件绝对路径，路径分隔符为 '\'</param>
+        /// <param name="path">文件绝对路径</param>
         /// <param name="failedCallback">发生异常回调</param>
         public static void OpenFileWithAsync(string path, Action<Exception>? failedCallback = null) {
             try {
-                Process.Start("rundll32.exe", "shell32.dll, OpenAs_RunDLL " + path);
+                Process.Start("rundll32.exe", "shell32.dll, OpenAs_RunDLL " + path.Replace('/', '\\'));
             } catch (Exception error) {
                 if (failedCallback != null) {
                     failedCallback(error);
