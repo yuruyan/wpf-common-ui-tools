@@ -473,10 +473,10 @@ public class VisibilityNotEqualConverter : IValueConverter {
 /// </summary>
 public class FileNameConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        if (!File.Exists((string?)value)) {
-            return string.Empty;
+        if (value is string path) {
+            return Path.GetFileName(path);
         }
-        return new FileInfo((string)value).Name;
+        return string.Empty;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
