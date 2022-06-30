@@ -29,6 +29,7 @@
   ".xlsx": "excel.svg",
   ".xls": "excel.svg",
   ".exe": "exe.svg",
+  ".msi": "exe.svg",
   "favicon.ico": "favicon.svg",
   "*": "file.svg",
   ".sln": "visualstudio.svg",
