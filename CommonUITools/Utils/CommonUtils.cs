@@ -8,17 +8,17 @@ namespace CommonUITools.Utils;
 
 public class CommonUtils {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private static readonly DateTime Epoch = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    private static DateTime Epoch => new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
     /// <summary>
     /// 当前时间戳(ms)
     /// </summary>
-    public static long CuruentMilliseconds => DateTimeOffset.Now.ToUnixTimeMilliseconds();
+    public static long CuruentMilliseconds => DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
     /// <summary>
     /// 当前时间戳(s)
     /// </summary>
-    public static long CuruentSeconds => DateTimeOffset.Now.ToUnixTimeSeconds();
+    public static long CuruentSeconds => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
     /// <summary>
     /// 拷贝对象
@@ -52,8 +52,7 @@ public class CommonUtils {
     /// <param name="value"></param>
     /// <returns></returns>
     public static long ConvertToTimestamp(DateTime value) {
-        TimeSpan elapsedTime = value - Epoch;
-        return (long)elapsedTime.TotalMilliseconds;
+        return (long)(value - Epoch).TotalMilliseconds;
     }
 
     /// <summary>
@@ -77,11 +76,9 @@ public class CommonUtils {
     /// <returns></returns>
     public static DateTime ConvertToDateTime(long timestamp, bool milliseconds = true) {
         if (milliseconds) {
-            timestamp /= 1000;
+            return Epoch.AddMilliseconds(timestamp);
         }
-        long lTime = long.Parse(timestamp + "0000000");
-        var toNow = new TimeSpan(lTime);
-        return TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1, 0, 0, 0), TimeZoneInfo.Local).Add(toNow);
+        return Epoch.AddSeconds(timestamp);
     }
 
     /// <summary>
