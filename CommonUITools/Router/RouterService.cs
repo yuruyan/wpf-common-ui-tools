@@ -1,14 +1,31 @@
-﻿using ModernWpf.Media.Animation;
+﻿using CommonUITools.Utils;
+using ModernWpf.Media.Animation;
 using System.Reflection;
 using System.Windows.Controls;
 
 namespace CommonUITools.Route;
 
+public enum NavigationTransitionEffect {
+    Entrance,
+    DrillIn,
+    Suppress,
+    Slide,
+}
+
 public class RouterService {
     private readonly Frame Frame;
-    private readonly Dictionary<Type, RouterInfo> Routers = new();
+    private readonly IDictionary<Type, RouterInfo> Routers = new Dictionary<Type, RouterInfo>();
+    private readonly IDictionary<NavigationTransitionEffect, NavigationTransitionInfo> NavigationTransitionEffectDict = new Dictionary<NavigationTransitionEffect, NavigationTransitionInfo>() {
+        {NavigationTransitionEffect.DrillIn, new DrillInNavigationTransitionInfo()},
+        {NavigationTransitionEffect.Entrance, new EntranceNavigationTransitionInfo()},
+        {NavigationTransitionEffect.Suppress, new SuppressNavigationTransitionInfo()},
+        {NavigationTransitionEffect.Slide, new SlideNavigationTransitionInfo()},
+    };
+    /// <summary>
+    /// 默认 NavigationTransitionInfo
+    /// </summary>
+    public NavigationTransitionEffect DefalutNavigationTransitionEffect = NavigationTransitionEffect.Entrance;
     private readonly FieldInfo? TransitionFieldInfo; // 通过反射设置过渡动画
-    public readonly NavigationTransitionInfo DrillInTransitionInfo = new DrillInNavigationTransitionInfo();
 
     private record RouterInfo {
         public RouterInfo(Type classType) {
@@ -30,12 +47,10 @@ public class RouterService {
         Routers[path].Instance = (
             Routers[path].Instance ?? Activator.CreateInstance(Routers[path].ClassType)
         ) ?? throw new NullReferenceException($"对象 {path.GetType()} 创建失败");
-#pragma warning disable CS8603 // Possible null reference return.
-        return Routers[path].Instance;
-#pragma warning restore CS8603 // Possible null reference return.
+        return CommonUtils.NullCheck(Routers[path].Instance);
     }
 
-    public RouterService(Frame frame, IEnumerable<Type> routers) {
+    public RouterService(ModernWpf.Controls.Frame frame, IEnumerable<Type> routers, NavigationTransitionEffect defaultNavigationTransitionEffect = NavigationTransitionEffect.Entrance) {
         Frame = frame;
         // 添加路由信息
         foreach (var item in routers) {
@@ -45,28 +60,30 @@ public class RouterService {
                               .GetType()
                               .GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
                               .FirstOrDefault(f => f.Name == "_transitionInfoOverride");
-        //TransitionFieldInfo?.SetValue(Frame, DrillInTransitionInfo);
+        SetTransitionEffect(defaultNavigationTransitionEffect);
+    }
+
+    public void Navigate(Type view) {
+        Navigate(view, DefalutNavigationTransitionEffect);
     }
 
     /// <summary>
     /// 导航至页面
     /// </summary>
-    /// <param name="path">路由</param>
-    /// <param name="transitionInfo">过渡动画</param>
-    public void Navigate(Type path, NavigationTransitionInfo? transitionInfo = null) {
-        if (!Routers.ContainsKey(path)) {
+    /// <param name="view">路由</param>
+    /// <param name="effect">过渡动画</param>
+    public void Navigate(Type view, NavigationTransitionEffect effect) {
+        if (!Routers.ContainsKey(view)) {
             throw new KeyNotFoundException("View 不存在");
         }
-        Routers[path].Instance = (
-            Routers[path].Instance ?? Activator.CreateInstance(Routers[path].ClassType)
-        ) ?? throw new NullReferenceException($"对象 {path.GetType()} 创建失败");
-        if (transitionInfo == null) {
-            Frame.Navigate(Routers[path].Instance);
-            return;
-        }
+        _ = GetInstance(view);
         // 设置过渡动画
-        TransitionFieldInfo?.SetValue(Frame, transitionInfo);
-        Frame.Navigate(Routers[path].Instance);
+        SetTransitionEffect(effect);
+        Frame.Navigate(Routers[view].Instance);
+    }
+
+    private void SetTransitionEffect(NavigationTransitionEffect effect) {
+        TransitionFieldInfo?.SetValue(Frame, NavigationTransitionEffectDict[effect]);
     }
 
     /// <summary>
