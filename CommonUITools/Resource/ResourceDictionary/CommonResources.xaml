@@ -60,5 +60,10 @@
 
   <!--#region 覆盖样式-->
   <SolidColorBrush x:Key="FlyoutPresenterBackground" Color="White" />
+  <SolidColorBrush x:Key="AutoSuggestBoxSuggestionsListBackground" Color="White" />
+  <SolidColorBrush x:Key="ComboBoxBackground" Color="White" />
+  <SolidColorBrush x:Key="ComboBoxItemBackground" Color="White" />
+  <SolidColorBrush x:Key="MenuFlyoutPresenterBackground" Color="White" />
+  <SolidColorBrush x:Key="ToolTipBackground" Color="White" />
   <!--#endregion-->
 </ResourceDictionary>

@@ -38,16 +38,16 @@ public class RouterService {
     /// <summary>
     /// 获取实例对象，对象未创建则会动态创建
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="view"></param>
     /// <returns></returns>
-    public object GetInstance(Type path) {
-        if (!Routers.ContainsKey(path)) {
+    public object GetInstance(Type view) {
+        if (!Routers.ContainsKey(view)) {
             throw new KeyNotFoundException("View 不存在");
         }
-        Routers[path].Instance = (
-            Routers[path].Instance ?? Activator.CreateInstance(Routers[path].ClassType)
-        ) ?? throw new NullReferenceException($"对象 {path.GetType()} 创建失败");
-        return CommonUtils.NullCheck(Routers[path].Instance);
+        Routers[view].Instance = (
+            Routers[view].Instance ?? Activator.CreateInstance(Routers[view].ClassType)
+        ) ?? throw new NullReferenceException($"对象 {view.GetType()} 创建失败");
+        return CommonUtils.NullCheck(Routers[view].Instance);
     }
 
     public RouterService(ModernWpf.Controls.Frame frame, IEnumerable<Type> routers, NavigationTransitionEffect defaultNavigationTransitionEffect = NavigationTransitionEffect.Entrance) {
