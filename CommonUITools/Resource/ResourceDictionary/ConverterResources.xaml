@@ -33,4 +33,5 @@
   <converter:AgeConverter x:Key="AgeConverter" />
   <converter:TimeStampStringConverter x:Key="TimeStampStringConverter" />
   <converter:BoolToStringConverter x:Key="BoolToStringConverter" />
+  <converter:FileIconConverter x:Key="FileIconConverter" />
 </ResourceDictionary>
