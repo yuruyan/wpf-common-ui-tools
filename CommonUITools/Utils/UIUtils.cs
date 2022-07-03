@@ -133,5 +133,23 @@ namespace CommonUITools.Utils {
             }
         }
 
+        /// <summary>
+        /// 在 UI 线程中运行
+        /// </summary>
+        /// <param name="task"></param>
+        public static void RunOnUIThread(Action task) {
+            App.Current.Dispatcher.Invoke(() => task());
+        }
+
+        /// <summary>
+        /// 在 UI 线程中运行
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="task"></param>
+        /// <returns></returns>
+        public static T RunOnUIThread<T>(Func<T> task) {
+            return App.Current.Dispatcher.Invoke(() => task());
+        }
+
     }
 }
