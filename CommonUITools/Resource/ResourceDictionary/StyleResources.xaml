@@ -471,7 +471,7 @@
   </Style>
   <!--  GlobalBorderStyle  -->
   <Style x:Key="GlobalBorderStyle" TargetType="Border">
-    <Setter Property="CornerRadius" Value="8" />
+    <Setter Property="CornerRadius" Value="4" />
     <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
   </Style>
   <!--  GridViewItemContainerStyleKey  -->
