@@ -30,4 +30,39 @@ public static class ExtensionUtils {
         return destList;
     }
 
+    /// <summary>
+    /// 从 collection 中移除符合 predicate 条件的第一个元素
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="collection"></param>
+    /// <param name="predicate"></param>
+    /// <returns>
+    /// true if item was successfully removed from the System.Collections.Generic.ICollection;
+    /// otherwise, false. This method also returns false if item is not found in the
+    /// original System.Collections.Generic.ICollection
+    /// </returns>
+    public static bool Remove<T>(this ICollection<T> collection, Func<T, bool> predicate) {
+        if (collection.FirstOrDefault(predicate) is T obj) {
+            return collection.Remove(obj);
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// 从 collection 中移除符合 predicate 条件的所有元素
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="enumerable"></param>
+    /// <param name="predicate"></param>
+    /// <returns>移除的元素</returns>
+    public static IEnumerable<T> RemoveAll<T>(this ICollection<T> enumerable, Func<T, bool> predicate) {
+        List<T> removedList = new();
+        foreach (var item in enumerable.Where(predicate).ToArray()) {
+            if (enumerable.Remove(item)) {
+                removedList.Add(item);
+            }
+        }
+        return removedList;
+    }
+
 }
