@@ -168,7 +168,7 @@ public class CommonUtils {
     /// <param name="action"></param>
     /// <param name="interval">检查间隔时间(ms)</param>
     public static void WaitFor(Func<bool> predicate, Action action, int interval = 50) {
-        Task.Factory.StartNew(() => {
+        Task.Run(() => {
             while (!predicate()) {
                 Thread.Sleep(interval);
             }

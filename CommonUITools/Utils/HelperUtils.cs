@@ -17,7 +17,7 @@ public class ScaleAnimationHelper {
 
     private record State {
         public ScaleOption ScaleOption { get; set; } = ScaleOption.TopLeft;
-        public Storyboard Storyboard { get; set; }
+        public Storyboard? Storyboard { get; set; }
     }
 
     /// <summary>
