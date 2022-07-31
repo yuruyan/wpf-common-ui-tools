@@ -6,7 +6,7 @@
   <system:Double x:Key="SystemFontSize">17</system:Double>
   <!--  ContextMenu StackPanelSpacing  -->
   <system:Double x:Key="ContextMenuSimpleStackPanelSpacing">8</system:Double>
-  <system:Double x:Key="ContextMenuItemHeight">40</system:Double>
+  <system:Double x:Key="ContextMenuItemHeight">35</system:Double>
   <system:Double x:Key="ContextMenuWidth">200</system:Double>
   <system:TimeSpan x:Key="AnimationTimeSpan">0:0:0.3</system:TimeSpan>
   <Duration x:Key="AnimationDuration">0:0:0.3</Duration>
