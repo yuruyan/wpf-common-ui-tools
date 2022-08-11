@@ -40,6 +40,8 @@ public class RouterService {
     /// </summary>
     /// <param name="view"></param>
     /// <returns></returns>
+    /// <exception cref="KeyNotFoundException">View 不存在</exception>
+    /// <exception cref="NullReferenceException">对象创建失败</exception>
     public object GetInstance(Type view) {
         if (!Routers.ContainsKey(view)) {
             throw new KeyNotFoundException("View 不存在");
