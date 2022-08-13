@@ -82,6 +82,14 @@ namespace CommonUITools.Utils {
         }
 
         /// <summary>
+        /// System.Drawing.Color 转 System.Windows.Media.Color
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public static Color DrawingColorToColor(System.Drawing.Color color)
+            => Color.FromArgb(color.A, color.R, color.G, color.B);
+
+        /// <summary>
         /// 获取 MergedDictionaries.ResourceDictionary
         /// </summary>
         /// <param name="resourceName"></param>
