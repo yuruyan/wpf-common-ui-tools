@@ -58,6 +58,14 @@
   <!--  UserAvatar Height  -->
   <GridLength x:Key="UserAvatarHeight">90</GridLength>
 
+  <!--#region Item Spacing-->
+  <system:Double x:Key="NarrowItemSpacing">8</system:Double>
+  <system:Double x:Key="MediumItemSpacing">16</system:Double>
+  <system:Double x:Key="BroadItemSpacing">24</system:Double>
+  <!--#endregion-->
+  <!--  页面边距  -->
+  <Thickness x:Key="PageMargin">8</Thickness>
+
   <!--#region 覆盖样式-->
   <SolidColorBrush x:Key="FlyoutPresenterBackground" Color="White" />
   <SolidColorBrush x:Key="AutoSuggestBoxSuggestionsListBackground" Color="White" />
