@@ -156,7 +156,7 @@ namespace CommonUITools.Utils {
         /// </summary>
         /// <param name="input"></param>
         /// <param name="showMessage">如果不合法则显示消息提示</param>
-        /// <returns></returns>
+        /// <returns>合法返回 true</returns>
         public static bool CheckInputNullOrEmpty(string? input, bool showMessage = true, string message = "输入不能为空") {
             if (string.IsNullOrEmpty(input)) {
                 if (showMessage) {
