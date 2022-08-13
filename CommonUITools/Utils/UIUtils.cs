@@ -156,13 +156,45 @@ namespace CommonUITools.Utils {
         /// </summary>
         /// <param name="input"></param>
         /// <param name="showMessage">如果不合法则显示消息提示</param>
+        /// <param name="message">显示的消息</param>
         /// <returns>合法返回 true</returns>
-        public static bool CheckInputNullOrEmpty(string? input, bool showMessage = true, string message = "输入不能为空") {
-            if (string.IsNullOrEmpty(input)) {
-                if (showMessage) {
-                    Widget.MessageBox.Error(message);
+        public static bool CheckInputNullOrEmpty(
+            string? input,
+            bool showMessage = true,
+            string message = "输入不能为空"
+        ) {
+            return CheckInputNullOrEmpty(
+                new KeyValuePair<string?, string>[] {
+                    new (input, message),
+                },
+                showMessage,
+                message
+            );
+        }
+
+        /// <summary>
+        /// 检查输入是否都不为空或 null
+        /// </summary>
+        /// <param name="inputWithMessageList">(inputValue, message)</param>
+        /// <param name="showMessage">如果不合法则显示消息提示</param>
+        /// <param name="message">显示的消息</param>
+        /// <returns></returns>
+        public static bool CheckInputNullOrEmpty(
+            IEnumerable<KeyValuePair<string?, string>> inputWithMessageList,
+            bool showMessage = true,
+            string message = "输入不能为空"
+        ) {
+            message ??= "输入不能为空";
+            foreach (var item in inputWithMessageList) {
+                if (string.IsNullOrEmpty(item.Key)) {
+                    // 显示提示消息
+                    if (showMessage) {
+                        Widget.MessageBox.Error(
+                            string.IsNullOrEmpty(item.Value) ? message : item.Value
+                        );
+                    }
+                    return false;
                 }
-                return false;
             }
             return true;
         }
