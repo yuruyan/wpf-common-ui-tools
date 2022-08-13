@@ -151,5 +151,20 @@ namespace CommonUITools.Utils {
             return App.Current.Dispatcher.Invoke(() => task());
         }
 
+        /// <summary>
+        /// 检查输入是否为 null 或空
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="showMessage">如果不合法则显示消息提示</param>
+        /// <returns></returns>
+        public static bool CheckInputNullOrEmpty(string? input, bool showMessage = true, string message = "输入不能为空") {
+            if (string.IsNullOrEmpty(input)) {
+                if (showMessage) {
+                    Widget.MessageBox.Error(message);
+                }
+                return false;
+            }
+            return true;
+        }
     }
 }
