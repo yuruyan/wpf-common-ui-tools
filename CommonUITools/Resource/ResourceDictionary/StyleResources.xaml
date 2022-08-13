@@ -382,4 +382,14 @@
   <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="GridViewColumnHeader">
     <Setter Property="utils:GridViewColumnHelper.HeaderMinWidth" Value="50" />
   </Style>
+  <!--  FontIcon  -->
+  <Style x:Key="GlobalFontIconStyle" TargetType="ui:FontIcon">
+    <Setter Property="FontFamily" Value="{StaticResource IconFontUrI}" />
+  </Style>
+  <Style BasedOn="{StaticResource GlobalFontIconStyle}" TargetType="ui:FontIcon" />
+  <!--  NavigationViewItem  -->
+  <Style x:Key="GlobalNavigationViewItemStyle" TargetType="ui:NavigationViewItem">
+    <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
+  </Style>
+  <Style BasedOn="{StaticResource GlobalNavigationViewItemStyle}" TargetType="ui:NavigationViewItem" />
 </ResourceDictionary>
