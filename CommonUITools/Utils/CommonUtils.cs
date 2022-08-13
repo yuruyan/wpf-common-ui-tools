@@ -297,5 +297,18 @@ public class CommonUtils {
         ArgumentNullException.ThrowIfNull(value);
         return value;
     }
+
+    /// <summary>
+    /// 检查 Range 是否有效
+    /// </summary>
+    /// <returns>无效返回 null</returns>
+    public static Range? CheckRange(double minInclusive, double maxExclusive) {
+        int min = (int)minInclusive;
+        int max = (int)maxExclusive;
+        if (min > max) {
+            return null;
+        }
+        return new Range(new(min), new(max));
+    }
 }
 
