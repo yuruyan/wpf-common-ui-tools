@@ -83,6 +83,11 @@
     <Setter Property="Spacing" Value="{StaticResource ContextMenuSimpleStackPanelSpacing}" />
     <Setter Property="Orientation" Value="Horizontal" />
   </Style>
+  <!--  GlobalSimpleStackPanelStyle  -->
+  <Style x:Key="GlobalSimpleStackPanelStyle" TargetType="ui:SimpleStackPanel">
+    <Setter Property="Spacing" Value="{StaticResource NarrowItemSpacing}" />
+  </Style>
+  <Style BasedOn="{StaticResource GlobalSimpleStackPanelStyle}" TargetType="ui:SimpleStackPanel" />
   <!--  GlobalContextMenuStyle  -->
   <Style
     x:Key="GlobalContextMenuStyle"
