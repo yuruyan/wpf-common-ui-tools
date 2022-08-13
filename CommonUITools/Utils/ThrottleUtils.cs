@@ -17,7 +17,7 @@ public class ThrottleUtils {
     /// </summary>
     /// <param name="interval"></param>
     /// <returns></returns>
-    private static int validateInterval(int interval) {
+    private static int ValidateInterval(int interval) {
         return Math.Abs(interval);
     }
 
@@ -40,7 +40,7 @@ public class ThrottleUtils {
         }
         var invokeTime = DateTime.Now;
         // 验证通过
-        if (state.LastInvokeTime.AddMilliseconds(validateInterval(interval)) <= invokeTime) {
+        if (state.LastInvokeTime.AddMilliseconds(ValidateInterval(interval)) <= invokeTime) {
             state.IsFinished = false;
             state.LastInvokeTime = invokeTime;
             return true;
