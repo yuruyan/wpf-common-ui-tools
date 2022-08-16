@@ -268,7 +268,7 @@
     <Setter Property="VerticalContentAlignment" Value="Top" />
     <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
   </Style>
-  <!--  多行 TextBlock  -->
+  <!--  多行 TextBlock，可以指定 tag 为完整路径  -->
   <Style
     x:Key="MultilineTextBlockStyle"
     BasedOn="{StaticResource GlobalTextBlockStyle}"
