@@ -207,9 +207,23 @@
       <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{DynamicResource ApplicationBorderForegroundColor}" />
       <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{DynamicResource ApplicationBorderForegroundColor}" />
     </Style.Resources>
+    <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
     <Setter Property="Padding" Value="16,8,16,8" />
   </Style>
   <Style BasedOn="{StaticResource GlobalButtonStyle}" TargetType="Button" />
+  <!--  GlobalSingleIconButtonStyle  -->
+  <Style
+    x:Key="GlobalSingleIconButtonStyle"
+    BasedOn="{StaticResource GlobalButtonStyle}"
+    TargetType="Button">
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="8" />
+    <Style.Resources>
+      <SolidColorBrush x:Key="ButtonBackground" Color="Transparent" />
+      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{Binding Source={StaticResource Gray3}, Path=Color}" />
+      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{Binding Source={StaticResource Gray4}, Path=Color}" />
+    </Style.Resources>
+  </Style>
   <Style
     x:Key="GlobalIconButtonStyle"
     BasedOn="{StaticResource GlobalButtonStyle}"
