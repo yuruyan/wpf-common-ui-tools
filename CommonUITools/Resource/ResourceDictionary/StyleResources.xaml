@@ -122,10 +122,6 @@
         <Setter Property="TextDecorations" Value="Underline" />
         <Setter Property="Cursor" Value="Hand" />
       </Trigger>
-      <Trigger Property="IsMouseOver" Value="False">
-        <Setter Property="TextDecorations" Value="None" />
-        <Setter Property="Cursor" Value="None" />
-      </Trigger>
     </Style.Triggers>
   </Style>
   <!--  ContentDialogTitleStyle  -->
