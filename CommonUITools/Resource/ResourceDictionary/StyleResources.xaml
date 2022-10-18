@@ -18,7 +18,7 @@
     <Setter Property="FontSize" Value="{DynamicResource SystemFontSize}" />
     <Setter Property="FontFamily" Value="{DynamicResource SystemFontFamily}" />
     <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="ToolTipService.InitialShowDelay" Value="100" />
+    <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
   </Style>
   <Style BasedOn="{StaticResource GlobalTextBlockStyle}" TargetType="TextBlock" />
   <!--  TextBoxStyle  -->
@@ -49,10 +49,11 @@
     <Setter Property="Padding" Value="4" />
   </Style>
   <!--  IconFont 样式  -->
-  <Style x:Key="IconFontStyle" TargetType="TextBlock">
+  <Style
+    x:Key="IconFontStyle"
+    BasedOn="{StaticResource GlobalTextBlockStyle}"
+    TargetType="TextBlock">
     <Setter Property="FontFamily" Value="{StaticResource IconFontUrI}" />
-    <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="FontSize" Value="{DynamicResource SystemFontSize}" />
   </Style>
   <!--  嵌入 Button Icon  -->
   <Style
