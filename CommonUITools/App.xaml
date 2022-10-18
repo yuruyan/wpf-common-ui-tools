@@ -25,6 +25,13 @@
         <!--  Other merged dictionaries here  -->
       </ResourceDictionary.MergedDictionaries>
       <!--  Other app resources here  -->
+      <!--  IconFont 样式（供本项目使用）  -->
+      <Style
+        x:Key="IconFontStyle"
+        BasedOn="{StaticResource IconFontStyle}"
+        TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="pack://application:,,,/resource/#CommonUITools-IconFont" />
+      </Style>
     </ResourceDictionary>
   </Application.Resources>
 </Application>
