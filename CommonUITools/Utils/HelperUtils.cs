@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -429,6 +430,96 @@ public class GridViewColumnHelper {
                     }
                 };
             });
+        }
+    }
+}
+
+/// <summary>
+/// DragDropHelper，DragOver 时背景会发生变化
+/// 默认背景为 #e7e7e7
+/// </summary>
+public class DragDropHelper {
+    public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(DragDropHelper), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
+    public static readonly DependencyProperty OverBackgroundProperty = DependencyProperty.RegisterAttached("OverBackground", typeof(Brush), typeof(DragDropHelper), new PropertyMetadata(UIUtils.StringToBrush("#e7e7e7")));
+
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    public static bool GetIsEnabled(DependencyObject obj) {
+        return (bool)obj.GetValue(IsEnabledProperty);
+    }
+    public static void SetIsEnabled(DependencyObject obj, bool value) {
+        obj.SetValue(IsEnabledProperty, value);
+    }
+    /// <summary>
+    /// 拖拽进入区域时背景颜色
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static Brush GetOverBackground(DependencyObject obj) {
+        return (Brush)obj.GetValue(OverBackgroundProperty);
+    }
+    public static void SetOverBackground(DependencyObject obj, Brush value) {
+        obj.SetValue(OverBackgroundProperty, value);
+    }
+
+    /// <summary>
+    /// 元素初始状态设置的 Background
+    /// </summary>
+    private static readonly IDictionary<DependencyObject, Brush> ElementBackgroundDict = new Dictionary<DependencyObject, Brush>();
+    /// <summary>
+    /// 元素 Background PropertyInfo
+    /// </summary>
+    private static readonly IDictionary<DependencyObject, PropertyInfo> ElementPropertyDict = new Dictionary<DependencyObject, PropertyInfo>();
+
+    private static void IsEnabledPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is UIElement element) {
+            var backgroundInfo = d.GetType()
+                .GetProperty("Background", BindingFlags.Default | BindingFlags.Instance | BindingFlags.Public);
+            // 没有 BackgroundProperty 属性或类型不正确
+            if (backgroundInfo == null || backgroundInfo.PropertyType != typeof(Brush)) {
+                return;
+            }
+
+            // 设置初始值
+            if (!ElementBackgroundDict.ContainsKey(element)) {
+                ElementPropertyDict[element] = backgroundInfo;
+                // 还没有初始化 background 时设置为 transparent
+                ElementBackgroundDict[element] = backgroundInfo.GetValue(d) as Brush ?? new SolidColorBrush(Colors.Transparent);
+            }
+            if ((bool)e.NewValue) {
+                element.PreviewDragEnter += PreviewDragEnterHandler;
+                element.PreviewDragLeave += PreviewDragLeaveHandler;
+                element.PreviewDrop += PreviewDropHandler;
+            } else {
+                element.PreviewDragEnter -= PreviewDragEnterHandler;
+                element.PreviewDragLeave -= PreviewDragLeaveHandler;
+                element.PreviewDrop -= PreviewDropHandler;
+            }
+        }
+    }
+
+    private static void PreviewDropHandler(object sender, DragEventArgs e) {
+        if (sender is DependencyObject element) {
+            ElementPropertyDict[element].SetValue(element, ElementBackgroundDict[element]);
+        }
+    }
+
+    private static void PreviewDragLeaveHandler(object sender, DragEventArgs e) {
+        if (sender is DependencyObject element) {
+            ElementPropertyDict[element].SetValue(element, ElementBackgroundDict[element]);
+        }
+    }
+
+    private static void PreviewDragEnterHandler(object sender, DragEventArgs e) {
+        if (sender is DependencyObject element) {
+            CommonUtils.EnsureCalledOnce(element, () => {
+                // 此时 background 已经初始完毕
+                if (ElementPropertyDict[element].GetValue(element) is var bg && bg != null) {
+                    ElementPropertyDict[element].SetValue(element, bg);
+                }
+            });
+            ElementPropertyDict[element].SetValue(element, GetOverBackground(element));
         }
     }
 }
