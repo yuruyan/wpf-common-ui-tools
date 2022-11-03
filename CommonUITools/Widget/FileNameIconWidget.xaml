@@ -5,18 +5,19 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
-  Name="Root"
+  Name="FileNameIconWidgetRoot"
+  HorizontalAlignment="Center"
   d:DesignHeight="450"
   d:DesignWidth="800"
   mc:Ignorable="d">
   <StackPanel Orientation="Horizontal">
     <svgc:SvgViewbox
       Name="FileIconViewbox"
-      Width="{Binding IconSize, ElementName=Root}"
-      Height="{Binding IconSize, ElementName=Root}"
+      Width="{Binding IconSize, ElementName=FileNameIconWidgetRoot}"
+      Height="{Binding IconSize, ElementName=FileNameIconWidgetRoot}"
       Margin="10,0"
-      Source="{Binding FileName, Converter={StaticResource FileIconConverter}, ElementName=Root}"
+      Source="{Binding FileName, Converter={StaticResource FileIconConverter}, ElementName=FileNameIconWidgetRoot}"
       Stretch="Uniform" />
-    <TextBlock Text="{Binding FileName, ElementName=Root, Converter={StaticResource FileNameConverter}}" />
+    <TextBlock Text="{Binding FileName, ElementName=FileNameIconWidgetRoot, Converter={StaticResource FileNameConverter}}" />
   </StackPanel>
 </UserControl>

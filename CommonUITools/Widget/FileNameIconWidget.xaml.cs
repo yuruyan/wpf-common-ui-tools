@@ -58,13 +58,12 @@ public partial class FileNameIconWidget : UserControl {
     /// <param name="e"></param>
     private void AutoIconPropertyChangedHandler(object? sender, EventArgs e) {
         // 自动获取
-        if (AutoIcon) {
-            var binding = new Binding(nameof(FileName)) {
-                Converter = FileIconConverter
-            };
-            FileIconViewbox.SetBinding(SvgViewbox.SourceProperty, binding);
+        if (!AutoIcon) {
+            FileIconViewbox.SetBinding(SvgViewbox.SourceProperty, new Binding(nameof(IconPath)));
             return;
         }
-        FileIconViewbox.SetBinding(SvgViewbox.SourceProperty, new Binding(nameof(IconPath)));
+        FileIconViewbox.SetBinding(SvgViewbox.SourceProperty, new Binding(nameof(FileName)) {
+            Converter = FileIconConverter
+        });
     }
 }
