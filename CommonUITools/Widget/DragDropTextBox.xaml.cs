@@ -42,7 +42,7 @@ public partial class DragDropTextBox : UserControl {
     public object? FileData { get; private set; }
 
     public DragDropTextBox() {
-        Loaded += (s, e) => this.Content = TextBox;
+        Loaded += (s, e) => CommonUtils.EnsureCalledOnce(this, () => this.Content = TextBox);
         DependencyPropertyDescriptor.FromProperty(TextBoxProperty, this.GetType())
             .AddValueChanged(this, TextBoxPropertyChangedHandler);
         DependencyPropertyDescriptor.FromProperty(HasFileProperty, this.GetType())

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.ComponentModel;
+using CommonUITools.Utils;
 
 namespace CommonUITools.Widget;
 
@@ -40,7 +41,7 @@ public class WorkingButton : Button {
 
     public WorkingButton() {
         Click += ClickHandler;
-        Loaded += (s, e) => Content = NormalContent;
+        Loaded += (s, e) => CommonUtils.EnsureCalledOnce(this, () => Content = NormalContent);
         DependencyPropertyDescriptor.FromProperty(IsWorkingProperty, this.GetType())
             .AddValueChanged(this, IsWorkingPropertyChangedHandler);
     }
