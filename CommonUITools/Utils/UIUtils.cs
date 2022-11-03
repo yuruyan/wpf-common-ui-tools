@@ -1,9 +1,11 @@
 ﻿using NLog;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace CommonUITools.Utils {
     public class Loading {
@@ -206,5 +208,22 @@ namespace CommonUITools.Utils {
             }
             return true;
         }
+
+        /// <summary>
+        /// 拷贝 ImageSource
+        /// </summary>
+        /// <param name="filepath">图像路径</param>
+        /// <returns></returns>
+        public static ImageSource CopyImageSource(string filepath) {
+            var bi = new BitmapImage();
+            var bitmap = new System.Drawing.Bitmap(filepath);
+            var memoryStream = new MemoryStream();
+            bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+            bi.BeginInit();
+            bi.StreamSource = memoryStream;
+            bi.EndInit();
+            return bi;
+        }
+
     }
 }
