@@ -40,7 +40,7 @@ public class WorkingButton : Button {
 
     public WorkingButton() {
         Click += ClickHandler;
-        Initialized += (s, e) => Content = NormalContent;
+        Loaded += (s, e) => Content = NormalContent;
         DependencyPropertyDescriptor.FromProperty(IsWorkingProperty, this.GetType())
             .AddValueChanged(this, IsWorkingPropertyChangedHandler);
     }
