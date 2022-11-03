@@ -209,6 +209,8 @@
     <Setter Property="Padding" Value="16,8,16,8" />
   </Style>
   <Style BasedOn="{StaticResource GlobalButtonStyle}" TargetType="Button" />
+  <!--  GlobalWorkingButtonStyle  -->
+  <Style BasedOn="{StaticResource GlobalButtonStyle}" TargetType="widget:WorkingButton" />
   <!--  GlobalSingleIconButtonStyle  -->
   <Style
     x:Key="GlobalSingleIconButtonStyle"

@@ -3,10 +3,9 @@ using System.Windows.Controls;
 
 namespace CommonUITools.Widget;
 
-public partial class IconButton : Button {
-
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(IconButton), new PropertyMetadata(""));
-    public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(IconButton), new PropertyMetadata(""));
+public partial class IconButtonContent : UserControl {
+    public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(IconButtonContent), new PropertyMetadata(""));
+    public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(IconButtonContent), new PropertyMetadata(""));
 
     /// <summary>
     /// 内容
@@ -23,7 +22,7 @@ public partial class IconButton : Button {
         set { SetValue(IconProperty, value); }
     }
 
-    public IconButton() {
+    public IconButtonContent() {
         InitializeComponent();
     }
 }

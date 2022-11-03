@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <None Remove="Resource\CommonUITools-IconFont.ttf" />
+    <None Remove="Widget\WorkingButton.cs~RF14a8e517.TMP" />
   </ItemGroup>
 
   <ItemGroup>
