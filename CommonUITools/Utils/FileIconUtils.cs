@@ -2,6 +2,7 @@
 using NLog;
 using System.IO;
 using System.IO.Compression;
+using System.Text;
 
 namespace CommonUITools.Utils;
 
@@ -18,10 +19,6 @@ public class FileIconUtils {
     /// </summary>
     private static readonly IList<KeyValuePair<string, string>> SortedIconList = new List<KeyValuePair<string, string>>();
     /// <summary>
-    /// 图标 JSON 配置文件路径
-    /// </summary>
-    private const string IconJsonConfigFile = "Resource/icon.json";
-    /// <summary>
     /// 默认 Icon Key
     /// </summary>
     private const string DefaultIconKey = "*";
@@ -35,9 +32,11 @@ public class FileIconUtils {
     private const string DeCompressedIconFolder = "Resource/image/FileIcon";
 
     static FileIconUtils() {
-        var iconDict = JsonConvert.DeserializeObject<IDictionary<string, string>>(File.ReadAllText(IconJsonConfigFile));
+        var iconDict = JsonConvert.DeserializeObject<IDictionary<string, string>>(
+            Encoding.UTF8.GetString(Resource.Resource.Icon).ToLowerInvariant()
+        );
         if (iconDict is null) {
-            throw new JsonSerializationException($"文件{IconJsonConfigFile}解析失败");
+            throw new JsonSerializationException($"解析 Icon 配置文件失败");
         }
         ConvertToImagePath(iconDict);
         IconDict = iconDict;
@@ -64,8 +63,8 @@ public class FileIconUtils {
     /// 检查 Icon 文件是否已解压
     /// </summary>
     private static void CheckAndDecompressFileIcons() {
-        // 实际目录 Icon 数量小于文件 Icon 数
-        if (Directory.GetFiles(DeCompressedIconFolder).Length < SortedIconList.Count) {
+        // 实际目录 Icon 数量小于配置文件配置 Icon 数量
+        if (Directory.GetFiles(DeCompressedIconFolder).Length < IconDict.Values.ToHashSet().Count) {
             // 解压文件
             ZipFile.ExtractToDirectory(CompressedIconFile, DeCompressedIconFolder);
         }
@@ -77,11 +76,11 @@ public class FileIconUtils {
     /// <param name="fileName">文件名/绝对路径</param>
     /// <returns></returns>
     public static string GetIcon(string fileName) {
-        fileName = fileName.ToLower();
-        string v = Path.GetExtension(fileName);
+        fileName = fileName.ToLowerInvariant();
+        string ext = Path.GetExtension(fileName);
         // 完全匹配
-        if (IconDict.ContainsKey(v)) {
-            return IconDict[v];
+        if (IconDict.ContainsKey(ext)) {
+            return IconDict[ext];
         }
         // 根据
         foreach (var dict in IconDict) {
