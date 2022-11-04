@@ -63,10 +63,15 @@ public class FileIconUtils {
     /// 检查 Icon 文件是否已解压
     /// </summary>
     private static void CheckAndDecompressFileIcons() {
+        var existFileIconNames = Directory
+            .GetFiles(DeCompressedIconFolder)
+            .Select(p => Path.GetFileName(p).ToLowerInvariant())
+            .ToHashSet();
         // 实际目录 Icon 数量小于配置文件配置 Icon 数量
-        if (Directory.GetFiles(DeCompressedIconFolder).Length < IconDict.Values.ToHashSet().Count) {
+        if (IconDict.Values.Any(f => !existFileIconNames.Contains(Path.GetFileName(f)))) {
             // 解压文件
-            ZipFile.ExtractToDirectory(CompressedIconFile, DeCompressedIconFolder);
+            ZipFile.ExtractToDirectory(CompressedIconFile, DeCompressedIconFolder, true);
+            Logger.Debug("解压文件 icon 完毕");
         }
     }
 
