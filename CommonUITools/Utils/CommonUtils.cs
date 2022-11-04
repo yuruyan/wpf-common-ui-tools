@@ -8,7 +8,7 @@ namespace CommonUITools.Utils;
 
 public class CommonUtils {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private static DateTime Epoch => new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    private static DateTime Epoch => new(1970, 1, 1, 8, 0, 0, DateTimeKind.Utc);
 
     /// <summary>
     /// 当前时间戳(ms)
