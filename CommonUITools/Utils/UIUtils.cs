@@ -215,7 +215,7 @@ public class UIUtils {
     /// <returns></returns>
     public static ImageSource CopyImageSource(string filepath) {
         var bi = new BitmapImage();
-        var bitmap = new System.Drawing.Bitmap(filepath);
+        using var bitmap = new System.Drawing.Bitmap(filepath);
         var memoryStream = new MemoryStream();
         bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
         bi.BeginInit();
