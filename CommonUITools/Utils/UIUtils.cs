@@ -143,6 +143,20 @@ public class UIUtils {
     }
 
     /// <summary>
+    /// 通知打开文件
+    /// </summary>
+    /// <param name="filepath"></param>
+    /// <param name="title"></param>
+    /// <param name="message"></param>
+    public static void NotificationOpenFileInDirectoryAsync(string filepath, string title = "成功", string message = "点击打开") {
+        Widget.NotificationBox.Success(
+            "成功",
+            "点击打开",
+            () => OpenFileInDirectoryAsync(filepath)
+        );
+    }
+
+    /// <summary>
     /// 在 UI 线程中运行
     /// </summary>
     /// <param name="task"></param>
