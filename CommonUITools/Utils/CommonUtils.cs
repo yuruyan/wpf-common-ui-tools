@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using NLog;
 using System.Globalization;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -309,6 +310,25 @@ public class CommonUtils {
             return null;
         }
         return new Range(new(min), new(max));
+    }
+
+    /// <summary>
+    /// 判断文件是否可能是二进制文件
+    /// 
+    /// 最多读取前 64kb 字节，判断是否包含 '\0'
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    public static bool IsLikelyBinaryFile(string path) {
+        using var readStream = File.OpenRead(path);
+        using var reader = new BinaryReader(readStream);
+        byte nullByte = (byte)'\0';
+        // 先读取前 1kb 字节
+        if (Array.IndexOf(reader.ReadBytes(1024), nullByte) >= 0) {
+            return true;
+        }
+        // 读取前 64kb 字节
+        return Array.IndexOf(reader.ReadBytes(63 * 1024), nullByte) >= 0;
     }
 }
 
