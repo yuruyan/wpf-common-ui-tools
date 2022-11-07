@@ -238,4 +238,14 @@ public class UIUtils {
         return bi;
     }
 
+    /// <summary>
+    /// 在浏览器中打开
+    /// </summary>
+    /// <param name="url"></param>
+    public static void OpenInBrowser(string url) {
+        Process.Start(new ProcessStartInfo() {
+            UseShellExecute = true,
+            FileName = url,
+        });
+    }
 }
