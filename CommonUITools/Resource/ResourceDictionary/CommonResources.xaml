@@ -75,5 +75,8 @@
   <SolidColorBrush x:Key="ComboBoxItemBackground" Color="White" />
   <SolidColorBrush x:Key="MenuFlyoutPresenterBackground" Color="White" />
   <SolidColorBrush x:Key="ToolTipBackground" Color="White" />
+  <SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="{Binding Source={StaticResource Gray2}, Path=Color}" />
+  <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumLowBrush" Color="{Binding Source={StaticResource Gray3}, Path=Color}" />
+  <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{Binding Source={StaticResource Gray4}, Path=Color}" />
   <!--#endregion-->
 </ResourceDictionary>
