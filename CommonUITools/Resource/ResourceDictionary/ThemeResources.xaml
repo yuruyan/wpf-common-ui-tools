@@ -18,11 +18,7 @@
 
   <!--#region ApplicationForegroundColor-->
   <Color x:Key="ApplicationForegroundColor">#ffffff</Color>
-  <Color x:Key="ApplicationBorderForegroundColor">#CECECE</Color>
-  <Color x:Key="ApplicationAccentColorColor">#48000000</Color>
   <SolidColorBrush x:Key="ApplicationForeground" Color="{DynamicResource ApplicationForegroundColor}" />
-  <SolidColorBrush x:Key="ApplicationBorderForeground" Color="{DynamicResource ApplicationBorderForegroundColor}" />
-  <SolidColorBrush x:Key="ApplicationAccentColor" Color="{DynamicResource ApplicationAccentColorColor}" />
   <!--#endregion-->
 
   <!--#region ErrorBackgroundColor-->
