@@ -227,7 +227,7 @@ public class UIUtils {
     /// </summary>
     /// <param name="filepath">图像路径</param>
     /// <returns></returns>
-    public static ImageSource CopyImageSource(string filepath) {
+    public static BitmapImage CopyImageSource(string filepath) {
         var bi = new BitmapImage();
         using var bitmap = new System.Drawing.Bitmap(filepath);
         var memoryStream = new MemoryStream();
