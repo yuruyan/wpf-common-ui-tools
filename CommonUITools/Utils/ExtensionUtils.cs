@@ -65,4 +65,25 @@ public static class ExtensionUtils {
         return removedList;
     }
 
+    /// <summary>
+    /// 打印集合
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="values"></param>
+    /// <param name="count">打印输出个数，-1 代表打印所有</param>
+    public static void PrintArray<T>(this IEnumerable<T> values, int count = -1) {
+        if (count == -1) {
+            foreach (var item in values) {
+                Console.WriteLine(item);
+            }
+            return;
+        }
+        int index = 1;
+        foreach (var item in values) {
+            Console.WriteLine(item);
+            if (index++ >= count) {
+                return;
+            }
+        }
+    }
 }
