@@ -248,4 +248,68 @@ public class UIUtils {
             FileName = url,
         });
     }
+
+    /// <summary>
+    /// 创建通用文件处理任务
+    /// </summary>
+    /// <param name="func">主调用函数</param>
+    /// <param name="outputPath">文件保存路径</param>
+    /// <param name="notify">是否通知用户</param>
+    /// <param name="notificationTitle">通知 Title</param>
+    /// <param name="notificationMessage">通知详情</param>
+    /// <param name="successCallback">成功回调</param>
+    /// <param name="errorCallback">失败回调</param>
+    /// <param name="finallyCallback">回调函数</param>
+    /// <param name="showErrorInfo">显示错误信息</param>
+    /// <param name="reThrowError">是否抛出异常</param>
+    /// <param name="args">主调用函数参数</param>
+    /// <returns></returns>
+    public static Task CreateFileProcessTask(
+        Delegate func,
+        string outputPath,
+        bool notify = true,
+        string notificationTitle = "成功",
+        string notificationMessage = "点击打开",
+        Action? successCallback = null,
+        Action? errorCallback = null,
+        Action? finallyCallback = null,
+        bool showErrorInfo = true,
+        bool reThrowError = false,
+        params object?[]? args
+    ) => Task.Run(() => {
+        bool success = false;
+        try {
+            _ = func.DynamicInvoke(args);
+            success = true;
+            successCallback?.Invoke();
+            // 通知用户
+            if (notify) {
+                Widget.NotificationBox.Success(
+                    notificationTitle,
+                    notificationMessage,
+                    () => OpenFileInDirectoryAsync(outputPath)
+                );
+            }
+        } catch (IOException) {
+            if (showErrorInfo) {
+                Widget.MessageBox.Error("文件读取或写入失败");
+            }
+            if (reThrowError) {
+                throw;
+            }
+        } catch {
+            if (showErrorInfo) {
+                Widget.MessageBox.Error("失败");
+            }
+            if (reThrowError) {
+                throw;
+            }
+        } finally {
+            // 失败
+            if (!success) {
+                errorCallback?.Invoke();
+            }
+            finallyCallback?.Invoke();
+        }
+    });
 }
