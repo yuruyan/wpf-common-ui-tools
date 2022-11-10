@@ -1,4 +1,5 @@
-﻿using ModernWpf.Controls;
+﻿using CommonUITools.Utils;
+using ModernWpf.Controls;
 using System.Windows;
 
 namespace CommonUITools.Widget;
@@ -17,4 +18,12 @@ public partial class FileNameSizeWidget : SimpleStackPanel {
     public FileNameSizeWidget() {
         InitializeComponent();
     }
+
+    /// <summary>
+    /// 打开文件夹
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void OpenInFileExplorerHandler(object sender, RoutedEventArgs e)
+        => UIUtils.OpenFileInDirectoryAsync(FileName);
 }

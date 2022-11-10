@@ -11,6 +11,7 @@
   VerticalAlignment="Center"
   d:DesignHeight="450"
   d:DesignWidth="800"
+  Background="Transparent"
   Orientation="Vertical"
   Spacing="{StaticResource MediumItemSpacing}"
   mc:Ignorable="d">
@@ -19,6 +20,19 @@
       <Setter Property="FontSize" Value="{StaticResource HeaderFontSize}" />
     </Style>
   </ui:SimpleStackPanel.Resources>
+
+  <ui:SimpleStackPanel.ContextMenu>
+    <ContextMenu>
+      <MenuItem Click="OpenInFileExplorerHandler" Header="打开所在文件夹">
+        <MenuItem.Icon>
+          <TextBlock
+            Foreground="#f5a623"
+            Style="{StaticResource IconFontStyle}"
+            Text="&#xe660;" />
+        </MenuItem.Icon>
+      </MenuItem>
+    </ContextMenu>
+  </ui:SimpleStackPanel.ContextMenu>
 
   <local:FileNameIconWidget FileName="{Binding FileName, ElementName=FileNameSizeWidgetRoot}" IconSize="30" />
   <local:FileSizeWidget
