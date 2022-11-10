@@ -64,7 +64,7 @@
   <ui:ThemeShadowChrome
     HorizontalAlignment="Center"
     VerticalAlignment="Center"
-    Depth="20"
+    Depth="50"
     IsShadowEnabled="True">
     <Border
       MinWidth="270"
