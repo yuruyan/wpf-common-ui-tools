@@ -18,7 +18,7 @@
     x:Key="AnimationEaseFunction"
     EasingMode="EaseOut"
     Exponent="4" />
-  <FontFamily x:Key="IconFontUrI">pack://application:,,,/resource/#IconFont</FontFamily>
+  <FontFamily x:Key="IconFontUrI">pack://application:,,,/CommonUITools/resource/#CommonUITools-IconFont</FontFamily>
   <!--  数字、字母 FontFamily  -->
   <FontFamily x:Key="ASCIIFontFamily">Arial</FontFamily>
 
@@ -30,10 +30,10 @@
 
   <SolidColorBrush x:Key="WarningIconForeground" Color="#f2a416" />
   <SolidColorBrush x:Key="DeleteConfirmButtonForeground" Color="#de383b" />
-  <SolidColorBrush x:Key="DeleteButtonForeground" Color="{Binding Source={StaticResource Red4}, Path=Color}" />
+  <SolidColorBrush x:Key="DeleteButtonForeground" Color="{Binding Color, Source={StaticResource Red4}}" />
   <!--#endregion-->
   <!--  选中项背景颜色  -->
-  <SolidColorBrush x:Key="SelectedItemBackground" Color="{Binding Source={StaticResource Gray3}, Converter={StaticResource BrushToColorConverter}}" />
+  <SolidColorBrush x:Key="SelectedItemBackground" Color="{Binding Color, Source={StaticResource Gray3}}" />
   <!--  导航默认宽度  -->
   <system:Double x:Key="NavigationWidth">250</system:Double>
   <!--  导航默认宽度  -->
@@ -75,8 +75,8 @@
   <SolidColorBrush x:Key="ComboBoxItemBackground" Color="White" />
   <SolidColorBrush x:Key="MenuFlyoutPresenterBackground" Color="White" />
   <SolidColorBrush x:Key="ToolTipBackground" Color="White" />
-  <SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="{Binding Source={StaticResource Gray2}, Path=Color}" />
-  <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumLowBrush" Color="{Binding Source={StaticResource Gray3}, Path=Color}" />
-  <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{Binding Source={StaticResource Gray4}, Path=Color}" />
+  <SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="{Binding Color, Source={StaticResource Gray2}}" />
+  <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumLowBrush" Color="{Binding Color, Source={StaticResource Gray3}}" />
+  <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{Binding Color, Source={StaticResource Gray4}}" />
   <!--#endregion-->
 </ResourceDictionary>
