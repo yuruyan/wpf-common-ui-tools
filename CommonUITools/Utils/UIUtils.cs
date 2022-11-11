@@ -92,22 +92,6 @@ public class UIUtils {
         => Color.FromArgb(color.A, color.R, color.G, color.B);
 
     /// <summary>
-    /// 获取 MergedDictionaries.ResourceDictionary
-    /// </summary>
-    /// <param name="resourceName"></param>
-    /// <returns></returns>
-    public static ResourceDictionary? GetMergedResourceDictionary(string resourceName) {
-        foreach (var res in App.Current.Resources.MergedDictionaries) {
-            if (res.Source is not null) {
-                if (res.Source.ToString().Contains(resourceName)) {
-                    return res;
-                }
-            }
-        }
-        return null;
-    }
-
-    /// <summary>
     /// 在文件资源管理器中异步打开文件
     /// </summary>
     /// <param name="path">文件绝对路径</param>
