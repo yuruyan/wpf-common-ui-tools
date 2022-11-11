@@ -63,7 +63,15 @@ namespace CommonUITools.Widget {
         /// <summary>
         /// 用于添加 MessageBox
         /// </summary>
-        public static UIElementCollection? PanelChildren;
+        private static UIElementCollection? PanelChildren;
+
+        /// <summary>
+        /// 设置内容 Panel
+        /// </summary>
+        /// <param name="ContentPanel"></param>
+        public static void SetContentPanel(Panel ContentPanel) {
+            PanelChildren = ContentPanel.Children;
+        }
 
         private static void ShowMessage(string message, MessageType type = MessageType.INFO) {
             // 检查权限

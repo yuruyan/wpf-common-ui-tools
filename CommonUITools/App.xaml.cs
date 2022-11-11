@@ -19,7 +19,7 @@ public partial class App : Application {
             var grid = new Grid();
             var messageBoxPanel = CreateMessageBoxPanel();
             var notificationPanel = CreateNotificationPanel(window);
-            // 添加组件
+            #region 添加组件
             if (window.Content is UIElement mainContent) {
                 // 需要先清除
                 window.ClearValue(Window.ContentProperty);
@@ -29,9 +29,11 @@ public partial class App : Application {
             }
             grid.Children.Add(messageBoxPanel);
             grid.Children.Add(notificationPanel);
+            #endregion
             window.Content = grid;
-            Widget.MessageBox.PanelChildren = messageBoxPanel.Children;  // 初始化
-            Widget.NotificationBox.PanelChildren = notificationPanel.Children;  // 初始化
+            // 初始化面板
+            Widget.MessageBox.SetContentPanel(messageBoxPanel);
+            Widget.NotificationBox.SetContentPanel(notificationPanel);
         });
     }
 

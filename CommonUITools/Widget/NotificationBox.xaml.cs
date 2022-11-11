@@ -48,6 +48,7 @@ namespace CommonUITools.Widget {
         /// 用于添加 NotificationBox
         /// </summary>
         public static UIElementCollection? PanelChildren;
+
         /// <summary>
         /// 关闭通知定时器
         /// </summary>
@@ -59,6 +60,14 @@ namespace CommonUITools.Widget {
         public Action? ClickCallback {
             get { return (Action?)GetValue(ClickCallbackProperty); }
             set { SetValue(ClickCallbackProperty, value); }
+        }
+
+        /// <summary>
+        /// 设置内容 Panel
+        /// </summary>
+        /// <param name="ContentPanel"></param>
+        public static void SetContentPanel(Panel ContentPanel) {
+            PanelChildren = ContentPanel.Children;
         }
 
         public static void ShowNotification(string title, string message, MessageType messageType = MessageType.INFO, Action? callback = null) {
