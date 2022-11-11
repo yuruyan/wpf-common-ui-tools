@@ -328,17 +328,20 @@ public class UIUtils {
         string? filePath,
         string warningDetail = "文件可能是二进制文件，是否继续？"
     ) {
-        // 文件检查是否存在
-        if (!File.Exists(filePath)) {
-            Widget.MessageBox.Error($"文件 '{Path.GetFileName(filePath)}' 不存在");
-            return false;
-        }
-        // 二进制文件警告
-        if (hasFile && CommonUtils.IsLikelyBinaryFile(filePath)) {
-            var dialog = WarningDialog.Shared;
-            dialog.DetailText = warningDetail;
-            if (await dialog.ShowAsync() != ModernWpf.Controls.ContentDialogResult.Primary) {
+        // 检查文件
+        if (hasFile) {
+            // 文件检查是否存在
+            if (!File.Exists(filePath)) {
+                Widget.MessageBox.Error($"文件 '{Path.GetFileName(filePath)}' 不存在");
                 return false;
+            }
+            // 二进制文件警告
+            if (CommonUtils.IsLikelyBinaryFile(filePath)) {
+                var dialog = WarningDialog.Shared;
+                dialog.DetailText = warningDetail;
+                if (await dialog.ShowAsync() != ModernWpf.Controls.ContentDialogResult.Primary) {
+                    return false;
+                }
             }
         }
         // 输入文本检查
