@@ -66,9 +66,9 @@ public partial class NotificationBox : UserControl {
     /// <summary>
     /// 设置内容 Panel
     /// </summary>
-    /// <param name="ContentPanel"></param>
-    public static void SetContentPanel(Panel ContentPanel) {
-        PanelChildren = ContentPanel.Children;
+    /// <param name="contentPanel"></param>
+    public static void SetContentPanel(Panel contentPanel) {
+        PanelChildren = contentPanel.Children;
     }
 
     public static void ShowNotification(string title, string message, MessageType messageType = MessageType.INFO, Action? callback = null) {

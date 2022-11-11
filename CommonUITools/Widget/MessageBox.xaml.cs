@@ -1,6 +1,7 @@
 ﻿using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace CommonUITools.Widget;
@@ -69,9 +70,9 @@ public partial class MessageBox : UserControl {
     /// <summary>
     /// 设置内容 Panel
     /// </summary>
-    /// <param name="ContentPanel"></param>
-    public static void SetContentPanel(Panel ContentPanel) {
-        PanelChildren = ContentPanel.Children;
+    /// <param name="contentPanel"></param>
+    public static void SetContentPanel(Panel contentPanel) {
+        PanelChildren = contentPanel.Children;
     }
 
     private static void ShowMessage(string message, MessageType type = MessageType.INFO) {

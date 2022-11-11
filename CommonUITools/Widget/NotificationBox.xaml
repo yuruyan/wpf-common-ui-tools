@@ -9,6 +9,7 @@
   Name="Root"
   Margin="0,8,0,8"
   HorizontalAlignment="Right"
+  VerticalAlignment="Bottom"
   d:DesignHeight="450"
   d:DesignWidth="800"
   DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
