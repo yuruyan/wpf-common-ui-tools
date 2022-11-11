@@ -1,7 +1,6 @@
 ﻿using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace CommonUITools.Widget;
@@ -18,6 +17,10 @@ public partial class MessageBox : UserControl {
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
     public static readonly DependencyProperty MessageTypeProperty = DependencyProperty.Register("MessageType", typeof(MessageType), typeof(MessageBox), new PropertyMetadata(MessageType.INFO));
 
+    /// <summary>
+    /// 用于添加 MessageBox
+    /// </summary>
+    private static UIElementCollection? PanelChildren;
     public string Text {
         get { return (string)GetValue(TextProperty); }
         set { SetValue(TextProperty, value); }
@@ -57,23 +60,28 @@ public partial class MessageBox : UserControl {
         get { return (MessageType)GetValue(MessageTypeProperty); }
         set { SetValue(MessageTypeProperty, value); }
     }
-
+    /// <summary>
+    /// 关闭定时器
+    /// </summary>
+    private readonly System.Timers.Timer UnloadTimer;
     /// <summary>
     /// 显示时间 (ms)
     /// </summary>
     public int ShowingDuration { get; set; } = 3000;
-    /// <summary>
-    /// 用于添加 MessageBox
-    /// </summary>
-    private static UIElementCollection? PanelChildren;
 
     /// <summary>
     /// 设置内容 Panel
     /// </summary>
     /// <param name="contentPanel"></param>
-    public static void SetContentPanel(Panel contentPanel) {
-        PanelChildren = contentPanel.Children;
-    }
+    public static void SetContentPanel(Panel contentPanel) => PanelChildren = contentPanel.Children;
+
+    public static void Info(string message) => ShowMessage(message, MessageType.INFO);
+
+    public static void Waring(string message) => ShowMessage(message, MessageType.WARNING);
+
+    public static void Success(string message) => ShowMessage(message, MessageType.SUCCESS);
+
+    public static void Error(string message) => ShowMessage(message, MessageType.ERROR);
 
     private static void ShowMessage(string message, MessageType type = MessageType.INFO) {
         // 检查权限
@@ -84,22 +92,6 @@ public partial class MessageBox : UserControl {
         }
     }
 
-    public static void Info(string message) {
-        ShowMessage(message, MessageType.INFO);
-    }
-
-    public static void Waring(string message) {
-        ShowMessage(message, MessageType.WARNING);
-    }
-
-    public static void Success(string message) {
-        ShowMessage(message, MessageType.SUCCESS);
-    }
-
-    public static void Error(string message) {
-        ShowMessage(message, MessageType.ERROR);
-    }
-
     public MessageBox(string message, MessageType messageType = MessageType.INFO) {
         Text = message;
         MessageType = messageType;
@@ -108,9 +100,30 @@ public partial class MessageBox : UserControl {
         BorderColor = WidgetGlobal.MessageInfoDict[MessageType].BorderColor;
         Icon = WidgetGlobal.MessageInfoDict[MessageType].Icon;
         InitializeComponent();
-        var timer = new System.Timers.Timer(ShowingDuration) { AutoReset = false };
-        timer.Elapsed += RootUnLoad;
-        timer.Start();
+        UnloadTimer = new(ShowingDuration) { AutoReset = false };
+        UnloadTimer.Elapsed += RootUnLoad;
+        UnloadTimer.Start();
+    }
+
+    /// <summary>
+    /// 卸载 MessageBox
+    /// </summary>
+    private void UnloadMessageBox() {
+        if (Resources["UnLoadStoryboard"] is not Storyboard unLoadStoryboard) {
+            return;
+        }
+
+        var timeline = unLoadStoryboard.Children.FirstOrDefault(t => t.Name == "HeightAnimation");
+        if (timeline is DoubleAnimation heightAnimation) {
+            heightAnimation.From = ActualHeight;
+        }
+        // 移除
+        unLoadStoryboard.Completed += (s, e) => {
+            Visibility = Visibility.Collapsed;
+            PanelChildren?.Remove(this);
+        };
+        UnloadTimer.Dispose();
+        unLoadStoryboard.Begin();
     }
 
     /// <summary>
@@ -118,22 +131,7 @@ public partial class MessageBox : UserControl {
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void RootUnLoad(object? sender, ElapsedEventArgs e) {
-        Dispatcher.Invoke(() => {
-            if (Resources["UnLoadStoryboard"] is Storyboard storyboard) {
-                var enumerable = from a in storyboard.Children
-                                 where a.Name == "HeightAnimation"
-                                 select a;
-                if (enumerable.Any()) {
-                    if (enumerable.First() is DoubleAnimation heightAnimation) {
-                        heightAnimation.From = ActualHeight;
-                    }
-                }
-                storyboard.Completed += (s, e) => Visibility = Visibility.Collapsed;
-                storyboard.Begin();
-            }
-        });
-    }
+    private void RootUnLoad(object? sender, ElapsedEventArgs e) => Dispatcher.Invoke(UnloadMessageBox);
 
     /// <summary>
     /// 显示时触发
@@ -141,10 +139,13 @@ public partial class MessageBox : UserControl {
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void RootLoaded(object sender, RoutedEventArgs e) {
-        if (Parent is FrameworkElement parent) {
-            if (Resources["LoadStoryboard"] is Storyboard storyboard) {
-                storyboard.Begin();
-            }
+        if (Parent is not FrameworkElement) {
+            return;
         }
+        if (Resources["LoadStoryboard"] is not Storyboard loadStoryboard) {
+            return;
+        }
+
+        loadStoryboard.Begin();
     }
 }

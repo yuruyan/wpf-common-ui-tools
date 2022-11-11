@@ -14,6 +14,10 @@ public partial class NotificationBox : UserControl {
     public static readonly DependencyProperty ClickCallbackProperty = DependencyProperty.Register("ClickCallback", typeof(Action), typeof(NotificationBox), new PropertyMetadata());
 
     /// <summary>
+    /// 用于添加 NotificationBox
+    /// </summary>
+    private static UIElementCollection? PanelChildren;
+    /// <summary>
     /// Background
     /// </summary>
     private string BoxForeground {
@@ -46,15 +50,9 @@ public partial class NotificationBox : UserControl {
     /// </summary>
     public int ShowingDuration { get; set; } = 4500;
     /// <summary>
-    /// 用于添加 NotificationBox
+    /// 关闭定时器
     /// </summary>
-    public static UIElementCollection? PanelChildren;
-
-    /// <summary>
-    /// 关闭通知定时器
-    /// </summary>
-    private readonly System.Timers.Timer UnLoadTimer;
-
+    private readonly System.Timers.Timer UnloadTimer;
     /// <summary>
     /// 点击回调
     /// </summary>
@@ -67,9 +65,7 @@ public partial class NotificationBox : UserControl {
     /// 设置内容 Panel
     /// </summary>
     /// <param name="contentPanel"></param>
-    public static void SetContentPanel(Panel contentPanel) {
-        PanelChildren = contentPanel.Children;
-    }
+    public static void SetContentPanel(Panel contentPanel) => PanelChildren = contentPanel.Children;
 
     public static void ShowNotification(string title, string message, MessageType messageType = MessageType.INFO, Action? callback = null) {
         // 检查权限
@@ -82,21 +78,17 @@ public partial class NotificationBox : UserControl {
         }
     }
 
-    public static void Info(string title, string message, Action? callback = null) {
-        ShowNotification(title, message, MessageType.INFO, callback);
-    }
+    public static void Info(string title, string message, Action? callback = null)
+       => ShowNotification(title, message, MessageType.INFO, callback);
 
-    public static void Warning(string title, string message, Action? callback = null) {
-        ShowNotification(title, message, MessageType.WARNING, callback);
-    }
+    public static void Warning(string title, string message, Action? callback = null)
+       => ShowNotification(title, message, MessageType.WARNING, callback);
 
-    public static void Success(string title, string message, Action? callback = null) {
-        ShowNotification(title, message, MessageType.SUCCESS, callback);
-    }
+    public static void Success(string title, string message, Action? callback = null)
+       => ShowNotification(title, message, MessageType.SUCCESS, callback);
 
-    public static void Error(string title, string message, Action? callback = null) {
-        ShowNotification(title, message, MessageType.ERROR, callback);
-    }
+    public static void Error(string title, string message, Action? callback = null)
+       => ShowNotification(title, message, MessageType.ERROR, callback);
 
     public NotificationBox(string title, string message, MessageType messageType = MessageType.INFO, Action? callback = null) {
         Message = message;
@@ -105,9 +97,9 @@ public partial class NotificationBox : UserControl {
         Icon = WidgetGlobal.MessageInfoDict[messageType].Icon;
         BoxForeground = WidgetGlobal.MessageInfoDict[messageType].Foreground;
         InitializeComponent();
-        UnLoadTimer = new System.Timers.Timer(ShowingDuration) { AutoReset = false };
-        UnLoadTimer.Elapsed += RootUnLoad;
-        UnLoadTimer.Start();
+        UnloadTimer = new(ShowingDuration) { AutoReset = false };
+        UnloadTimer.Elapsed += RootUnLoad;
+        UnloadTimer.Start();
     }
 
     /// <summary>
@@ -115,30 +107,26 @@ public partial class NotificationBox : UserControl {
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void RootUnLoad(object? sender, ElapsedEventArgs e) {
-        Dispatcher.Invoke(() => UnLoadNotification());
-        UnLoadTimer.Dispose();
-    }
+    private void RootUnLoad(object? sender, ElapsedEventArgs e) => Dispatcher.Invoke(UnLoadNotificationBox);
 
     /// <summary>
     /// 关闭通知
     /// </summary>
-    private void UnLoadNotification() {
-        if (Resources["UnLoadStoryboard"] is Storyboard storyboard) {
-            var enumerable = from a in storyboard.Children
-                             where a.Name == "UnLoadHeightAnimation"
-                             select a;
-            if (enumerable.Any()) {
-                if (enumerable.First() is DoubleAnimation heightAnimation) {
-                    heightAnimation.From = ActualHeight;
-                }
-            }
-            storyboard.Completed += (s, e) => {
-                Visibility = Visibility.Collapsed;
-                PanelChildren?.Remove(this);
-            };
-            storyboard.Begin();
+    private void UnLoadNotificationBox() {
+        if (Resources["UnLoadStoryboard"] is not Storyboard unLoadStoryboard) {
+            return;
         }
+
+        var timeline = unLoadStoryboard.Children.FirstOrDefault(t => t.Name == "UnLoadHeightAnimation");
+        if (timeline is DoubleAnimation heightAnimation) {
+            heightAnimation.From = ActualHeight;
+        }
+        unLoadStoryboard.Completed += (s, e) => {
+            Visibility = Visibility.Collapsed;
+            PanelChildren?.Remove(this);
+        };
+        unLoadStoryboard.Begin();
+        UnloadTimer.Dispose();
     }
 
     /// <summary>
@@ -147,19 +135,18 @@ public partial class NotificationBox : UserControl {
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void RootLoaded(object sender, RoutedEventArgs e) {
-        if (Parent is FrameworkElement parent) {
-            if (Resources["LoadStoryboard"] is Storyboard storyboard) {
-                var enumerable = from a in storyboard.Children
-                                 where a.Name == "LoadHeightAnimation"
-                                 select a;
-                if (enumerable.Any()) {
-                    if (enumerable.First() is DoubleAnimation heightAnimation) {
-                        heightAnimation.To = ActualHeight;
-                    }
-                }
-                storyboard.Begin();
-            }
+        if (Parent is not FrameworkElement parent) {
+            return;
         }
+        if (Resources["LoadStoryboard"] is not Storyboard loadStoryboard) {
+            return;
+        }
+
+        var timeline = loadStoryboard.Children.FirstOrDefault(t => t.Name == "LoadHeightAnimation");
+        if (timeline is DoubleAnimation heightAnimation) {
+            heightAnimation.To = ActualHeight;
+        }
+        loadStoryboard.Begin();
     }
 
     /// <summary>
@@ -167,18 +154,12 @@ public partial class NotificationBox : UserControl {
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void CloseMouseUp(object sender, MouseButtonEventArgs e) {
-        UnLoadTimer.Stop();
-        UnLoadTimer.Dispose();
-        UnLoadNotification();
-    }
+    private void CloseMouseUp(object sender, MouseButtonEventArgs e) => UnLoadNotificationBox();
 
     /// <summary>
     /// 点击
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void ActionTextBlockMouseUp(object sender, MouseButtonEventArgs e) {
-        ClickCallback?.Invoke();
-    }
+    private void ActionTextBlockMouseUp(object sender, MouseButtonEventArgs e) => ClickCallback?.Invoke();
 }

@@ -10,6 +10,7 @@
         <ui:ThemeResources />
         <ui:XamlControlsResources />
         <!--  以下资源位置不能颠倒  -->
+        <ResourceDictionary Source="/Resource/ResourceDictionary/ColorResources.xaml" />
         <ResourceDictionary Source="/Resource/ResourceDictionary/ConverterResources.xaml" />
         <ResourceDictionary Source="/Resource/ResourceDictionary/CommonResources.xaml" />
         <ResourceDictionary Source="/Resource/ResourceDictionary/StyleResources.xaml" />
