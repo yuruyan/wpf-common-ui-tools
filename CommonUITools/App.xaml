@@ -9,29 +9,16 @@
       <ResourceDictionary.MergedDictionaries>
         <ui:ThemeResources />
         <ui:XamlControlsResources />
-        <!--  以下资源位置不能颠倒  -->
-        <ResourceDictionary Source="/Resource/ResourceDictionary/ColorResources.xaml" />
-        <ResourceDictionary Source="/Resource/ResourceDictionary/ConverterResources.xaml" />
-        <ResourceDictionary Source="/Resource/ResourceDictionary/CommonResources.xaml" />
-        <ResourceDictionary Source="/Resource/ResourceDictionary/StyleResources.xaml" />
-        <!--
-          ColorResources
-          CommonResources
-          ThemeResources
-          ConverterResources
-          StyleResources
-          HoverEffectResources
-          DateTemplateResources
-        -->
+        <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/CommonUIToolsResources.xaml" />
         <!--  Other merged dictionaries here  -->
       </ResourceDictionary.MergedDictionaries>
-      <!--  Other app resources here  -->
       <!--  IconFont 样式（供本项目使用）  -->
+      <FontFamily x:Key="IconFontUrI">pack://application:,,,/CommonUITools/resource/#CommonUITools-IconFont</FontFamily>
       <Style
         x:Key="IconFontStyle"
         BasedOn="{StaticResource IconFontStyle}"
         TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="pack://application:,,,/resource/#CommonUITools-IconFont" />
+        <Setter Property="FontFamily" Value="{StaticResource IconFontUrI}" />
       </Style>
     </ResourceDictionary>
   </Application.Resources>
