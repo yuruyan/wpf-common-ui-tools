@@ -45,7 +45,7 @@ namespace CommonUITools.Widget {
         /// </summary>
         public int ShowingDuration { get; set; } = 4500;
         /// <summary>
-        /// 用于添加 MessageBox
+        /// 用于添加 NotificationBox
         /// </summary>
         public static UIElementCollection? PanelChildren;
         /// <summary>

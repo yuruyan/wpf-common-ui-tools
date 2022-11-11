@@ -2,3 +2,9 @@
 
 # ToStringGenerator: Type name does not contains ToString()
 dotnet_diagnostic.ToStringGenerator.severity = silent
+
+# IDE0058: Expression value is never used
+dotnet_diagnostic.IDE0058.severity = suggestion
+
+# CS8974: Converting method group to non-delegate type
+dotnet_diagnostic.CS8974.severity = silent
