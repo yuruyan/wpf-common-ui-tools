@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using CommonUITools.View;
+using NLog;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
@@ -312,4 +313,39 @@ public class UIUtils {
             finallyCallback?.Invoke();
         }
     });
+
+    /// <summary>
+    /// 检查文本和文件输入
+    /// </summary>
+    /// <param name="inputText"></param>
+    /// <param name="hasFile"></param>
+    /// <param name="filePath"></param>
+    /// <param name="warningDetail"></param>
+    /// <returns>通过返回 true</returns>
+    public static async Task<bool> CheckTextAndFileInputAsync(
+        string? inputText,
+        bool hasFile,
+        string? filePath,
+        string warningDetail = "文件可能是二进制文件，是否继续？"
+    ) {
+        // 文件检查是否存在
+        if (!File.Exists(filePath)) {
+            Widget.MessageBox.Error($"文件 '{Path.GetFileName(filePath)}' 不存在");
+            return false;
+        }
+        // 二进制文件警告
+        if (hasFile && CommonUtils.IsLikelyBinaryFile(filePath)) {
+            var dialog = WarningDialog.Shared;
+            dialog.DetailText = warningDetail;
+            if (await dialog.ShowAsync() != ModernWpf.Controls.ContentDialogResult.Primary) {
+                return false;
+            }
+        }
+        // 输入文本检查
+        if (!hasFile && string.IsNullOrEmpty(inputText)) {
+            Widget.MessageBox.Info("请输入文本");
+            return false;
+        }
+        return true;
+    }
 }
