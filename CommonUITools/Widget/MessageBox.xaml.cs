@@ -15,7 +15,7 @@ public partial class MessageBox : UserControl {
     private static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
     private static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
-    public static readonly DependencyProperty MessageTypeProperty = DependencyProperty.Register("MessageType", typeof(MessageType), typeof(MessageBox), new PropertyMetadata(MessageType.INFO));
+    public static readonly DependencyProperty MessageTypeProperty = DependencyProperty.Register("MessageType", typeof(MessageType), typeof(MessageBox), new PropertyMetadata(MessageType.Info));
 
     /// <summary>
     /// 用于添加 MessageBox
@@ -75,15 +75,15 @@ public partial class MessageBox : UserControl {
     /// <param name="contentPanel"></param>
     public static void SetContentPanel(Panel contentPanel) => PanelChildren = contentPanel.Children;
 
-    public static void Info(string message) => ShowMessage(message, MessageType.INFO);
+    public static void Info(string message) => ShowMessage(message, MessageType.Info);
 
-    public static void Waring(string message) => ShowMessage(message, MessageType.WARNING);
+    public static void Waring(string message) => ShowMessage(message, MessageType.Warning);
 
-    public static void Success(string message) => ShowMessage(message, MessageType.SUCCESS);
+    public static void Success(string message) => ShowMessage(message, MessageType.Success);
 
-    public static void Error(string message) => ShowMessage(message, MessageType.ERROR);
+    public static void Error(string message) => ShowMessage(message, MessageType.Error);
 
-    private static void ShowMessage(string message, MessageType type = MessageType.INFO) {
+    private static void ShowMessage(string message, MessageType type = MessageType.Info) {
         // 检查权限
         if (App.Current.Dispatcher.CheckAccess()) {
             PanelChildren?.Add(new MessageBox(message, type));
@@ -92,7 +92,7 @@ public partial class MessageBox : UserControl {
         }
     }
 
-    public MessageBox(string message, MessageType messageType = MessageType.INFO) {
+    public MessageBox(string message, MessageType messageType = MessageType.Info) {
         Text = message;
         MessageType = messageType;
         BoxBackground = WidgetGlobal.MessageInfoDict[MessageType].Background;

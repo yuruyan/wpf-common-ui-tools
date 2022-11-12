@@ -67,7 +67,7 @@ public partial class NotificationBox : UserControl {
     /// <param name="contentPanel"></param>
     public static void SetContentPanel(Panel contentPanel) => PanelChildren = contentPanel.Children;
 
-    public static void ShowNotification(string title, string message, MessageType messageType = MessageType.INFO, Action? callback = null) {
+    public static void ShowNotification(string title, string message, MessageType messageType = MessageType.Info, Action? callback = null) {
         // 检查权限
         if (App.Current.Dispatcher.CheckAccess()) {
             PanelChildren?.Add(new NotificationBox(title, message, messageType, callback));
@@ -79,18 +79,18 @@ public partial class NotificationBox : UserControl {
     }
 
     public static void Info(string title, string message, Action? callback = null)
-       => ShowNotification(title, message, MessageType.INFO, callback);
+       => ShowNotification(title, message, MessageType.Info, callback);
 
     public static void Warning(string title, string message, Action? callback = null)
-       => ShowNotification(title, message, MessageType.WARNING, callback);
+       => ShowNotification(title, message, MessageType.Warning, callback);
 
     public static void Success(string title, string message, Action? callback = null)
-       => ShowNotification(title, message, MessageType.SUCCESS, callback);
+       => ShowNotification(title, message, MessageType.Success, callback);
 
     public static void Error(string title, string message, Action? callback = null)
-       => ShowNotification(title, message, MessageType.ERROR, callback);
+       => ShowNotification(title, message, MessageType.Error, callback);
 
-    public NotificationBox(string title, string message, MessageType messageType = MessageType.INFO, Action? callback = null) {
+    public NotificationBox(string title, string message, MessageType messageType = MessageType.Info, Action? callback = null) {
         Message = message;
         Title = title;
         ClickCallback = callback;

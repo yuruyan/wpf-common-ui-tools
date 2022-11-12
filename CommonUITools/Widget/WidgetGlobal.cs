@@ -1,27 +1,27 @@
 ﻿namespace CommonUITools.Widget;
 
 public class WidgetGlobal {
-    public static readonly Dictionary<MessageType, MessageTypeInfo> MessageInfoDict = new() {
+    public static readonly IReadOnlyDictionary<MessageType, MessageTypeInfo> MessageInfoDict = new Dictionary<MessageType, MessageTypeInfo>() {
         {
-            MessageType.INFO,
-            new MessageTypeInfo("#F4F4F5", "#9D9399", "#e5e5e6", "\ue650")
+            MessageType.Info,
+            new("#F4F4F5", "#9D9399", "#e5e5e6", "\ue650")
         },
         {
-            MessageType.SUCCESS,
-            new MessageTypeInfo("#f0f9eb", "#67C28A", "#dbe4d7", "\ue63c")
+            MessageType.Success,
+            new("#f0f9eb", "#67C28A", "#dbe4d7", "\ue63c")
         },
         {
-            MessageType.WARNING,
-            new MessageTypeInfo("#fdf6ec", "#E6A23C", "#e8e1d8", "\ue6d2")
+            MessageType.Warning,
+            new("#fdf6ec", "#E6A23C", "#e8e1d8", "\ue6d2")
         },
         {
-            MessageType.ERROR,
-            new MessageTypeInfo("#fef0f0", "#F66C6C", "#eee1e1", "\ue6c6")
+            MessageType.Error,
+            new("#fef0f0", "#F66C6C", "#eee1e1", "\ue6c6")
         }
     };
 }
 
-public class MessageTypeInfo {
+public readonly struct MessageTypeInfo {
     public MessageTypeInfo(string background, string foreground, string borderColor, string icon) {
         Background = background;
         Foreground = foreground;
@@ -36,5 +36,5 @@ public class MessageTypeInfo {
 }
 
 public enum MessageType {
-    INFO, SUCCESS, WARNING, ERROR
+    Info, Success, Warning, Error
 }
