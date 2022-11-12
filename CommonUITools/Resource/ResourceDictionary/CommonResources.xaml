@@ -78,5 +78,8 @@
   <SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="{Binding Color, Source={StaticResource Gray2}}" />
   <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumLowBrush" Color="{Binding Color, Source={StaticResource Gray3}}" />
   <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{Binding Color, Source={StaticResource Gray4}}" />
+  <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="{Binding Color, Source={StaticResource Gray3}}" />
+  <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="{Binding Color, Source={StaticResource Gray4}}" />
+  <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="{Binding Color, Source={StaticResource Gray3}}" />
   <!--#endregion-->
 </ResourceDictionary>
