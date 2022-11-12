@@ -32,17 +32,21 @@ public partial class LoadingBox : UserControl {
     /// 显示
     /// </summary>
     public void Show() {
-        Visibility = Visibility.Visible;
-        Opacity = 0;
-        LoadStoryboard.Begin();
+        if (!IsVisible) {
+            Visibility = Visibility.Visible;
+            Opacity = 0;
+            LoadStoryboard.Begin();
+        }
     }
 
     /// <summary>
     /// 关闭
     /// </summary>
     public void Close() {
-        Visibility = Visibility.Visible;
-        Opacity = 1;
-        UnLoadStoryboard.Begin();
+        if (IsVisible) {
+            Visibility = Visibility.Visible;
+            Opacity = 1;
+            UnLoadStoryboard.Begin();
+        }
     }
 }

@@ -1,6 +1,9 @@
-﻿using System.Reflection;
+﻿using CommonUITools.Widget;
+using NLog;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
@@ -521,5 +524,86 @@ public static class DragDropHelper {
             });
             ElementPropertyDict[element].SetValue(element, GetOverBackground(element));
         }
+    }
+}
+
+/// <summary>
+/// 加载状态
+/// </summary>
+public static class LoadingBoxHelper {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.RegisterAttached("IsLoading", typeof(bool), typeof(LoadingBoxHelper), new PropertyMetadata(false, IsLoadingPropertyChangedHandler));
+
+    /// <summary>
+    /// 是否显示加载
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static bool GetIsLoading(DependencyObject obj) {
+        return (bool)obj.GetValue(IsLoadingProperty);
+    }
+    public static void SetIsLoading(DependencyObject obj, bool value) {
+        obj.SetValue(IsLoadingProperty, value);
+    }
+    private static readonly IDictionary<FrameworkElement, LoadingBox> LoadingBoxDict = new Dictionary<FrameworkElement, LoadingBox>();
+
+    private static void IsLoadingPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not FrameworkElement element) {
+            return;
+        }
+        bool isLoading = (bool)e.NewValue;
+        // 初始化过
+        if (LoadingBoxDict.ContainsKey(element)) {
+            Proceed(element, isLoading);
+            return;
+        }
+
+        // 进行初始化工作
+        if (element.IsLoaded) {
+            AddLoadingAdorner(element);
+            Proceed(element, isLoading);
+            return;
+        }
+        element.Loaded -= ElementLoadedHandler;
+        element.Loaded += ElementLoadedHandler;
+    }
+
+    private static void ElementLoadedHandler(object sender, RoutedEventArgs e) {
+        if (sender is FrameworkElement element) {
+            AddLoadingAdorner(element);
+            Proceed(element, true);
+        }
+    }
+
+    /// <summary>
+    /// 继续
+    /// </summary>
+    /// <param name="element"></param>
+    /// <param name="isLoading"></param>
+    private static void Proceed(FrameworkElement element, bool isLoading) {
+        if (LoadingBoxDict.TryGetValue(element, out var loadingBox)) {
+            if (isLoading) {
+                loadingBox.Show();
+            } else {
+                loadingBox.Close();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 添加 LoadingAdorner
+    /// </summary>
+    /// <param name="element"></param>
+    private static void AddLoadingAdorner(FrameworkElement element) {
+        if (AdornerLayer.GetAdornerLayer(element) is not AdornerLayer adornerLayer) {
+            Logger.Error($"The AdornerLayer of {element.GetType()} is null");
+            return;
+        }
+        var loadingBox = new LoadingBox();
+        LoadingBoxDict[element] = loadingBox;
+        adornerLayer.Add(new CommonAdorner(
+            element,
+            new CommonAdorner.ElementInfo[] { new(loadingBox) }
+        ));
     }
 }
