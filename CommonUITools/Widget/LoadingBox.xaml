@@ -9,7 +9,7 @@
   Name="LoadingBoxRoot"
   d:DesignHeight="450"
   d:DesignWidth="800"
-  Background="#88e7e7e7"
+  Background="#aae7e7e7"
   Foreground="{StaticResource ApplicationBackground}"
   mc:Ignorable="d">
   <UserControl.Resources>

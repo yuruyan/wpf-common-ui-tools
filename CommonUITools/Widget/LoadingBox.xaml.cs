@@ -5,8 +5,9 @@ using System.Windows.Media.Animation;
 namespace CommonUITools.Widget;
 
 public partial class LoadingBox : UserControl {
+    public const double DefaultSize = 30;
 
-    public static readonly DependencyProperty SizeProperty = DependencyProperty.Register("Size", typeof(double), typeof(LoadingBox), new PropertyMetadata(20.0));
+    public static readonly DependencyProperty SizeProperty = DependencyProperty.Register("Size", typeof(double), typeof(LoadingBox), new PropertyMetadata(DefaultSize));
     /// <summary>
     /// ProcessRing 大小
     /// </summary>

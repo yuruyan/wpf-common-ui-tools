@@ -1,5 +1,6 @@
 ﻿using CommonUITools.Widget;
 using NLog;
+using SharpVectors.Dom;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -533,6 +534,7 @@ public static class DragDropHelper {
 public static class LoadingBoxHelper {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.RegisterAttached("IsLoading", typeof(bool), typeof(LoadingBoxHelper), new PropertyMetadata(false, IsLoadingPropertyChangedHandler));
+    public static readonly DependencyProperty SizeProperty = DependencyProperty.RegisterAttached("Size", typeof(double), typeof(LoadingBoxHelper), new PropertyMetadata(LoadingBox.DefaultSize, SizePropertyChangedHandler));
 
     /// <summary>
     /// 是否显示加载
@@ -545,7 +547,23 @@ public static class LoadingBoxHelper {
     public static void SetIsLoading(DependencyObject obj, bool value) {
         obj.SetValue(IsLoadingProperty, value);
     }
+    /// <summary>
+    /// loading size
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static double GetSize(DependencyObject obj) {
+        return (double)obj.GetValue(SizeProperty);
+    }
+    public static void SetSize(DependencyObject obj, double value) {
+        obj.SetValue(SizeProperty, value);
+    }
+
     private static readonly IDictionary<FrameworkElement, LoadingBox> LoadingBoxDict = new Dictionary<FrameworkElement, LoadingBox>();
+    /// <summary>
+    /// 未完成的任务
+    /// </summary>
+    private static readonly Queue<Action> UndoneTasks = new();
 
     private static void IsLoadingPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not FrameworkElement element) {
@@ -568,6 +586,19 @@ public static class LoadingBoxHelper {
         element.Loaded += ElementLoadedHandler;
     }
 
+    private static void SizePropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not FrameworkElement element) {
+            return;
+        }
+        double size = (double)e.NewValue;
+        // 已初始化
+        if (LoadingBoxDict.TryGetValue(element, out var loadingBox)) {
+            loadingBox.Size = size;
+            return;
+        }
+        UndoneTasks.Enqueue(() => LoadingBoxDict[element].Size = size);
+    }
+
     private static void ElementLoadedHandler(object sender, RoutedEventArgs e) {
         if (sender is FrameworkElement element) {
             AddLoadingAdorner(element);
@@ -582,6 +613,10 @@ public static class LoadingBoxHelper {
     /// <param name="isLoading"></param>
     private static void Proceed(FrameworkElement element, bool isLoading) {
         if (LoadingBoxDict.TryGetValue(element, out var loadingBox)) {
+            // 执行未完成的任务
+            while (UndoneTasks.Count > 0) {
+                UndoneTasks.Dequeue()();
+            }
             if (isLoading) {
                 loadingBox.Show();
             } else {
