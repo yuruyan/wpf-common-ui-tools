@@ -1,6 +1,5 @@
 ﻿using CommonUITools.View;
 using NLog;
-using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;

@@ -1,11 +1,8 @@
 ﻿using CommonUITools.Utils;
 using NLog;
-using System.Collections.Immutable;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Media;
 
 namespace CommonUITools;
 
