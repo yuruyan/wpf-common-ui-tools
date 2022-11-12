@@ -1,5 +1,6 @@
 ﻿using CommonUITools.Utils;
 using NLog;
+using System.Collections.Immutable;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -20,87 +21,49 @@ public partial class App : Application {
 
     private static void RegisterWidgetPageInternal(Window window) {
         CommonUtils.EnsureCalledOnce(window, () => {
-            // 不是 UIElement
-            if (window.Content is not UIElement mainContent) {
-                Logger.Error("Window Content is not of type UIElement");
+            // 不是 FrameworkElement
+            if (window.Content is not FrameworkElement mainContent) {
+                Logger.Error("Window Content is not of type FrameworkElement");
                 return;
             }
-            AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(mainContent);
-            if (adornerLayer != null) {
-                adornerLayer.Add(new WindowAdorner(mainContent, window));
-            } else {
+            if (AdornerLayer.GetAdornerLayer(mainContent) is not AdornerLayer adornerLayer) {
                 Logger.Error("Window Content has no adornerLayer");
+                return;
             }
+
+            adornerLayer.Add(WindowAdorner.CreateWindowAdorner(mainContent, window));
         });
     }
 }
 
-internal class WindowAdorner : Adorner {
-    private readonly Panel MessageBoxPanel;
-    private readonly Panel NotificationPanel;
-    private readonly VisualCollection Children;
-
-    protected override int VisualChildrenCount => Children.Count;
-
-    /// <summary>
-    /// 绑定 width、height
-    /// </summary>
-    /// <param name="window"></param>
-    /// <param name="panel"></param>
-    /// <param name="bindWidth"></param>
-    /// <param name="bindHeight"></param>
-    private void BindWindowSize(Window window, Panel panel, bool bindWidth = true, bool bindHeight = true) {
-        if (bindWidth) {
-            var widthBinding = new Binding("ActualWidth") { Source = window, };
-            panel.SetBinding(StackPanel.WidthProperty, widthBinding);
-        }
-        if (bindHeight) {
-            var heightBinding = new Binding("ActualHeight") { Source = window, };
-            panel.SetBinding(StackPanel.HeightProperty, heightBinding);
-        }
+internal static class WindowAdorner {
+    public static Adorner CreateWindowAdorner(FrameworkElement adornedElement, Window window) {
+        var messageBoxPanel = CreateMessageBoxPanel(window);
+        var notificationPanel = CreateNotificationPanel();
+        #region 设置 ContentPanel
+        Widget.MessageBox.SetContentPanel(messageBoxPanel);
+        Widget.NotificationBox.SetContentPanel(notificationPanel);
+        #endregion
+        return new CommonAdorner(adornedElement, new CommonAdorner.ElementInfo[] {
+            new (messageBoxPanel , targetBindingElement: window),
+            new (notificationPanel ,false, false, targetBindingElement: window)
+        });
     }
 
     /// <summary>
     /// 创建 MessageBoxPanel
     /// </summary>
     /// <returns></returns>
-    private Panel CreateMessageBoxPanel(Window window) {
-        var panel = new StackPanel() { Margin = new() { Top = 10 }, };
-        BindWindowSize(window, panel);
-        return panel;
-    }
+    private static Panel CreateMessageBoxPanel(Window window) => new StackPanel() { Margin = new() { Top = 10 }, };
 
     /// <summary>
     /// 创建 NotificationPanel
     /// </summary>
-    /// <param name="window"></param>
     /// <returns></returns>
-    private Panel CreateNotificationPanel(Window window) {
-        var panel = new StackPanel() {
+    private static Panel CreateNotificationPanel()
+        => new StackPanel() {
             Margin = new() { Top = 30, Right = 10 },
             HorizontalAlignment = HorizontalAlignment.Right,
             VerticalAlignment = VerticalAlignment.Bottom,
         };
-        return panel;
-    }
-
-    public WindowAdorner(UIElement adornedElement, Window window) : base(adornedElement) {
-        MessageBoxPanel = CreateMessageBoxPanel(window);
-        NotificationPanel = CreateNotificationPanel(window);
-        // 初始化面板
-        Children = new(this) {
-            MessageBoxPanel,
-            NotificationPanel
-        };
-        Widget.MessageBox.SetContentPanel(MessageBoxPanel);
-        Widget.NotificationBox.SetContentPanel(NotificationPanel);
-    }
-
-    protected override Visual GetVisualChild(int index) => Children[index];
-
-    protected override Size ArrangeOverride(Size finalSize) {
-        MessageBoxPanel.Arrange(new(finalSize));
-        NotificationPanel.Arrange(new(finalSize));
-        return base.ArrangeOverride(finalSize);
-    }
 }
