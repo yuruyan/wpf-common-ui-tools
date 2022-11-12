@@ -1,32 +1,77 @@
 ﻿using CommonUITools.View;
 using NLog;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace CommonUITools.Utils;
 
-public class Loading {
-    private static ProgressBar? ProgressBar;
+public class CommonAdorner : Adorner {
+    public readonly struct ElementInfo {
+        public readonly FrameworkElement Element;
+        /// <summary>
+        /// 绑定对象，为 null 则绑定到 adornedElement
+        /// </summary>
+        public readonly FrameworkElement? TargetBindingElement;
+        /// <summary>
+        /// 是否绑定 Width
+        /// </summary>
+        public readonly bool BindWidth;
+        /// <summary>
+        /// 是否绑定 Height
+        /// </summary>
+        public readonly bool BindHeight;
 
-    public Loading(ProgressBar progressBar) {
-        ProgressBar ??= progressBar;
-    }
-
-    public static void StartLoading() {
-        if (ProgressBar != null) {
-            ProgressBar.IsIndeterminate = true;
+        public ElementInfo(
+            FrameworkElement element,
+            bool bindWidth = true,
+            bool bindHeight = true,
+            FrameworkElement? targetBindingElement = null
+        ) {
+            Element = element;
+            BindWidth = bindWidth;
+            BindHeight = bindHeight;
+            TargetBindingElement = targetBindingElement;
         }
     }
 
-    public static void StopLoading() {
-        if (ProgressBar != null) {
-            ProgressBar.IsIndeterminate = false;
+    private readonly VisualCollection VisualChildren;
+    /// <summary>
+    /// UIElement 集合
+    /// </summary>
+    private readonly IEnumerable<UIElement> Elements;
+
+    protected override int VisualChildrenCount => VisualChildren.Count;
+
+    public CommonAdorner(FrameworkElement adornedElement, IEnumerable<ElementInfo> elementInfos) : base(adornedElement) {
+        VisualChildren = new(this);
+        Elements = elementInfos.Select(e => e.Element);
+        // 绑定 size
+        foreach (var item in elementInfos) {
+            UIUtils.BindSize(
+                item.Element,
+                item.TargetBindingElement ?? adornedElement,
+                item.BindWidth,
+                item.BindHeight
+            );
+            VisualChildren.Add(item.Element);
         }
+    }
+
+    protected override Visual GetVisualChild(int index) => VisualChildren[index];
+
+    protected override Size ArrangeOverride(Size finalSize) {
+        foreach (var item in Elements) {
+            item.Arrange(new(finalSize));
+        }
+        return base.ArrangeOverride(finalSize);
     }
 }
 
@@ -334,5 +379,28 @@ public static class UIUtils {
             return false;
         }
         return true;
+    }
+
+    /// <summary>
+    /// 将 <paramref name="thisElement"/> width、height 绑定到 <paramref name="targetElement"/>
+    /// </summary>
+    /// <param name="thisElement"></param>
+    /// <param name="targetElement"></param>
+    /// <param name="bindWidth">是否绑定 width</param>
+    /// <param name="bindHeight">是否绑定 height</param>
+    public static void BindSize(
+        FrameworkElement thisElement,
+        FrameworkElement targetElement,
+        bool bindWidth = true,
+        bool bindHeight = true
+    ) {
+        if (bindWidth) {
+            var widthBinding = new Binding("ActualWidth") { Source = targetElement, };
+            thisElement.SetBinding(FrameworkElement.WidthProperty, widthBinding);
+        }
+        if (bindHeight) {
+            var heightBinding = new Binding("ActualHeight") { Source = targetElement, };
+            thisElement.SetBinding(FrameworkElement.HeightProperty, heightBinding);
+        }
     }
 }
