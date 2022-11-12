@@ -30,7 +30,7 @@ public class Loading {
     }
 }
 
-public class UIUtils {
+public static class UIUtils {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
     /// <summary>

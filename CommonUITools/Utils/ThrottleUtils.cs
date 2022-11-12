@@ -1,6 +1,6 @@
 ﻿namespace CommonUITools.Utils;
 
-public class ThrottleUtils {
+public static class ThrottleUtils {
     private record State {
         public DateTime LastInvokeTime { get; set; } = DateTime.Now;
         public bool IsFinished { get; set; }

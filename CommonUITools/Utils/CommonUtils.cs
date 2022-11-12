@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace CommonUITools.Utils;
 
-public class CommonUtils {
+public static class CommonUtils {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private static DateTime Epoch => new(1970, 1, 1, 8, 0, 0, DateTimeKind.Utc);
 

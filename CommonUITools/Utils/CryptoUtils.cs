@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CommonUITools.Utils;
 
-public class CryptoUtils {
+public static class CryptoUtils {
     /// <summary>
     /// 加密
     /// </summary>

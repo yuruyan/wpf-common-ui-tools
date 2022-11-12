@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace CommonUITools.Utils;
 
-public class NetworkUtils {
+public static class NetworkUtils {
 
     /// <summary>
     /// 获取本机 IP 地址

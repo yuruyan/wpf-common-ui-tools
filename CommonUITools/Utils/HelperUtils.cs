@@ -9,7 +9,7 @@ namespace CommonUITools.Utils;
 /// <summary>
 /// 显示时开始动画
 /// </summary>
-public class ScaleAnimationHelper {
+public static class ScaleAnimationHelper {
 
     public enum ScaleOption {
         TopLeft,
@@ -175,7 +175,7 @@ public class ScaleAnimationHelper {
 /// <summary>
 /// 点击自身开始缩放动画
 /// </summary>
-public class MouseEventScaleAnimationHelper {
+public static class MouseEventScaleAnimationHelper {
 
     private enum Direction {
         X, Y
@@ -309,7 +309,7 @@ public class MouseEventScaleAnimationHelper {
 /// <summary>
 /// 淡入动画
 /// </summary>
-public class FadeInAnimationHelper {
+public static class FadeInAnimationHelper {
     /// <summary>
     /// 是否启用
     /// </summary>
@@ -402,7 +402,7 @@ public class FadeInAnimationHelper {
 /// <summary>
 /// GridViewColumnHelper
 /// </summary>
-public class GridViewColumnHelper {
+public static class GridViewColumnHelper {
 
     public static double GetHeaderMinWidth(DependencyObject obj) {
         return (double)obj.GetValue(HeaderMinWidthProperty);
@@ -438,7 +438,7 @@ public class GridViewColumnHelper {
 /// DragDropHelper，DragOver 时背景会发生变化
 /// 默认背景为 #e7e7e7
 /// </summary>
-public class DragDropHelper {
+public static class DragDropHelper {
     public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(DragDropHelper), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
     public static readonly DependencyProperty OverBackgroundProperty = DependencyProperty.RegisterAttached("OverBackground", typeof(Brush), typeof(DragDropHelper), new PropertyMetadata(UIUtils.StringToBrush("#e7e7e7")));
 

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CommonUITools.Utils;
 
-public class FileIconUtils {
+public static class FileIconUtils {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
     /// <summary>

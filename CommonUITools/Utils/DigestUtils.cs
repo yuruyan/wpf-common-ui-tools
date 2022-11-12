@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CommonUITools.Core;
 
-public class DigestUtils {
+public static class DigestUtils {
     /// <summary>
     /// 摘要算法
     /// </summary>

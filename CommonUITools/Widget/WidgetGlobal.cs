@@ -1,6 +1,6 @@
 ﻿namespace CommonUITools.Widget;
 
-public class WidgetGlobal {
+internal static class WidgetGlobal {
     public static readonly IReadOnlyDictionary<MessageType, MessageTypeInfo> MessageInfoDict = new Dictionary<MessageType, MessageTypeInfo>() {
         {
             MessageType.Info,
@@ -21,7 +21,7 @@ public class WidgetGlobal {
     };
 }
 
-public readonly struct MessageTypeInfo {
+internal readonly struct MessageTypeInfo {
     public MessageTypeInfo(string background, string foreground, string borderColor, string icon) {
         Background = background;
         Foreground = foreground;
