@@ -154,6 +154,31 @@ public static class UIUtils {
     }
 
     /// <summary>
+    /// 在文件资源管理器中异步打开文件，如果存在路径相同的窗口，则不会新建窗口
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="failedCallback"></param>
+    public static void OpenFileInExistingExplorerAsync(string path, Action<Exception>? failedCallback = null) {
+        try {
+            PInvokeUtils.ShellExecuteW(
+                IntPtr.Zero,
+                "open",
+                path.ReplaceSlashWithBackSlash(),
+                string.Empty,
+                string.Empty,
+                ShowCommands.SW_SHOWNORMAL
+            );
+        } catch (Exception error) {
+            if (failedCallback != null) {
+                failedCallback(error);
+                return;
+            }
+            Widget.MessageBox.Error("打开失败," + error.Message);
+            Logger.Info(error);
+        }
+    }
+
+    /// <summary>
     /// 选择以什么方式异步打开文件
     /// </summary>
     /// <param name="path">文件绝对路径</param>
