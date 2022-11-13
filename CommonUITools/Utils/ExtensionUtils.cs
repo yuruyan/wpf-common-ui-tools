@@ -169,4 +169,11 @@ public static class ExtensionUtils {
             target[i] = converter(enumerator.Current);
         }
     }
+
+    /// <summary>
+    /// 替换 '/' 为 '\\'
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static string ReplaceSlashWithBackSlash(this string source) => source.Replace('/', '\\');
 }
