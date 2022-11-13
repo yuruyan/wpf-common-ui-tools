@@ -1,4 +1,8 @@
-﻿namespace CommonUITools.Utils;
+﻿using AutoMapper;
+using CommonUITools.Model;
+using System.Collections.ObjectModel;
+
+namespace CommonUITools.Utils;
 
 public static class ExtensionUtils {
     /// <summary>
@@ -84,6 +88,47 @@ public static class ExtensionUtils {
             if (index++ >= count) {
                 return;
             }
+        }
+    }
+
+    /// <summary>
+    /// 更新现有集合，不替换元素，更新后长度为 <typeparamref name="Source"/> 的长度
+    /// </summary>
+    /// <typeparam name="Target"></typeparam>
+    /// <typeparam name="Source"></typeparam>
+    /// <param name="target"></param>
+    /// <param name="source"></param>
+    /// <param name="updater">更新原数据</param>
+    /// <param name="converter">转换器</param>
+    public static void UpdateWithCollection<Target, Source>(
+        this ObservableCollection<Target> target,
+        ICollection<Source> source,
+        Action<Source, Target> updater,
+        Func<Source, Target> converter
+    ) {
+        int oldLength = target.Count, newLength = source.Count;
+        if (oldLength <= newLength) {
+            var addData = source
+                .Skip(oldLength)
+                .Take(newLength - oldLength)
+                .Select(converter);
+            // 添加
+            foreach (var item in addData) {
+                target.Add(item);
+            }
+            // 更新
+            foreach (var (s, t) in source.Zip(target)) {
+                updater(s, t);
+            }
+            return;
+        }
+        // 删除
+        for (int i = oldLength - 1; i >= newLength; i--) {
+            target.RemoveAt(i);
+        }
+        // 更新
+        foreach (var (s, t) in source.Zip(target)) {
+            updater(s, t);
         }
     }
 }
