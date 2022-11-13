@@ -108,27 +108,65 @@ public static class ExtensionUtils {
     ) {
         int oldLength = target.Count, newLength = source.Count;
         if (oldLength <= newLength) {
-            var addData = source
-                .Skip(oldLength)
-                .Take(newLength - oldLength)
-                .Select(converter);
-            // 添加
-            foreach (var item in addData) {
-                target.Add(item);
-            }
             // 更新
             foreach (var (s, t) in source.Zip(target)) {
                 updater(s, t);
             }
+            var addData = source
+                .Skip(oldLength)
+                .Take(newLength - oldLength)
+                .Select(converter);
+            // 添加剩余元素
+            foreach (var item in addData) {
+                target.Add(item);
+            }
             return;
         }
-        // 删除
+        // 删除多余元素
         for (int i = oldLength - 1; i >= newLength; i--) {
             target.RemoveAt(i);
         }
         // 更新
         foreach (var (s, t) in source.Zip(target)) {
             updater(s, t);
+        }
+    }
+
+    /// <summary>
+    /// 用新数据替换现有数据，更新后长度为 <typeparamref name="Source"/> 的长度
+    /// </summary>
+    /// <typeparam name="Target"></typeparam>
+    /// <typeparam name="Source"></typeparam>
+    /// <param name="target"></param>
+    /// <param name="source"></param>
+    /// <param name="converter">转换器</param>
+    public static void ReplaceWithCollection<Target, Source>(
+        this ObservableCollection<Target> target,
+        ICollection<Source> source,
+        Func<Source, Target> converter
+    ) {
+        int oldLength = target.Count, newLength = source.Count;
+        var enumerator = source.GetEnumerator();
+        if (oldLength <= newLength) {
+            // 替换
+            for (int i = 0; i < oldLength; i++) {
+                enumerator.MoveNext();
+                target[i] = converter(enumerator.Current);
+            }
+            // 添加剩余元素
+            while (enumerator.MoveNext()) {
+                target.Add(converter(enumerator.Current));
+            }
+            return;
+        }
+        // 删除多余元素
+        for (int i = oldLength - 1; i >= newLength; i--) {
+            target.RemoveAt(i);
+        }
+        // 替换
+        for (int i = 0; i < newLength; i++) {
+            enumerator.MoveNext();
+            target[i] = converter(enumerator.Current);
         }
     }
 }
