@@ -602,7 +602,7 @@ public static class LoadingBoxHelper {
     private static void ElementLoadedHandler(object sender, RoutedEventArgs e) {
         if (sender is FrameworkElement element) {
             AddLoadingAdorner(element);
-            Proceed(element, true);
+            Proceed(element, (bool)element.GetValue(IsLoadingProperty));
         }
     }
 
