@@ -142,7 +142,7 @@ public static class UIUtils {
     /// <param name="failedCallback">发生异常回调</param>
     public static void OpenFileInDirectoryAsync(string path, Action<Exception>? failedCallback = null) {
         try {
-            Process.Start("explorer.exe", "/select," + path.Replace('/', '\\'));
+            Process.Start("explorer.exe", "/select," + path.ReplaceSlashWithBackSlash());
         } catch (Exception error) {
             if (failedCallback != null) {
                 failedCallback(error);
@@ -185,7 +185,7 @@ public static class UIUtils {
     /// <param name="failedCallback">发生异常回调</param>
     public static void OpenFileWithAsync(string path, Action<Exception>? failedCallback = null) {
         try {
-            Process.Start("rundll32.exe", "shell32.dll, OpenAs_RunDLL " + path.Replace('/', '\\'));
+            Process.Start("rundll32.exe", $"shell32.dll, OpenAs_RunDLL {path.ReplaceSlashWithBackSlash()}");
         } catch (Exception error) {
             if (failedCallback != null) {
                 failedCallback(error);
