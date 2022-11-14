@@ -173,11 +173,11 @@ public class Router {
 
     public static Router GetRouter(DependencyObject instance) => WindowRouterDict[Window.GetWindow(instance)];
 
-    public Router(RouterNode rootRouterNode, Frame frame, DependencyObject instance) {
+    public Router(RouterNode rootRouterNode, Frame rootFrame, DependencyObject rootInstance) {
         RootNode = RouterInternalNode.CreateFromRouterNode(rootRouterNode);
-        RootNode.InitFromExisting(frame, instance);
+        RootNode.InitFromExisting(rootFrame, rootInstance);
         CurrentRoute = RootNode.Name;
-        WindowRouterDict[Window.GetWindow(instance)] = this;
+        WindowRouterDict[Window.GetWindow(rootInstance)] = this;
     }
 
     /// <summary>
@@ -304,7 +304,7 @@ public class Router {
     /// 是否能回退
     /// </summary>
     /// <returns></returns>
-    private bool CanGoBack() => RouteStack.Count > 1;
+    public bool CanGoBack() => RouteStack.Count > 1;
 }
 
 public class RouterService {
