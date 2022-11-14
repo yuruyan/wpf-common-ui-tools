@@ -55,6 +55,13 @@
     TargetType="TextBlock">
     <Setter Property="FontFamily" Value="{StaticResource IconFontUrI}" />
   </Style>
+  <!--  CommonUIToolsIconFontStyle 样式  -->
+  <Style
+    x:Key="CommonUIToolsIconFontStyle"
+    BasedOn="{StaticResource GlobalTextBlockStyle}"
+    TargetType="TextBlock">
+    <Setter Property="FontFamily" Value="{StaticResource CommonUIToolsIconFontUrI}" />
+  </Style>
   <!--  嵌入 Button Icon  -->
   <Style
     x:Key="ButtonIconFontStyle"

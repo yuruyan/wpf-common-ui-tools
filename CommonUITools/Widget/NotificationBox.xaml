@@ -87,7 +87,7 @@
           VerticalAlignment="Top"
           FontSize="20"
           Foreground="{Binding BoxForeground}"
-          Style="{StaticResource IconFontStyle}"
+          Style="{StaticResource CommonUIToolsIconFontStyle}"
           Text="{Binding Icon}" />
         <Grid Grid.Column="1" Margin="8,0,8,0">
           <Grid.RowDefinitions>
@@ -121,8 +121,8 @@
         <StackPanel Grid.Column="2" HorizontalAlignment="Center">
           <StackPanel.Resources>
             <Style
-              x:Key="IconFontStyle"
-              BasedOn="{StaticResource IconFontStyle}"
+              x:Key="CommonUIToolsIconFontStyle"
+              BasedOn="{StaticResource CommonUIToolsIconFontStyle}"
               TargetType="TextBlock">
               <Setter Property="FontSize" Value="20" />
               <Style.Triggers>
@@ -135,7 +135,7 @@
           </StackPanel.Resources>
           <TextBlock
             MouseUp="CloseMouseUp"
-            Style="{StaticResource IconFontStyle}"
+            Style="{StaticResource CommonUIToolsIconFontStyle}"
             Text="&#xe614;" />
         </StackPanel>
       </Grid>

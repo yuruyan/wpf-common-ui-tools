@@ -12,14 +12,6 @@
         <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/CommonUIToolsResources.xaml" />
         <!--  Other merged dictionaries here  -->
       </ResourceDictionary.MergedDictionaries>
-      <!--  IconFont 样式（供本项目使用）  -->
-      <FontFamily x:Key="IconFontUrI">pack://application:,,,/CommonUITools/resource/#CommonUITools-IconFont</FontFamily>
-      <Style
-        x:Key="IconFontStyle"
-        BasedOn="{StaticResource IconFontStyle}"
-        TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource IconFontUrI}" />
-      </Style>
     </ResourceDictionary>
   </Application.Resources>
 </Application>

@@ -72,7 +72,7 @@
           HorizontalAlignment="Center"
           VerticalAlignment="Center"
           Foreground="{Binding ElementName=Root, Path=BoxForeground}"
-          Style="{StaticResource IconFontStyle}"
+          Style="{StaticResource CommonUIToolsIconFontStyle}"
           Text="{Binding ElementName=Root, Path=Icon}" />
         <TextBlock
           MaxWidth="400"

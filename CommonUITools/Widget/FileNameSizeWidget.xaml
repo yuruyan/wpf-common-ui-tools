@@ -27,7 +27,7 @@
         <MenuItem.Icon>
           <TextBlock
             Foreground="#f5a623"
-            Style="{StaticResource IconFontStyle}"
+            Style="{StaticResource CommonUIToolsIconFontStyle}"
             Text="&#xe660;" />
         </MenuItem.Icon>
       </MenuItem>
