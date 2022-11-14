@@ -176,4 +176,16 @@ public static class ExtensionUtils {
     /// <param name="source"></param>
     /// <returns></returns>
     public static string ReplaceSlashWithBackSlash(this string source) => source.Replace('/', '\\');
+
+    /// <summary>
+    /// ForEach
+    /// </summary>
+    /// <typeparam name="Source"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="action"></param>
+    public static void ForEach<Source>(this IEnumerable<Source> source, Action<Source> action) {
+        foreach (var item in source) {
+            action(item);
+        }
+    }
 }
