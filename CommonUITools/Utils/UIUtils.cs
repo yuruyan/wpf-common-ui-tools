@@ -140,7 +140,7 @@ public static class UIUtils {
     /// </summary>
     /// <param name="path">文件绝对路径</param>
     /// <param name="failedCallback">发生异常回调</param>
-    public static void OpenFileInDirectoryAsync(string path, Action<Exception>? failedCallback = null) {
+    public static void OpenFileInExplorerAsync(string path, Action<Exception>? failedCallback = null) {
         try {
             Process.Start("explorer.exe", "/select," + path.ReplaceSlashWithBackSlash());
         } catch (Exception error) {
@@ -206,7 +206,7 @@ public static class UIUtils {
         Widget.NotificationBox.Success(
             title,
             message,
-            () => OpenFileInDirectoryAsync(filepath)
+            () => OpenFileInExplorerAsync(filepath)
         );
     }
 
@@ -341,7 +341,7 @@ public static class UIUtils {
                 Widget.NotificationBox.Success(
                     notificationTitle,
                     notificationMessage,
-                    () => OpenFileInDirectoryAsync(outputPath)
+                    () => OpenFileInExplorerAsync(outputPath)
                 );
             }
         } catch (IOException) {

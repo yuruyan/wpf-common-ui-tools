@@ -16,7 +16,7 @@ public partial class StyleResources {
                     file = tag;
                 }
             }
-            UIUtils.OpenFileInDirectoryAsync(file ?? string.Empty);
+            UIUtils.OpenFileInExplorerAsync(file ?? string.Empty);
         }
     }
 }

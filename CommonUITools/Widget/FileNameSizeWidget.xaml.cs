@@ -25,5 +25,5 @@ public partial class FileNameSizeWidget : SimpleStackPanel {
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void OpenInFileExplorerHandler(object sender, RoutedEventArgs e)
-        => UIUtils.OpenFileInDirectoryAsync(FileName);
+        => UIUtils.OpenFileInExplorerAsync(FileName);
 }
