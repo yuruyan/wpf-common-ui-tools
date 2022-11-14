@@ -642,3 +642,21 @@ public static class LoadingBoxHelper {
         ));
     }
 }
+
+/// <summary>
+/// Name
+/// </summary>
+public static class NameHelper {
+    public static readonly DependencyProperty NameProperty = DependencyProperty.RegisterAttached("Name", typeof(string), typeof(NameHelper), new PropertyMetadata());
+    /// <summary>
+    /// Name
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static string GetName(DependencyObject obj) {
+        return (string)obj.GetValue(NameProperty);
+    }
+    public static void SetName(DependencyObject obj, string value) {
+        obj.SetValue(NameProperty, value);
+    }
+}
