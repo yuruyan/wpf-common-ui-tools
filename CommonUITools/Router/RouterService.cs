@@ -347,6 +347,12 @@ public class RouterService {
         return CommonUtils.NullCheck(Routers[view].Instance);
     }
 
+    /// <summary>
+    /// 获取子路由类型信息
+    /// </summary>
+    /// <returns></returns>
+    public IList<Type> GetRouteTypes() => Routers.Keys.ToList();
+
     public RouterService(ModernWpf.Controls.Frame frame, IEnumerable<Type> routers, NavigationTransitionEffect defaultNavigationTransitionEffect = NavigationTransitionEffect.Entrance) {
         Frame = frame;
         // 添加路由信息
