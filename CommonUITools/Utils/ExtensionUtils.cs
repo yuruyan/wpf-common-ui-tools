@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections;
+using System.Collections.ObjectModel;
 
 namespace CommonUITools.Utils;
 
@@ -219,5 +220,20 @@ public static class ExtensionUtils {
             }
         }
         return -1;
+    }
+
+    /// <summary>
+    /// 转换
+    /// </summary>
+    /// <typeparam name="Target"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="func"></param>
+    /// <returns></returns>
+    public static IList<Target> Cast<Target>(this IList source, Func<object, Target> func) {
+        var results = new List<Target>(source.Count);
+        foreach (var item in source) {
+            results.Add(func(item));
+        }
+        return results;
     }
 }
