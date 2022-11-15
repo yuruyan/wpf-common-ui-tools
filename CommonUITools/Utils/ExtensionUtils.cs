@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using CommonUITools.Model;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace CommonUITools.Utils;
 
@@ -187,5 +185,39 @@ public static class ExtensionUtils {
         foreach (var item in source) {
             action(item);
         }
+    }
+
+    /// <summary>
+    /// 获取元素所在位置
+    /// </summary>
+    /// <typeparam name="Source"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    public static int IndexOf<Source>(this IEnumerable<Source> source, Source target) {
+        int index = 0;
+        foreach (var item in source) {
+            if (object.Equals(item, target)) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    /// <summary>
+    /// 获取元素所在位置
+    /// </summary>
+    /// <typeparam name="Source"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    public static int IndexOf<Source>(this IEnumerable<Source> source, Predicate<Source> predicate) {
+        int index = 0;
+        foreach (var item in source) {
+            if (predicate(item)) {
+                return index;
+            }
+        }
+        return -1;
     }
 }
