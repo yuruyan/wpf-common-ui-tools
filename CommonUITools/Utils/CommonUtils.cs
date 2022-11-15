@@ -330,5 +330,27 @@ public static class CommonUtils {
         // 读取前 64kb 字节
         return Array.IndexOf(reader.ReadBytes(63 * 1024), nullByte) >= 0;
     }
+
+    /// <summary>
+    /// 延迟执行任务
+    /// </summary>
+    /// <param name="millisecond"></param>
+    /// <param name="action"></param>
+    /// <returns></returns>
+    public static async Task DelayTaskAsync(int millisecond, Action action) {
+        await Task.Delay(millisecond);
+        await Task.Run(action);
+    }
+
+    /// <summary>
+    /// 延迟执行任务
+    /// </summary>
+    /// <param name="millisecond"></param>
+    /// <param name="func"></param>
+    /// <returns></returns>
+    public static async Task<T> DelayTaskAsync<T>(int millisecond, Func<T> func) {
+        await Task.Delay(millisecond);
+        return await Task.Run(func);
+    }
 }
 
