@@ -308,7 +308,7 @@ public class Router {
 }
 
 public class RouterService {
-    private readonly Frame Frame;
+    public Frame Frame { get; }
     private readonly IDictionary<Type, RouterInfo> Routers = new Dictionary<Type, RouterInfo>();
     private readonly IDictionary<NavigationTransitionEffect, NavigationTransitionInfo> NavigationTransitionEffectDict = new Dictionary<NavigationTransitionEffect, NavigationTransitionInfo>() {
         {NavigationTransitionEffect.DrillIn, new DrillInNavigationTransitionInfo()},
