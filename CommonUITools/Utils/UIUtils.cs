@@ -427,4 +427,23 @@ public static class UIUtils {
             thisElement.SetBinding(FrameworkElement.HeightProperty, heightBinding);
         }
     }
+
+    private static readonly IDictionary<FrameworkElement, RoutedEventHandler> LoadedOnceEventHandlerDict = new Dictionary<FrameworkElement, RoutedEventHandler>();
+
+    /// <summary>
+    /// 设置只执行一次的 Loaded EventHandler
+    /// </summary>
+    /// <param name="element"></param>
+    /// <param name="handler"></param>
+    public static void SetLoadedOnceEventHandler(FrameworkElement element, RoutedEventHandler handler) {
+        LoadedOnceEventHandlerDict[element] = handler;
+        element.Loaded += LoadedOnceEventHandlerInternal;
+    }
+
+    private static void LoadedOnceEventHandlerInternal(object sender, RoutedEventArgs e) {
+        if (sender is FrameworkElement element) {
+            element.Loaded -= LoadedOnceEventHandlerInternal;
+            LoadedOnceEventHandlerDict[element](sender, e);
+        }
+    }
 }
