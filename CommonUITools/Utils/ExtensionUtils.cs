@@ -160,6 +160,19 @@ public static class ExtensionUtils {
     }
 
     /// <summary>
+    /// ForEach
+    /// </summary>
+    /// <typeparam name="Source"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="action">第一个参数为索引</param>
+    public static void ForEach<Source>(this IEnumerable<Source> source, Action<int, Source> action) {
+        int index = 0;
+        foreach (var item in source) {
+            action(index++, item);
+        }
+    }
+
+    /// <summary>
     /// 获取元素所在位置
     /// </summary>
     /// <typeparam name="Source"></typeparam>
