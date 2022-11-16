@@ -446,4 +446,14 @@ public static class UIUtils {
             LoadedOnceEventHandlerDict[element](sender, e);
         }
     }
+
+    /// <summary>
+    /// 反转 Panel Children 顺序
+    /// </summary>
+    /// <param name="panel"></param>
+    public static void ReversePanelChildrenOrder(Panel panel) {
+        var children = panel.Children.Cast(o => o as UIElement).Reverse();
+        panel.Children.Clear();
+        children.ForEach(item => panel.Children.Add(item));
+    }
 }
