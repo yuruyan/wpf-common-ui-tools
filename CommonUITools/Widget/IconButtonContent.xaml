@@ -12,9 +12,14 @@
   <StackPanel Orientation="Horizontal">
     <TextBlock
       FontFamily="{StaticResource IconFontUrI}"
+      FontSize="{Binding FontSize, ElementName=IconButtonContentRoot}"
+      FontWeight="{Binding FontWeight, ElementName=IconButtonContentRoot}"
       Style="{StaticResource ButtonIconFontStyle}"
       Text="{Binding Icon, ElementName=IconButtonContentRoot}" />
-    <TextBlock Text="{Binding Text, ElementName=IconButtonContentRoot}" />
+    <TextBlock
+      FontSize="{Binding FontSize, ElementName=IconButtonContentRoot}"
+      FontWeight="{Binding FontWeight, ElementName=IconButtonContentRoot}"
+      Text="{Binding Text, ElementName=IconButtonContentRoot}" />
   </StackPanel>
   <!--<TextBlock>
     <Run FontFamily="{StaticResource IconFontUrI}" Text="{Binding Icon, ElementName=IconButtonContentRoot}" />

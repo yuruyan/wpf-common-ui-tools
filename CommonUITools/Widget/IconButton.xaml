@@ -9,5 +9,9 @@
   d:DesignHeight="450"
   d:DesignWidth="800"
   mc:Ignorable="d">
-  <local:IconButtonContent Icon="{Binding Icon, ElementName=IconButtonRoot}" Text="{Binding Text, ElementName=IconButtonRoot}" />
+  <local:IconButtonContent
+    FontSize="{Binding FontSize, ElementName=IconButtonRoot}"
+    FontWeight="{Binding FontWeight, ElementName=IconButtonRoot}"
+    Icon="{Binding Icon, ElementName=IconButtonRoot}"
+    Text="{Binding Text, ElementName=IconButtonRoot}" />
 </Button>
