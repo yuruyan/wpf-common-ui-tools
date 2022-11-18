@@ -212,11 +212,11 @@ public class NotEqualConverter : IValueConverter {
 }
 
 /// <summary>
-/// 相等则隐藏
+/// 相等则隐藏，比较的是 ToString
 /// </summary>
 public class HideIfEuqalConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return value == parameter ? Visibility.Collapsed : Visibility.Visible;
+        return value.ToString() == parameter.ToString() ? Visibility.Collapsed : Visibility.Visible;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -225,11 +225,11 @@ public class HideIfEuqalConverter : IValueConverter {
 }
 
 /// <summary>
-/// 不相等则隐藏
+/// 不相等则隐藏，比较的是 ToString
 /// </summary>
 public class HideIfNotEuqalConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return value != parameter ? Visibility.Collapsed : Visibility.Visible;
+        return value.ToString() != parameter.ToString() ? Visibility.Collapsed : Visibility.Visible;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
