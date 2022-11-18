@@ -6,7 +6,6 @@
   xmlns:local="clr-namespace:CommonUITools.Widget"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   Name="FileSizeWidgetRoot"
-  HorizontalAlignment="Center"
   d:DesignHeight="450"
   d:DesignWidth="800"
   mc:Ignorable="d">
