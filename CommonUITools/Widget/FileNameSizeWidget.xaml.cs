@@ -20,10 +20,22 @@ public partial class FileNameSizeWidget : SimpleStackPanel {
     }
 
     /// <summary>
+    /// 打开文件点击
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void OpenFileClickHandler(object sender, RoutedEventArgs e) {
+        e.Handled = true;
+        UIUtils.OpenFileWithAsync(FileName);
+    }
+
+    /// <summary>
     /// 打开文件夹
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void OpenInFileExplorerHandler(object sender, RoutedEventArgs e)
-        => UIUtils.OpenFileInExplorerAsync(FileName);
+    private void OpenInFileExplorerHandler(object sender, RoutedEventArgs e) {
+        e.Handled = true;
+        UIUtils.OpenFileInExplorerAsync(FileName);
+    }
 }

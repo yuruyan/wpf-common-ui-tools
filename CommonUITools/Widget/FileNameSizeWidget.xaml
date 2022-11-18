@@ -23,6 +23,11 @@
 
   <ui:SimpleStackPanel.ContextMenu>
     <ContextMenu>
+      <MenuItem Click="OpenFileClickHandler" Header="打开文件">
+        <MenuItem.Icon>
+          <TextBlock Style="{StaticResource IconFontStyle}" Text="&#xe671;" />
+        </MenuItem.Icon>
+      </MenuItem>
       <MenuItem Click="OpenInFileExplorerHandler" Header="打开所在文件夹">
         <MenuItem.Icon>
           <TextBlock
@@ -36,6 +41,7 @@
 
   <local:FileNameIconWidget FileName="{Binding FileName, ElementName=FileNameSizeWidgetRoot}" IconSize="30" />
   <local:FileSizeWidget
+    HorizontalAlignment="Center"
     FileName="{Binding FileName, ElementName=FileNameSizeWidgetRoot}"
     Prefix="文件大小："
     Visibility="{Binding FileSize, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource HideIfZeroConverter}}" />
