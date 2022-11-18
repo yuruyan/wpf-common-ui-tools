@@ -477,30 +477,54 @@ public static class DragDropHelper {
     private static readonly IDictionary<DependencyObject, PropertyInfo> ElementPropertyDict = new Dictionary<DependencyObject, PropertyInfo>();
 
     private static void IsEnabledPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-        if (d is UIElement element) {
-            var backgroundInfo = d.GetType()
-                .GetProperty("Background", BindingFlags.Default | BindingFlags.Instance | BindingFlags.Public);
-            // 没有 BackgroundProperty 属性或类型不正确
-            if (backgroundInfo == null || backgroundInfo.PropertyType != typeof(Brush)) {
-                return;
-            }
+        if (d is not UIElement element) {
+            return;
+        }
 
-            // 设置初始值
-            if (!ElementBackgroundDict.ContainsKey(element)) {
-                ElementPropertyDict[element] = backgroundInfo;
-                // 还没有初始化 background 时设置为 transparent
-                ElementBackgroundDict[element] = backgroundInfo.GetValue(d) as Brush ?? new SolidColorBrush(Colors.Transparent);
-            }
-            if ((bool)e.NewValue) {
-                element.PreviewDragEnter += PreviewDragEnterHandler;
-                element.PreviewDragLeave += PreviewDragLeaveHandler;
-                element.PreviewDrop += PreviewDropHandler;
+        var isEnabled = (bool)e.NewValue;
+        var backgroundInfo = d.GetType()
+            .GetProperty("Background", BindingFlags.Default | BindingFlags.Instance | BindingFlags.Public);
+        // 没有 BackgroundProperty 属性或类型不正确
+        if (backgroundInfo == null || backgroundInfo.PropertyType != typeof(Brush)) {
+            return;
+        }
+
+        // 设置初始值
+        if (!ElementBackgroundDict.ContainsKey(element)) {
+            ElementPropertyDict[element] = backgroundInfo;
+            // 还没有初始化 background 时设置为 transparent
+            ElementBackgroundDict[element] = backgroundInfo.GetValue(d) as Brush ?? new SolidColorBrush(Colors.Transparent);
+        }
+        // 设置事件
+        if (isEnabled) {
+            element.AllowDrop = true;
+            element.PreviewDragEnter += PreviewDragEnterHandler;
+            element.PreviewDragLeave += PreviewDragLeaveHandler;
+            element.PreviewDrop += PreviewDropHandler;
+        } else {
+            element.AllowDrop = false;
+            element.PreviewDragEnter -= PreviewDragEnterHandler;
+            element.PreviewDragLeave -= PreviewDragLeaveHandler;
+            element.PreviewDrop -= PreviewDropHandler;
+        }
+        // 文本框特殊处理
+        if (element is TextBox textBox) {
+            if (isEnabled) {
+                textBox.PreviewDragOver += TextBoxPreviewDragOverHandler;
             } else {
-                element.PreviewDragEnter -= PreviewDragEnterHandler;
-                element.PreviewDragLeave -= PreviewDragLeaveHandler;
-                element.PreviewDrop -= PreviewDropHandler;
+                textBox.PreviewDragOver -= TextBoxPreviewDragOverHandler;
             }
         }
+    }
+
+    /// <summary>
+    /// 文本框 PreviewDragOver
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private static void TextBoxPreviewDragOverHandler(object sender, DragEventArgs e) {
+        e.Handled = true;
+        e.Effects = DragDropEffects.Copy;
     }
 
     private static void PreviewDropHandler(object sender, DragEventArgs e) {
