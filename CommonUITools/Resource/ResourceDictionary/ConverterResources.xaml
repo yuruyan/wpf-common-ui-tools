@@ -28,6 +28,8 @@
   <converter:HideIfFalseConverter x:Key="HideIfFalseConverter" />
   <converter:HideIfNullConverter x:Key="HideIfNullConverter" />
   <converter:HideIfNotNullConverter x:Key="HideIfNotNullConverter" />
+  <converter:HideIfEuqalConverter x:Key="HideIfEuqalConverter" />
+  <converter:HideIfNotEuqalConverter x:Key="HideIfNotEuqalConverter" />
   <converter:FileNameConverter x:Key="FileNameConverter" />
   <converter:FileSizeConverter x:Key="FileSizeConverter" />
   <converter:AgeConverter x:Key="AgeConverter" />

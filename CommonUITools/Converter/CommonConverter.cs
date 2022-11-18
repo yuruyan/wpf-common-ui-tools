@@ -212,6 +212,32 @@ public class NotEqualConverter : IValueConverter {
 }
 
 /// <summary>
+/// 相等则隐藏
+/// </summary>
+public class HideIfEuqalConverter : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        return value == parameter ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}
+
+/// <summary>
+/// 不相等则隐藏
+/// </summary>
+public class HideIfNotEuqalConverter : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        return value != parameter ? Visibility.Collapsed : Visibility.Visible;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}
+
+/// <summary>
 /// 加法 Convert，value + parameter
 /// </summary>
 public class AddConvert : IValueConverter {
