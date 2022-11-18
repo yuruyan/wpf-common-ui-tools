@@ -6,7 +6,6 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
   Name="FileNameIconWidgetRoot"
-  HorizontalAlignment="Center"
   d:DesignHeight="450"
   d:DesignWidth="800"
   mc:Ignorable="d">
