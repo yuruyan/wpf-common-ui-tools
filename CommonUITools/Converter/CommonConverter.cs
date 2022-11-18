@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media.Imaging;
 
 namespace CommonUITools.Converter;
 
@@ -578,11 +579,30 @@ public class BoolToStringConverter : IValueConverter {
 }
 
 /// <summary>
-/// 文件图标 Converter
+/// 文件图标 Converter，返回 string，以 '/' 开头
 /// </summary>
 public class FileIconConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
         return FileIconUtils.GetIcon(value.ToString() ?? string.Empty);
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}
+
+/// <summary>
+/// 文件图标 Converter
+/// </summary>
+public class FilePngIconConverter : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        var image = new BitmapImage();
+        image.BeginInit();
+        image.StreamSource = File.OpenRead(new(
+            Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, FileIconUtils.GetPngIcon(value.ToString() ?? string.Empty)[1..])
+        ));
+        image.EndInit();
+        return image;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {

@@ -36,4 +36,5 @@
   <converter:TimeStampStringConverter x:Key="TimeStampStringConverter" />
   <converter:BoolToStringConverter x:Key="BoolToStringConverter" />
   <converter:FileIconConverter x:Key="FileIconConverter" />
+  <converter:FilePngIconConverter x:Key="FilePngIconConverter" />
 </ResourceDictionary>
