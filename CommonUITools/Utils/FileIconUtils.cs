@@ -11,7 +11,7 @@ public static class FileIconUtils {
 
     /// <summary>
     /// 文件后缀-图标路径
-    /// [extension, filepath]
+    /// [extension, filepathWithoutExtension]
     /// </summary>
     private static readonly IDictionary<string, string> IconDict;
     /// <summary>
@@ -30,6 +30,8 @@ public static class FileIconUtils {
     /// 图标解压缩目录
     /// </summary>
     private const string DeCompressedIconFolder = "Resource/image/FileIcon";
+    private const string Svg = ".svg";
+    private const string Png = ".png";
 
     static FileIconUtils() {
         var iconDict = JsonConvert.DeserializeObject<IDictionary<string, string>>(
@@ -55,7 +57,7 @@ public static class FileIconUtils {
     /// <param name="pairs"></param>
     private static void ConvertToImagePath(IDictionary<string, string> pairs) {
         foreach (var pair in pairs) {
-            pairs[pair.Key] = $"/{DeCompressedIconFolder}/{pair.Value}";
+            pairs[pair.Key] = $"/{DeCompressedIconFolder}/{Path.GetFileNameWithoutExtension(pair.Value)}";
         }
     }
 
@@ -68,7 +70,15 @@ public static class FileIconUtils {
             .Select(p => Path.GetFileName(p).ToLowerInvariant())
             .ToHashSet();
         // 实际目录 Icon 数量小于配置文件配置 Icon 数量
-        if (IconDict.Values.Any(f => !existFileIconNames.Contains(Path.GetFileName(f)))) {
+        var iconNameSet = IconDict.Values.Select(Path.GetFileNameWithoutExtension).ToHashSet();
+        var iconNameList = iconNameSet.ToList();
+        // 设置 svg 后缀
+        for (int i = 0; i < iconNameList.Count; i++) {
+            iconNameList[i] = $"{iconNameList[i]}{Svg}";
+        }
+        // 添加 png 文件
+        iconNameList.AddRange(iconNameSet.Select(f => $"{f}.png"));
+        if (iconNameList.Any(f => !existFileIconNames.Contains(f!))) {
             // 解压文件
             ZipFile.ExtractToDirectory(CompressedIconFile, DeCompressedIconFolder, true);
             Logger.Debug("解压文件 icon 完毕");
@@ -78,22 +88,31 @@ public static class FileIconUtils {
     /// <summary>
     /// 返回匹配 Icon 文件名，以 '/' 开头
     /// </summary>
-    /// <param name="fileName">文件名/绝对路径</param>
+    /// <param name="fileName">文件名或绝对路径</param>
     /// <returns></returns>
     public static string GetIcon(string fileName) {
         fileName = fileName.ToLowerInvariant();
         string ext = Path.GetExtension(fileName);
         // 完全匹配
         if (IconDict.ContainsKey(ext)) {
-            return IconDict[ext];
+            return $"{IconDict[ext]}{Svg}";
         }
         // 根据
         foreach (var dict in IconDict) {
             if (fileName.EndsWith(dict.Key)) {
-                return dict.Value;
+                return $"{dict.Value}{Svg}";
             }
         }
         // 返回默认 Icon
-        return IconDict[DefaultIconKey];
+        return $"{IconDict[DefaultIconKey]}{Svg}";
+    }
+
+    /// <summary>
+    /// 返回匹配 PngIcon 文件名，以 '/' 开头
+    /// </summary>
+    /// <param name="fileName">文件名或绝对路径</param>
+    /// <returns></returns>
+    public static string GetPngIcon(string fileName) {
+        return $"{GetIcon(fileName)[0..^4]}{Png}";
     }
 }
