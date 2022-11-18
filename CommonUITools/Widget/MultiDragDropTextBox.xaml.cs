@@ -1,6 +1,7 @@
 ﻿using CommonUITools.Utils;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,7 +12,8 @@ public partial class MultiDragDropTextBox : UserControl {
     public static readonly DependencyProperty TextBoxStyleProperty = DependencyProperty.Register("TextBoxStyle", typeof(Style), typeof(MultiDragDropTextBox), new PropertyMetadata());
     public static readonly DependencyProperty HasFileProperty = DependencyProperty.Register("HasFile", typeof(bool), typeof(MultiDragDropTextBox), new PropertyMetadata(false));
     private static readonly DependencyProperty FileNameListProperty = DependencyProperty.Register("FileNameList", typeof(ObservableCollection<string>), typeof(MultiDragDropTextBox), new PropertyMetadata());
-    public static readonly DependencyProperty FirstFileNameProperty = DependencyProperty.Register("FirstFileName", typeof(string), typeof(MultiDragDropTextBox), new PropertyMetadata(string.Empty));
+    private static readonly DependencyProperty FirstFileNameProperty = DependencyProperty.Register("FirstFileName", typeof(string), typeof(MultiDragDropTextBox), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty IsSupportDirectoryProperty = DependencyProperty.Register("IsSupportDirectory", typeof(bool), typeof(MultiDragDropTextBox), new PropertyMetadata(false));
 
     /// <summary>
     /// DragDropEvent，参数为 本次拖拽的 FileNames
@@ -49,9 +51,16 @@ public partial class MultiDragDropTextBox : UserControl {
     /// <summary>
     /// 第一个文件名
     /// </summary>
-    public string FirstFileName {
+    private string FirstFileName {
         get { return (string)GetValue(FirstFileNameProperty); }
         set { SetValue(FirstFileNameProperty, value); }
+    }
+    /// <summary>
+    /// 是否支持文件夹，默认 false
+    /// </summary>
+    public bool IsSupportDirectory {
+        get { return (bool)GetValue(IsSupportDirectoryProperty); }
+        set { SetValue(IsSupportDirectoryProperty, value); }
     }
     /// <summary>
     /// 文件名集合
@@ -100,7 +109,10 @@ public partial class MultiDragDropTextBox : UserControl {
     private void PreviewDropHandler(object sender, DragEventArgs e) {
         FileData = e.Data.GetData(DataFormats.FileDrop);
         if (FileData != null && FileData is ICollection<string> list && list.Count > 0) {
-            HasFile = true;
+            // 筛选文件
+            if (!IsSupportDirectory) {
+                list = list.Where(File.Exists).ToList();
+            }
             // 重复则不添加
             list.ForEach(f => {
                 if (!FileNameSet.Contains(f)) {
@@ -108,7 +120,11 @@ public partial class MultiDragDropTextBox : UserControl {
                     FileNameList.Add(f);
                 }
             });
-            DragDropEvent?.Invoke(sender, list.ToList());
+            // 更新
+            HasFile = FileNameList.Count > 0;
+            if (HasFile) {
+                DragDropEvent?.Invoke(sender, list.ToList());
+            }
         }
     }
 
