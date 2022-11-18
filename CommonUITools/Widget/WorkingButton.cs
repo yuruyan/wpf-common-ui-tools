@@ -8,6 +8,7 @@ namespace CommonUITools.Widget;
 /// <summary>
 /// 状态 Button
 /// 注意不要直接设置 Content、ClickEventHandler
+/// NormalContent、WorkingContent 如果设置 Binding 则会失效
 /// </summary>
 public class WorkingButton : Button {
     public static readonly DependencyProperty IsWorkingProperty = DependencyProperty.Register("IsWorking", typeof(bool), typeof(WorkingButton), new PropertyMetadata(false));
@@ -41,7 +42,10 @@ public class WorkingButton : Button {
 
     public WorkingButton() {
         Click += ClickHandler;
-        Loaded += (s, e) => CommonUtils.EnsureCalledOnce(this, () => Content = NormalContent);
+        Loaded += (s, e) => CommonUtils.EnsureCalledOnce(
+            this,
+            () => Content = IsWorking ? WorkingContent : NormalContent
+        );
         DependencyPropertyDescriptor.FromProperty(IsWorkingProperty, this.GetType())
             .AddValueChanged(this, IsWorkingPropertyChangedHandler);
     }
