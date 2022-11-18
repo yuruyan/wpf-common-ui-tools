@@ -380,9 +380,33 @@ public static class UIUtils {
         bool hasFile,
         string? filePath,
         string warningDetail = "文件可能是二进制文件，是否继续？"
+    ) => await CheckTextAndFileInputAsync(
+            inputText,
+            hasFile,
+            new string[] { filePath! },
+            warningDetail
+        );
+
+    /// <summary>
+    /// 检查文本和文件输入
+    /// </summary>
+    /// <param name="inputText"></param>
+    /// <param name="hasFile"></param>
+    /// <param name="filepaths"></param>
+    /// <param name="warningDetail"></param>
+    /// <returns>通过返回 true</returns>
+    /// <remarks>
+    /// 如果有多个文件则不检查
+    /// </remarks>
+    public static async Task<bool> CheckTextAndFileInputAsync(
+        string? inputText,
+        bool hasFile,
+        ICollection<string> filepaths,
+        string warningDetail = "文件可能是二进制文件，是否继续？"
     ) {
         // 检查文件
-        if (hasFile) {
+        if (hasFile && filepaths.Count == 1) {
+            var filePath = filepaths.First();
             // 文件检查是否存在
             if (!File.Exists(filePath)) {
                 Widget.MessageBox.Error($"文件 '{Path.GetFileName(filePath)}' 不存在");
