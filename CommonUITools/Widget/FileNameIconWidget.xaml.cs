@@ -1,6 +1,5 @@
 ﻿using CommonUITools.Converter;
 using NLog;
-using SharpVectors.Converters;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,10 +58,10 @@ public partial class FileNameIconWidget : UserControl {
     private void AutoIconPropertyChangedHandler(object? sender, EventArgs e) {
         // 自动获取
         if (!AutoIcon) {
-            FileIconViewbox.SetBinding(SvgViewbox.SourceProperty, new Binding(nameof(IconPath)));
+            FileIconImage.SetBinding(Image.SourceProperty, new Binding(nameof(IconPath)));
             return;
         }
-        FileIconViewbox.SetBinding(SvgViewbox.SourceProperty, new Binding(nameof(FileName)) {
+        FileIconImage.SetBinding(Image.SourceProperty, new Binding(nameof(FileName)) {
             Converter = FileIconConverter
         });
     }
