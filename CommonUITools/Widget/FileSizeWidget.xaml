@@ -8,6 +8,7 @@
   Name="FileSizeWidgetRoot"
   d:DesignHeight="450"
   d:DesignWidth="800"
+  Visibility="{Binding FileSize, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource HideIfZeroConverter}}"
   mc:Ignorable="d">
   <StackPanel Orientation="Horizontal">
     <TextBlock Text="{Binding Prefix, ElementName=FileSizeWidgetRoot}" Visibility="{Binding Text, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource HideIfEmptyConverter}}" />
