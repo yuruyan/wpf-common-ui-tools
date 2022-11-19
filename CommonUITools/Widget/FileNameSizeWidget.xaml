@@ -39,7 +39,10 @@
     </ContextMenu>
   </ui:SimpleStackPanel.ContextMenu>
 
-  <local:FileNameIconWidget FileName="{Binding FileName, ElementName=FileNameSizeWidgetRoot}" IconSize="30" />
+  <local:FileNameIconWidget
+    HorizontalAlignment="Center"
+    FileName="{Binding FileName, ElementName=FileNameSizeWidgetRoot}"
+    IconSize="30" />
   <local:FileSizeWidget
     HorizontalAlignment="Center"
     FileName="{Binding FileName, ElementName=FileNameSizeWidgetRoot}"
