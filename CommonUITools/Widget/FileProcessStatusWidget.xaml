@@ -1,0 +1,92 @@
+﻿<UserControl
+  x:Class="CommonUITools.Widget.FileProcessStatusWidget"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="clr-namespace:CommonUITools.Widget"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:ui="http://schemas.modernwpf.com/2019"
+  Name="FileProcessStatusWidgetRoot"
+  d:DesignHeight="450"
+  d:DesignWidth="800"
+  mc:Ignorable="d">
+  <UserControl.Resources>
+    <local:ProcessResultIconConverter x:Key="ProcessResultIconConverter" />
+    <local:ProcessResultIconForegroundConverter x:Key="ProcessResultIconForegroundConverter" />
+    <local:ProcessVisibilityConverter x:Key="ProcessVisibilityConverter" />
+  </UserControl.Resources>
+
+  <ListBox x:Name="FileProcessListBox" ItemsSource="{Binding FileProcessStatusList, ElementName=FileProcessStatusWidgetRoot}">
+    <ListBox.ItemContainerStyle>
+      <Style BasedOn="{StaticResource DefaultListBoxItemStyle}" TargetType="ListBoxItem">
+        <Setter Property="Padding" Value="0" />
+      </Style>
+    </ListBox.ItemContainerStyle>
+    <ListBox.ItemTemplate>
+      <DataTemplate>
+        <Grid Width="{Binding ElementName=FileProcessListBox, Path=ActualWidth, Converter={StaticResource SubtractConverter}, ConverterParameter=10}" Background="Transparent">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="80" />
+          </Grid.ColumnDefinitions>
+          <Grid.ContextMenu>
+            <ContextMenu>
+              <!--  文件未完成则不显示  -->
+              <MenuItem
+                Click="OpenFileClickHandler"
+                Header="打开文件"
+                Loaded="OpenFileMenuItemLoadedHandler">
+                <MenuItem.Icon>
+                  <TextBlock Style="{StaticResource CommonUIToolsIconFontStyle}" Text="&#xe671;" />
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Click="OpenDirectoryClickHandler" Header="打开所在目录">
+                <MenuItem.Icon>
+                  <TextBlock
+                    Foreground="#f5a623"
+                    Style="{StaticResource CommonUIToolsIconFontStyle}"
+                    Text="&#xe660;" />
+                </MenuItem.Icon>
+              </MenuItem>
+            </ContextMenu>
+          </Grid.ContextMenu>
+          <!--  Name  -->
+          <local:FileNameIconWidget
+            Padding="0,8"
+            HorizontalAlignment="Left"
+            FileName="{Binding FileName}" />
+          <!--  进度  -->
+          <TextBlock
+            Grid.Column="1"
+            Padding="16,0"
+            FontFamily="{StaticResource ASCIIFontFamily}"
+            Text="{Binding Process, StringFormat='{}{0:P0}'}"
+            Visibility="{Binding Status, Converter={StaticResource ProcessVisibilityConverter}}" />
+          <!--  状态  -->
+          <Grid Grid.Column="2">
+            <!--  正在处理  -->
+            <ui:ProgressRing
+              IsActive="True"
+              ToolTip="处理中"
+              Visibility="{Binding Status, Converter={StaticResource HideIfNotEuqalConverter}, ConverterParameter='Processing'}" />
+            <!--  其他状态，显示图标  -->
+            <TextBlock
+              Foreground="{Binding Status, Converter={StaticResource ProcessResultIconForegroundConverter}}"
+              Style="{StaticResource CommonUIToolsIconFontStyle}"
+              Text="{Binding Status, Converter={StaticResource ProcessResultIconConverter}}"
+              ToolTip=""
+              Visibility="{Binding Status, Converter={StaticResource HideIfEuqalConverter}, ConverterParameter='Processing'}" />
+          </Grid>
+          <!--  Size  -->
+          <local:FileSizeWidget
+            Grid.Column="3"
+            Padding="0,8"
+            HorizontalAlignment="Right"
+            FileName="{Binding}" />
+        </Grid>
+      </DataTemplate>
+    </ListBox.ItemTemplate>
+  </ListBox>
+</UserControl>

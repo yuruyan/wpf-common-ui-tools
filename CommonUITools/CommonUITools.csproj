@@ -16,12 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resource\IconFont.ttf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="App.xaml" />
   </ItemGroup>
@@ -56,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resource\IconFont.ttf"/>
     <None Update="Resource\icon.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
