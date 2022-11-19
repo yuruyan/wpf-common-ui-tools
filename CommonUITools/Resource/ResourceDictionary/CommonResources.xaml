@@ -4,6 +4,8 @@
   xmlns:system="clr-namespace:System;assembly=System.Runtime">
   <FontFamily x:Key="SystemFontFamily">等线</FontFamily>
   <system:Double x:Key="SystemFontSize">17</system:Double>
+  <system:Double x:Key="SystemFontSizeSmall">15</system:Double>
+  <system:Double x:Key="SystemFontSizeBig">19</system:Double>
   <!--  ContextMenu StackPanelSpacing  -->
   <system:Double x:Key="ContextMenuSimpleStackPanelSpacing">8</system:Double>
   <system:Double x:Key="ContextMenuItemHeight">35</system:Double>

@@ -2,6 +2,7 @@
 using CommonUITools.Utils;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -22,6 +23,27 @@ internal class ProcessResultIconConverter : IValueConverter {
             };
         }
         return "\ue602";
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}
+
+internal class ProcessResultMessageConverter : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        if (value is ProcessResult result) {
+            return result switch {
+                ProcessResult.NotStarted => "未开始",
+                ProcessResult.Processing => "处理中",
+                ProcessResult.Paused => "暂停",
+                ProcessResult.Interrupted => "终止",
+                ProcessResult.Successful => "成功",
+                ProcessResult.Failed => "失败",
+                _ => string.Empty
+            };
+        }
+        return string.Empty;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -73,6 +95,8 @@ internal class ProcessVisibilityConverter : IValueConverter {
 
 public partial class FileProcessStatusWidget : UserControl {
     public static readonly DependencyProperty FileProcessStatusListProperty = DependencyProperty.Register("FileProcessStatusList", typeof(ObservableCollection<FileProcessStatus>), typeof(FileProcessStatusWidget), new PropertyMetadata());
+    public static readonly DependencyProperty FinishedCountProperty = DependencyProperty.Register("FinishedCount", typeof(int), typeof(FileProcessStatusWidget), new PropertyMetadata(0));
+    public static readonly DependencyProperty HasTaskRunningProperty = DependencyProperty.Register("HasTaskRunning", typeof(bool), typeof(FileProcessStatusWidget), new PropertyMetadata(false));
 
     /// <summary>
     /// FileProcessStatusList
@@ -81,9 +105,36 @@ public partial class FileProcessStatusWidget : UserControl {
         get { return (ObservableCollection<FileProcessStatus>)GetValue(FileProcessStatusListProperty); }
         set { SetValue(FileProcessStatusListProperty, value); }
     }
+    /// <summary>
+    /// 完成任务数
+    /// </summary>
+    public int FinishedCount {
+        get { return (int)GetValue(FinishedCountProperty); }
+        set { SetValue(FinishedCountProperty, value); }
+    }
+    /// <summary>
+    /// 是否有任务正在运行
+    /// </summary>
+    public bool HasTaskRunning {
+        get { return (bool)GetValue(HasTaskRunningProperty); }
+        set { SetValue(HasTaskRunningProperty, value); }
+    }
+    /// <summary>
+    /// 更新状态 Timer
+    /// </summary>
+    private readonly System.Timers.Timer UpdateStatusTimer = new(1500);
 
     public FileProcessStatusWidget() {
         FileProcessStatusList = new();
+        UpdateStatusTimer.Elapsed += (_, _) => {
+            Dispatcher.Invoke(() => {
+                HasTaskRunning = FileProcessStatusList.Any(f => f.Status == ProcessResult.Processing);
+                FinishedCount = FileProcessStatusList.Count(f => f.Status switch {
+                    ProcessResult.Interrupted or ProcessResult.Successful or ProcessResult.Failed => true,
+                    _ => false
+                });
+            });
+        };
         InitializeComponent();
     }
 
@@ -124,5 +175,25 @@ public partial class FileProcessStatusWidget : UserControl {
                 _ => Visibility.Collapsed
             };
         }
+    }
+
+    /// <summary>
+    /// 开启定时器
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ViewLoadedHandler(object sender, RoutedEventArgs e) {
+        e.Handled = true;
+        UpdateStatusTimer.Start();
+    }
+
+    /// <summary>
+    /// 暂停定时器
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ViewUnloadedHandler(object sender, RoutedEventArgs e) {
+        e.Handled = true;
+        UpdateStatusTimer.Stop();
     }
 }

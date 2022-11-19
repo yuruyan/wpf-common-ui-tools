@@ -110,11 +110,11 @@
             <!--  全部文件个数  -->
             <TextBlock
               Padding="0,0,8,0"
-              FontSize="15"
+              FontSize="{StaticResource SystemFontSizeSmall}"
               Text="{Binding FileNameList.Count, ElementName=MultiDragDropTextBoxRoot, StringFormat='共 {0} 个文件'}" />
             <!--  选中文件个数  -->
             <TextBlock
-              FontSize="15"
+              FontSize="{StaticResource SystemFontSizeSmall}"
               Text="{Binding SelectedItems.Count, ElementName=FileNameListBox, StringFormat='已选中 {0} 项'}"
               Visibility="{Binding SelectedItems.Count, ElementName=FileNameListBox, Converter={StaticResource HideIfEuqalConverter}, ConverterParameter=0}" />
           </StackPanel>
