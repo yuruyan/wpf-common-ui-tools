@@ -88,12 +88,12 @@
                 ToolTip="{Binding Status, Converter={StaticResource ProcessResultMessageConverter}}"
                 Visibility="{Binding Status, Converter={StaticResource HideIfEuqalConverter}, ConverterParameter='Processing'}" />
             </Grid>
-            <!--  Size  -->
-            <local:FileSizeWidget
+            <!--  FileSize  -->
+            <TextBlock
               Grid.Column="3"
               Padding="0,8"
               HorizontalAlignment="Right"
-              FileName="{Binding}" />
+              Text="{Binding FileSize, Converter={StaticResource FileSizeConverter}}" />
           </Grid>
         </DataTemplate>
       </ListBox.ItemTemplate>
