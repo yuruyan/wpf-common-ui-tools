@@ -2,8 +2,11 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media.Animation;
 
 namespace CommonUITools.Widget;
 
@@ -74,6 +77,10 @@ public partial class MultiDragDropTextBox : UserControl {
     /// 获取完整文件名列表
     /// </summary>
     public IList<string> FileNames => FileNameList.ToList();
+    /// <summary>
+    /// FileListInfoBorderFadeOut 动画
+    /// </summary>
+    private Storyboard? FileListInfoBorderFadeOutStoryboard;
 
     public MultiDragDropTextBox() {
         FileNameList = new();
@@ -92,13 +99,14 @@ public partial class MultiDragDropTextBox : UserControl {
                     FileNameList.Clear();
                 }
             });
-        InitializeComponent();
         // 设置 TextBox 默认 Style
         UIUtils.SetLoadedOnceEventHandler(this, (_, _) => {
             if (TryFindResource("MultilineTextBoxStyle") is Style style) {
                 TextBoxStyle ??= style;
             }
+            FileListInfoBorderFadeOutStoryboard = (Storyboard)Resources["FileListInfoBorderFadeOutStoryboard"];
         });
+        InitializeComponent();
     }
 
     /// <summary>
@@ -180,5 +188,25 @@ public partial class MultiDragDropTextBox : UserControl {
             // 更新
             HasFile = FileNameList.Count > 0;
         }
+    }
+
+    /// <summary>
+    /// 鼠标移开
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ViewMouseLeaveHandler(object sender, MouseEventArgs e) {
+        e.Handled = true;
+        FileListInfoBorderFadeOutStoryboard?.Begin();
+    }
+
+    /// <summary>
+    /// 鼠标移入
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ViewMouseEnterHandler(object sender, MouseEventArgs e) {
+        FileListInfoBorderFadeOutStoryboard?.Stop();
+        FileListInfoBorder.Opacity = 1;
     }
 }
