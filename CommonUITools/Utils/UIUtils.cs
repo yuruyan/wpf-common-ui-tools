@@ -452,7 +452,7 @@ public static class UIUtils {
         }
     }
 
-    private static readonly IDictionary<FrameworkElement, RoutedEventHandler> LoadedOnceEventHandlerDict = new Dictionary<FrameworkElement, RoutedEventHandler>();
+    private static readonly IDictionary<FrameworkElement, ICollection<RoutedEventHandler>> LoadedOnceEventHandlersDict = new Dictionary<FrameworkElement, ICollection<RoutedEventHandler>>();
 
     /// <summary>
     /// 设置只执行一次的 Loaded EventHandler
@@ -460,14 +460,22 @@ public static class UIUtils {
     /// <param name="element"></param>
     /// <param name="handler"></param>
     public static void SetLoadedOnceEventHandler(FrameworkElement element, RoutedEventHandler handler) {
-        LoadedOnceEventHandlerDict[element] = handler;
-        element.Loaded += LoadedOnceEventHandlerInternal;
+        // 初始化
+        if (!LoadedOnceEventHandlersDict.ContainsKey(element)) {
+            LoadedOnceEventHandlersDict[element] = new List<RoutedEventHandler>();
+            element.Loaded += LoadedOnceEventHandlerInternal;
+        }
+        LoadedOnceEventHandlersDict[element].Add(handler);
     }
 
     private static void LoadedOnceEventHandlerInternal(object sender, RoutedEventArgs e) {
         if (sender is FrameworkElement element) {
-            element.Loaded -= LoadedOnceEventHandlerInternal;
-            LoadedOnceEventHandlerDict[element](sender, e);
+            // 逐一调用
+            foreach (var handler in LoadedOnceEventHandlersDict[element]) {
+                handler(sender, e);
+            }
+            // 清除
+            LoadedOnceEventHandlersDict[element].Clear();
         }
     }
 
