@@ -517,18 +517,12 @@ public class FileNameConverter : IValueConverter {
 public class FileSizeConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
         var size = System.Convert.ToUInt64(value);
-        if (size == 0) {
-            return 0;
-        }
-        if (size < 1024) {
-            return string.Format("{0} B", size);
-        } else if (size < 0x100000) {
-            return string.Format("{0:F2} KB", size / (double)1024);
-        } else if (size < 0x40000000) {
-            return string.Format("{0:F2} MB", size / (double)0x100000);
-        } else {
-            return string.Format("{0:F2} GB", size / (double)0x40000000);
-        }
+        return size switch {
+            < 1024 => string.Format("{0} B", size),
+            < ConstantUtils.OneMbSize => (size / (double)1024).ToString("#.## KB"),
+            < ConstantUtils.OneGbSize => (size / (double)0x100000).ToString("#.## MB"),
+            _ => (size / (double)0x40000000).ToString("#.## GB"),
+        };
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -598,10 +592,12 @@ public class FilePngIconConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
         var image = new BitmapImage();
         image.BeginInit();
+        image.CacheOption = BitmapCacheOption.OnLoad;
         image.StreamSource = File.OpenRead(new(
             Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, FileIconUtils.GetPngIcon(value.ToString() ?? string.Empty)[1..])
         ));
         image.EndInit();
+        image.Freeze();
         return image;
     }
 
