@@ -45,7 +45,7 @@ public static class ExtensionUtils {
     /// <typeparam name="T"></typeparam>
     /// <param name="values"></param>
     /// <param name="count">打印输出个数，-1 代表打印所有</param>
-    public static void PrintArray<T>(this IEnumerable<T> values, int count = -1) {
+    public static void Print<T>(this IEnumerable<T> values, int count = -1) {
         if (count == -1) {
             foreach (var item in values) {
                 Console.WriteLine(item);
@@ -60,6 +60,29 @@ public static class ExtensionUtils {
             }
         }
     }
+
+    /// <summary>
+    /// 打印数组
+    /// </summary>
+    /// <param name="array"></param>
+    /// <param name="count">打印输出个数，-1 代表打印所有</param>
+    public static void PrintArray(this Array array, int count = -1) {
+        if (count == -1) {
+            foreach (var item in array) {
+                Console.WriteLine(item);
+            }
+            return;
+        }
+        int index = 1;
+        foreach (var item in array) {
+            Console.WriteLine(item);
+            if (index++ >= count) {
+                return;
+            }
+        }
+    }
+
+
 
     /// <summary>
     /// 更新现有集合，不替换元素，更新后长度为 <typeparamref name="Source"/> 的长度
