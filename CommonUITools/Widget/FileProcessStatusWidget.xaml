@@ -99,17 +99,19 @@
       </ListBox.ItemTemplate>
     </ListBox>
     <!--  状态信息  -->
-    <StackPanel
+    <Border
       Grid.Row="1"
+      Padding="4"
       HorizontalAlignment="Left"
-      Orientation="Horizontal"
       Visibility="{Binding FileProcessStatusList.Count, ElementName=FileProcessStatusWidgetRoot, Converter={StaticResource HideIfZeroConverter}}">
-      <TextBlock FontSize="{StaticResource SystemFontSizeSmall}" Text="{Binding FinishedCount, ElementName=FileProcessStatusWidgetRoot, StringFormat='总进度：{0}'}" />
-      <TextBlock FontSize="{StaticResource SystemFontSizeSmall}" Text="{Binding FileProcessStatusList.Count, ElementName=FileProcessStatusWidgetRoot, StringFormat=' / {0}'}" />
-      <ui:ProgressRing
-        Margin="8,0,0,0"
-        IsActive="True"
-        Visibility="{Binding HasTaskRunning, ElementName=FileProcessStatusWidgetRoot, Converter={StaticResource HideIfFalseConverter}}" />
-    </StackPanel>
+      <StackPanel Orientation="Horizontal">
+        <TextBlock FontSize="{StaticResource SystemFontSizeSmall}" Text="{Binding FinishedCount, ElementName=FileProcessStatusWidgetRoot, StringFormat='总进度：{0}'}" />
+        <TextBlock FontSize="{StaticResource SystemFontSizeSmall}" Text="{Binding FileProcessStatusList.Count, ElementName=FileProcessStatusWidgetRoot, StringFormat=' / {0}'}" />
+        <ui:ProgressRing
+          Margin="8,0,0,0"
+          IsActive="True"
+          Visibility="{Binding HasTaskRunning, ElementName=FileProcessStatusWidgetRoot, Converter={StaticResource HideIfFalseConverter}}" />
+      </StackPanel>
+    </Border>
   </Grid>
 </UserControl>
