@@ -86,6 +86,14 @@ public static class FileIconUtils {
     }
 
     /// <summary>
+    /// 显式初始化
+    /// </summary>
+    /// <remarks>不调用该方法，程序会自动初始化</remarks>
+    public static void InitializeExplicitly() {
+        _ = GetPngIcon("a.txt");
+    }
+
+    /// <summary>
     /// 返回匹配 Icon 文件名，以 '/' 开头
     /// </summary>
     /// <param name="fileName">文件名或绝对路径</param>
