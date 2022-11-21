@@ -593,9 +593,10 @@ public class FilePngIconConverter : IValueConverter {
         var image = new BitmapImage();
         image.BeginInit();
         image.CacheOption = BitmapCacheOption.OnLoad;
-        image.StreamSource = File.OpenRead(new(
-            Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, FileIconUtils.GetPngIcon(value.ToString() ?? string.Empty)[1..])
-        ));
+        image.UriSource = new(
+            Path.Combine(Path.GetDirectoryName(Environment.ProcessPath)!, FileIconUtils.GetPngIcon(value.ToString() ?? string.Empty)[1..]),
+            UriKind.Absolute
+        );
         image.EndInit();
         image.Freeze();
         return image;
