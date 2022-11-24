@@ -343,18 +343,6 @@
     x:Key="GlobalButtonStyle"
     BasedOn="{StaticResource DefaultButtonStyle}"
     TargetType="Button">
-    <Style.Resources>
-      <SolidColorBrush x:Key="ButtonBackground" Color="{DynamicResource ApplicationBackgroundColor}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{DynamicResource ApplicationBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{DynamicResource ApplicationBackgroundDark2Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrush" Color="{DynamicResource ApplicationBorderForegroundColor}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{DynamicResource ApplicationBorderForegroundColor}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{DynamicResource ApplicationBorderForegroundColor}" />
-      <SolidColorBrush x:Key="ButtonForeground" Color="{DynamicResource ApplicationForegroundColor}" />
-      <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{DynamicResource ApplicationForegroundColor}" />
-      <SolidColorBrush x:Key="ButtonForegroundPressed" Color="{DynamicResource ApplicationForegroundColor}" />
-      <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{DynamicResource ApplicationForegroundColor}" />
-    </Style.Resources>
     <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
     <Setter Property="Padding" Value="16,8,16,8" />
   </Style>
