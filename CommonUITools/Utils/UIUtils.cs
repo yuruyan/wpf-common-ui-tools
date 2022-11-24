@@ -277,22 +277,6 @@ public static class UIUtils {
     }
 
     /// <summary>
-    /// 拷贝 ImageSource
-    /// </summary>
-    /// <param name="filepath">图像路径</param>
-    /// <returns></returns>
-    public static BitmapImage CopyImageSource(string filepath) {
-        var bi = new BitmapImage();
-        using var bitmap = new System.Drawing.Bitmap(filepath);
-        var memoryStream = new MemoryStream();
-        bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
-        bi.BeginInit();
-        bi.StreamSource = memoryStream;
-        bi.EndInit();
-        return bi;
-    }
-
-    /// <summary>
     /// 在浏览器中打开
     /// </summary>
     /// <param name="url"></param>
@@ -487,5 +471,62 @@ public static class UIUtils {
         var children = panel.Children.Cast(o => o as UIElement).Reverse();
         panel.Children.Clear();
         children.ForEach(item => panel.Children.Add(item));
+    }
+
+    /// <summary>
+    /// 拷贝 ImageSource
+    /// </summary>
+    /// <param name="filepath">图像路径</param>
+    /// <returns></returns>
+    public static BitmapImage CopyImageSource(string filepath) {
+        var bi = new BitmapImage();
+        using var bitmap = new System.Drawing.Bitmap(filepath);
+        var memoryStream = new MemoryStream();
+        bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+        bi.BeginInit();
+        bi.StreamSource = memoryStream;
+        bi.EndInit();
+        return bi;
+    }
+
+    /// <summary>
+    /// BitmapSource 转为Bitmap
+    /// </summary>
+    /// <param name="bitmapSource"></param>
+    /// <returns></returns>
+    public static System.Drawing.Bitmap BitmapSourceToBitmap(BitmapSource bitmapSource) {
+        System.Drawing.Bitmap bitmap = new(
+            bitmapSource.PixelWidth,
+            bitmapSource.PixelHeight,
+            System.Drawing.Imaging.PixelFormat.Format32bppArgb
+        );
+        System.Drawing.Imaging.BitmapData data = bitmap.LockBits(
+            new System.Drawing.Rectangle(System.Drawing.Point.Empty, bitmap.Size),
+            System.Drawing.Imaging.ImageLockMode.WriteOnly,
+            System.Drawing.Imaging.PixelFormat.Format32bppArgb
+        );
+        bitmapSource.CopyPixels(
+            Int32Rect.Empty,
+            data.Scan0,
+            data.Height * data.Stride,
+            data.Stride
+        );
+        bitmap.UnlockBits(data);
+        return bitmap;
+    }
+
+    /// <summary>
+    /// Bitmap 转为位图
+    /// </summary>
+    /// <param name="bitmap"></param>
+    /// <returns></returns>
+    public static ImageSource BitmapToImageSource(System.Drawing.Bitmap bitmap) {
+        IntPtr intPtr = bitmap.GetHbitmap();
+        return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+            intPtr,
+            IntPtr.Zero,
+            Int32Rect.Empty,
+            BitmapSizeOptions.FromEmptyOptions()
+        );
     }
 }
