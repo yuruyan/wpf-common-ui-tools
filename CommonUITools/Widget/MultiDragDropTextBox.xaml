@@ -21,6 +21,7 @@
     <system:Int32 x:Key="One">1</system:Int32>
     <Storyboard x:Key="FileListInfoBorderFadeOutStoryboard">
       <DoubleAnimation
+        BeginTime="{StaticResource AnimationTimeSpanLong}"
         Storyboard.TargetName="FileListInfoBorder"
         Storyboard.TargetProperty="Opacity"
         From="1"

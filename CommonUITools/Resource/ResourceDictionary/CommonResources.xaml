@@ -12,6 +12,7 @@
   <system:Double x:Key="ContextMenuItemHeight">35</system:Double>
   <system:Double x:Key="ContextMenuWidth">200</system:Double>
   <system:TimeSpan x:Key="AnimationTimeSpan">0:0:0.3</system:TimeSpan>
+  <system:TimeSpan x:Key="AnimationTimeSpanLong">0:0:0.8</system:TimeSpan>
   <Duration x:Key="AnimationDuration">0:0:0.3</Duration>
   <Duration x:Key="AnimationDurationLong">0:0:0.8</Duration>
   <system:Int32 x:Key="ToolTipServiceInitialShowDelay">250</system:Int32>
