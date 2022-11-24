@@ -529,4 +529,15 @@ public static class UIUtils {
             BitmapSizeOptions.FromEmptyOptions()
         );
     }
+
+    /// <summary>
+    /// Bitmap 转 Stream
+    /// </summary>
+    /// <param name="bitmap"></param>
+    /// <returns></returns>
+    public static Stream BitmapToStream(System.Drawing.Bitmap bitmap) {
+        var memoryStream = new MemoryStream();
+        bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+        return memoryStream;
+    }
 }
