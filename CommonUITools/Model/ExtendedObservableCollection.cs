@@ -14,7 +14,8 @@ public class ExtendedObservableCollection<T> : ObservableCollection<T> {
     }
 
     public void AddRange(IEnumerable<T> collection) {
-        collection.ForEach(this.Add);
-        OnCollectionChanged(new(NotifyCollectionChangedAction.Add, collection.ToList()));
+        CheckReentrancy();
+        collection.ForEach(Items.Add);
+        OnCollectionChanged(new(NotifyCollectionChangedAction.Reset));
     }
 }
