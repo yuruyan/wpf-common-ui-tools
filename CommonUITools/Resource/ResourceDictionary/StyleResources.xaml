@@ -566,4 +566,33 @@
     <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
   </Style>
   <Style BasedOn="{StaticResource GlobalNavigationViewItemStyle}" TargetType="ui:NavigationViewItem" />
+  <!--  TextElementContextMenu  -->
+  <ContextMenu x:Key="TextElementContextMenu">
+    <MenuItem Command="ApplicationCommands.Cut" Header="Cut">
+      <MenuItem.Icon>
+        <ui:SymbolIcon Symbol="Cut" />
+      </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Command="ApplicationCommands.Copy" Header="Copy">
+      <MenuItem.Icon>
+        <ui:SymbolIcon Symbol="Copy" />
+      </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Command="ApplicationCommands.Paste" Header="Paste">
+      <MenuItem.Icon>
+        <ui:SymbolIcon Symbol="Paste" />
+      </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Command="ApplicationCommands.Undo" Header="Undo">
+      <MenuItem.Icon>
+        <ui:SymbolIcon Symbol="Undo" />
+      </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Command="ApplicationCommands.Redo" Header="Redo">
+      <MenuItem.Icon>
+        <ui:SymbolIcon Symbol="Redo" />
+      </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Command="ApplicationCommands.SelectAll" Header="SelectAll" />
+  </ContextMenu>
 </ResourceDictionary>
