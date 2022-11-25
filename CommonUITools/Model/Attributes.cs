@@ -9,3 +9,13 @@
     AllowMultiple = true
 )]
 public sealed class NoExceptionAttribute : Attribute { }
+
+/// <summary>
+/// 表示只有一个实例
+/// </summary>
+[AttributeUsage(
+    AttributeTargets.Class,
+    Inherited = false,
+    AllowMultiple = true
+)]
+public sealed class SingleInstanceAttribute : Attribute { }
