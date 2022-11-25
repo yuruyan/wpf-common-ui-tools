@@ -16,25 +16,6 @@
   <SolidColorBrush x:Key="ApplicationBackgroundDark3" Color="{DynamicResource ApplicationBackgroundDark3Color}" />
   <!--#endregion-->
 
-  <!--#region ButtonColor-->
-  <SolidColorBrush x:Key="ButtonBackground" Color="{DynamicResource SystemAccentColor}" />
-  <SolidColorBrush
-    x:Key="ButtonBackgroundPointerOver"
-    Opacity="0.8"
-    Color="{DynamicResource SystemAccentColorDark1}" />
-  <SolidColorBrush
-    x:Key="ButtonBackgroundPressed"
-    Opacity="0.8"
-    Color="{DynamicResource SystemAccentColorDark2}" />
-  <SolidColorBrush x:Key="ButtonBorderBrush" Color="Transparent" />
-  <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent" />
-  <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent" />
-  <SolidColorBrush x:Key="ButtonForeground" Color="{DynamicResource ApplicationForegroundColor}" />
-  <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{DynamicResource ApplicationForegroundColor}" />
-  <SolidColorBrush x:Key="ButtonForegroundPressed" Color="{DynamicResource ApplicationForegroundColor}" />
-  <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{DynamicResource ApplicationForegroundColor}" />
-  <!--#endregion-->
-
   <!--#region ApplicationForegroundColor-->
   <Color x:Key="ApplicationForegroundColor">#ffffff</Color>
   <SolidColorBrush x:Key="ApplicationForeground" Color="{DynamicResource ApplicationForegroundColor}" />
