@@ -75,24 +75,7 @@
   <Thickness x:Key="PageMargin">8</Thickness>
 
   <!--#region ScrollBar-->
-  <SolidColorBrush x:Key="ThumbNormalBackground" Color="#B3B3B3" />
-  <SolidColorBrush x:Key="ThumbHoverBrushBackground" Color="#9D9D9D" />
   <System:Double x:Key="{x:Static SystemParameters.VerticalScrollBarButtonHeightKey}">48</System:Double>
   <System:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}">48</System:Double>
-  <!--#endregion-->
-
-  <!--#region 覆盖样式-->
-  <SolidColorBrush x:Key="FlyoutPresenterBackground" Color="White" />
-  <SolidColorBrush x:Key="AutoSuggestBoxSuggestionsListBackground" Color="White" />
-  <SolidColorBrush x:Key="ComboBoxBackground" Color="White" />
-  <SolidColorBrush x:Key="ComboBoxItemBackground" Color="White" />
-  <SolidColorBrush x:Key="MenuFlyoutPresenterBackground" Color="White" />
-  <SolidColorBrush x:Key="ToolTipBackground" Color="White" />
-  <SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="{Binding Color, Source={StaticResource Gray2}}" />
-  <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumLowBrush" Color="{Binding Color, Source={StaticResource Gray3}}" />
-  <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{Binding Color, Source={StaticResource Gray4}}" />
-  <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="{Binding Color, Source={StaticResource Gray3}}" />
-  <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="{Binding Color, Source={StaticResource Gray4}}" />
-  <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="{Binding Color, Source={StaticResource Gray3}}" />
   <!--#endregion-->
 </ResourceDictionary>
