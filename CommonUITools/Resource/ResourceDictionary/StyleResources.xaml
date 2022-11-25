@@ -314,30 +314,6 @@
       </Setter.Value>
     </Setter>
   </Style>
-  <!--  TitleBarButtonstyle  -->
-  <Style x:Key="TitleBarButtonstyle" TargetType="Button">
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="Button">
-          <Border x:Name="ContentBackgrond">
-            <ContentPresenter x:Name="Content" />
-          </Border>
-          <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="ContentBackgrond" Property="Background" Value="{DynamicResource TitleBarHoverBackground}" />
-            </Trigger>
-            <Trigger Property="IsMouseOver" Value="False">
-              <Setter TargetName="Content" Property="TextElement.Foreground" Value="{DynamicResource TitleBarTextForeground}" />
-              <Setter TargetName="ContentBackgrond" Property="Background" Value="Transparent" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-              <Setter TargetName="ContentBackgrond" Property="Background" Value="{DynamicResource TitleBarHoverBackgroundDraker}" />
-            </Trigger>
-          </ControlTemplate.Triggers>
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-  </Style>
   <!--  ButtonStyle  -->
   <Style
     x:Key="GlobalButtonStyle"
@@ -347,6 +323,10 @@
     <Setter Property="Padding" Value="16,8,16,8" />
   </Style>
   <Style BasedOn="{StaticResource GlobalButtonStyle}" TargetType="Button" />
+  <!--  TitleBarButtonstyle  -->
+  <Style x:Key="TitleBarButtonstyle" TargetType="ui:TitleBarButton">
+    <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
+  </Style>
   <!--  GlobalWorkingButtonStyle  -->
   <Style BasedOn="{StaticResource GlobalButtonStyle}" TargetType="widget:WorkingButton" />
   <!--  GlobalSingleIconButtonStyle  -->
