@@ -73,7 +73,7 @@
       MaxWidth="450"
       MaxHeight="200"
       Padding="12"
-      Background="White"
+      Background="{DynamicResource ApplicationBackgroundBrush}"
       BorderThickness="1"
       CornerRadius="6">
       <Grid>

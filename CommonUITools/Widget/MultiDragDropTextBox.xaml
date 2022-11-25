@@ -34,6 +34,7 @@
     <!--  文本框  -->
     <TextBox
       util:DragDropHelper.IsEnabled="True"
+      util:DragDropHelper.OverBackground="{DynamicResource ApplicationBackgroundBrushDark1}"
       Style="{Binding TextBoxStyle, ElementName=MultiDragDropTextBoxRoot}"
       Text="{Binding InputText, ElementName=MultiDragDropTextBoxRoot}"
       Visibility="{Binding HasFile, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfTrueConverter}}" />
