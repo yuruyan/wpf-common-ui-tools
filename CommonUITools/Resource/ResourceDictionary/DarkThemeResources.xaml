@@ -7,10 +7,15 @@
 
   <SolidColorBrush x:Key="FlyoutPresenterBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
   <SolidColorBrush x:Key="AutoSuggestBoxSuggestionsListBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="ComboBoxBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="ComboBoxItemBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
   <SolidColorBrush x:Key="MenuFlyoutPresenterBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
   <SolidColorBrush x:Key="ToolTipBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+
+  <!--#region ComboBox-->
+  <SolidColorBrush x:Key="ComboBoxBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackgroundPressed" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrushDark3}}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrushDark2}}" />
+  <!--#endregion-->
 
   <!--#region TextControl-->
   <SolidColorBrush x:Key="TextControlBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
