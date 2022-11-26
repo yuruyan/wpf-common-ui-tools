@@ -276,7 +276,7 @@
   </Style>
   <!--  BaseDialogIconStyle  -->
   <Style x:Key="BaseDialogIconStyle" TargetType="TextBlock">
-    <Setter Property="FontFamily" Value="{StaticResource IconFontUrI}" />
+    <Setter Property="FontFamily" Value="{StaticResource CommonUIToolsIconFontUrI}" />
     <Setter Property="FontSize" Value="22" />
   </Style>
   <!--  InfoIconStyle  -->
