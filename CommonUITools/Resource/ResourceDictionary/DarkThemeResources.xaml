@@ -9,6 +9,8 @@
   <SolidColorBrush x:Key="AutoSuggestBoxSuggestionsListBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
   <SolidColorBrush x:Key="MenuFlyoutPresenterBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
   <SolidColorBrush x:Key="ToolTipBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="NumberBoxPopupBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="NumberBoxPopupSpinButtonBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
 
   <!--#region ButtonColor-->
   <SolidColorBrush x:Key="ButtonBackground" Color="{DynamicResource SystemAccentColor}" />
