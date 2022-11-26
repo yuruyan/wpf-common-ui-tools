@@ -39,4 +39,8 @@
   <SolidColorBrush x:Key="ThumbNormalBackground" Color="{Binding Color, Source={StaticResource Gray8}}" />
   <SolidColorBrush x:Key="ThumbHoverBrushBackground" Color="{Binding Color, Source={StaticResource Gray10}}" />
   <!--#endregion-->
+
+  <!--#region DragDropOverBackgroundBrush-->
+  <SolidColorBrush x:Key="DragDropOverBackgroundBrush" Color="{Binding Color, Source={StaticResource Gray4}}" />
+  <!--#endregion-->
 </ResourceDictionary>

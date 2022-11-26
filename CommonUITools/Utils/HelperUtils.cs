@@ -3,6 +3,7 @@ using NLog;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -440,11 +441,11 @@ public static class GridViewColumnHelper {
 
 /// <summary>
 /// DragDropHelper，DragOver 时背景会发生变化
-/// 默认背景为 #e7e7e7
+/// 默认背景为 ApplicationBackgroundBrushLight1
 /// </summary>
 public static class DragDropHelper {
     public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(DragDropHelper), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
-    public static readonly DependencyProperty OverBackgroundProperty = DependencyProperty.RegisterAttached("OverBackground", typeof(Brush), typeof(DragDropHelper), new PropertyMetadata(UIUtils.StringToBrush("#e7e7e7")));
+    public static readonly DependencyProperty OverBackgroundProperty = DependencyProperty.RegisterAttached("OverBackground", typeof(Brush), typeof(DragDropHelper), new PropertyMetadata());
 
     /// <summary>
     /// 是否启用
@@ -471,13 +472,15 @@ public static class DragDropHelper {
     /// 元素初始状态设置的 Background
     /// </summary>
     private static readonly IDictionary<DependencyObject, Brush> ElementBackgroundDict = new Dictionary<DependencyObject, Brush>();
+    private static readonly IDictionary<DependencyObject, BindingExpression?> ElementBackgroundBindingDict = new Dictionary<DependencyObject, BindingExpression?>();
     /// <summary>
     /// 元素 Background PropertyInfo
     /// </summary>
     private static readonly IDictionary<DependencyObject, PropertyInfo> ElementPropertyDict = new Dictionary<DependencyObject, PropertyInfo>();
+    private static readonly Brush FallbackOverBackgroundBrush = new SolidColorBrush(Colors.Transparent);
 
     private static void IsEnabledPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-        if (d is not UIElement element) {
+        if (d is not FrameworkElement element) {
             return;
         }
 
@@ -529,25 +532,24 @@ public static class DragDropHelper {
 
     private static void PreviewDropHandler(object sender, DragEventArgs e) {
         if (sender is DependencyObject element) {
-            ElementPropertyDict[element].SetValue(element, ElementBackgroundDict[element]);
+            ElementPropertyDict[element].SetValue(element, FallbackOverBackgroundBrush);
         }
     }
 
     private static void PreviewDragLeaveHandler(object sender, DragEventArgs e) {
         if (sender is DependencyObject element) {
-            ElementPropertyDict[element].SetValue(element, ElementBackgroundDict[element]);
+            ElementPropertyDict[element].SetValue(element, FallbackOverBackgroundBrush);
         }
     }
 
     private static void PreviewDragEnterHandler(object sender, DragEventArgs e) {
-        if (sender is DependencyObject element) {
-            CommonUtils.EnsureCalledOnce(element, () => {
-                // 此时 background 已经初始完毕
-                if (ElementPropertyDict[element].GetValue(element) is var bg && bg != null) {
-                    ElementPropertyDict[element].SetValue(element, bg);
-                }
-            });
-            ElementPropertyDict[element].SetValue(element, GetOverBackground(element));
+        if (sender is FrameworkElement element) {
+            var newBrush = GetOverBackground(element);
+            newBrush ??= element.TryFindResource("DragDropOverBackgroundBrush") as SolidColorBrush;
+            ElementPropertyDict[element].SetValue(
+                element,
+                newBrush ?? FallbackOverBackgroundBrush
+            );
         }
     }
 }
