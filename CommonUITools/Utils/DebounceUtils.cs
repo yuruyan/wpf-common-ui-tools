@@ -13,9 +13,10 @@ public static class DebounceUtils {
     /// <param name="interval"></param>
     public static void Debounce(object identifier, Action callback, bool callRegular = false, int interval = 500) {
         if (DebounceState2Dict.ContainsKey(identifier)) {
-            var value = DebounceState2Dict[identifier];
-            value.IsAccessed = true;
-            value.LastAccessTime = DateTime.Now;
+            var _state = DebounceState2Dict[identifier];
+            _state.Callback = callback;
+            _state.IsAccessed = true;
+            _state.LastAccessTime = DateTime.Now;
             return;
         }
         // 初始化
@@ -27,15 +28,17 @@ public static class DebounceUtils {
                 return;
             }
             if (callRegular) {
-                DebounceState2Dict[identifier].IsAccessed = false;
-                callback();
+                var state = DebounceState2Dict[identifier];
+                state.IsAccessed = false;
+                state.Callback();
                 return;
             }
             // 超过了 interval
             if (state.LastAccessTime.AddMilliseconds(interval) <= DateTime.Now) {
-                DebounceState2Dict[identifier].IsAccessed = false;
-                DebounceState2Dict[identifier].LastAccessTime = DateTime.Now;
-                callback();
+                var state = DebounceState2Dict[identifier];
+                state.IsAccessed = false;
+                state.LastAccessTime = DateTime.Now;
+                state.Callback();
             }
         };
         state.Timer.Start();
@@ -84,6 +87,7 @@ public static class DebounceUtils {
         public System.Timers.Timer Timer { get; set; } = new();
         public DateTime LastAccessTime { get; set; } = DateTime.Now;
         public bool IsAccessed { get; set; } = false;
+        public Action Callback { get; set; } = () => { };
     }
 
     private record State {
