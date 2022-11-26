@@ -36,7 +36,7 @@
   <!--#endregion-->
 
   <!--#region ScrollBar-->
-  <SolidColorBrush x:Key="ThumbNormalBackground" Color="#B3B3B3" />
-  <SolidColorBrush x:Key="ThumbHoverBrushBackground" Color="#9D9D9D" />
+  <SolidColorBrush x:Key="ThumbNormalBackground" Color="{Binding Color, Source={StaticResource Gray8}}" />
+  <SolidColorBrush x:Key="ThumbHoverBrushBackground" Color="{Binding Color, Source={StaticResource Gray10}}" />
   <!--#endregion-->
 </ResourceDictionary>
