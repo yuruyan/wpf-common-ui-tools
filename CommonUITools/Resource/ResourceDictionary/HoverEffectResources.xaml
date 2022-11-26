@@ -9,10 +9,7 @@
     TargetType="Border">
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{StaticResource Gray3}" />
-      </Trigger>
-      <Trigger Property="IsMouseOver" Value="False">
-        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Background" Value="{DynamicResource ApplicationBackgroundBrushDark1}" />
       </Trigger>
     </Style.Triggers>
   </Style>
