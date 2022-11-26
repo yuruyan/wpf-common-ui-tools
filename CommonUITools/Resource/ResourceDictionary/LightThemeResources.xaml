@@ -43,4 +43,19 @@
   <!--#region DragDropOverBackgroundBrush-->
   <SolidColorBrush x:Key="DragDropOverBackgroundBrush" Color="{Binding Color, Source={StaticResource Gray4}}" />
   <!--#endregion-->
+
+  <!--#region MessageBox-->
+  <SolidColorBrush x:Key="MessageBoxInfoBackgroundBrush" Color="#F4F4F5" />
+  <SolidColorBrush x:Key="MessageBoxSuccessBackgroundBrush" Color="#f0f9eb" />
+  <SolidColorBrush x:Key="MessageBoxWarningBackgroundBrush" Color="#fdf6ec" />
+  <SolidColorBrush x:Key="MessageBoxErrorBackgroundBrush" Color="#fef0f0" />
+  <SolidColorBrush x:Key="MessageBoxInfoForegroundBrush" Color="#9D9399" />
+  <SolidColorBrush x:Key="MessageBoxSuccessForegroundBrush" Color="#67C28A" />
+  <SolidColorBrush x:Key="MessageBoxWarningForegroundBrush" Color="#E6A23C" />
+  <SolidColorBrush x:Key="MessageBoxErrorForegroundBrush" Color="#F66C6C" />
+  <SolidColorBrush x:Key="MessageBoxInfoBorderBrush" Color="#e5e5e6" />
+  <SolidColorBrush x:Key="MessageBoxSuccessBorderBrush" Color="#dbe4d7" />
+  <SolidColorBrush x:Key="MessageBoxWarningBorderBrush" Color="#e8e1d8" />
+  <SolidColorBrush x:Key="MessageBoxErrorBorderBrush" Color="#eee1e1" />
+  <!--#endregion-->
 </ResourceDictionary>

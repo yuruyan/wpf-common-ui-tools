@@ -1,6 +1,7 @@
 ﻿using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace CommonUITools.Widget;
@@ -10,9 +11,9 @@ namespace CommonUITools.Widget;
 /// </summary>
 public partial class MessageBox : UserControl {
 
-    private static readonly DependencyProperty BoxBackgroundProperty = DependencyProperty.Register("BoxBackground", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
-    private static readonly DependencyProperty BoxForegroundProperty = DependencyProperty.Register("BoxForeground", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
-    private static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
+    private static readonly DependencyProperty BoxBackgroundProperty = DependencyProperty.Register("BoxBackground", typeof(SolidColorBrush), typeof(MessageBox), new PropertyMetadata());
+    private static readonly DependencyProperty BoxForegroundProperty = DependencyProperty.Register("BoxForeground", typeof(SolidColorBrush), typeof(MessageBox), new PropertyMetadata());
+    private static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(SolidColorBrush), typeof(MessageBox), new PropertyMetadata());
     private static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
     public static readonly DependencyProperty MessageTypeProperty = DependencyProperty.Register("MessageType", typeof(MessageType), typeof(MessageBox), new PropertyMetadata(MessageType.Info));
@@ -28,22 +29,22 @@ public partial class MessageBox : UserControl {
     /// <summary>
     /// Background
     /// </summary>
-    private string BoxBackground {
-        get { return (string)GetValue(BoxBackgroundProperty); }
+    private SolidColorBrush BoxBackground {
+        get { return (SolidColorBrush)GetValue(BoxBackgroundProperty); }
         set { SetValue(BoxBackgroundProperty, value); }
     }
     /// <summary>
     /// Foreground
     /// </summary>
-    private string BoxForeground {
-        get { return (string)GetValue(BoxForegroundProperty); }
+    private SolidColorBrush BoxForeground {
+        get { return (SolidColorBrush)GetValue(BoxForegroundProperty); }
         set { SetValue(BoxForegroundProperty, value); }
     }
     /// <summary>
     /// BorderColor
     /// </summary>
-    private string BorderColor {
-        get { return (string)GetValue(BorderColorProperty); }
+    private SolidColorBrush BorderColor {
+        get { return (SolidColorBrush)GetValue(BorderColorProperty); }
         set { SetValue(BorderColorProperty, value); }
     }
     /// <summary>
@@ -95,9 +96,6 @@ public partial class MessageBox : UserControl {
     public MessageBox(string message, MessageType messageType = MessageType.Info) {
         Text = message;
         MessageType = messageType;
-        BoxBackground = WidgetGlobal.MessageInfoDict[MessageType].Background;
-        BoxForeground = WidgetGlobal.MessageInfoDict[MessageType].Foreground;
-        BorderColor = WidgetGlobal.MessageInfoDict[MessageType].BorderColor;
         Icon = WidgetGlobal.MessageInfoDict[MessageType].Icon;
         InitializeComponent();
         UnloadTimer = new(ShowingDuration) { AutoReset = false };
@@ -145,7 +143,22 @@ public partial class MessageBox : UserControl {
         if (Resources["LoadStoryboard"] is not Storyboard loadStoryboard) {
             return;
         }
-
+        UpdateBrush();
         loadStoryboard.Begin();
+    }
+
+    /// <summary>
+    /// 更新 Color
+    /// </summary>
+    private void UpdateBrush() {
+        if (TryFindResource($"MessageBox{MessageType}BackgroundBrush") is SolidColorBrush bgb) {
+            BoxBackground = bgb;
+        }
+        if (TryFindResource($"MessageBox{MessageType}ForegroundBrush") is SolidColorBrush fgb) {
+            BoxForeground = fgb;
+        }
+        if (TryFindResource($"MessageBox{MessageType}BorderBrush") is SolidColorBrush borderBrush) {
+            BorderColor = borderBrush;
+        }
     }
 }
