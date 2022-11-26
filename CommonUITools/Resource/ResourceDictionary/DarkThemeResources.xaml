@@ -20,10 +20,10 @@
   <SolidColorBrush
     x:Key="ButtonBackgroundPointerOver"
     Opacity="0.7"
-    Color="{DynamicResource SystemAccentColorDark1}" />
+    Color="{DynamicResource SystemAccentColor}" />
   <SolidColorBrush
     x:Key="ButtonBackgroundPressed"
-    Opacity="1"
+    Opacity="0.8"
     Color="{DynamicResource SystemAccentColorDark1}" />
   <SolidColorBrush x:Key="ButtonBorderBrush" Color="Transparent" />
   <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent" />
