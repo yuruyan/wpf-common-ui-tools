@@ -32,22 +32,6 @@ public static class CommonUtils {
     }
 
     /// <summary>
-    /// 比较两个对象是否相同
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <returns></returns>
-    public static bool Equals<T>(T? x, T? y) {
-        if (x != null) {
-            return x.Equals(y);
-        } else if (y != null) {
-            return y.Equals(x);
-        }
-        return true;
-    }
-
-    /// <summary>
     /// DateTime 转 Timestamp
     /// </summary>
     /// <param name="value"></param>
