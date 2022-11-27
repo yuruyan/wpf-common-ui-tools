@@ -19,3 +19,18 @@ public sealed class NoExceptionAttribute : Attribute { }
     AllowMultiple = true
 )]
 public sealed class SingleInstanceAttribute : Attribute { }
+
+/// <summary>
+/// 表示线程安全
+/// </summary>
+[AttributeUsage(
+    AttributeTargets.Property
+    | AttributeTargets.Class
+    | AttributeTargets.Struct
+    | AttributeTargets.Method
+    | AttributeTargets.Field
+    | AttributeTargets.Delegate,
+    Inherited = false,
+    AllowMultiple = true
+)]
+public sealed class ThreadSafeAttribute : Attribute { }
