@@ -423,7 +423,7 @@ public static class GridViewColumnHelper {
     private static void HeaderMinWidthPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is GridViewColumnHeader header) {
             // 设置 SizeChanged 事件
-            CommonUtils.EnsureCalledOnce(header, () => {
+            TaskUtils.EnsureCalledOnce(header, () => {
                 header.SizeChanged += (sender, args) => {
                     if (args.NewSize.Width <= GetHeaderMinWidth(header)) {
                         // 可能为 null

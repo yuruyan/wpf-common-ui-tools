@@ -42,7 +42,7 @@ public class WorkingButton : Button {
 
     public WorkingButton() {
         Click += ClickHandler;
-        Loaded += (s, e) => CommonUtils.EnsureCalledOnce(
+        Loaded += (s, e) => TaskUtils.EnsureCalledOnce(
             this,
             () => Content = IsWorking ? WorkingContent : NormalContent
         );

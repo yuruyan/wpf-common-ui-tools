@@ -17,7 +17,7 @@ public partial class App : Application {
         => window.Loaded += (_, _) => RegisterWidgetPageInternal(window);
 
     private static void RegisterWidgetPageInternal(Window window) {
-        CommonUtils.EnsureCalledOnce(window, () => {
+        TaskUtils.EnsureCalledOnce(window, () => {
             // 不是 FrameworkElement
             if (window.Content is not FrameworkElement mainContent) {
                 Logger.Error("Window Content is not of type FrameworkElement");

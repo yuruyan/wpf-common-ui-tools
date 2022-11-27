@@ -11,7 +11,7 @@ public static class NetworkUtils {
     /// </summary>
     /// <returns>失败返回 null</returns>
     public static string? GetLocalIpAddress() {
-        return CommonUtils.Try(() => {
+        return TaskUtils.Try(() => {
             using Socket socket = new(AddressFamily.InterNetwork, SocketType.Dgram, 0);
             socket.Connect("8.8.8.8", 65530);
             if (socket.LocalEndPoint is IPEndPoint endPoint) {
