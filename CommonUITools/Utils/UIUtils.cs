@@ -9,6 +9,9 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using SysDraw = System.Drawing;
+using SysDrawImg = System.Drawing.Imaging;
+using SysDrawBitmap = System.Drawing.Bitmap;
 
 namespace CommonUITools.Utils;
 
@@ -128,11 +131,11 @@ public static class UIUtils {
     }
 
     /// <summary>
-    /// System.Drawing.Color 转 System.Windows.Media.Color
+    /// SystemDrawing.Color 转 System.Windows.Media.Color
     /// </summary>
     /// <param name="color"></param>
     /// <returns></returns>
-    public static Color DrawingColorToColor(System.Drawing.Color color)
+    public static Color DrawingColorToColor(SysDraw.Color color)
         => Color.FromArgb(color.A, color.R, color.G, color.B);
 
     /// <summary>
@@ -480,9 +483,9 @@ public static class UIUtils {
     /// <returns></returns>
     public static BitmapImage CopyImageSource(string filepath) {
         var bi = new BitmapImage();
-        using var bitmap = new System.Drawing.Bitmap(filepath);
+        using var bitmap = new SysDrawBitmap(filepath);
         var memoryStream = new MemoryStream();
-        bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+        bitmap.Save(memoryStream, SysDrawImg.ImageFormat.Png);
         bi.BeginInit();
         bi.StreamSource = memoryStream;
         bi.EndInit();
@@ -494,16 +497,16 @@ public static class UIUtils {
     /// </summary>
     /// <param name="bitmapSource"></param>
     /// <returns></returns>
-    public static System.Drawing.Bitmap BitmapSourceToBitmap(BitmapSource bitmapSource) {
-        System.Drawing.Bitmap bitmap = new(
+    public static SysDrawBitmap BitmapSourceToBitmap(BitmapSource bitmapSource) {
+        SysDrawBitmap bitmap = new(
             bitmapSource.PixelWidth,
             bitmapSource.PixelHeight,
-            System.Drawing.Imaging.PixelFormat.Format32bppArgb
+            SysDrawImg.PixelFormat.Format32bppArgb
         );
-        System.Drawing.Imaging.BitmapData data = bitmap.LockBits(
-            new System.Drawing.Rectangle(System.Drawing.Point.Empty, bitmap.Size),
-            System.Drawing.Imaging.ImageLockMode.WriteOnly,
-            System.Drawing.Imaging.PixelFormat.Format32bppArgb
+        SysDrawImg.BitmapData data = bitmap.LockBits(
+            new SysDraw.Rectangle(SysDraw.Point.Empty, bitmap.Size),
+            SysDrawImg.ImageLockMode.WriteOnly,
+            SysDrawImg.PixelFormat.Format32bppArgb
         );
         bitmapSource.CopyPixels(
             Int32Rect.Empty,
@@ -520,7 +523,7 @@ public static class UIUtils {
     /// </summary>
     /// <param name="bitmap"></param>
     /// <returns></returns>
-    public static ImageSource BitmapToImageSource(System.Drawing.Bitmap bitmap) {
+    public static ImageSource BitmapToImageSource(SysDrawBitmap bitmap) {
         IntPtr intPtr = bitmap.GetHbitmap();
         return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
             intPtr,
@@ -535,9 +538,9 @@ public static class UIUtils {
     /// </summary>
     /// <param name="bitmap"></param>
     /// <returns></returns>
-    public static Stream BitmapToStream(System.Drawing.Bitmap bitmap) {
+    public static Stream BitmapToStream(SysDrawBitmap bitmap) {
         var memoryStream = new MemoryStream();
-        bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Png);
+        bitmap.Save(memoryStream, SysDrawImg.ImageFormat.Png);
         return memoryStream;
     }
 }
