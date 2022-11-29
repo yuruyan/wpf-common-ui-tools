@@ -29,7 +29,7 @@ public static class ExtensionUtils {
     /// <param name="enumerable"></param>
     /// <param name="predicate"></param>
     /// <returns>移除的元素</returns>
-    public static IEnumerable<T> RemoveAll<T>(this ICollection<T> enumerable, Func<T, bool> predicate) {
+    public static IList<T> RemoveAll<T>(this ICollection<T> enumerable, Func<T, bool> predicate) {
         List<T> removedList = new();
         foreach (var item in enumerable.Where(predicate).ToArray()) {
             if (enumerable.Remove(item)) {
@@ -81,8 +81,6 @@ public static class ExtensionUtils {
             }
         }
     }
-
-
 
     /// <summary>
     /// 更新现有集合，不替换元素，更新后长度为 <typeparamref name="Source"/> 的长度
