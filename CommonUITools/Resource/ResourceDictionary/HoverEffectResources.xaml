@@ -2,6 +2,11 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:ui="http://schemas.modernwpf.com/2019">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ColorResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/StyleResources.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
   <!--  BorderHoverEffectStyle  -->
   <Style
     x:Key="BorderHoverEffectStyle"

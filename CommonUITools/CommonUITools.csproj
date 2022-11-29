@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="App.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,10 +27,6 @@
     <PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
     <PackageReference Include="SharpVectors" Version="1.7.7" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Include="App.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,7 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resource\IconFont.ttf"/>
+    <Resource Include="Resource\IconFont.ttf" />
     <None Update="Resource\icon.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>

@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using SysDraw = System.Drawing;
 using SysDrawImg = System.Drawing.Imaging;
 using SysDrawBitmap = System.Drawing.Bitmap;
+using System.Collections.ObjectModel;
 
 namespace CommonUITools.Utils;
 
@@ -542,5 +543,36 @@ public static class UIUtils {
         var memoryStream = new MemoryStream();
         bitmap.Save(memoryStream, SysDrawImg.ImageFormat.Png);
         return memoryStream;
+    }
+
+    /// <summary>
+    /// 在 MergedDictionaries 中查找
+    /// </summary>
+    /// <param name="mergedDictionaries"></param>
+    /// <param name="resourceName"></param>
+    /// <returns></returns>
+    public static ResourceDictionary? FindResourceInMergedDictionaries(Collection<ResourceDictionary> mergedDictionaries, string resourceName) {
+        return mergedDictionaries.FirstOrDefault(
+                r => r.Source != null && r.Source.OriginalString == resourceName
+            );
+    }
+
+    /// <summary>
+    /// 替换 ResourceDictionary
+    /// </summary>
+    /// <param name="mergedDictionaries"></param>
+    /// <param name="oldSource"></param>
+    /// <param name="newSource"></param>
+    /// <returns></returns>
+    public static bool ReplaceResourceDictionary(Collection<ResourceDictionary> mergedDictionaries, string oldSource, string newSource) {
+        var oldResource = FindResourceInMergedDictionaries(mergedDictionaries, oldSource);
+        if (oldResource is null) {
+            Logger.Error($"Cannot find resource {oldSource}");
+            return false;
+        }
+        oldResource.BeginInit();
+        oldResource.Source = new(newSource, UriKind.Relative);
+        oldResource.EndInit();
+        return true;
     }
 }

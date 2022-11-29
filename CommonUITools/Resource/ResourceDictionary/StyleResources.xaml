@@ -5,6 +5,11 @@
   xmlns:ui="http://schemas.modernwpf.com/2019"
   xmlns:utils="clr-namespace:CommonUITools.Utils"
   xmlns:widget="clr-namespace:CommonUITools.Widget">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ColorResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/CommonResources.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
   <!--#region ScrollBarStyle-->
   <Style x:Key="ScrollBarRepeatButton" TargetType="{x:Type RepeatButton}">
     <Setter Property="SnapsToDevicePixels" Value="True" />
@@ -207,7 +212,6 @@
     BasedOn="{StaticResource IconFontStyle}"
     TargetType="TextBlock">
     <Setter Property="Margin" Value="0,0,12,0" />
-    <!--<Setter Property="Foreground" Value="{DynamicResource ApplicationForeground}" />-->
   </Style>
   <!--  菜单 TextBlock  -->
   <Style x:Key="MenuTextBlockStyle" TargetType="TextBlock">
@@ -220,9 +224,7 @@
   <Style
     x:Key="ButtonTextBlockStyle"
     BasedOn="{StaticResource GlobalTextBlockStyle}"
-    TargetType="TextBlock">
-    <!--<Setter Property="Foreground" Value="{DynamicResource ApplicationForeground}" />-->
-  </Style>
+    TargetType="TextBlock" />
   <!--  菜单 SimpleStackPanel  -->
   <Style x:Key="ContextMenuSimpleStackPanelStyle" TargetType="ui:SimpleStackPanel">
     <Setter Property="VerticalAlignment" Value="Center" />
@@ -352,12 +354,12 @@
     BasedOn="{StaticResource GlobalButtonStyle}"
     TargetType="Button">
     <Style.Resources>
-      <SolidColorBrush x:Key="ButtonBackground" Color="{DynamicResource ErrorBackgroundColor}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{DynamicResource ErrorBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{DynamicResource ErrorBackgroundDark2Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrush" Color="{DynamicResource ErrorBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{DynamicResource ErrorBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{DynamicResource ErrorBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource ErrorBackgroundColor}" />
+      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource ErrorBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{StaticResource ErrorBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource ErrorBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{StaticResource ErrorBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{StaticResource ErrorBackgroundDark2Color}" />
     </Style.Resources>
     <Setter Property="Foreground" Value="{DynamicResource ErrorForeground}" />
   </Style>
@@ -367,12 +369,12 @@
     BasedOn="{StaticResource GlobalButtonStyle}"
     TargetType="Button">
     <Style.Resources>
-      <SolidColorBrush x:Key="ButtonBackground" Color="{DynamicResource SuccessBackgroundColor}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{DynamicResource SuccessBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{DynamicResource SuccessBackgroundDark2Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrush" Color="{DynamicResource SuccessBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{DynamicResource SuccessBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{DynamicResource SuccessBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource SuccessBackgroundColor}" />
+      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource SuccessBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{StaticResource SuccessBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource SuccessBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{StaticResource SuccessBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{StaticResource SuccessBackgroundDark2Color}" />
     </Style.Resources>
   </Style>
   <!--  WaringButtonStyle  -->
@@ -381,12 +383,12 @@
     BasedOn="{StaticResource GlobalButtonStyle}"
     TargetType="Button">
     <Style.Resources>
-      <SolidColorBrush x:Key="ButtonBackground" Color="{DynamicResource WarningBackgroundColor}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{DynamicResource WarningBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{DynamicResource WarningBackgroundDark2Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrush" Color="{DynamicResource WarningBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{DynamicResource WarningBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{DynamicResource WarningBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource WarningBackgroundColor}" />
+      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource WarningBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{StaticResource WarningBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource WarningBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{StaticResource WarningBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{StaticResource WarningBackgroundDark2Color}" />
     </Style.Resources>
   </Style>
   <!--  多行文本框  -->
@@ -475,48 +477,6 @@
   <Style x:Key="GlobalBorderStyle" TargetType="Border">
     <Setter Property="CornerRadius" Value="4" />
     <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
-  </Style>
-  <!--  GridViewItemContainerStyleKey  -->
-  <Style
-    x:Key="GridViewItemContainerStyleKey"
-    BasedOn="{StaticResource DefaultListViewItemStyle}"
-    TargetType="ListViewItem">
-    <Setter Property="Padding" Value="6,0,6,0" />
-    <Setter Property="MinHeight" Value="{DynamicResource GridViewItemContainerMinHeight}" />
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="ListViewItem">
-          <Border
-            x:Name="Bd"
-            Padding="{TemplateBinding Padding}"
-            Background="{TemplateBinding Background}"
-            BorderBrush="{TemplateBinding BorderBrush}"
-            BorderThickness="{TemplateBinding BorderThickness}"
-            SnapsToDevicePixels="true">
-            <!--  remove the HorizontalAlignment due to HeaderRowPresenter does not have the ability to align to center or right  -->
-            <GridViewRowPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-          </Border>
-          <ControlTemplate.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ListViewItemBackgroundPointerOver}" />
-            </Trigger>
-            <Trigger Property="IsSelected" Value="True">
-              <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ListViewItemBackgroundSelected}" />
-            </Trigger>
-            <MultiTrigger>
-              <MultiTrigger.Conditions>
-                <Condition Property="IsSelected" Value="True" />
-                <Condition Property="IsMouseOver" Value="True" />
-              </MultiTrigger.Conditions>
-              <Setter TargetName="Bd" Property="Background" Value="{DynamicResource ListViewItemBackgroundSelectedPointerOver}" />
-            </MultiTrigger>
-            <Trigger Property="IsEnabled" Value="False">
-              <Setter TargetName="Bd" Property="Opacity" Value="{DynamicResource ListViewItemDisabledThemeOpacity}" />
-            </Trigger>
-          </ControlTemplate.Triggers>
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
   </Style>
   <!--  GridViewColumnHeader  -->
   <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="GridViewColumnHeader">

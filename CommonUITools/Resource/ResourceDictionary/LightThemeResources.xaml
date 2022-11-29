@@ -1,4 +1,11 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:ui="http://schemas.modernwpf.com/2019">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ColorResources.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
   <SolidColorBrush x:Key="ApplicationForegroundBrush" Color="Black" />
   <SolidColorBrush x:Key="ApplicationBackgroundBrush" Color="White" />
   <SolidColorBrush x:Key="ApplicationBackgroundBrushLight1" Color="White" />
@@ -10,8 +17,6 @@
 
   <SolidColorBrush x:Key="FlyoutPresenterBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
   <SolidColorBrush x:Key="AutoSuggestBoxSuggestionsListBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="ComboBoxBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="ComboBoxItemBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
   <SolidColorBrush x:Key="MenuFlyoutPresenterBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
   <SolidColorBrush x:Key="ToolTipBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
   <SolidColorBrush x:Key="NumberBoxPopupBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
@@ -27,10 +32,10 @@
   <SolidColorBrush x:Key="ButtonBorderBrush" Color="Transparent" />
   <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent" />
   <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent" />
-  <SolidColorBrush x:Key="ButtonForeground" Color="{DynamicResource ApplicationForegroundColor}" />
-  <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="{DynamicResource ApplicationForegroundColor}" />
-  <SolidColorBrush x:Key="ButtonForegroundPressed" Color="{DynamicResource ApplicationForegroundColor}" />
-  <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="{DynamicResource ApplicationForegroundColor}" />
+  <SolidColorBrush x:Key="ButtonForeground" Color="White" />
+  <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White" />
+  <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White" />
+  <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="White" />
   <!--#endregion-->
 
   <!--#region ListControl-->
@@ -42,6 +47,26 @@
   <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="{Binding Color, Source={StaticResource Gray3}}" />
   <!--#endregion-->
 
+  <!--#region TextControl-->
+  <SolidColorBrush x:Key="TextControlBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="TextControlButtonBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="TextControlButtonBackgroundPointerOver" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="TextControlButtonBackgroundPressed" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="TextControlForeground" Color="{Binding Color, Source={StaticResource ApplicationForegroundBrush}}" />
+  <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="{Binding Color, Source={StaticResource ApplicationForegroundBrush}}" />
+  <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{Binding Color, Source={StaticResource ApplicationForegroundBrush}}" />
+  <!--#endregion-->
+
+  <!--#region ComboBox-->
+  <SolidColorBrush x:Key="ComboBoxBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackgroundPressed" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrushDark3}}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrushDark2}}" />
+  <!--#endregion-->
+
   <!--#region ScrollBar-->
   <SolidColorBrush x:Key="ThumbNormalBackground" Color="{Binding Color, Source={StaticResource Gray8}}" />
   <SolidColorBrush x:Key="ThumbHoverBrushBackground" Color="{Binding Color, Source={StaticResource Gray10}}" />
@@ -49,20 +74,5 @@
 
   <!--#region DragDropOverBackgroundBrush-->
   <SolidColorBrush x:Key="DragDropOverBackgroundBrush" Color="{Binding Color, Source={StaticResource Gray4}}" />
-  <!--#endregion-->
-
-  <!--#region MessageBox-->
-  <SolidColorBrush x:Key="MessageBoxInfoBackgroundBrush" Color="#F4F4F5" />
-  <SolidColorBrush x:Key="MessageBoxSuccessBackgroundBrush" Color="#f0f9eb" />
-  <SolidColorBrush x:Key="MessageBoxWarningBackgroundBrush" Color="#fdf6ec" />
-  <SolidColorBrush x:Key="MessageBoxErrorBackgroundBrush" Color="#fef0f0" />
-  <SolidColorBrush x:Key="MessageBoxInfoForegroundBrush" Color="#9D9399" />
-  <SolidColorBrush x:Key="MessageBoxSuccessForegroundBrush" Color="#67C28A" />
-  <SolidColorBrush x:Key="MessageBoxWarningForegroundBrush" Color="#E6A23C" />
-  <SolidColorBrush x:Key="MessageBoxErrorForegroundBrush" Color="#F66C6C" />
-  <SolidColorBrush x:Key="MessageBoxInfoBorderBrush" Color="#e5e5e6" />
-  <SolidColorBrush x:Key="MessageBoxSuccessBorderBrush" Color="#dbe4d7" />
-  <SolidColorBrush x:Key="MessageBoxWarningBorderBrush" Color="#e8e1d8" />
-  <SolidColorBrush x:Key="MessageBoxErrorBorderBrush" Color="#eee1e1" />
   <!--#endregion-->
 </ResourceDictionary>

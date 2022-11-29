@@ -188,7 +188,7 @@ public static class CommonUtils {
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="value"></param>
-    /// <returns></returns>
+    /// <returns>如果 <paramref name="value"/> 为 null，则抛出异常，否则返回</returns>
     public static T NullCheck<T>(T? value) {
         ArgumentNullException.ThrowIfNull(value);
         return value;

@@ -98,17 +98,34 @@ public static class TaskUtils {
     private static readonly ConcurrentBag<object> MethodCalledSet = new();
 
     /// <summary>
+    /// 调用过的方法 Set
+    /// </summary>
+    private static readonly ConcurrentBag<(object, object)> MethodCalledTupleSet = new();
+    /// <summary>
+    /// Tuple lock
+    /// </summary>
+    private static readonly IDictionary<(object, object), object> MethodCalledLockDict = new ConcurrentDictionary<(object, object), object>();
+
+    /// <summary>
     /// 确保方法只调用一次
     /// </summary>
     /// <param name="identifier">唯一标识</param>
     /// <param name="callback">回调方法</param>
     /// <returns>返回 true 则未调用过，否则返回 false</returns>
     public static bool EnsureCalledOnce(object identifier, Delegate callback) {
+        return EnsureCalledOnce((identifier, identifier), callback);
+    }
+
+    /// <inheritdoc cref="EnsureCalledOnce"/>
+    public static bool EnsureCalledOnce((object, object) identifier, Delegate callback) {
         ArgumentNullException.ThrowIfNull(identifier);
         if (MethodCalledSet.Contains(identifier)) {
             return false;
         }
-        lock (identifier) {
+        if (!MethodCalledLockDict.ContainsKey(identifier)) {
+            MethodCalledLockDict[identifier] = new();
+        }
+        lock (MethodCalledLockDict[identifier]) {
             if (MethodCalledSet.Contains(identifier)) {
                 return false;
             }

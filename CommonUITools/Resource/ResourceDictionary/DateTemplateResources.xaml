@@ -2,6 +2,11 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:ui="http://schemas.modernwpf.com/2019">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ConverterResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/CommonResources.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
   <!--  SuggestionBoxDataTemplate  -->
   <DataTemplate x:Key="SuggestionBoxDataTemplate">
     <StackPanel

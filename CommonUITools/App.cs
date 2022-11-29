@@ -13,22 +13,24 @@ public partial class App : Application {
     /// 注册 MessageBox 和 NotificationBox 界面
     /// 多次调用无效果
     /// </summary>
-    public static void RegisterWidgetPage(Window window)
-        => window.Loaded += (_, _) => RegisterWidgetPageInternal(window);
+    public static void RegisterWidgetPage(Window window) {
+        TaskUtils.EnsureCalledOnce((window, typeof(App)), () => {
+            UIUtils.SetLoadedOnceEventHandler(window, static (obj, _) => {
+                if (obj is not Window window) {
+                    return;
+                }
+                // 不是 FrameworkElement
+                if (window.Content is not FrameworkElement mainContent) {
+                    Logger.Error("Window Content is not of type FrameworkElement");
+                    return;
+                }
+                if (AdornerLayer.GetAdornerLayer(mainContent) is not AdornerLayer adornerLayer) {
+                    Logger.Error("Window Content has no adornerLayer");
+                    return;
+                }
 
-    private static void RegisterWidgetPageInternal(Window window) {
-        TaskUtils.EnsureCalledOnce(window, () => {
-            // 不是 FrameworkElement
-            if (window.Content is not FrameworkElement mainContent) {
-                Logger.Error("Window Content is not of type FrameworkElement");
-                return;
-            }
-            if (AdornerLayer.GetAdornerLayer(mainContent) is not AdornerLayer adornerLayer) {
-                Logger.Error("Window Content has no adornerLayer");
-                return;
-            }
-
-            adornerLayer.Add(WindowAdorner.CreateWindowAdorner(mainContent, window));
+                adornerLayer.Add(WindowAdorner.CreateWindowAdorner(mainContent, window));
+            });
         });
     }
 }
