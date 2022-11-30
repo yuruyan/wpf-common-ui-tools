@@ -59,12 +59,12 @@
   <!--#region ErrorBackgroundColor-->
   <Color x:Key="ErrorBackgroundColor">#c6585a</Color>
   <Color x:Key="ErrorForegroundColor">#ffffff</Color>
-  <Color x:Key="ErrorBackgroundLight1Color">#D35E60</Color>
-  <Color x:Key="ErrorBackgroundLight2Color">#E06366</Color>
-  <Color x:Key="ErrorBackgroundLight3Color">#EC696B</Color>
-  <Color x:Key="ErrorBackgroundDark1Color">#B95254</Color>
-  <Color x:Key="ErrorBackgroundDark2Color">#AC4D4E</Color>
-  <Color x:Key="ErrorBackgroundDark3Color">#A04749</Color>
+  <Color x:Key="ErrorBackgroundLight1Color">#FFCC6B6C</Color>
+  <Color x:Key="ErrorBackgroundLight2Color">#FFD27D7E</Color>
+  <Color x:Key="ErrorBackgroundLight3Color">#FFD88F90</Color>
+  <Color x:Key="ErrorBackgroundDark1Color">#FFB63E40</Color>
+  <Color x:Key="ErrorBackgroundDark2Color">#FF963335</Color>
+  <Color x:Key="ErrorBackgroundDark3Color">#FF7A292B</Color>
   <SolidColorBrush x:Key="ErrorBackground" Color="{StaticResource ErrorBackgroundColor}" />
   <SolidColorBrush x:Key="ErrorForeground" Color="{StaticResource ErrorForegroundColor}" />
   <SolidColorBrush x:Key="ErrorBackgroundLight1" Color="{StaticResource ErrorBackgroundLight1Color}" />
@@ -77,12 +77,12 @@
 
   <!--#region WaringBackgroundColor-->
   <Color x:Key="WaringBackgroundColor">#b97632</Color>
-  <Color x:Key="WaringBackgroundLight1Color">#C67E35</Color>
-  <Color x:Key="WaringBackgroundLight2Color">#D38639</Color>
-  <Color x:Key="WaringBackgroundLight3Color">#DF8E3C</Color>
-  <Color x:Key="WaringBackgroundDark1Color">#AC6E2F</Color>
-  <Color x:Key="WaringBackgroundDark2Color">#9F662B</Color>
-  <Color x:Key="WaringBackgroundDark3Color">#935E28</Color>
+  <Color x:Key="WaringBackgroundLight1Color">#FFCC8A47</Color>
+  <Color x:Key="WaringBackgroundLight2Color">#FFD59E67</Color>
+  <Color x:Key="WaringBackgroundLight3Color">#FFDDB185</Color>
+  <Color x:Key="WaringBackgroundDark1Color">#FF996229</Color>
+  <Color x:Key="WaringBackgroundDark2Color">#FF794E20</Color>
+  <Color x:Key="WaringBackgroundDark3Color">#FF5B3B18</Color>
   <SolidColorBrush x:Key="WaringBackground" Color="{StaticResource WaringBackgroundColor}" />
   <SolidColorBrush x:Key="WaringBackgroundLight1" Color="{StaticResource WaringBackgroundLight1Color}" />
   <SolidColorBrush x:Key="WaringBackgroundLight2" Color="{StaticResource WaringBackgroundLight2Color}" />
@@ -94,12 +94,12 @@
 
   <!--#region SuccessBackgroundColor-->
   <Color x:Key="SuccessBackgroundColor">#28A745</Color>
-  <Color x:Key="SuccessBackgroundLight1Color">#2BB44A</Color>
-  <Color x:Key="SuccessBackgroundLight2Color">#2EC150</Color>
-  <Color x:Key="SuccessBackgroundLight3Color">#31CD55</Color>
-  <Color x:Key="SuccessBackgroundDark1Color">#259A40</Color>
-  <Color x:Key="SuccessBackgroundDark2Color">#228D3A</Color>
-  <Color x:Key="SuccessBackgroundDark3Color">#1F8135</Color>
+  <Color x:Key="SuccessBackgroundLight1Color">#FF2CBB4D</Color>
+  <Color x:Key="SuccessBackgroundLight2Color">#FF37D05A</Color>
+  <Color x:Key="SuccessBackgroundLight3Color">#FF51D66F</Color>
+  <Color x:Key="SuccessBackgroundDark1Color">#FF218A39</Color>
+  <Color x:Key="SuccessBackgroundDark2Color">#FF1A6F2E</Color>
+  <Color x:Key="SuccessBackgroundDark3Color">#FF135222</Color>
   <SolidColorBrush x:Key="SuccessBackground" Color="{StaticResource SuccessBackgroundColor}" />
   <SolidColorBrush x:Key="SuccessBackgroundLight1" Color="{StaticResource SuccessBackgroundLight1Color}" />
   <SolidColorBrush x:Key="SuccessBackgroundLight2" Color="{StaticResource SuccessBackgroundLight2Color}" />
