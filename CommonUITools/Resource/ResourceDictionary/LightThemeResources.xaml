@@ -75,4 +75,10 @@
   <!--#region DragDropOverBackgroundBrush-->
   <SolidColorBrush x:Key="DragDropOverBackgroundBrush" Color="{Binding Color, Source={StaticResource Gray4}}" />
   <!--#endregion-->
+
+  <!--#region NavigationView-->
+  <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="Transparent" />
+  <SolidColorBrush x:Key="NavigationViewTopPaneBackground" Color="Transparent" />
+  <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="Transparent" />
+  <!--#endregion-->
 </ResourceDictionary>
