@@ -6,7 +6,7 @@ using System.Windows.Documents;
 
 namespace CommonUITools;
 
-public partial class App : Application {
+public partial class App {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
     /// <summary>

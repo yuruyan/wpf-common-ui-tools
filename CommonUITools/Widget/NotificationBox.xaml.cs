@@ -69,10 +69,10 @@ public partial class NotificationBox : UserControl {
 
     public static void ShowNotification(string title, string message, MessageType messageType = MessageType.Info, Action? callback = null) {
         // 检查权限
-        if (App.Current.Dispatcher.CheckAccess()) {
+        if (Application.Current.Dispatcher.CheckAccess()) {
             PanelChildren?.Add(new NotificationBox(title, message, messageType, callback));
         } else {
-            App.Current.Dispatcher.Invoke(() => {
+            Application.Current.Dispatcher.Invoke(() => {
                 PanelChildren?.Add(new NotificationBox(title, message, messageType, callback));
             });
         }

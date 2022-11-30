@@ -17,11 +17,11 @@ public static class ThemeManager {
     static ThemeManager() {
         // 查找 GenericResourceDictionary
         var res = UIUtils.FindResourceInMergedDictionaries(
-            App.Current.Resources.MergedDictionaries,
+            Application.Current.Resources.MergedDictionaries,
             GenericSource1
         );
         res ??= UIUtils.FindResourceInMergedDictionaries(
-            App.Current.Resources.MergedDictionaries,
+            Application.Current.Resources.MergedDictionaries,
             GenericSource2
         );
         if (res is null) {

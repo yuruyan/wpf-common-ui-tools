@@ -769,7 +769,7 @@ public class LongPressHelper {
             if ((DateTime.Now - info.MouseDownTime).TotalMilliseconds >= LongPressTimeThreshold) {
                 info.Timer.Stop();
                 info.Invoked = true;
-                App.Current.Dispatcher.Invoke(() => {
+                Application.Current.Dispatcher.Invoke(() => {
                     SetIsLongPressEventHappend(element, true);
                     GetLongPress(element)?.Invoke(element, EventArgs.Empty);
                 });

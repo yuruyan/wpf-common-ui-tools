@@ -86,10 +86,10 @@ public partial class MessageBox : UserControl {
 
     private static void ShowMessage(string message, MessageType type = MessageType.Info) {
         // 检查权限
-        if (App.Current.Dispatcher.CheckAccess()) {
+        if (Application.Current.Dispatcher.CheckAccess()) {
             PanelChildren?.Add(new MessageBox(message, type));
         } else {
-            App.Current.Dispatcher.Invoke(() => PanelChildren?.Add(new MessageBox(message, type)));
+            Application.Current.Dispatcher.Invoke(() => PanelChildren?.Add(new MessageBox(message, type)));
         }
     }
 

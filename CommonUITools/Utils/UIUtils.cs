@@ -219,7 +219,7 @@ public static class UIUtils {
     /// </summary>
     /// <param name="task"></param>
     public static void RunOnUIThread(Action task) {
-        App.Current.Dispatcher.Invoke(() => task());
+        Application.Current.Dispatcher.Invoke(() => task());
     }
 
     /// <summary>
@@ -229,7 +229,7 @@ public static class UIUtils {
     /// <param name="task"></param>
     /// <returns></returns>
     public static T RunOnUIThread<T>(Func<T> task) {
-        return App.Current.Dispatcher.Invoke(() => task());
+        return Application.Current.Dispatcher.Invoke(() => task());
     }
 
     /// <summary>
