@@ -30,19 +30,27 @@ public static class ThemeManager {
         GenericResourceDictionary = res;
     }
 
+    /// <summary>
+    /// 切换为 LightTheme
+    /// </summary>
     public static void SwitchToLightTheme() {
         UIUtils.ReplaceResourceDictionary(
             GenericResourceDictionary.MergedDictionaries,
             DarkThemeSource,
             LightThemeSource
         );
+        ModernWpf.ThemeManager.Current.ApplicationTheme = ModernWpf.ApplicationTheme.Light;
     }
 
+    /// <summary>
+    /// 切换为 DarkTheme
+    /// </summary>
     public static void SwitchToDarkTheme() {
         UIUtils.ReplaceResourceDictionary(
             GenericResourceDictionary.MergedDictionaries,
             LightThemeSource,
             DarkThemeSource
         );
+        ModernWpf.ThemeManager.Current.ApplicationTheme = ModernWpf.ApplicationTheme.Dark;
     }
 }
