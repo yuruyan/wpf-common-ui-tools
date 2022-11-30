@@ -443,14 +443,14 @@
     <Setter Property="VerticalContentAlignment" Value="Top" />
     <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
   </Style>
-  <!--  多行 TextBlock，可以指定 tag 为完整路径  -->
+  <!--  多行 TextBlock  -->
   <Style
     x:Key="MultilineTextBlockStyle"
     BasedOn="{StaticResource GlobalTextBlockStyle}"
     TargetType="TextBlock">
     <Setter Property="TextWrapping" Value="Wrap" />
   </Style>
-  <!--  打开文件 TextBlock  -->
+  <!--  打开文件 TextBlock，可以指定 tag 为完整路径  -->
   <Style
     x:Key="OpenFileTextBlockStyle"
     BasedOn="{StaticResource HyperLinkStyle}"
