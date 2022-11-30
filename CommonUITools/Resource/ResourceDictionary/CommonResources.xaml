@@ -39,10 +39,10 @@
 
   <SolidColorBrush x:Key="WarningIconForeground" Color="#f2a416" />
   <SolidColorBrush x:Key="DeleteConfirmButtonForeground" Color="#de383b" />
-  <SolidColorBrush x:Key="DeleteButtonForeground" Color="{Binding Color, Source={StaticResource Red4}}" />
+  <SolidColorBrush x:Key="DeleteButtonForeground" Color="{StaticResource Red4}" />
   <!--#endregion-->
   <!--  选中项背景颜色  -->
-  <SolidColorBrush x:Key="SelectedItemBackground" Color="{Binding Color, Source={StaticResource Gray3}}" />
+  <SolidColorBrush x:Key="SelectedItemBackground" Color="{StaticResource Gray3}" />
   <!--  导航默认宽度  -->
   <system:Double x:Key="NavigationWidth">250</system:Double>
   <!--  导航默认宽度  -->

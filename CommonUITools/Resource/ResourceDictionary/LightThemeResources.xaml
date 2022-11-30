@@ -23,12 +23,12 @@
   <SolidColorBrush x:Key="ApplicationBackgroundBrushDark2" Color="{StaticResource ApplicationBackgroundDark2}" />
   <SolidColorBrush x:Key="ApplicationBackgroundBrushDark3" Color="{StaticResource ApplicationBackgroundDark3}" />
 
-  <SolidColorBrush x:Key="FlyoutPresenterBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="AutoSuggestBoxSuggestionsListBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="MenuFlyoutPresenterBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="ToolTipBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="NumberBoxPopupBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="NumberBoxPopupSpinButtonBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
+  <SolidColorBrush x:Key="FlyoutPresenterBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="AutoSuggestBoxSuggestionsListBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="MenuFlyoutPresenterBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="ToolTipBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="NumberBoxPopupBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="NumberBoxPopupSpinButtonBackground" Color="{StaticResource ApplicationBackground}" />
 
   <!--#region ButtonColor-->
   <SolidColorBrush x:Key="ButtonBackground" Color="{DynamicResource SystemAccentColor}" />
@@ -53,41 +53,41 @@
   <!--#endregion-->
 
   <!--#region ListControl-->
-  <SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="{Binding Color, Source={StaticResource Gray2}}" />
-  <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumLowBrush" Color="{Binding Color, Source={StaticResource Gray3}}" />
-  <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{Binding Color, Source={StaticResource Gray4}}" />
-  <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="{Binding Color, Source={StaticResource Gray3}}" />
-  <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="{Binding Color, Source={StaticResource Gray4}}" />
-  <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="{Binding Color, Source={StaticResource Gray3}}" />
+  <SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="{StaticResource Gray2}" />
+  <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumLowBrush" Color="{StaticResource Gray3}" />
+  <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{StaticResource Gray4}" />
+  <SolidColorBrush x:Key="ListViewItemBackgroundPointerOver" Color="{StaticResource Gray3}" />
+  <SolidColorBrush x:Key="ListViewItemBackgroundSelected" Color="{StaticResource Gray4}" />
+  <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="{StaticResource Gray3}" />
   <!--#endregion-->
 
   <!--#region TextControl-->
-  <SolidColorBrush x:Key="TextControlBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="TextControlButtonBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="TextControlButtonBackgroundPointerOver" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="TextControlButtonBackgroundPressed" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="TextControlForeground" Color="{Binding Color, Source={StaticResource ApplicationForegroundBrush}}" />
-  <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="{Binding Color, Source={StaticResource ApplicationForegroundBrush}}" />
-  <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{Binding Color, Source={StaticResource ApplicationForegroundBrush}}" />
+  <SolidColorBrush x:Key="TextControlBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="TextControlButtonBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="TextControlButtonBackgroundPointerOver" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="TextControlButtonBackgroundPressed" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="TextControlForeground" Color="{StaticResource ApplicationForeground}" />
+  <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="{StaticResource ApplicationForeground}" />
+  <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{StaticResource ApplicationForeground}" />
   <!--#endregion-->
 
   <!--#region ComboBox-->
-  <SolidColorBrush x:Key="ComboBoxBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="ComboBoxItemBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
-  <SolidColorBrush x:Key="ComboBoxItemBackgroundPressed" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrushDark3}}" />
-  <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrushDark2}}" />
+  <SolidColorBrush x:Key="ComboBoxBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackgroundPressed" Color="{StaticResource ApplicationBackgroundDark3}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="{StaticResource ApplicationBackgroundDark2}" />
   <!--#endregion-->
 
   <!--#region ScrollBar-->
-  <SolidColorBrush x:Key="ThumbNormalBackground" Color="{Binding Color, Source={StaticResource Gray8}}" />
-  <SolidColorBrush x:Key="ThumbHoverBrushBackground" Color="{Binding Color, Source={StaticResource Gray10}}" />
+  <SolidColorBrush x:Key="ThumbNormalBackground" Color="{StaticResource Gray8}" />
+  <SolidColorBrush x:Key="ThumbHoverBrushBackground" Color="{StaticResource Gray10}" />
   <!--#endregion-->
 
   <!--#region DragDropOverBackgroundBrush-->
-  <SolidColorBrush x:Key="DragDropOverBackgroundBrush" Color="{Binding Color, Source={StaticResource Gray4}}" />
+  <SolidColorBrush x:Key="DragDropOverBackgroundBrush" Color="{StaticResource Gray4}" />
   <!--#endregion-->
 
   <!--#region NavigationView-->

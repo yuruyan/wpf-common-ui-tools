@@ -215,7 +215,7 @@
   </Style>
   <!--  菜单 TextBlock  -->
   <Style x:Key="MenuTextBlockStyle" TargetType="TextBlock">
-    <Setter Property="Foreground" Value="{StaticResource Black8}" />
+    <Setter Property="Foreground" Value="{StaticResource BlackBrush8}" />
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="FontSize" Value="{DynamicResource SystemFontSize}" />
     <Setter Property="FontFamily" Value="{DynamicResource SystemFontFamily}" />
@@ -286,7 +286,7 @@
     x:Key="InfoIconStyle"
     BasedOn="{StaticResource BaseDialogIconStyle}"
     TargetType="TextBlock">
-    <Setter Property="Foreground" Value="{StaticResource Black7}" />
+    <Setter Property="Foreground" Value="{StaticResource BlackBrush7}" />
     <Setter Property="Text" Value="&#xe650;" />
   </Style>
   <!--  WaringIconStyle  -->

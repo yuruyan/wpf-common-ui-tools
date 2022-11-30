@@ -25,7 +25,7 @@
     TargetType="TextBlock">
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{StaticResource Gray3}" />
+        <Setter Property="Background" Value="{StaticResource GrayBrush3}" />
       </Trigger>
       <Trigger Property="IsMouseOver" Value="False">
         <Setter Property="Background" Value="Transparent" />
@@ -36,7 +36,7 @@
   <Style x:Key="StackPanelHoverEffectStyle" TargetType="StackPanel">
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{StaticResource Gray3}" />
+        <Setter Property="Background" Value="{StaticResource GrayBrush3}" />
       </Trigger>
       <Trigger Property="IsMouseOver" Value="False">
         <Setter Property="Background" Value="Transparent" />
@@ -47,7 +47,7 @@
   <Style x:Key="SimpleStackPanelHoverEffectStyle" TargetType="ui:SimpleStackPanel">
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{StaticResource Gray3}" />
+        <Setter Property="Background" Value="{StaticResource GrayBrush3}" />
       </Trigger>
       <Trigger Property="IsMouseOver" Value="False">
         <Setter Property="Background" Value="Transparent" />
@@ -58,7 +58,7 @@
   <Style x:Key="GridHoverEffectStyle" TargetType="Grid">
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{StaticResource Gray3}" />
+        <Setter Property="Background" Value="{StaticResource GrayBrush3}" />
       </Trigger>
       <Trigger Property="IsMouseOver" Value="False">
         <Setter Property="Background" Value="Transparent" />
@@ -69,7 +69,7 @@
   <Style x:Key="DockPanelHoverEffectStyle" TargetType="DockPanel">
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{StaticResource Gray3}" />
+        <Setter Property="Background" Value="{StaticResource GrayBrush3}" />
       </Trigger>
       <Trigger Property="IsMouseOver" Value="False">
         <Setter Property="Background" Value="Transparent" />
@@ -80,7 +80,7 @@
   <Style x:Key="UniformGridHoverEffectStyle" TargetType="UniformGrid">
     <Style.Triggers>
       <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="Background" Value="{StaticResource Gray3}" />
+        <Setter Property="Background" Value="{StaticResource GrayBrush3}" />
       </Trigger>
       <Trigger Property="IsMouseOver" Value="False">
         <Setter Property="Background" Value="Transparent" />

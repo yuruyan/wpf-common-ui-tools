@@ -127,7 +127,7 @@
               <Setter Property="FontSize" Value="20" />
               <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                  <Setter Property="Foreground" Value="{StaticResource Red8}" />
+                  <Setter Property="Foreground" Value="{StaticResource RedBrush8}" />
                   <Setter Property="Cursor" Value="Hand" />
                 </Trigger>
               </Style.Triggers>
