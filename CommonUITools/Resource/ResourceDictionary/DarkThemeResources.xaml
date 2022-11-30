@@ -5,15 +5,23 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ColorResources.xaml" />
   </ResourceDictionary.MergedDictionaries>
+  <Color x:Key="ApplicationForeground">#FFDEDEDE</Color>
+  <Color x:Key="ApplicationBackground">#3c3f41</Color>
+  <Color x:Key="ApplicationBackgroundLight1">#FF515558</Color>
+  <Color x:Key="ApplicationBackgroundLight2">#FF686D71</Color>
+  <Color x:Key="ApplicationBackgroundLight3">#FF80868B</Color>
+  <Color x:Key="ApplicationBackgroundDark1">#FF333638</Color>
+  <Color x:Key="ApplicationBackgroundDark2">#FF2A2C2D</Color>
+  <Color x:Key="ApplicationBackgroundDark3">#FF252728</Color>
 
-  <SolidColorBrush x:Key="ApplicationForegroundBrush" Color="#FFDEDEDE" />
-  <SolidColorBrush x:Key="ApplicationBackgroundBrush" Color="#3c3f41" />
-  <SolidColorBrush x:Key="ApplicationBackgroundBrushLight1" Color="#FF515558" />
-  <SolidColorBrush x:Key="ApplicationBackgroundBrushLight2" Color="#FF686D71" />
-  <SolidColorBrush x:Key="ApplicationBackgroundBrushLight3" Color="#FF80868B" />
-  <SolidColorBrush x:Key="ApplicationBackgroundBrushDark1" Color="#FF333638" />
-  <SolidColorBrush x:Key="ApplicationBackgroundBrushDark2" Color="#FF2A2C2D" />
-  <SolidColorBrush x:Key="ApplicationBackgroundBrushDark3" Color="#FF252728" />
+  <SolidColorBrush x:Key="ApplicationForegroundBrush" Color="{StaticResource ApplicationForeground}" />
+  <SolidColorBrush x:Key="ApplicationBackgroundBrush" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="ApplicationBackgroundBrushLight1" Color="{StaticResource ApplicationBackgroundLight1}" />
+  <SolidColorBrush x:Key="ApplicationBackgroundBrushLight2" Color="{StaticResource ApplicationBackgroundLight2}" />
+  <SolidColorBrush x:Key="ApplicationBackgroundBrushLight3" Color="{StaticResource ApplicationBackgroundLight3}" />
+  <SolidColorBrush x:Key="ApplicationBackgroundBrushDark1" Color="{StaticResource ApplicationBackgroundDark1}" />
+  <SolidColorBrush x:Key="ApplicationBackgroundBrushDark2" Color="{StaticResource ApplicationBackgroundDark2}" />
+  <SolidColorBrush x:Key="ApplicationBackgroundBrushDark3" Color="{StaticResource ApplicationBackgroundDark3}" />
 
   <SolidColorBrush x:Key="FlyoutPresenterBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
   <SolidColorBrush x:Key="AutoSuggestBoxSuggestionsListBackground" Color="{Binding Color, Source={StaticResource ApplicationBackgroundBrush}}" />
@@ -39,6 +47,12 @@
   <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White" />
   <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White" />
   <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="White" />
+  <!--#endregion-->
+
+  <!--#region GlobalSingleIconButton-->
+  <SolidColorBrush x:Key="GlobalSingleIconButtonBackgroundBrush" Color="Transparent" />
+  <SolidColorBrush x:Key="GlobalSingleIconButtonBackgroundBrushPointerOver" Color="{StaticResource ApplicationBackgroundLight1}" />
+  <SolidColorBrush x:Key="GlobalSingleIconButtonBackgroundBrushPressed" Color="{StaticResource ApplicationBackgroundLight2}" />
   <!--#endregion-->
 
   <!--#region ListControl-->
