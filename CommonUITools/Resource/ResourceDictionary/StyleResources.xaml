@@ -170,6 +170,7 @@
     <Setter Property="FontSize" Value="{DynamicResource SystemFontSize}" />
     <Setter Property="FontFamily" Value="{DynamicResource SystemFontFamily}" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="CaretBrush" Value="{DynamicResource TextControlCaretBrush}" />
     <Style.Resources>
       <Style BasedOn="{StaticResource TextElementScrollBarStyle}" TargetType="ScrollBar" />
     </Style.Resources>

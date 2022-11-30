@@ -62,13 +62,14 @@
   <!--#endregion-->
 
   <!--#region TextControl-->
-  <SolidColorBrush x:Key="TextControlBackground" Color="{StaticResource ApplicationBackground}" />
-  <SolidColorBrush x:Key="TextControlButtonBackground" Color="{StaticResource ApplicationBackground}" />
-  <SolidColorBrush x:Key="TextControlButtonBackgroundPointerOver" Color="{StaticResource ApplicationBackground}" />
-  <SolidColorBrush x:Key="TextControlButtonBackgroundPressed" Color="{StaticResource ApplicationBackground}" />
-  <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="{StaticResource ApplicationBackground}" />
-  <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="{StaticResource ApplicationBackground}" />
-  <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="TextControlBackground" Color="Transparent" />
+  <SolidColorBrush x:Key="TextControlCaretBrush" Color="{StaticResource ApplicationForeground}" />
+  <SolidColorBrush x:Key="TextControlButtonBackground" Color="Transparent" />
+  <SolidColorBrush x:Key="TextControlButtonBackgroundPointerOver" Color="Transparent" />
+  <SolidColorBrush x:Key="TextControlButtonBackgroundPressed" Color="Transparent" />
+  <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="Transparent" />
+  <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent" />
+  <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="Transparent" />
   <SolidColorBrush x:Key="TextControlForeground" Color="{StaticResource ApplicationForeground}" />
   <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="{StaticResource ApplicationForeground}" />
   <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{StaticResource ApplicationForeground}" />
