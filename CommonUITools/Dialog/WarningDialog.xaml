@@ -8,10 +8,9 @@
   xmlns:ui="http://schemas.modernwpf.com/2019"
   d:DesignHeight="200"
   d:DesignWidth="300"
-  Background="{DynamicResource ApplicationBackgroundBrush}"
   DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-  DefaultButton="Close"
   PrimaryButtonStyle="{StaticResource GlobalErrorButtonStyle}"
+  PrimaryButtonText="确定"
   mc:Ignorable="d">
   <local:BaseDialog.TitleTemplate>
     <DataTemplate>

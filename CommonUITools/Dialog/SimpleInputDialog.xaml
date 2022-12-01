@@ -8,7 +8,6 @@
   xmlns:ui="http://schemas.modernwpf.com/2019"
   d:DesignHeight="200"
   d:DesignWidth="300"
-  Background="{DynamicResource ApplicationBackgroundBrush}"
   DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
   mc:Ignorable="d">
   <DockPanel Height="35" MaxWidth="350">
