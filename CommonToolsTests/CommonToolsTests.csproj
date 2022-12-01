@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CommonUITools\CommonUITools.csproj" />
+    <ProjectReference Include="..\CommonTools\CommonTools.csproj" />
   </ItemGroup>
 
 </Project>
