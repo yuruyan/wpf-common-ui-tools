@@ -14,18 +14,9 @@ public class BaseDialog : ContentDialog {
         set { SetValue(DetailTextProperty, value); }
     }
 
-    public BaseDialog(
-        string title = "",
-        string detailText = "",
-        string okButtonText = "确定",
-        string cancelButtonText = "关闭"
-    ) {
-        DataContext = this;
-        Title = title;
-        DetailText = detailText;
-        PrimaryButtonText = okButtonText;
-        CloseButtonText = cancelButtonText;
-        //Init();
+    public BaseDialog() {
+        PrimaryButtonText = "确定";
+        CloseButtonText = "取消";
         if (TryFindResource("GlobalDefaultButtonStyle") is Style closeButtonStyle) {
             CloseButtonStyle = closeButtonStyle;
         }
@@ -38,8 +29,6 @@ public class BaseDialog : ContentDialog {
             Utils.ScaleAnimationHelper.SetScaleOption((DependencyObject)dialog.Content, Utils.ScaleAnimationHelper.ScaleOption.Center);
         });
     }
-
-    public BaseDialog() : this("") { }
 }
 
 public class DialogResult<T> {

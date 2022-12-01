@@ -10,7 +10,6 @@
   d:DesignWidth="300"
   DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
   PrimaryButtonStyle="{StaticResource GlobalErrorButtonStyle}"
-  PrimaryButtonText="确定"
   mc:Ignorable="d">
   <local:BaseDialog.TitleTemplate>
     <DataTemplate>
