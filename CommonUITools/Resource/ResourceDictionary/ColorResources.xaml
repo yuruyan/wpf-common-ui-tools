@@ -127,20 +127,20 @@
   <!--#endregion-->
 
   <!--#region WaringBackgroundColor-->
-  <Color x:Key="WaringBackgroundColor">#b97632</Color>
-  <Color x:Key="WaringBackgroundLight1Color">#FFCC8A47</Color>
-  <Color x:Key="WaringBackgroundLight2Color">#FFD59E67</Color>
-  <Color x:Key="WaringBackgroundLight3Color">#FFDDB185</Color>
-  <Color x:Key="WaringBackgroundDark1Color">#FF996229</Color>
-  <Color x:Key="WaringBackgroundDark2Color">#FF794E20</Color>
-  <Color x:Key="WaringBackgroundDark3Color">#FF5B3B18</Color>
-  <SolidColorBrush x:Key="WaringBackground" Color="{StaticResource WaringBackgroundColor}" />
-  <SolidColorBrush x:Key="WaringBackgroundLight1" Color="{StaticResource WaringBackgroundLight1Color}" />
-  <SolidColorBrush x:Key="WaringBackgroundLight2" Color="{StaticResource WaringBackgroundLight2Color}" />
-  <SolidColorBrush x:Key="WaringBackgroundLight3" Color="{StaticResource WaringBackgroundLight3Color}" />
-  <SolidColorBrush x:Key="WaringBackgroundDark1" Color="{StaticResource WaringBackgroundDark1Color}" />
-  <SolidColorBrush x:Key="WaringBackgroundDark2" Color="{StaticResource WaringBackgroundDark2Color}" />
-  <SolidColorBrush x:Key="WaringBackgroundDark3" Color="{StaticResource WaringBackgroundDark3Color}" />
+  <Color x:Key="WarningBackgroundColor">#b97632</Color>
+  <Color x:Key="WarningBackgroundLight1Color">#FFCC8A47</Color>
+  <Color x:Key="WarningBackgroundLight2Color">#FFD59E67</Color>
+  <Color x:Key="WarningBackgroundLight3Color">#FFDDB185</Color>
+  <Color x:Key="WarningBackgroundDark1Color">#FF996229</Color>
+  <Color x:Key="WarningBackgroundDark2Color">#FF794E20</Color>
+  <Color x:Key="WarningBackgroundDark3Color">#FF5B3B18</Color>
+  <SolidColorBrush x:Key="WarningBackground" Color="{StaticResource WarningBackgroundColor}" />
+  <SolidColorBrush x:Key="WarningBackgroundLight1" Color="{StaticResource WarningBackgroundLight1Color}" />
+  <SolidColorBrush x:Key="WarningBackgroundLight2" Color="{StaticResource WarningBackgroundLight2Color}" />
+  <SolidColorBrush x:Key="WarningBackgroundLight3" Color="{StaticResource WarningBackgroundLight3Color}" />
+  <SolidColorBrush x:Key="WarningBackgroundDark1" Color="{StaticResource WarningBackgroundDark1Color}" />
+  <SolidColorBrush x:Key="WarningBackgroundDark2" Color="{StaticResource WarningBackgroundDark2Color}" />
+  <SolidColorBrush x:Key="WarningBackgroundDark3" Color="{StaticResource WarningBackgroundDark3Color}" />
   <!--#endregion-->
 
   <!--#region SuccessBackgroundColor-->
