@@ -30,12 +30,3 @@ public class BaseDialog : ContentDialog {
         });
     }
 }
-
-public class DialogResult<T> {
-    public ContentDialogResult Result { get; set; }
-    public T? Data { get; set; } = default;
-
-    public override string ToString() {
-        return $"{nameof(Result)}: {Result}; {nameof(Data)}: {Data}";
-    }
-}
