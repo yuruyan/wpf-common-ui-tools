@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace CommonUITools.Resource.ResourceDictionary;
 
-public partial class StyleResources {
+public partial class ButtonResources {
     private void OpenFileTextBlockMouseUpHandler(object sender, MouseButtonEventArgs e) {
         if (sender is TextBlock textBlock) {
             // 首选 text

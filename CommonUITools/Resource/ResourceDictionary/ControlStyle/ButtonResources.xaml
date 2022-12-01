@@ -1,0 +1,145 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:primitives="http://schemas.modernwpf.com/2019"
+  xmlns:ui="http://schemas.modernwpf.com/2019"
+  xmlns:widget="clr-namespace:CommonUITools.Widget">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/CommonResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/TextBlockResources.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
+  <!--  MenuButton 样式  -->
+  <Style
+    x:Key="MenuButtonStyle"
+    BasedOn="{StaticResource DefaultButtonStyle}"
+    TargetType="Button">
+    <Setter Property="Padding" Value="4" />
+  </Style>
+  <!--  嵌入 Button Icon  -->
+  <Style
+    x:Key="ButtonIconFontStyle"
+    BasedOn="{StaticResource IconFontStyle}"
+    TargetType="TextBlock">
+    <Setter Property="Margin" Value="0,0,12,0" />
+  </Style>
+  <!--  ButtonStyle  -->
+  <Style
+    x:Key="GlobalButtonStyle"
+    BasedOn="{StaticResource DefaultButtonStyle}"
+    TargetType="Button">
+    <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
+    <Setter Property="Padding" Value="16,8,16,8" />
+  </Style>
+  <Style BasedOn="{StaticResource GlobalButtonStyle}" TargetType="Button" />
+  <!--  TitleBarButtonstyle  -->
+  <Style x:Key="TitleBarButtonstyle" TargetType="ui:TitleBarButton">
+    <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
+  </Style>
+  <!--  GlobalWorkingButtonStyle  -->
+  <Style BasedOn="{StaticResource GlobalButtonStyle}" TargetType="widget:WorkingButton" />
+  <!--  GlobalSingleIconButtonStyle  -->
+  <Style
+    x:Key="GlobalSingleIconButtonStyle"
+    BasedOn="{StaticResource GlobalButtonStyle}"
+    TargetType="Button">
+    <Style.Resources>
+      <Style BasedOn="{StaticResource IconFontStyle}" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource ApplicationForegroundBrush}" />
+      </Style>
+    </Style.Resources>
+    <Setter Property="Background" Value="{DynamicResource GlobalSingleIconButtonBackgroundBrush}" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="8" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border
+            x:Name="Background"
+            Background="{TemplateBinding Background}"
+            CornerRadius="{TemplateBinding primitives:ControlHelper.CornerRadius}"
+            SnapsToDevicePixels="True">
+            <Border
+              x:Name="Border"
+              Padding="{TemplateBinding Padding}"
+              BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="{TemplateBinding primitives:ControlHelper.CornerRadius}">
+              <ContentPresenter
+                x:Name="ContentPresenter"
+                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                Focusable="False"
+                RecognizesAccessKey="True"
+                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+            </Border>
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Background" Property="Background" Value="{DynamicResource GlobalSingleIconButtonBackgroundBrushPointerOver}" />
+              <Setter TargetName="Border" Property="BorderBrush" Value="Transparent" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+              <Setter TargetName="Background" Property="Background" Value="{DynamicResource GlobalSingleIconButtonBackgroundBrushPressed}" />
+              <Setter TargetName="Border" Property="BorderBrush" Value="Transparent" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter TargetName="Background" Property="Background" Value="{DynamicResource ButtonBackgroundDisabled}" />
+              <Setter TargetName="Border" Property="BorderBrush" Value="Transparent" />
+              <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundDisabled}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <!--  GlobalIconButtonStyle  -->
+  <Style
+    x:Key="GlobalIconButtonStyle"
+    BasedOn="{StaticResource GlobalButtonStyle}"
+    TargetType="widget:IconButton" />
+  <Style BasedOn="{StaticResource GlobalIconButtonStyle}" TargetType="widget:IconButton" />
+  <!--  ErrorButtonStyle  -->
+  <Style
+    x:Key="GlobalErrorButtonStyle"
+    BasedOn="{StaticResource GlobalButtonStyle}"
+    TargetType="Button">
+    <Style.Resources>
+      <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource ErrorBackgroundColor}" />
+      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource ErrorBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{StaticResource ErrorBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource ErrorBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{StaticResource ErrorBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{StaticResource ErrorBackgroundDark2Color}" />
+    </Style.Resources>
+    <Setter Property="Foreground" Value="{DynamicResource ErrorForeground}" />
+  </Style>
+  <!--  SuccessButtonStyle  -->
+  <Style
+    x:Key="GlobalSuccessButtonStyle"
+    BasedOn="{StaticResource GlobalButtonStyle}"
+    TargetType="Button">
+    <Style.Resources>
+      <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource SuccessBackgroundColor}" />
+      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource SuccessBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{StaticResource SuccessBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource SuccessBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{StaticResource SuccessBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{StaticResource SuccessBackgroundDark2Color}" />
+    </Style.Resources>
+  </Style>
+  <!--  WaringButtonStyle  -->
+  <Style
+    x:Key="GlobalWaringButtonStyle"
+    BasedOn="{StaticResource GlobalButtonStyle}"
+    TargetType="Button">
+    <Style.Resources>
+      <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource WarningBackgroundColor}" />
+      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource WarningBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{StaticResource WarningBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource WarningBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{StaticResource WarningBackgroundDark1Color}" />
+      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{StaticResource WarningBackgroundDark2Color}" />
+    </Style.Resources>
+  </Style>
+</ResourceDictionary>
