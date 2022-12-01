@@ -1,0 +1,64 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/CommonResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/TextBlockResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/ScrollBarResources.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
+  <!--  TextBoxStyle  -->
+  <Style
+    x:Key="GlobalTextBoxStyle"
+    BasedOn="{StaticResource DefaultTextBoxStyle}"
+    TargetType="TextBox">
+    <Setter Property="FontSize" Value="{DynamicResource SystemFontSize}" />
+    <Setter Property="FontFamily" Value="{DynamicResource SystemFontFamily}" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="CaretBrush" Value="{DynamicResource TextControlCaretBrush}" />
+    <Style.Resources>
+      <Style BasedOn="{StaticResource TextElementScrollBarStyle}" TargetType="ScrollBar" />
+    </Style.Resources>
+  </Style>
+  <Style BasedOn="{StaticResource GlobalTextBoxStyle}" TargetType="TextBox" />
+  <!--  PasswordBoxStyle  -->
+  <Style
+    x:Key="GlobalPasswordBoxStyle"
+    BasedOn="{StaticResource DefaultPasswordBoxStyle}"
+    TargetType="PasswordBox">
+    <Setter Property="FontSize" Value="{DynamicResource SystemFontSize}" />
+    <Setter Property="FontFamily" Value="{DynamicResource SystemFontFamily}" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+  </Style>
+  <Style BasedOn="{StaticResource GlobalPasswordBoxStyle}" TargetType="PasswordBox" />
+  <!--  多行文本框  -->
+  <Style
+    x:Key="MultilineTextBoxStyle"
+    BasedOn="{StaticResource GlobalTextBoxStyle}"
+    TargetType="TextBox">
+    <Setter Property="AcceptsReturn" Value="True" />
+    <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+    <Setter Property="VerticalContentAlignment" Value="Top" />
+    <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+  </Style>
+  <!--  无边框 TextBox  -->
+  <Style
+    x:Key="BorderlessTextBoxStyle"
+    BasedOn="{StaticResource GlobalTextBoxStyle}"
+    TargetType="TextBox">
+    <Style.Resources>
+      <Thickness
+        x:Key="TextControlBorderThemeThickness"
+        Bottom="0"
+        Left="0"
+        Right="0"
+        Top="0" />
+      <Thickness
+        x:Key="TextControlBorderThemeThicknessFocused"
+        Bottom="0"
+        Left="0"
+        Right="0"
+        Top="0" />
+      <SolidColorBrush x:Key="TextControlButtonBorderBrushPressed" Color="Transparent" />
+    </Style.Resources>
+    <Setter Property="BorderThickness" Value="0" />
+  </Style>
+</ResourceDictionary>
