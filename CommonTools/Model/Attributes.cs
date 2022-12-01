@@ -1,4 +1,4 @@
-﻿namespace CommonUITools.Model;
+﻿namespace CommonTools.Model;
 
 /// <summary>
 /// 表示不抛出异常

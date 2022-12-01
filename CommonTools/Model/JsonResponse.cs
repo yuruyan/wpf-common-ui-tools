@@ -1,4 +1,4 @@
-﻿namespace CommonUITools.Model;
+﻿namespace CommonTools.Model;
 
 public record class JsonResponse<T> {
     public int Code { get; set; }

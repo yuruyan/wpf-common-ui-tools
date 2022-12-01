@@ -1,7 +1,6 @@
-﻿using CommonUITools.Utils;
+﻿using CommonTools.Utils;
 using ModernWpf.Media.Animation;
 using NLog;
-using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;

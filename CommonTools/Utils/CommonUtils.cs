@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json;
 using NLog;
 using System.Globalization;
-using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CommonUITools.Utils;
+namespace CommonTools.Utils;
 
 public static class CommonUtils {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -72,12 +70,8 @@ public static class CommonUtils {
     /// <param name="list"></param>
     /// <returns></returns>
     public static string GetSamePrefix(IEnumerable<string> list) {
-        if (!list.Any()) {
-            return "";
-        }
         var sb = new StringBuilder();
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-        foreach (var s in list.FirstOrDefault()) {
+        foreach (var s in list.FirstOrDefault() ?? string.Empty) {
             foreach (var item in list) {
                 if (item[sb.Length] != s) {
                     return sb.ToString();
@@ -85,7 +79,6 @@ public static class CommonUtils {
             }
             sb.Append(s);
         }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         return sb.ToString();
     }
 

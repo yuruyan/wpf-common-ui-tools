@@ -2,7 +2,7 @@
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
-namespace CommonUITools.Utils;
+namespace CommonTools.Utils;
 
 public static class NetworkUtils {
 

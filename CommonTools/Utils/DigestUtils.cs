@@ -2,10 +2,8 @@
 using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Utilities.Encoders;
 using System.Collections.Concurrent;
-using System.IO;
-using System.Text;
 
-namespace CommonUITools.Core;
+namespace CommonTools.Core;
 
 public static class DigestUtils {
     /// <summary>

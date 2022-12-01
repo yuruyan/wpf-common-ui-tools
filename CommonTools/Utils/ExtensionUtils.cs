@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
 
-namespace CommonUITools.Utils;
+namespace CommonTools.Utils;
 
 public static class ExtensionUtils {
     /// <summary>

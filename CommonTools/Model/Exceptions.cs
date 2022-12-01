@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace CommonUITools.Model;
+namespace CommonTools.Model;
 
 /// <summary>
 /// 解析错误

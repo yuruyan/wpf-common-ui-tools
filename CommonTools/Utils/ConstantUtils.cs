@@ -1,4 +1,4 @@
-﻿namespace CommonUITools.Utils;
+﻿namespace CommonTools.Utils;
 
 public static class ConstantUtils {
     #region 大小

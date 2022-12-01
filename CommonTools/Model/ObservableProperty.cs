@@ -1,8 +1,8 @@
-﻿namespace CommonUITools.Model;
+﻿namespace CommonTools.Model;
 
 public class ObservableProperty<T> {
-    public delegate void ValueChangedHandler(T? oldVal, T? newVal);
-    public delegate void ValueSetHandler(T? oldVal, T? newVal);
+    public delegate void ValueChangedHandler(T oldVal, T newVal);
+    public delegate void ValueSetHandler(T oldVal, T newVal);
     /// <summary>
     /// 值改变时触发
     /// </summary>
@@ -12,25 +12,23 @@ public class ObservableProperty<T> {
     /// </summary>
     public event ValueSetHandler? ValueSet;
 
-    private T? _value = default;
-
-    public T? Value {
+    private T _value = default!;
+    public T Value {
         get { return _value; }
         set {
             ValueSet?.Invoke(_value, value);
-            if (Utils.CommonUtils.Equals(_value, value)) {
+            if (object.Equals(_value, value)) {
                 return;
             }
-            T? t = _value;
+            T t = _value;
             _value = value;
             ValueChanged?.Invoke(t, value);
         }
     }
 
-    public ObservableProperty() : this(default) {
-    }
+    public ObservableProperty() : this(default!) { }
 
-    public ObservableProperty(T? value) {
+    public ObservableProperty(T value) {
         Value = value;
     }
 

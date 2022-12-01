@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using CommonUITools.Utils;
+using CommonTools.Utils;
 
 /// <summary>
 /// AutoMapper Type Converter
 /// </summary>
-namespace CommonUITools.Converter;
+namespace CommonTools.Converter;
 
 public static class MapperUtils {
     /// <summary>

@@ -1,4 +1,4 @@
-﻿namespace CommonUITools.Utils;
+﻿namespace CommonTools.Utils;
 
 public static class DebounceUtils {
     private static readonly IDictionary<Delegate, State> DebounceStateDict = new Dictionary<Delegate, State>();

@@ -1,7 +1,7 @@
-﻿using CommonUITools.Model;
+﻿using CommonTools.Model;
 using System.Collections.Concurrent;
 
-namespace CommonUITools.Utils;
+namespace CommonTools.Utils;
 
 public static class TaskUtils {
     /// <summary>

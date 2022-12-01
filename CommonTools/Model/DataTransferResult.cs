@@ -1,13 +1,13 @@
-﻿namespace CommonUITools.Model;
+﻿namespace CommonTools.Model;
 
 public enum CommonStatus {
     SUCCESS, FAILED, ERROR
 }
 
-public class DTResult<T> {
+public record DTResult<T> {
     public CommonStatus Status { get; set; } = CommonStatus.FAILED;
     public string Message { get; set; } = string.Empty;
-    public T? Data { get; set; }
+    public T Data { get; set; } = default!;
 
     /// <summary>
     /// 根据 result 创建 DTResult，不拷贝 data
@@ -37,13 +37,9 @@ public class DTResult<T> {
     public static DTResult<T> Error(string message = "") {
         return new DTResult<T>() { Status = CommonStatus.ERROR };
     }
-
-    public override string ToString() {
-        return $"{{{nameof(Status)}={Status.ToString()}, {nameof(Message)}={Message}, {nameof(Data)}={Data}}}";
-    }
 }
 
-public class DTResults<T> {
+public record DTResults<T> {
     public CommonStatus Status { get; set; } = CommonStatus.FAILED;
     public string Message { get; set; } = string.Empty;
     public IList<T> Data { get; set; } = new List<T>();
@@ -73,13 +69,9 @@ public class DTResults<T> {
     public static DTResults<T> Error() {
         return new DTResults<T>() { Status = CommonStatus.ERROR };
     }
-
-    public override string ToString() {
-        return $"{{{nameof(Status)}={Status.ToString()}, {nameof(Message)}={Message}, {nameof(Data)}={Data}}}";
-    }
 }
 
-public class DTResult {
+public record DTResult {
     public CommonStatus Status { get; set; } = CommonStatus.FAILED;
     public string Message { get; set; } = string.Empty;
 
@@ -113,9 +105,5 @@ public class DTResult {
 
     public static DTResult Error(string message) {
         return new DTResult { Status = CommonStatus.ERROR, Message = message };
-    }
-
-    public override string ToString() {
-        return $"{{{nameof(Status)}={Status.ToString()}, {nameof(Message)}={Message}}}";
     }
 }
