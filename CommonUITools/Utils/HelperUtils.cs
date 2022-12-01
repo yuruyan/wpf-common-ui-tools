@@ -123,7 +123,7 @@ public static class ScaleAnimationHelper {
     private static Storyboard GetStoryboard(FrameworkElement element) {
         CheckAndSetStoryboardDict(element);
         if (StoryboardDict[element].Storyboard is not null) {
-            return StoryboardDict[element].Storyboard;
+            return StoryboardDict[element].Storyboard!;
         }
         // 必须要有 RenderTransform
         element.RenderTransform = CreateScaleTransform(element, StoryboardDict[element].ScaleOption);
@@ -693,14 +693,13 @@ public static class NameHelper {
 /// <remarks>
 /// 注意在其他自定义事件中根据 <see cref="GetIsLongPressEventHappend"/> 来做进一步处理
 /// </remarks>
-public class LongPressHelper {
+public static class LongPressHelper {
     private class LongPressEventInfo {
         public System.Timers.Timer Timer { get; } = new(100);
         public DateTime MouseDownTime { get; set; } = DateTime.Now;
         public bool Invoked { get; set; }
     }
 
-    public static event EventHandler? LongPress;
     private const int LongPressTimeThreshold = 700;
     public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(LongPressHelper), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
     public static readonly DependencyProperty IsLongPressEventHappendProperty = DependencyProperty.RegisterAttached("IsLongPressEventHappend", typeof(bool), typeof(LongPressHelper), new PropertyMetadata(false));

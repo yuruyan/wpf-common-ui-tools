@@ -59,13 +59,13 @@ public static class DebounceUtils {
             if (DebounceStateDict.ContainsKey(wrappedCallback)) {
                 State state = DebounceStateDict[wrappedCallback];
                 state.LastInvokeTime = CommonUtils.CuruentMilliseconds;
-                state.Arg = arg;
+                state.Arg = arg!;
                 state.IsUpdated = true;
                 return;
             }
             // 初始化
             System.Timers.Timer timer = new(interval);
-            DebounceStateDict[wrappedCallback] = new(wrappedCallback, timer, arg) {
+            DebounceStateDict[wrappedCallback] = new(wrappedCallback, timer, arg!) {
                 Interval = interval,
                 IsUpdated = true,
             };
