@@ -51,9 +51,9 @@
   <!--#endregion-->
 
   <!--#region GlobalDefaultButton-->
-  <SolidColorBrush x:Key="GlobalDefaultButtonBackgroundBrush" Color="{StaticResource ApplicationBackgroundDark1}" />
-  <SolidColorBrush x:Key="GlobalDefaultButtonBackgroundBrushPointerOver" Color="{StaticResource ApplicationBackgroundDark2}" />
-  <SolidColorBrush x:Key="GlobalDefaultButtonBackgroundBrushPressed" Color="{StaticResource ApplicationBackgroundDark3}" />
+  <SolidColorBrush x:Key="GlobalDefaultButtonBackgroundBrush" Color="{StaticResource ApplicationBackgroundDark2}" />
+  <SolidColorBrush x:Key="GlobalDefaultButtonBackgroundBrushPointerOver" Color="{StaticResource ApplicationBackgroundDark3}" />
+  <SolidColorBrush x:Key="GlobalDefaultButtonBackgroundBrushPressed" Color="{StaticResource ApplicationBackgroundDark1}" />
   <!--#endregion-->
 
   <!--#region ListControl-->
