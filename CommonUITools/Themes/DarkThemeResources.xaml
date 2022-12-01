@@ -69,10 +69,12 @@
   <!--#endregion-->
 
   <!--#region ComboBox-->
-  <SolidColorBrush x:Key="ComboBoxBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="ComboBoxBackground" Color="Transparent" />
+  <SolidColorBrush x:Key="ComboBoxBackgroundPointerOver" Color="Transparent" />
+  <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="{StaticResource ApplicationBackground}" />
   <SolidColorBrush x:Key="ComboBoxItemBackground" Color="{StaticResource ApplicationBackground}" />
-  <SolidColorBrush x:Key="ComboBoxItemBackgroundPressed" Color="{StaticResource ApplicationBackgroundDark3}" />
-  <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="{StaticResource ApplicationBackgroundDark2}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="{StaticResource ApplicationBackgroundLight2}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackgroundPressed" Color="{StaticResource ApplicationBackgroundLight3}" />
   <!--#endregion-->
 
   <!--#region TextControl-->
