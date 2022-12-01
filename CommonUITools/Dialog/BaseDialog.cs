@@ -1,8 +1,6 @@
 ﻿using CommonUITools.Utils;
 using ModernWpf.Controls;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace CommonUITools.View;
 
@@ -22,13 +20,17 @@ public class BaseDialog : ContentDialog {
         string okButtonText = "确定",
         string cancelButtonText = "关闭"
     ) {
+        DataContext = this;
         Title = title;
         DetailText = detailText;
         PrimaryButtonText = okButtonText;
         CloseButtonText = cancelButtonText;
-        Init();
+        //Init();
         if (TryFindResource("GlobalDefaultButtonStyle") is Style closeButtonStyle) {
             CloseButtonStyle = closeButtonStyle;
+        }
+        if (TryFindResource("BaseDialogDataTemplate") is DataTemplate titleDataTemplate) {
+            TitleTemplate = titleDataTemplate;
         }
         // 设置 ScaleAnimation
         Opened += (dialog, _) => TaskUtils.EnsureCalledOnce((dialog, Application.Current), () => {
@@ -38,31 +40,6 @@ public class BaseDialog : ContentDialog {
     }
 
     public BaseDialog() : this("") { }
-
-    /// <summary>
-    /// 初始化
-    /// </summary>
-    private void Init() {
-        DataContext = this;
-        #region 设置 TitleTemplate
-        DataTemplate dataTemplate = new DataTemplate();
-        #region SimpleStackPanel
-        FrameworkElementFactory simpleStackPanel = new FrameworkElementFactory(typeof(SimpleStackPanel));
-        simpleStackPanel.SetValue(SimpleStackPanel.OrientationProperty, Orientation.Horizontal);
-        simpleStackPanel.SetValue(SimpleStackPanel.SpacingProperty, 8.0);
-        #region TextBlock
-        FrameworkElementFactory textblock = new FrameworkElementFactory(typeof(TextBlock));
-        textblock.SetValue(TextBlock.StyleProperty, Application.Current.Resources["ContentDialogTitleStyle"]);
-        textblock.SetBinding(TextBlock.TextProperty, new Binding("Title") {
-            RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(BaseDialog), 1)
-        });
-        #endregion
-        simpleStackPanel.AppendChild(textblock);
-        #endregion
-        dataTemplate.VisualTree = simpleStackPanel;
-        TitleTemplate = dataTemplate;
-        #endregion
-    }
 }
 
 public class DialogResult<T> {

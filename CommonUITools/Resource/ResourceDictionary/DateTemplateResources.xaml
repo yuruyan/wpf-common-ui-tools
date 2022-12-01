@@ -35,4 +35,8 @@
         TextAlignment="Right" />
     </StackPanel>
   </DataTemplate>
+
+  <DataTemplate x:Key="BaseDialogDataTemplate">
+    <TextBlock FontWeight="Bold" Text="{Binding}" />
+  </DataTemplate>
 </ResourceDictionary>
