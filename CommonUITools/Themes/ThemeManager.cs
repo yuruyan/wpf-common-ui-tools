@@ -9,8 +9,8 @@ public static class ThemeManager {
 
     private const string GenericSource1 = "/CommonUITools;component/Themes/Generic.xaml";
     private const string GenericSource2 = "pack://application:,,,/CommonUITools;component/Themes/Generic.xaml";
-    private const string LightThemeSource = "/CommonUITools;component/Resource/ResourceDictionary/LightThemeResources.xaml";
-    private const string DarkThemeSource = "/CommonUITools;component/Resource/ResourceDictionary/DarkThemeResources.xaml";
+    private const string LightThemeSource = "/CommonUITools;component/Themes/LightThemeResources.xaml";
+    private const string DarkThemeSource = "/CommonUITools;component/Themes/DarkThemeResources.xaml";
 
     private static readonly ResourceDictionary GenericResourceDictionary;
 
