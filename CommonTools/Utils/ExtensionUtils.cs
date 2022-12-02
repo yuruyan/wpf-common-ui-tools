@@ -169,6 +169,13 @@ public static class ExtensionUtils {
     public static string ReplaceSlashWithBackSlash(this string source) => source.Replace('/', '\\');
 
     /// <summary>
+    /// 替换 '\\' 为 '/'
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static string ReplaceBackSlashWithSlash(this string source) => source.Replace('\\', '/');
+
+    /// <summary>
     /// ForEach
     /// </summary>
     /// <typeparam name="Source"></typeparam>
