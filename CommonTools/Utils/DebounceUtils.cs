@@ -3,6 +3,10 @@
 public static class DebounceUtils {
     private static readonly IDictionary<Delegate, State> DebounceStateDict = new Dictionary<Delegate, State>();
     private static readonly IDictionary<object, State2> DebounceState2Dict = new Dictionary<object, State2>();
+    /// <summary>
+    /// 超过 interval * <see cref="NoResponseTimes"/> 时间没有请求，则暂停定时器
+    /// </summary>
+    private const int NoResponseTimes = 16;
 
     /// <summary>
     /// 防抖
@@ -12,8 +16,8 @@ public static class DebounceUtils {
     /// <param name="callRegular">是否每隔 interval 时间调用一次</param>
     /// <param name="interval"></param>
     public static void Debounce(object identifier, Action callback, bool callRegular = false, int interval = 500) {
-        if (DebounceState2Dict.ContainsKey(identifier)) {
-            var _state = DebounceState2Dict[identifier];
+        if (DebounceState2Dict.TryGetValue(identifier, out var _state)) {
+            _state.Timer.Start();
             _state.Callback = callback;
             _state.IsAccessed = true;
             _state.LastAccessTime = DateTime.Now;
@@ -25,6 +29,10 @@ public static class DebounceUtils {
         state.Timer.Elapsed += (o, e) => {
             // 没有访问
             if (!state.IsAccessed) {
+                // 暂停计时，节流
+                if ((DateTime.Now - state.LastAccessTime).TotalMilliseconds >= state.Timer.Interval * NoResponseTimes) {
+                    state.Timer.Stop();
+                }
                 return;
             }
             if (callRegular) {
