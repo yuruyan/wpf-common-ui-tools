@@ -1,4 +1,4 @@
-﻿using CommonUITools.Model;using CommonTools.Model;
+﻿using CommonUITools.Model;
 using CommonUITools.Utils;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace CommonUITools.Widget;
 
@@ -121,17 +122,17 @@ public partial class FileProcessStatusWidget : UserControl {
     /// <summary>
     /// 更新状态 Timer
     /// </summary>
-    private readonly System.Timers.Timer UpdateStatusTimer = new(1500);
+    private readonly DispatcherTimer UpdateStatusTimer = new() {
+        Interval = TimeSpan.FromMilliseconds(1500)
+    };
 
     public FileProcessStatusWidget() {
         FileProcessStatusList = new();
-        UpdateStatusTimer.Elapsed += (_, _) => {
-            Dispatcher.Invoke(() => {
-                HasTaskRunning = FileProcessStatusList.Any(f => f.Status == ProcessResult.Processing);
-                FinishedCount = FileProcessStatusList.Count(f => f.Status switch {
-                    ProcessResult.Interrupted or ProcessResult.Successful or ProcessResult.Failed => true,
-                    _ => false
-                });
+        UpdateStatusTimer.Tick += (_, _) => {
+            HasTaskRunning = FileProcessStatusList.Any(f => f.Status == ProcessResult.Processing);
+            FinishedCount = FileProcessStatusList.Count(f => f.Status switch {
+                ProcessResult.Interrupted or ProcessResult.Successful or ProcessResult.Failed => true,
+                _ => false
             });
         };
         InitializeComponent();
