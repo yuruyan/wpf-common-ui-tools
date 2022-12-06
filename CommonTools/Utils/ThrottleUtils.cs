@@ -1,4 +1,6 @@
-﻿namespace CommonTools.Utils;
+﻿using System.Collections.Concurrent;
+
+namespace CommonTools.Utils;
 
 public static class ThrottleUtils {
     private record State {
@@ -6,11 +8,11 @@ public static class ThrottleUtils {
         public bool IsFinished { get; set; }
     }
 
-    private static readonly IDictionary<object, State> ThrottleDict = new Dictionary<object, State>();
     /// <summary>
     /// 默认调用间隔时间 ms
     /// </summary>
     private const int Interval = 300;
+    private static readonly IDictionary<object, State> ThrottleDict = new ConcurrentDictionary<object, State>();
 
     /// <summary>
     /// 合法化 interval
