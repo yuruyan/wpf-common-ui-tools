@@ -106,7 +106,7 @@
           Padding="4"
           HorizontalAlignment="Left"
           VerticalAlignment="Bottom"
-          Background="White">
+          Background="{DynamicResource ApplicationBackgroundBrush}">
           <StackPanel Orientation="Horizontal">
             <!--  全部文件个数  -->
             <TextBlock
