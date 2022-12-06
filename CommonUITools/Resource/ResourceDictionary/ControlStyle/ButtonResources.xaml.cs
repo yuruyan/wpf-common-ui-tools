@@ -1,9 +1,4 @@
-﻿using CommonUITools.Utils;
-using System.IO;
-using System.Windows.Controls;
-using System.Windows.Input;
-
-namespace CommonUITools.Resource.ResourceDictionary;
+﻿namespace CommonUITools.Resource.ResourceDictionary;
 
 public partial class ButtonResources {
     private void OpenFileTextBlockMouseUpHandler(object sender, MouseButtonEventArgs e) {

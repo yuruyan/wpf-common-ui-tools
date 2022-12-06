@@ -1,8 +1,4 @@
-﻿using CommonUITools.Utils;
-using NLog;
-using System.Windows;
-
-namespace CommonUITools.Themes;
+﻿namespace CommonUITools.Themes;
 
 public static class ThemeManager {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

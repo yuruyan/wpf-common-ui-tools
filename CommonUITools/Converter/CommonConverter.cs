@@ -1,8 +1,4 @@
-﻿using CommonTools.Utils;
-using CommonUITools.Utils;
-using System.Globalization;
-using System.IO;
-using System.Windows;
+﻿using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 

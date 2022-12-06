@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace CommonUITools.Model;
+﻿namespace CommonUITools.Model;
 
 public enum ProcessResult {
     /// <summary>

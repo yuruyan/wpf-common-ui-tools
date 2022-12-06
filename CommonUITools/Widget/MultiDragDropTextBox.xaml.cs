@@ -1,14 +1,4 @@
-﻿using CommonTools.Utils;
-using CommonUITools.Utils;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media.Animation;
-
-namespace CommonUITools.Widget;
+﻿namespace CommonUITools.Widget;
 
 public partial class MultiDragDropTextBox : UserControl {
     public static readonly DependencyProperty InputTextProperty = DependencyProperty.Register("InputText", typeof(string), typeof(MultiDragDropTextBox), new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));

@@ -1,9 +1,5 @@
-﻿using CommonTools.Utils;
-using ModernWpf.Media.Animation;
-using NLog;
+﻿using ModernWpf.Media.Animation;
 using System.Reflection;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace CommonUITools.Route;
 

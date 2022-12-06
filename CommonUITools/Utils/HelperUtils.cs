@@ -1,14 +1,7 @@
-﻿using CommonTools.Utils;
-using CommonUITools.Widget;
-using NLog;
+﻿using CommonUITools.Widget;
 using System.Reflection;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 
 namespace CommonUITools.Utils;
 

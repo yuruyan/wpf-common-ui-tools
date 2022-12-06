@@ -1,7 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-
-namespace CommonUITools.Widget;
+﻿namespace CommonUITools.Widget;
 
 public partial class IconButton : Button {
 

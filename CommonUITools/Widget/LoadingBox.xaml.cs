@@ -1,8 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Animation;
-
-namespace CommonUITools.Widget;
+﻿namespace CommonUITools.Widget;
 
 public partial class LoadingBox : UserControl {
     public const double DefaultSize = 30;

@@ -1,7 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-
-namespace CommonUITools.Widget;
+﻿namespace CommonUITools.Widget;
 
 public partial class IconButtonContent : UserControl {
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(IconButtonContent), new PropertyMetadata(""));

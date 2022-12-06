@@ -1,8 +1,4 @@
 ﻿using CommonUITools.Converter;
-using NLog;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace CommonUITools.Widget;
