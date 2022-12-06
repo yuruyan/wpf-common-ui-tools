@@ -89,6 +89,7 @@
   <SolidColorBrush x:Key="TextControlForeground" Color="{StaticResource ApplicationForeground}" />
   <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="{StaticResource ApplicationForeground}" />
   <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{StaticResource ApplicationForeground}" />
+  <SolidColorBrush x:Key="TextControlSecondaryForeground" Color="{StaticResource ApplicationForeground}" />
   <!--#endregion-->
 
   <!--#region ScrollBar-->
