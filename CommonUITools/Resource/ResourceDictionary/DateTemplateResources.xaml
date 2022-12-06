@@ -5,6 +5,7 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ConverterResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/CommonResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/TextBlockResources.xaml" />
   </ResourceDictionary.MergedDictionaries>
 
   <!--  SuggestionBoxDataTemplate  -->
