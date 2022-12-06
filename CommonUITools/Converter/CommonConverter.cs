@@ -77,7 +77,7 @@ public class HideZeroConverter : IValueConverter {
 public class HideIfZeroConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
         try {
-            return System.Convert.ToUInt64(value) == 0 ? Visibility.Collapsed : Visibility.Visible;
+            return System.Convert.ToInt64(value) == 0 ? Visibility.Collapsed : Visibility.Visible;
         } catch {
             return Visibility.Collapsed;
         }
@@ -94,7 +94,7 @@ public class HideIfZeroConverter : IValueConverter {
 public class HideIfNotZeroConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
         try {
-            return System.Convert.ToUInt64(value) != 0 ? Visibility.Collapsed : Visibility.Visible;
+            return System.Convert.ToInt64(value) != 0 ? Visibility.Collapsed : Visibility.Visible;
         } catch {
             return Visibility.Collapsed;
         }
@@ -513,7 +513,10 @@ public class FileNameConverter : IValueConverter {
 /// </summary>
 public class FileSizeConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        var size = System.Convert.ToUInt64(value);
+        var size = System.Convert.ToInt64(value);
+        if (size < 0) {
+            size = 0;
+        }
         return size switch {
             < 1024 => string.Format("{0} B", size),
             < ConstantUtils.OneMbSize => (size / (double)1024).ToString("#.## KB"),
