@@ -21,6 +21,14 @@
     TargetType="TextBlock">
     <Setter Property="FontFamily" Value="{StaticResource IconFontUrI}" />
   </Style>
+  <!--  ColorIconFont 样式  -->
+  <Style
+    x:Key="ColorIconFontStyle"
+    BasedOn="{StaticResource GlobalTextBlockStyle}"
+    TargetType="TextBlock">
+    <Setter Property="FontFamily" Value="{StaticResource IconFontUrI}" />
+    <Setter Property="Opacity" Value="{StaticResource ColorIconOpacity}" />
+  </Style>
   <!--  CommonUIToolsIconFontStyle 样式  -->
   <Style
     x:Key="CommonUIToolsIconFontStyle"
