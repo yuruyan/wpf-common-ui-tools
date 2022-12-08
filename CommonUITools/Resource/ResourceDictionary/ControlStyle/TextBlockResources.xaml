@@ -21,6 +21,13 @@
     TargetType="TextBlock">
     <Setter Property="FontFamily" Value="{StaticResource IconFontUrI}" />
   </Style>
+  <!--  ASCIIFontStyle  -->
+  <Style
+    x:Key="ASCIIFontStyle"
+    BasedOn="{StaticResource GlobalTextBlockStyle}"
+    TargetType="TextBlock">
+    <Setter Property="FontFamily" Value="{StaticResource ASCIIFontFamily}" />
+  </Style>
   <!--  ColorIconFont 样式  -->
   <Style
     x:Key="ColorIconFontStyle"

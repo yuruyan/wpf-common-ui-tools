@@ -70,7 +70,7 @@
             <TextBlock
               Grid.Column="1"
               Padding="16,0"
-              FontFamily="{StaticResource ASCIIFontFamily}"
+              Style="{StaticResource ASCIIFontStyle}"
               Text="{Binding Process, StringFormat='{}{0:P0}'}"
               Visibility="{Binding Status, Converter={StaticResource ProcessVisibilityConverter}}" />
             <!--  状态  -->
