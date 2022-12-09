@@ -37,4 +37,8 @@
   <converter:BoolToStringConverter x:Key="BoolToStringConverter" />
   <converter:FileIconConverter x:Key="FileIconConverter" />
   <converter:FilePngIconConverter x:Key="FilePngIconConverter" />
+  <converter:ProcessResultIconConverter x:Key="ProcessResultIconConverter" />
+  <converter:ProcessResultMessageConverter x:Key="ProcessResultMessageConverter" />
+  <converter:ProcessResultIconForegroundConverter x:Key="ProcessResultIconForegroundConverter" />
+  <converter:ProcessResultVisibilityConverter x:Key="ProcessResultVisibilityConverter" />
 </ResourceDictionary>

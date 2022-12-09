@@ -12,13 +12,6 @@
   Loaded="ViewLoadedHandler"
   Unloaded="ViewUnloadedHandler"
   mc:Ignorable="d">
-  <UserControl.Resources>
-    <local:ProcessResultIconConverter x:Key="ProcessResultIconConverter" />
-    <local:ProcessResultIconForegroundConverter x:Key="ProcessResultIconForegroundConverter" />
-    <local:ProcessVisibilityConverter x:Key="ProcessVisibilityConverter" />
-    <local:ProcessResultMessageConverter x:Key="ProcessResultMessageConverter" />
-  </UserControl.Resources>
-
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition />
@@ -72,7 +65,7 @@
               Padding="16,0"
               Style="{StaticResource ASCIIFontStyle}"
               Text="{Binding Process, StringFormat='{}{0:P0}'}"
-              Visibility="{Binding Status, Converter={StaticResource ProcessVisibilityConverter}}" />
+              Visibility="{Binding Status, Converter={StaticResource ProcessResultVisibilityConverter}}" />
             <!--  状态  -->
             <Grid Grid.Column="2">
               <!--  正在处理  -->

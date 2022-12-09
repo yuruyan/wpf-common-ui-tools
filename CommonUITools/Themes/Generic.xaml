@@ -8,10 +8,12 @@
     <ResourceDictionary Source="/CommonUITools;component/Themes/LightThemeResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ConverterResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/CommonResources.xaml" />
+
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/TextBlockResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/ButtonResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/TextBoxResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/ScrollBarResources.xaml" />
+
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/StyleResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/HoverEffectResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/DateTemplateResources.xaml" />
