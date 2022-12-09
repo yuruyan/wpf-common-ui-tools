@@ -43,6 +43,14 @@
     TargetType="TextBlock">
     <Setter Property="FontFamily" Value="{StaticResource CommonUIToolsIconFontUrI}" />
   </Style>
+  <!--  CommonUIToolsColorIconFont 样式  -->
+  <Style
+    x:Key="CommonUIToolsColorIconFontStyle"
+    BasedOn="{StaticResource GlobalTextBlockStyle}"
+    TargetType="TextBlock">
+    <Setter Property="FontFamily" Value="{StaticResource CommonUIToolsIconFontUrI}" />
+    <Setter Property="Opacity" Value="{StaticResource ColorIconOpacity}" />
+  </Style>
   <!--  菜单 TextBlock  -->
   <Style x:Key="MenuTextBlockStyle" TargetType="TextBlock">
     <Setter Property="Foreground" Value="{StaticResource BlackBrush8}" />

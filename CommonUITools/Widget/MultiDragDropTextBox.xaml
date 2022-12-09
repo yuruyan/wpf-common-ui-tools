@@ -72,7 +72,7 @@
                       <MenuItem.Icon>
                         <TextBlock
                           Foreground="#f5a623"
-                          Style="{StaticResource CommonUIToolsIconFontStyle}"
+                          Style="{StaticResource CommonUIToolsColorIconFontStyle}"
                           Text="&#xe660;" />
                       </MenuItem.Icon>
                     </MenuItem>
@@ -80,7 +80,7 @@
                       <MenuItem.Icon>
                         <TextBlock
                           Foreground="{StaticResource ErrorBackground}"
-                          Style="{StaticResource CommonUIToolsIconFontStyle}"
+                          Style="{StaticResource CommonUIToolsColorIconFontStyle}"
                           Text="&#xe6b4;" />
                       </MenuItem.Icon>
                     </MenuItem>
