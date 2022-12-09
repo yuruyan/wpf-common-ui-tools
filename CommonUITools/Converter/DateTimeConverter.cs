@@ -1,51 +1,57 @@
 ﻿using System.Globalization;
 
 namespace CommonUITools.Converter;
+
 /// <summary>
-/// Color 转 Brush
+/// DateTime 转 DateTime String Converter
 /// </summary>
-public class ColorToBrushConverter : IValueConverter {
+public class DateTimeToDateTimeStringConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return new SolidColorBrush((Color)value);
+        string delimiter = (string)(parameter ?? "-");
+        return ((DateTime)value).ToString($"yyyy{delimiter}MM{delimiter}dd HH:mm:ss");
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-        return ((SolidColorBrush)value).Color;
+        throw new NotImplementedException();
     }
 }
 
 /// <summary>
-/// Brush 转 Color
+/// DateTime 转 Date String Converter
 /// </summary>
-public class BrushToColorConverter : IValueConverter {
+public class DateTimeToDateStringConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return ((SolidColorBrush)value).Color;
+        string delimiter = (string)(parameter ?? "-");
+        return ((DateTime)value).ToString($"yyyy{delimiter}MM{delimiter}dd");
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-        return new SolidColorBrush((Color)value);
+        throw new NotImplementedException();
     }
 }
 
 /// <summary>
-/// string 转 Brush
+/// 时间戳转字符串
 /// </summary>
-public class StringToBrushConverter : IValueConverter {
+public class TimeStampStringConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return UIUtils.StringToBrush((string)value);
+        return CommonUtils.ConvertToDateTime(System.Convert.ToInt64(value)).ToString("G");
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-        return ((SolidColorBrush)value).ToString();
+        throw new NotImplementedException();
     }
 }
 
 /// <summary>
-/// string 转 Color
+/// DateTime 转年龄
 /// </summary>
-public class StringToColorConverter : IValueConverter {
+public class AgeConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return ((SolidColorBrush)UIUtils.StringToBrush((string)value)).Color;
+        if (value is DateTime dateTime) {
+            return (int)((DateTime.Now - dateTime).TotalDays / 365);
+        }
+        return 0;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {

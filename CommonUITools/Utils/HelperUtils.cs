@@ -1,6 +1,5 @@
 ﻿using CommonUITools.Widget;
 using System.Reflection;
-using System.Windows.Data;
 using System.Windows.Documents;
 
 namespace CommonUITools.Utils;

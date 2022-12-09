@@ -1,6 +1,5 @@
 ﻿using CommonUITools.View;
 using System.Diagnostics;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 using SysDraw = System.Drawing;
