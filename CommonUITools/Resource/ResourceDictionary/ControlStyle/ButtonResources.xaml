@@ -99,6 +99,13 @@
     BasedOn="{StaticResource GlobalButtonStyle}"
     TargetType="widget:IconButton" />
   <Style BasedOn="{StaticResource GlobalIconButtonStyle}" TargetType="widget:IconButton" />
+  <!--  GlobalTransparentTitleBarButtonStyle  -->
+  <Style x:Key="GlobalTransparentTitleBarButtonStyle" TargetType="ui:TitleBarButton">
+    <Style.Resources>
+      <SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="Transparent" />
+      <SolidColorBrush x:Key="SystemControlHighlightListMediumBrush" Color="Transparent" />
+    </Style.Resources>
+  </Style>
   <!--  ErrorButtonStyle  -->
   <Style
     x:Key="GlobalErrorButtonStyle"
