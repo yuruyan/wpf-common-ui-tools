@@ -66,7 +66,7 @@ public static class DebounceUtils {
             // 更新状态
             if (DebounceStateDict.ContainsKey(wrappedCallback)) {
                 State state = DebounceStateDict[wrappedCallback];
-                state.LastInvokeTime = CommonUtils.CuruentMilliseconds;
+                state.LastInvokeTime = DateTimeUtils.CuruentMilliseconds;
                 state.Arg = arg!;
                 state.IsUpdated = true;
                 return;
@@ -80,7 +80,7 @@ public static class DebounceUtils {
             timer.Elapsed += (o, e) => {
                 State state = DebounceStateDict[wrappedCallback];
                 // 更新了并且大于 interval
-                if (state.IsUpdated && CommonUtils.CuruentMilliseconds - state.LastInvokeTime > state.Interval) {
+                if (state.IsUpdated && DateTimeUtils.CuruentMilliseconds - state.LastInvokeTime > state.Interval) {
                     // 重置
                     state.IsUpdated = false;
                     wrappedCallback((T)state.Arg);
@@ -106,7 +106,7 @@ public static class DebounceUtils {
         }
 
         public int Interval { get; set; } = 500;
-        public long LastInvokeTime { get; set; } = CommonUtils.CuruentMilliseconds;
+        public long LastInvokeTime { get; set; } = DateTimeUtils.CuruentMilliseconds;
         public bool IsUpdated { get; set; }
         public Delegate Callback { get; set; }
         public System.Timers.Timer Timer { get; set; }
