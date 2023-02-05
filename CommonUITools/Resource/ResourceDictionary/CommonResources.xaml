@@ -56,7 +56,7 @@
   <!--  NavigationContent Header Font Size  -->
   <system:Double x:Key="NavigationContentHeaderFontSize">25</system:Double>
   <!--  圆角按钮 Corner Radius  -->
-  <system:Double x:Key="RoundButtonCornerSize">8</system:Double>
+  <system:Double x:Key="RoundButtonCornerSize">4</system:Double>
   <!--  圆角按钮 Corner Radius  -->
   <CornerRadius
     x:Key="RoundButtonCornerRadius"
