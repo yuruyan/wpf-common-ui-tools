@@ -132,3 +132,29 @@ public class NumberToGridLengthConverter : IValueConverter {
         throw new NotImplementedException();
     }
 }
+
+/// <summary>
+/// 数值转 Thickness
+/// </summary>
+public class NumberToThicknessConverter : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        return new Thickness(System.Convert.ToDouble(value));
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}
+
+/// <summary>
+/// 数值转 CornerRadius
+/// </summary>
+public class NumberToCornerRadiusConverter : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        return new CornerRadius(System.Convert.ToDouble(value));
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}
