@@ -119,3 +119,16 @@ public class BoolToStringConverter : IValueConverter {
         throw new NotImplementedException();
     }
 }
+
+/// <summary>
+/// 数值转 GridLength
+/// </summary>
+public class NumberToGridLengthConverter : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        return new GridLength(System.Convert.ToDouble(value));
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}

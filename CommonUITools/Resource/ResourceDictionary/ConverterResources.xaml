@@ -41,4 +41,5 @@
   <converter:ProcessResultMessageConverter x:Key="ProcessResultMessageConverter" />
   <converter:ProcessResultIconForegroundConverter x:Key="ProcessResultIconForegroundConverter" />
   <converter:ProcessResultVisibilityConverter x:Key="ProcessResultVisibilityConverter" />
+  <converter:NumberToGridLengthConverter x:Key="NumberToGridLengthConverter" />
 </ResourceDictionary>

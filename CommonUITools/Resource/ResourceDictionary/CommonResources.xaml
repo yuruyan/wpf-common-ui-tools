@@ -70,7 +70,8 @@
   <Thickness x:Key="NavigationMargin" Top="30" />
   <!--  UserAvatar Height  -->
   <GridLength x:Key="UserAvatarHeight">90</GridLength>
-
+  <!--  GridSplitterSize  -->
+  <system:Double x:Key="GridSplitterSize">4</system:Double>
   <!--#region Item Spacing-->
   <system:Double x:Key="NarrowItemSpacing">8</system:Double>
   <system:Double x:Key="MediumItemSpacing">16</system:Double>
