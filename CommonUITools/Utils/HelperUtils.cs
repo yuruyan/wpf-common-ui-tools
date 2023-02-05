@@ -1,6 +1,7 @@
 ﻿using CommonUITools.Widget;
 using System.Reflection;
 using System.Windows.Documents;
+using System.Windows.Media.Effects;
 
 namespace CommonUITools.Utils;
 
@@ -851,6 +852,43 @@ public static class LoadedStoryboardHelper {
             if (times < 0 || ElementInvokeTimesDict[obj] < times) {
                 ElementInvokeTimesDict[obj]++;
                 storyboard.Begin();
+            }
+        }
+    }
+}
+
+public static class DropShadowEffectHelper {
+    public enum EffectWeight {
+        None,
+        Normal,
+        Lighter,
+        Darker,
+    }
+
+    /// <summary>
+    /// 阴影程度
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static EffectWeight GetWeight(DependencyObject obj) {
+        return (EffectWeight)obj.GetValue(WeightProperty);
+    }
+    public static void SetWeight(DependencyObject obj, EffectWeight value) {
+        obj.SetValue(WeightProperty, value);
+    }
+    public static readonly DependencyProperty WeightProperty = DependencyProperty.RegisterAttached("Weight", typeof(EffectWeight), typeof(DropShadowEffectHelper), new PropertyMetadata(EffectWeight.None, EffectWeightChangedHandler));
+    private static readonly Color DropShadowColor = UIUtils.StringToColor("#dfdfdf");
+
+    private static void EffectWeightChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is UIElement element) {
+            if (e.NewValue is EffectWeight weight) {
+                element.Effect = weight switch {
+                    EffectWeight.None => null,
+                    EffectWeight.Lighter => new DropShadowEffect() { Color = DropShadowColor, ShadowDepth = 0, BlurRadius = 8 },
+                    EffectWeight.Normal => new DropShadowEffect() { Color = DropShadowColor, ShadowDepth = 0, BlurRadius = 16 },
+                    EffectWeight.Darker => new DropShadowEffect() { Color = DropShadowColor, ShadowDepth = 0, BlurRadius = 32 },
+                    _ => throw new ArgumentException("Invalid value")
+                };
             }
         }
     }
