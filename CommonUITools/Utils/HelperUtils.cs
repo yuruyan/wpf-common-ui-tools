@@ -857,6 +857,9 @@ public static class LoadedStoryboardHelper {
     }
 }
 
+/// <summary>
+/// 添加阴影
+/// </summary>
 public static class DropShadowEffectHelper {
     public enum EffectWeight {
         None,
