@@ -20,12 +20,18 @@ public static class DebounceUtils {
             _state.Timer.Start();
             _state.Callback = callback;
             _state.IsAccessed = true;
+            // 超过时间则立即调用
+            if (CanInvoke(_state, interval)) {
+                _state.IsAccessed = false;
+                _state.Callback();
+            }
             _state.LastAccessTime = DateTime.Now;
             return;
         }
         // 初始化
         var state = new State2();
         state.Timer.Interval = interval;
+        state.Callback = callback;
         state.Timer.Elapsed += (o, e) => {
             // 没有访问
             if (!state.IsAccessed) {
@@ -42,7 +48,7 @@ public static class DebounceUtils {
                 return;
             }
             // 超过了 interval
-            if (state.LastAccessTime.AddMilliseconds(interval) <= DateTime.Now) {
+            if (CanInvoke(state, interval)) {
                 var state = DebounceState2Dict[identifier];
                 state.IsAccessed = false;
                 state.LastAccessTime = DateTime.Now;
@@ -51,6 +57,13 @@ public static class DebounceUtils {
         };
         state.Timer.Start();
         DebounceState2Dict[identifier] = state;
+        // 首次立即执行
+        state.LastAccessTime = DateTime.Now;
+        state.Callback();
+    }
+
+    private static bool CanInvoke(State2 state, double interval) {
+        return state.LastAccessTime.AddMilliseconds(interval) <= DateTime.Now;
     }
 
     /// <summary>
