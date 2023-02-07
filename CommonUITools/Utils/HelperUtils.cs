@@ -121,10 +121,10 @@ public static class ScaleAnimationHelper {
         }
         // 必须要有 RenderTransform
         element.RenderTransform = CreateScaleTransform(element, StoryboardDict[element].ScaleOption);
-        DoubleAnimation scaleYAnimation = new(0.3, 1, new Duration(TimeSpan.FromMilliseconds(300))) {
+        DoubleAnimation scaleYAnimation = new(0.5, 1, new Duration(TimeSpan.FromMilliseconds(300))) {
             EasingFunction = new PowerEase() { EasingMode = EasingMode.EaseOut, Power = 3 }
         };
-        DoubleAnimation scaleXAnimation = new(0.3, 1, new Duration(TimeSpan.FromMilliseconds(300))) {
+        DoubleAnimation scaleXAnimation = new(0.5, 1, new Duration(TimeSpan.FromMilliseconds(300))) {
             EasingFunction = new PowerEase() { EasingMode = EasingMode.EaseOut, Power = 3 }
         };
         Storyboard.SetTarget(scaleYAnimation, element);
