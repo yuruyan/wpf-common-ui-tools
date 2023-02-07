@@ -9,6 +9,11 @@
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/TextBlockResources.xaml" />
   </ResourceDictionary.MergedDictionaries>
 
+  <!--  ToggleSwitchNoContentStyle  -->
+  <Style x:Key="ToggleSwitchNoContentStyle" TargetType="ui:ToggleSwitch">
+    <Setter Property="OnContent" Value="" />
+    <Setter Property="OffContent" Value="" />
+  </Style>
   <!--  CheckBoxStyle  -->
   <Style
     x:Key="GlobalCheckBoxStyle"
