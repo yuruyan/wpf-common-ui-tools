@@ -896,3 +896,74 @@ public static class DropShadowEffectHelper {
         }
     }
 }
+
+/// <summary>
+/// 移除 ListBox DragSelection 行为
+/// </summary>
+public static class RemoveListBoxDefaultSelectionBehavior {
+    public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(RemoveListBoxDefaultSelectionBehavior), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static bool GetIsEnabled(DependencyObject obj) {
+        return (bool)obj.GetValue(IsEnabledProperty);
+    }
+    public static void SetIsEnabled(DependencyObject obj, bool value) {
+        obj.SetValue(IsEnabledProperty, value);
+    }
+
+    private static void IsEnabledPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not UIElement element) {
+            return;
+        }
+        var isEnabled = (bool)e.NewValue;
+        if (isEnabled) {
+            element.PreviewMouseMove += PreviewMouseMoveHandler;
+        } else {
+            element.PreviewMouseMove -= PreviewMouseMoveHandler;
+        }
+    }
+
+    private static void PreviewMouseMoveHandler(object sender, MouseEventArgs e) {
+        if (sender is UIElement element) {
+            element.ReleaseMouseCapture();
+        }
+    }
+}
+
+/// <summary>
+/// 移除 ListBoxItem MouseRightClickSelection 行为
+/// </summary>
+public static class RemoveListBoxItemDefaultSelectionBehavior {
+    public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(RemoveListBoxItemDefaultSelectionBehavior), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
+
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static bool GetIsEnabled(DependencyObject obj) {
+        return (bool)obj.GetValue(IsEnabledProperty);
+    }
+    public static void SetIsEnabled(DependencyObject obj, bool value) {
+        obj.SetValue(IsEnabledProperty, value);
+    }
+
+    private static void IsEnabledPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not UIElement element) {
+            return;
+        }
+        var isEnabled = (bool)e.NewValue;
+        if (isEnabled) {
+            element.MouseRightButtonDown += MouseRightButtonDownHandler;
+        } else {
+            element.MouseRightButtonDown -= MouseRightButtonDownHandler;
+        }
+    }
+
+    private static void MouseRightButtonDownHandler(object sender, MouseButtonEventArgs e) {
+        e.Handled = true;
+    }
+}
