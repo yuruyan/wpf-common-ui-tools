@@ -81,7 +81,7 @@ public static class TaskUtils {
     /// 等待 predicate 返回 true，然后执行 action
     /// </summary>
     /// <param name="predicate"></param>
-    /// <param name="action"></param>
+    /// <param name="action">等待结束后执行</param>
     /// <param name="interval">检查间隔时间(ms)</param>
     public static Task WaitFor(Func<bool> predicate, Action action, int interval = 50) {
         return Task.Run(() => {
@@ -89,6 +89,19 @@ public static class TaskUtils {
                 Thread.Sleep(interval);
             }
             action();
+        });
+    }
+
+    /// <summary>
+    /// 等待 predicate 返回 true，然后执行 action
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <param name="interval">检查间隔时间(ms)</param>
+    public static Task WaitFor(Func<bool> predicate, int interval = 50) {
+        return Task.Run(() => {
+            while (!predicate()) {
+                Thread.Sleep(interval);
+            }
         });
     }
 
