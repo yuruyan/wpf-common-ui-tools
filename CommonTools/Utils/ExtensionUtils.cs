@@ -213,6 +213,7 @@ public static class ExtensionUtils {
             if (object.Equals(item, target)) {
                 return index;
             }
+            index++;
         }
         return -1;
     }
@@ -230,6 +231,7 @@ public static class ExtensionUtils {
             if (predicate(item)) {
                 return index;
             }
+            index++;
         }
         return -1;
     }
