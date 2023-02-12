@@ -44,4 +44,5 @@
   <converter:NumberToGridLengthConverter x:Key="NumberToGridLengthConverter" />
   <converter:NumberToThicknessConverter x:Key="NumberToThicknessConverter" />
   <converter:NumberToCornerRadiusConverter x:Key="NumberToCornerRadiusConverter" />
+  <converter:ObjectToStringConvert x:Key="ObjectToStringConvert" />
 </ResourceDictionary>

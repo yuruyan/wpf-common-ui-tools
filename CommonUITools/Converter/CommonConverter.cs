@@ -158,3 +158,16 @@ public class NumberToCornerRadiusConverter : IValueConverter {
         throw new NotImplementedException();
     }
 }
+
+/// <summary>
+/// 对象转字符串
+/// </summary>
+public class ObjectToStringConvert : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        return value?.ToString();
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}
