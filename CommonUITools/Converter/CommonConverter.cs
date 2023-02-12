@@ -162,7 +162,7 @@ public class NumberToCornerRadiusConverter : IValueConverter {
 /// <summary>
 /// 对象转字符串
 /// </summary>
-public class ObjectToStringConvert : IValueConverter {
+public class ObjectToStringConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
         return value?.ToString();
     }
