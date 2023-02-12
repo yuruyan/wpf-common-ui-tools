@@ -541,12 +541,12 @@ public static class UIUtils {
     /// 在 MergedDictionaries 中查找
     /// </summary>
     /// <param name="mergedDictionaries"></param>
-    /// <param name="resourceName"></param>
+    /// <param name="sourcePath"></param>
     /// <returns></returns>
-    public static ResourceDictionary? FindResourceInMergedDictionaries(Collection<ResourceDictionary> mergedDictionaries, string resourceName) {
+    public static ResourceDictionary? FindResourceInMergedDictionaries(Collection<ResourceDictionary> mergedDictionaries, string sourcePath) {
         return mergedDictionaries.FirstOrDefault(
-                r => r.Source != null && r.Source.OriginalString == resourceName
-            );
+            r => r.Source != null && r.Source.OriginalString == sourcePath
+        );
     }
 
     /// <summary>
