@@ -19,6 +19,20 @@
     </Style.Resources>
   </Style>
   <Style BasedOn="{StaticResource GlobalTextBoxStyle}" TargetType="TextBox" />
+  <!--  GlobalRichTextBoxStyle  -->
+  <Style
+    x:Key="GlobalRichTextBoxStyle"
+    BasedOn="{StaticResource DefaultRichTextBoxStyle}"
+    TargetType="RichTextBox">
+    <Setter Property="FontSize" Value="{DynamicResource SystemFontSize}" />
+    <Setter Property="FontFamily" Value="{DynamicResource SystemFontFamily}" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="CaretBrush" Value="{DynamicResource TextControlCaretBrush}" />
+    <Style.Resources>
+      <Style BasedOn="{StaticResource TextElementScrollBarStyle}" TargetType="ScrollBar" />
+    </Style.Resources>
+  </Style>
+  <Style BasedOn="{StaticResource GlobalRichTextBoxStyle}" TargetType="RichTextBox" />
   <!--  PasswordBoxStyle  -->
   <Style
     x:Key="GlobalPasswordBoxStyle"
@@ -44,6 +58,28 @@
     x:Key="BorderlessTextBoxStyle"
     BasedOn="{StaticResource GlobalTextBoxStyle}"
     TargetType="TextBox">
+    <Style.Resources>
+      <Thickness
+        x:Key="TextControlBorderThemeThickness"
+        Bottom="0"
+        Left="0"
+        Right="0"
+        Top="0" />
+      <Thickness
+        x:Key="TextControlBorderThemeThicknessFocused"
+        Bottom="0"
+        Left="0"
+        Right="0"
+        Top="0" />
+      <SolidColorBrush x:Key="TextControlButtonBorderBrushPressed" Color="Transparent" />
+    </Style.Resources>
+    <Setter Property="BorderThickness" Value="0" />
+  </Style>
+  <!--  无边框 RichTextBox  -->
+  <Style
+    x:Key="BorderlessRichTextBoxStyle"
+    BasedOn="{StaticResource GlobalRichTextBoxStyle}"
+    TargetType="RichTextBox">
     <Style.Resources>
       <Thickness
         x:Key="TextControlBorderThemeThickness"
