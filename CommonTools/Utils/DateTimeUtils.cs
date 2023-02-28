@@ -76,7 +76,7 @@ public static class DateTimeUtils {
     public static (DateTime, DateTime) GetDayRangeTime(DateTime date) {
         return (
             new DateTime(date.Year, date.Month, date.Day),
-            new DateTime(date.Year, date.Month, date.Day + 1)
+            new DateTime(date.Year, date.Month, date.Day).AddDays(1)
         );
     }
 }
