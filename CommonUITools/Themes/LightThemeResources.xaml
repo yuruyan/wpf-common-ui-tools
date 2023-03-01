@@ -65,6 +65,12 @@
   <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="{StaticResource Gray3}" />
   <!--#endregion-->
 
+  <!--#region TreeView-->
+  <SolidColorBrush x:Key="TreeViewItemBackgroundPointerOver" Color="{StaticResource Gray3}" />
+  <SolidColorBrush x:Key="TreeViewItemBackgroundSelected" Color="{StaticResource Gray4}" />
+  <SolidColorBrush x:Key="TreeViewItemBackgroundSelectedPointerOver" Color="{StaticResource Gray3}" />
+  <!--#endregion-->
+
   <!--#region TextControl-->
   <SolidColorBrush x:Key="TextControlBackground" Color="Transparent" />
   <SolidColorBrush x:Key="TextControlCaretBrush" Color="{StaticResource ApplicationForeground}" />

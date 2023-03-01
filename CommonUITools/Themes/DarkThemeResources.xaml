@@ -68,6 +68,12 @@
   <SolidColorBrush x:Key="ListViewItemBackgroundSelectedPointerOver" Color="{StaticResource ApplicationBackgroundLight3}" />
   <!--#endregion-->
 
+  <!--#region TreeView-->
+  <SolidColorBrush x:Key="TreeViewItemBackgroundPointerOver" Color="{StaticResource ApplicationBackgroundLight1}" />
+  <SolidColorBrush x:Key="TreeViewItemBackgroundSelected" Color="{StaticResource ApplicationBackgroundLight2}" />
+  <SolidColorBrush x:Key="TreeViewItemBackgroundSelectedPointerOver" Color="{StaticResource ApplicationBackgroundLight3}" />
+  <!--#endregion-->
+
   <!--#region ComboBox-->
   <SolidColorBrush x:Key="ComboBoxBackground" Color="Transparent" />
   <SolidColorBrush x:Key="ComboBoxBackgroundPointerOver" Color="Transparent" />
