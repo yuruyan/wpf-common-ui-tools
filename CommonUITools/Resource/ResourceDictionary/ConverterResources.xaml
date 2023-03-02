@@ -51,4 +51,5 @@
   <converter:VisibilityIncludesConverter x:Key="VisibilityIncludesConverter" />
   <converter:VisibilityNotEqualConverter x:Key="VisibilityNotEqualConverter" />
   <converter:VisibilityNotIncludesConverter x:Key="VisibilityNotIncludesConverter" />
+  <converter:InvertBoolConverter x:Key="InvertBoolConverter" />
 </ResourceDictionary>
