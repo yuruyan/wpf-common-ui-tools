@@ -8,6 +8,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <Platforms>x64</Platforms>
     <OutputType>Library</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
