@@ -967,3 +967,49 @@ public static class RemoveListBoxItemDefaultSelectionBehavior {
         e.Handled = true;
     }
 }
+
+/// <summary>
+/// 双击鼠标事件，DoubleMouseUp
+/// </summary>
+public static class DoubleMouseClickHelper {
+    public static readonly DependencyProperty MouseButtonEventHandlerProperty = DependencyProperty.RegisterAttached("Handler", typeof(MouseButtonEventHandler), typeof(DoubleMouseClickHelper), new PropertyMetadata(MouseButtonEventHandlerChangedHandler));
+    private static readonly ushort DoubleClickTime = PInvokeUtils.GetDoubleClickTime();
+    private static readonly IDictionary<UIElement, long> ElementClickTime = new Dictionary<UIElement, long>();
+    private static readonly IDictionary<UIElement, long> ElementEventRaisedTime = new Dictionary<UIElement, long>();
+
+    /// <summary>
+    /// MouseButtonEventHandler
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static MouseButtonEventHandler GetHandler(DependencyObject obj) {
+        return (MouseButtonEventHandler)obj.GetValue(MouseButtonEventHandlerProperty);
+    }
+    public static void SetHandler(DependencyObject obj, MouseButtonEventHandler value) {
+        obj.SetValue(MouseButtonEventHandlerProperty, value);
+    }
+
+    private static void MouseButtonEventHandlerChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not UIElement element) {
+            return;
+        }
+        TaskUtils.EnsureCalledOnce(d, () => {
+            element.MouseLeftButtonUp += (sender, args) => {
+                var notTime = DateTimeUtils.CuruentMilliseconds;
+                var elem = (UIElement)sender;
+                if (ElementClickTime.TryGetValue(elem, out var lastClickTime)) {
+                    // Raise event
+                    if (notTime - lastClickTime <= DoubleClickTime) {
+                        // Restrict raise times
+                        if (!ElementEventRaisedTime.TryGetValue(elem, out var lastRaisedTime) || notTime - lastRaisedTime >= DoubleClickTime) {
+                            ElementEventRaisedTime[elem] = notTime;
+                            GetHandler(elem).Invoke(sender, args);
+                        }
+                    }
+                }
+                ElementClickTime[elem] = DateTimeUtils.CuruentMilliseconds;
+            };
+        });
+    }
+
+}
