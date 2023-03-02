@@ -1,4 +1,5 @@
 ﻿<ResourceDictionary
+  x:Class="CommonUITools.Resource.ResourceDictionary.StyleResources"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:ui="http://schemas.modernwpf.com/2019"
@@ -156,4 +157,18 @@
     </MenuItem>
     <MenuItem Command="ApplicationCommands.SelectAll" Header="SelectAll" />
   </ContextMenu>
+  <!--  GlobalNumberBoxStyle  -->
+  <Style x:Key="GlobalNumberBoxStyle" TargetType="ui:NumberBox">
+    <Setter Property="AcceptsExpression" Value="False" />
+    <Setter Property="SpinButtonPlacementMode" Value="Compact" />
+    <Setter Property="MinWidth" Value="{StaticResource NumberBoxMinWidth}" />
+  </Style>
+  <Style BasedOn="{StaticResource GlobalNumberBoxStyle}" TargetType="ui:NumberBox" />
+  <!--  IntegerNumberBoxStyle  -->
+  <Style
+    x:Key="IntegerNumberBoxStyle"
+    BasedOn="{StaticResource GlobalNumberBoxStyle}"
+    TargetType="ui:NumberBox">
+    <EventSetter Event="LostFocus" Handler="IntegerNumberBoxLostFocusHandler" />
+  </Style>
 </ResourceDictionary>
