@@ -972,7 +972,7 @@ public static class RemoveListBoxItemDefaultSelectionBehavior {
 /// 双击鼠标事件，DoubleMouseUp
 /// </summary>
 public static class DoubleMouseClickHelper {
-    public static readonly DependencyProperty MouseButtonEventHandlerProperty = DependencyProperty.RegisterAttached("Handler", typeof(MouseButtonEventHandler), typeof(DoubleMouseClickHelper), new PropertyMetadata(MouseButtonEventHandlerChangedHandler));
+    public static readonly DependencyProperty HandlerProperty = DependencyProperty.RegisterAttached("Handler", typeof(MouseButtonEventHandler), typeof(DoubleMouseClickHelper), new PropertyMetadata(MouseButtonEventHandlerChangedHandler));
     private static readonly ushort DoubleClickTime = PInvokeUtils.GetDoubleClickTime();
     private static readonly IDictionary<UIElement, long> ElementClickTime = new Dictionary<UIElement, long>();
     private static readonly IDictionary<UIElement, long> ElementEventRaisedTime = new Dictionary<UIElement, long>();
@@ -983,10 +983,10 @@ public static class DoubleMouseClickHelper {
     /// <param name="obj"></param>
     /// <returns></returns>
     public static MouseButtonEventHandler GetHandler(DependencyObject obj) {
-        return (MouseButtonEventHandler)obj.GetValue(MouseButtonEventHandlerProperty);
+        return (MouseButtonEventHandler)obj.GetValue(HandlerProperty);
     }
     public static void SetHandler(DependencyObject obj, MouseButtonEventHandler value) {
-        obj.SetValue(MouseButtonEventHandlerProperty, value);
+        obj.SetValue(HandlerProperty, value);
     }
 
     private static void MouseButtonEventHandlerChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
