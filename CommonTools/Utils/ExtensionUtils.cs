@@ -40,6 +40,18 @@ public static class ExtensionUtils {
     }
 
     /// <summary>
+    /// 移除多个元素
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="thisCollection"></param>
+    /// <param name="toBeRemovedItems"></param>
+    public static void RemoveList<T>(this ICollection<T> thisCollection, IEnumerable<T> toBeRemovedItems) {
+        foreach (var item in toBeRemovedItems) {
+            thisCollection.Remove(item);
+        }
+    }
+
+    /// <summary>
     /// 打印集合
     /// </summary>
     /// <typeparam name="T"></typeparam>
