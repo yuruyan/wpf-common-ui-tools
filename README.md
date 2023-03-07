@@ -63,7 +63,3 @@
 ```xaml
 <ResourceDictionary Source="/CommonUITools;component/Themes/Generic.xaml" />
 ```
-
-3. **Resource** 文件夹
-
-创建 **Resource** 文件夹，将其中的文件属性设置为复制到输出目录
