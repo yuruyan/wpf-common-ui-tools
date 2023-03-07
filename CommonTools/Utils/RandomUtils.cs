@@ -2,6 +2,9 @@
 
 namespace CommonTools.Utils;
 
+/// <summary>
+/// 随机数工具
+/// </summary>
 public static class RandomUtils {
     /// <summary>
     /// 数字
