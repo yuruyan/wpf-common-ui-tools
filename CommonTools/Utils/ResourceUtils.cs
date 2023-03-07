@@ -10,7 +10,35 @@ public static class ResourceUtils {
     public static readonly IReadOnlyDictionary<char, string> ChineseCharacterPinYinDict = JsonConvert.DeserializeObject<Dictionary<char, string>>(
         Encoding.UTF8.GetString(Resource.Resource.ChineseCharacterPinYin)
     )!;
-
+    /// <summary>
+    /// 声调对应字母
+    /// </summary>
+    public static readonly IReadOnlyDictionary<char, char> ToneLetterDict = new Dictionary<char, char>() {
+        {'ā', 'a'},
+        {'á', 'a'},
+        {'ǎ', 'a'},
+        {'à', 'a'},
+        {'ō', 'o'},
+        {'ó', 'o'},
+        {'ǒ', 'o'},
+        {'ò', 'o'},
+        {'ē', 'e'},
+        {'é', 'e'},
+        {'ě', 'e'},
+        {'è', 'e'},
+        {'ī', 'i'},
+        {'í', 'i'},
+        {'ǐ', 'i'},
+        {'ì', 'i'},
+        {'ū', 'u'},
+        {'ú', 'u'},
+        {'ǔ', 'u'},
+        {'ù', 'u'},
+        {'ǖ', 'v'},
+        {'ǘ', 'v'},
+        {'ǚ', 'v'},
+        {'ǜ', 'v'},
+    };
     /// <summary>
     /// 获取汉字拼音
     /// </summary>
