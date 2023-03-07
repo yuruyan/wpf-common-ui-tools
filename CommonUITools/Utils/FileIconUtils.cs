@@ -3,6 +3,9 @@ using System.IO.Compression;
 
 namespace CommonUITools.Utils;
 
+/// <summary>
+/// 文件 Icon 工具
+/// </summary>
 public static class FileIconUtils {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -32,7 +35,7 @@ public static class FileIconUtils {
 
     static FileIconUtils() {
         var iconDict = JsonConvert.DeserializeObject<IDictionary<string, string>>(
-            Encoding.UTF8.GetString(Resource.Resource.Icon).ToLowerInvariant()
+            Encoding.UTF8.GetString(Resource.Resource.FileIconConfiguration).ToLowerInvariant()
         );
         if (iconDict is null) {
             throw new JsonSerializationException($"解析 Icon 配置文件失败");
@@ -62,6 +65,11 @@ public static class FileIconUtils {
     /// 检查 Icon 文件是否已解压
     /// </summary>
     private static void CheckAndDecompressFileIcons() {
+        Directory.CreateDirectory(DeCompressedIconFolder);
+        // 将数据文件写入磁盘
+        if (!File.Exists(CompressedIconFile)) {
+            File.WriteAllBytes(CompressedIconFile, Resource.Resource.FileIconData);
+        }
         var existFileIconNames = Directory
             .GetFiles(DeCompressedIconFolder)
             .Select(p => Path.GetFileName(p).ToLowerInvariant())
@@ -91,7 +99,7 @@ public static class FileIconUtils {
     }
 
     /// <summary>
-    /// 返回匹配 Icon 文件名，以 '/' 开头
+    /// 返回匹配 Icon 文件路径，以 '/' 开头
     /// </summary>
     /// <param name="fileName">文件名或绝对路径</param>
     /// <returns></returns>
@@ -99,13 +107,13 @@ public static class FileIconUtils {
         fileName = fileName.ToLowerInvariant();
         string ext = Path.GetExtension(fileName);
         // 完全匹配
-        if (IconDict.ContainsKey(ext)) {
-            return $"{IconDict[ext]}{Svg}";
+        if (IconDict.TryGetValue(ext, out var value)) {
+            return $"{value}{Svg}";
         }
-        // 根据
-        foreach (var dict in IconDict) {
-            if (fileName.EndsWith(dict.Key)) {
-                return $"{dict.Value}{Svg}";
+        // 根据后缀匹配
+        foreach (var (suffix, _) in SortedIconList) {
+            if (fileName.EndsWith(suffix)) {
+                return $"{suffix}{Svg}";
             }
         }
         // 返回默认 Icon
@@ -113,11 +121,9 @@ public static class FileIconUtils {
     }
 
     /// <summary>
-    /// 返回匹配 PngIcon 文件名，以 '/' 开头
+    /// 返回匹配 PngIcon 文件路径，以 '/' 开头
     /// </summary>
     /// <param name="fileName">文件名或绝对路径</param>
     /// <returns></returns>
-    public static string GetPngIcon(string fileName) {
-        return $"{GetIcon(fileName)[0..^4]}{Png}";
-    }
+    public static string GetPngIcon(string fileName) => $"{GetIcon(fileName)[0..^(Svg.Length)]}{Png}";
 }

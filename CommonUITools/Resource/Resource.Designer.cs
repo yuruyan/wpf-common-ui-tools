@@ -63,9 +63,19 @@ namespace CommonUITools.Resource {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Icon {
+        internal static byte[] FileIconConfiguration {
             get {
-                object obj = ResourceManager.GetObject("Icon", resourceCulture);
+                object obj = ResourceManager.GetObject("FileIconConfiguration", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] FileIconData {
+            get {
+                object obj = ResourceManager.GetObject("FileIconData", resourceCulture);
                 return ((byte[])(obj));
             }
         }
