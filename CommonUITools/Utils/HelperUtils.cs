@@ -1013,3 +1013,54 @@ public static class DoubleMouseClickHelper {
     }
 
 }
+
+/// <summary>
+/// 设置 ListViewGroup Style
+/// </summary>
+public static class ListViewGroupHelper {
+    public static readonly DependencyProperty EnableDefaultGroupStyleProperty = DependencyProperty.RegisterAttached("EnableDefaultGroupStyle", typeof(bool), typeof(ListViewGroupHelper), new PropertyMetadata(false, EnableDefaultGroupStylePropertyChangedHandler));
+    private static readonly IDictionary<ItemsControl, GroupStyle> GroupStyleDict = new Dictionary<ItemsControl, GroupStyle>();
+
+    public static bool GetEnableDefaultGroupStyle(DependencyObject obj) {
+        return (bool)obj.GetValue(EnableDefaultGroupStyleProperty);
+    }
+    /// <summary>
+    /// 设置默认 GroupStyle
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetEnableDefaultGroupStyle(DependencyObject obj, bool value) {
+        obj.SetValue(EnableDefaultGroupStyleProperty, value);
+    }
+
+    private static void EnableDefaultGroupStylePropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not ItemsControl control) {
+            throw new InvalidOperationException("Element is not of type ItemsControl");
+        }
+        // 初始化 GroupStyleDict
+        if (!GroupStyleDict.ContainsKey(control)) {
+            GroupStyleDict[control] = CreateGroupStyle(control);
+        }
+        if ((bool)e.NewValue) {
+            control.GroupStyle.Add(GroupStyleDict[control]);
+        } else {
+            control.GroupStyle.Remove(GroupStyleDict[control]);
+        }
+    }
+
+    /// <summary>
+    /// 创建 GroupStyle
+    /// </summary>
+    /// <param name="control"></param>
+    /// <returns></returns>
+    private static GroupStyle CreateGroupStyle(ItemsControl control) {
+        var template = new DataTemplate();
+        var elementFactory = new FrameworkElementFactory(typeof(TextBlock));
+        elementFactory.SetValue(TextBlock.StyleProperty, control.FindResource("ItemsControlGroupTextBlockStyle"));
+        elementFactory.SetBinding(TextBlock.TextProperty, new Binding("Name"));
+        template.VisualTree = elementFactory;
+        return new GroupStyle() {
+            HeaderTemplate = template
+        };
+    }
+}

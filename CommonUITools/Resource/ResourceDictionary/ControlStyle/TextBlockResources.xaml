@@ -124,4 +124,12 @@
     <Setter Property="FontSize" Value="{StaticResource NavigationContentHeaderFontSize}" />
     <Setter Property="FontWeight" Value="Bold" />
   </Style>
+  <!--  ItemsControlGroupTextBlockStyle  -->
+  <Style
+    x:Key="ItemsControlGroupTextBlockStyle"
+    BasedOn="{StaticResource GlobalTextBlockStyle}"
+    TargetType="TextBlock">
+    <Setter Property="FontSize" Value="{StaticResource DescriptionHeaderFontSize}" />
+    <Setter Property="Foreground" Value="{DynamicResource GrayTextForeground}" />
+  </Style>
 </ResourceDictionary>

@@ -109,6 +109,22 @@
     <Setter Property="ItemContainerStyle" Value="{StaticResource GlobalListBoxItemStyle}" />
   </Style>
   <Style BasedOn="{StaticResource GlobalListBoxStyle}" TargetType="ListBox" />
+  <!--  GlobalListViewItemStyle  -->
+  <Style
+    x:Key="GlobalListViewItemStyle"
+    BasedOn="{StaticResource DefaultListViewItemStyle}"
+    TargetType="ListViewItem">
+    <Setter Property="Padding" Value="0" />
+  </Style>
+  <!--  GlobalListViewStyle  -->
+  <Style
+    x:Key="GlobalListViewStyle"
+    BasedOn="{StaticResource DefaultListViewStyle}"
+    TargetType="ListView">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="ItemContainerStyle" Value="{StaticResource GlobalListViewItemStyle}" />
+  </Style>
+  <Style BasedOn="{StaticResource GlobalListViewStyle}" TargetType="ListView" />
   <!--  GlobalBorderStyle  -->
   <Style x:Key="GlobalBorderStyle" TargetType="Border">
     <Setter Property="CornerRadius" Value="4" />

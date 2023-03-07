@@ -111,4 +111,6 @@
   <SolidColorBrush x:Key="NavigationViewTopPaneBackground" Color="Transparent" />
   <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="Transparent" />
   <!--#endregion-->
+
+  <SolidColorBrush x:Key="GrayTextForeground" Color="{StaticResource Gray8}" />
 </ResourceDictionary>
