@@ -567,4 +567,20 @@ public static class UIUtils {
         oldResource.EndInit();
         return true;
     }
+
+    /// <summary>
+    /// 获取 sender 的 DataContext
+    /// </summary>
+    /// <typeparam name="T">DataContext type</typeparam>
+    /// <param name="sender">继承自 FrameworkContentElement 或 FrameworkElement</param>
+    /// <returns>获取失败返回 default(<typeparamref name="T"/>)</returns>
+    public static T? GetElementDataContext<T>(object sender) {
+        if (sender is FrameworkElement element && element.DataContext is T data) {
+            return data;
+        }
+        if (sender is FrameworkContentElement contentElement && contentElement.DataContext is T contentData) {
+            return contentData;
+        }
+        return default;
+    }
 }
