@@ -9,7 +9,6 @@
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/ButtonResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/TextBlockResources.xaml" />
   </ResourceDictionary.MergedDictionaries>
-
   <!--  ToggleSwitchNoContentStyle  -->
   <Style x:Key="ToggleSwitchNoContentStyle" TargetType="ui:ToggleSwitch">
     <Setter Property="OnContent" Value="" />
@@ -99,6 +98,7 @@
     BasedOn="{StaticResource DefaultListBoxItemStyle}"
     TargetType="ListBoxItem">
     <Setter Property="Padding" Value="0" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
   </Style>
   <!--  GlobalListBoxStyle  -->
   <Style
@@ -115,6 +115,7 @@
     BasedOn="{StaticResource DefaultListViewItemStyle}"
     TargetType="ListViewItem">
     <Setter Property="Padding" Value="0" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
   </Style>
   <!--  GlobalListViewStyle  -->
   <Style
@@ -187,4 +188,9 @@
     TargetType="ui:NumberBox">
     <EventSetter Event="LostFocus" Handler="IntegerNumberBoxLostFocusHandler" />
   </Style>
+  <!--  GlobalGridSplitterStyle  -->
+  <Style x:Key="GlobalGridSplitterStyle" TargetType="GridSplitter">
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+  <Style BasedOn="{StaticResource GlobalGridSplitterStyle}" TargetType="GridSplitter" />
 </ResourceDictionary>
