@@ -109,6 +109,18 @@
     <Setter Property="ItemContainerStyle" Value="{StaticResource GlobalListBoxItemStyle}" />
   </Style>
   <Style BasedOn="{StaticResource GlobalListBoxStyle}" TargetType="ListBox" />
+  <!--  TransparentListBoxStyle  -->
+  <Style x:Key="TransparentListBoxStyle" TargetType="ListBox">
+    <Style.Resources>
+      <SolidColorBrush x:Key="SystemControlHighlightListAccentHighBrush" Color="Transparent" />
+      <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="Transparent" />
+      <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumBrush" Color="Transparent" />
+      <SolidColorBrush x:Key="SystemControlHighlightListAccentVeryHighBrush" Color="Transparent" />
+      <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumLowBrush" Color="Transparent" />
+      <SolidColorBrush x:Key="SystemControlHighlightListMediumBrush" Color="Transparent" />
+      <SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="Transparent" />
+    </Style.Resources>
+  </Style>
   <!--  GlobalListViewItemStyle  -->
   <Style
     x:Key="GlobalListViewItemStyle"
