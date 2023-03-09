@@ -13,6 +13,7 @@
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/ButtonResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/TextBoxResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/ScrollBarResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/ItemsControlResources.xaml" />
 
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/StyleResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/HoverEffectResources.xaml" />
