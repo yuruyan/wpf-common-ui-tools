@@ -38,6 +38,7 @@ public static class ResourceUtils {
         {'ǘ', 'v'},
         {'ǚ', 'v'},
         {'ǜ', 'v'},
+        {'ɡ', 'g'},
     };
     /// <summary>
     /// 获取汉字拼音
