@@ -307,4 +307,45 @@ public static class ExtensionUtils {
         }
         return source;
     }
+
+    /// <summary>
+    /// 数组转置
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static T[,] Transpose<T>(this T[,] source) {
+        int rowLength = source.GetLength(0);
+        int columnLength = source.GetLength(1);
+        var data = new T[columnLength, rowLength];
+        for (int i = 0; i < rowLength; i++) {
+            for (int j = 0; j < columnLength; j++) {
+                data[j, i] = source[i, j];
+            }
+        }
+        return data;
+    }
+
+    /// <summary>
+    /// 集合转置，第二维长度必须相同
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static ICollection<IList<T>> Transpose<T>(this ICollection<IList<T>> source) {
+        int rowLength = source.Count;
+        int columnLength = source.First().Count;
+        var data = new List<IList<T>>(columnLength);
+        // Initialize
+        for (int i = 0; i < columnLength; i++) {
+            data.Add(new List<T>(rowLength));
+        }
+        foreach (var row in source) {
+            int currentRow = 0;
+            foreach (var columnElem in row) {
+                data[currentRow++].Add(columnElem);
+            }
+        }
+        return data;
+    }
 }
