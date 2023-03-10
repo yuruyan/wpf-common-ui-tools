@@ -3,6 +3,9 @@ using System.Collections.ObjectModel;
 
 namespace CommonTools.Utils;
 
+/// <summary>
+/// 扩展方法
+/// </summary>
 public static class ExtensionUtils {
     /// <summary>
     /// 从 collection 中移除符合 predicate 条件的第一个元素
@@ -261,5 +264,47 @@ public static class ExtensionUtils {
             results.Add(func(item));
         }
         return results;
+    }
+
+    /// <summary>
+    /// 扩充集合到指定长度
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="length"></param>
+    /// <param name="defaultValue">填充默认值</param>
+    /// <returns></returns>
+#pragma warning disable CS8601 // Possible null reference assignment.
+    public static ICollection<T> ResizeToLength<T>(this ICollection<T> source, int length, T defaultValue = default) {
+#pragma warning restore CS8601 // Possible null reference assignment.
+        // 不需要扩充
+        if (length <= source.Count) {
+            return source;
+        }
+        int resizeCount = length - source.Count;
+        for (int i = 0; i < resizeCount; i++) {
+            source.Add(defaultValue);
+        }
+        return source;
+    }
+
+    /// <summary>
+    /// 扩充集合 <paramref name="count"/> 个元素
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="count"></param>
+    /// <param name="defaultValue">填充默认值</param>
+    /// <returns></returns>
+#pragma warning disable CS8601 // Possible null reference assignment.
+    public static ICollection<T> ResizeByCount<T>(this ICollection<T> source, int count, T defaultValue = default) {
+#pragma warning restore CS8601 // Possible null reference assignment.
+        if (count < 0) {
+            throw new ArgumentOutOfRangeException(nameof(count), "Cannot be less than 0");
+        }
+        for (int i = 0; i < count; i++) {
+            source.Add(defaultValue);
+        }
+        return source;
     }
 }
