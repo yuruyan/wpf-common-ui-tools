@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <Resource Include="Resource\IconFont.ttf" />
+    <Resource Include="Resource\Images\*" />
     <None Update="Resource\FileIconConfiguration.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
