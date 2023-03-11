@@ -303,7 +303,6 @@ public class Router {
 }
 
 public class RouterService {
-    public Frame Frame { get; }
     private readonly IDictionary<Type, RouterInfo> Routers = new Dictionary<Type, RouterInfo>();
     private readonly IDictionary<NavigationTransitionEffect, NavigationTransitionInfo> NavigationTransitionEffectDict = new Dictionary<NavigationTransitionEffect, NavigationTransitionInfo>() {
         {NavigationTransitionEffect.DrillIn, new DrillInNavigationTransitionInfo()},
@@ -316,6 +315,18 @@ public class RouterService {
     /// </summary>
     public NavigationTransitionEffect DefalutNavigationTransitionEffect = NavigationTransitionEffect.Entrance;
     private readonly FieldInfo? TransitionFieldInfo; // 通过反射设置过渡动画
+    /// <summary>
+    /// 当前 Service Frame
+    /// </summary>
+    public Frame Frame { get; }
+    /// <summary>
+    /// 当前页面 Type
+    /// </summary>
+    public Type? CurrentPageType => Frame.Content?.GetType();
+    /// <summary>
+    /// 当前页面实例
+    /// </summary>
+    public object? CurrentPage => Frame.Content;
 
     private record RouterInfo {
         public RouterInfo(Type classType) {
