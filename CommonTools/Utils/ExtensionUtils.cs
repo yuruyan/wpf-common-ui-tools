@@ -348,4 +348,35 @@ public static class ExtensionUtils {
         }
         return data;
     }
+
+    /// <summary>
+    /// 批量添加数据
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="data"></param>
+    /// <returns>this</returns>
+    public static ICollection<T> AddRange<T>(this ICollection<T> source, params IEnumerable<T>[] data) {
+        foreach (var list in data) {
+            foreach (var item in list) {
+                source.Add(item);
+            }
+        }
+        return source;
+    }
+
+    /// <summary>
+    /// 按顺序集合多个数据集
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="data"></param>
+    /// <returns>A new list which contains all data from <paramref name="source"/> and <paramref name="data"/></returns>
+    public static IList<T> Join<T>(this IEnumerable<T> source, params IEnumerable<T>[] data) {
+        var results = new List<T>(source);
+        foreach (var item in data) {
+            results.AddRange(item);
+        }
+        return results;
+    }
 }
