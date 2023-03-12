@@ -41,12 +41,12 @@
     BasedOn="{StaticResource DefaultContextMenuStyle}"
     TargetType="ContextMenu">
     <Setter Property="utils:ScaleAnimationHelper.IsEnabled" Value="True" />
-    <Setter Property="Width" Value="{DynamicResource ContextMenuWidth}" />
+    <Setter Property="MinWidth" Value="{DynamicResource ContextMenuMinWidth}" />
   </Style>
   <Style BasedOn="{StaticResource GlobalContextMenuStyle}" TargetType="ContextMenu" />
   <Style BasedOn="{StaticResource TextControlContextMenu}" TargetType="ui:TextContextMenu">
     <Setter Property="utils:ScaleAnimationHelper.IsEnabled" Value="True" />
-    <Setter Property="Width" Value="{DynamicResource ContextMenuWidth}" />
+    <Setter Property="MinWidth" Value="{DynamicResource ContextMenuMinWidth}" />
   </Style>
   <!--  GlobalMenuItemStyle  -->
   <Style
