@@ -148,7 +148,7 @@ public static class UIUtils {
                 failedCallback(error);
                 return;
             }
-            CommonUITools.Widget.MessageBox.Error("打开失败," + error.Message);
+            MessageBoxUtils.Error("打开失败," + error.Message);
             Logger.Info(error);
         }
     }
@@ -173,7 +173,7 @@ public static class UIUtils {
                 failedCallback(error);
                 return;
             }
-            Widget.MessageBox.Error("打开失败," + error.Message);
+            MessageBoxUtils.Error("打开失败," + error.Message);
             Logger.Info(error);
         }
     }
@@ -191,7 +191,7 @@ public static class UIUtils {
                 failedCallback(error);
                 return;
             }
-            CommonUITools.Widget.MessageBox.Error("打开失败," + error.Message);
+            MessageBoxUtils.Error("打开失败," + error.Message);
             Logger.Info(error);
         }
     }
@@ -266,7 +266,7 @@ public static class UIUtils {
             if (string.IsNullOrEmpty(item.Key)) {
                 // 显示提示消息
                 if (showMessage) {
-                    Widget.MessageBox.Error(
+                    MessageBoxUtils.Error(
                         string.IsNullOrEmpty(item.Value) ? message : item.Value
                     );
                 }
@@ -330,14 +330,14 @@ public static class UIUtils {
             }
         } catch (IOException) {
             if (showErrorInfo) {
-                Widget.MessageBox.Error("文件读取或写入失败");
+                MessageBoxUtils.Error("文件读取或写入失败");
             }
             if (reThrowError) {
                 throw;
             }
         } catch {
             if (showErrorInfo) {
-                Widget.MessageBox.Error("失败");
+                MessageBoxUtils.Error("失败");
             }
             if (reThrowError) {
                 throw;
@@ -393,7 +393,7 @@ public static class UIUtils {
             var filePath = filepaths.First();
             // 文件检查是否存在
             if (!File.Exists(filePath)) {
-                Widget.MessageBox.Error($"文件 '{Path.GetFileName(filePath)}' 不存在");
+                MessageBoxUtils.Error($"文件 '{Path.GetFileName(filePath)}' 不存在");
                 return false;
             }
             // 二进制文件警告
@@ -407,7 +407,7 @@ public static class UIUtils {
         }
         // 输入文本检查
         if (!hasFile && string.IsNullOrEmpty(inputText)) {
-            Widget.MessageBox.Info("请输入文本");
+            MessageBoxUtils.Info("请输入文本");
             return false;
         }
         return true;

@@ -33,10 +33,10 @@ public partial class App {
 
 internal static class WindowAdorner {
     public static Adorner CreateWindowAdorner(FrameworkElement adornedElement, Window window) {
-        var messageBoxPanel = CreateMessageBoxPanel(window);
+        var messageBoxPanel = CreateMessageBoxPanel();
         var notificationPanel = CreateNotificationPanel();
         #region 设置 ContentPanel
-        Widget.MessageBox.SetContentPanel(messageBoxPanel);
+        Widget.MessageBox.RegisterMessagePanel(window, messageBoxPanel);
         Widget.NotificationBox.SetContentPanel(notificationPanel);
         #endregion
         return new CommonAdorner(adornedElement, new CommonAdorner.ElementInfo[] {
@@ -49,16 +49,17 @@ internal static class WindowAdorner {
     /// 创建 MessageBoxPanel
     /// </summary>
     /// <returns></returns>
-    private static Panel CreateMessageBoxPanel(Window window) => new StackPanel() { Margin = new() { Top = 10 }, };
+    private static Panel CreateMessageBoxPanel() => new StackPanel() { Margin = new() { Top = 10 }, };
 
     /// <summary>
     /// 创建 NotificationPanel
     /// </summary>
     /// <returns></returns>
-    private static Panel CreateNotificationPanel()
-        => new StackPanel() {
+    private static Panel CreateNotificationPanel() {
+        return new StackPanel() {
             Margin = new() { Top = 30, Right = 10 },
             HorizontalAlignment = HorizontalAlignment.Right,
             VerticalAlignment = VerticalAlignment.Bottom,
         };
+    }
 }

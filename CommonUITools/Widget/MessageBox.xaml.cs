@@ -6,7 +6,7 @@ namespace CommonUITools.Widget;
 /// 无论是否在 ui 线程，都可以调用静态方法
 /// </summary>
 public partial class MessageBox : UserControl {
-
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private static readonly DependencyProperty BoxBackgroundProperty = DependencyProperty.Register("BoxBackground", typeof(SolidColorBrush), typeof(MessageBox), new PropertyMetadata());
     private static readonly DependencyProperty BoxForegroundProperty = DependencyProperty.Register("BoxForeground", typeof(SolidColorBrush), typeof(MessageBox), new PropertyMetadata());
     private static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(SolidColorBrush), typeof(MessageBox), new PropertyMetadata());
@@ -14,10 +14,6 @@ public partial class MessageBox : UserControl {
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
     public static readonly DependencyProperty MessageTypeProperty = DependencyProperty.Register("MessageType", typeof(MessageType), typeof(MessageBox), new PropertyMetadata(MessageType.Info));
 
-    /// <summary>
-    /// 用于添加 MessageBox
-    /// </summary>
-    private static UIElementCollection? PanelChildren;
     public string Text {
         get { return (string)GetValue(TextProperty); }
         set { SetValue(TextProperty, value); }
@@ -53,10 +49,14 @@ public partial class MessageBox : UserControl {
     /// <summary>
     /// MessageType
     /// </summary>
-    public MessageType MessageType {
+    private MessageType MessageType {
         get { return (MessageType)GetValue(MessageTypeProperty); }
         set { SetValue(MessageTypeProperty, value); }
     }
+    /// <summary>
+    /// 窗口对应消息面板
+    /// </summary>
+    private static readonly IDictionary<Window, UIElementCollection> WindowPanelDict = new Dictionary<Window, UIElementCollection>();
     /// <summary>
     /// 关闭定时器
     /// </summary>
@@ -65,31 +65,49 @@ public partial class MessageBox : UserControl {
     /// 显示时间 (ms)
     /// </summary>
     public int ShowingDuration { get; set; } = 3000;
+    /// <summary>
+    /// 当只有一个窗口时，默认的消息面板
+    /// </summary>
+    private static UIElementCollection? DefaultWindowPanel;
+    /// <summary>
+    /// 注册消息 Panel
+    /// </summary>
+    /// <param name="window"></param>
+    /// <param name="panel"></param>
+    public static void RegisterMessagePanel(Window window, Panel panel) => WindowPanelDict[window] = panel.Children;
 
     /// <summary>
-    /// 设置内容 Panel
+    /// ShowMessage
     /// </summary>
-    /// <param name="contentPanel"></param>
-    public static void SetContentPanel(Panel contentPanel) => PanelChildren = contentPanel.Children;
-
-    public static void Info(string message) => ShowMessage(message, MessageType.Info);
-
-    public static void Waring(string message) => ShowMessage(message, MessageType.Warning);
-
-    public static void Success(string message) => ShowMessage(message, MessageType.Success);
-
-    public static void Error(string message) => ShowMessage(message, MessageType.Error);
-
-    private static void ShowMessage(string message, MessageType type = MessageType.Info) {
-        // 检查权限
-        if (Application.Current.Dispatcher.CheckAccess()) {
-            PanelChildren?.Add(new MessageBox(message, type));
-        } else {
-            Application.Current.Dispatcher.Invoke(() => PanelChildren?.Add(new MessageBox(message, type)));
+    /// <param name="message"></param>
+    /// <param name="this"></param>
+    /// <param name="type"></param>
+    internal static void ShowMessage(string message, DependencyObject? @this = null, MessageType type = MessageType.Info) {
+        if (WindowPanelDict.Count == 0) {
+            Logger.Error("No window has registered MessagePanel");
+            return;
+        }
+        // 单窗口
+        if (WindowPanelDict.Count == 1) {
+            DefaultWindowPanel ??= WindowPanelDict.First().Value;
+            UIUtils.RunOnUIThread(() => {
+                DefaultWindowPanel.Add(new MessageBox(message, type));
+            });
+            return;
+        }
+        // 多窗口
+        if (Window.GetWindow(@this) is Window window) {
+            if (!WindowPanelDict.TryGetValue(window, out var panel)) {
+                Logger.Error("No MessagePanel has registered with this window");
+                return;
+            }
+            UIUtils.RunOnUIThread(() => {
+                panel.Add(new MessageBox(message, type));
+            });
         }
     }
 
-    public MessageBox(string message, MessageType messageType = MessageType.Info) {
+    private MessageBox(string message, MessageType messageType = MessageType.Info) {
         Text = message;
         MessageType = messageType;
         Icon = WidgetGlobal.MessageInfoDict[MessageType].Icon;
@@ -114,7 +132,7 @@ public partial class MessageBox : UserControl {
         // 移除
         unLoadStoryboard.Completed += (s, e) => {
             Visibility = Visibility.Collapsed;
-            PanelChildren?.Remove(this);
+            WindowPanelDict[Window.GetWindow(this)].Remove(this);
         };
         UnloadTimer.Dispose();
         unLoadStoryboard.Begin();
