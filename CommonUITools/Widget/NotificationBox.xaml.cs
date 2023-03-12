@@ -3,16 +3,34 @@
 namespace CommonUITools.Widget;
 
 public partial class NotificationBox : UserControl {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private static readonly DependencyProperty BoxForegroundProperty = DependencyProperty.Register("BoxForeground", typeof(string), typeof(NotificationBox), new PropertyMetadata("White"));
-    public static readonly DependencyProperty MessageProperty = DependencyProperty.Register("Message", typeof(string), typeof(NotificationBox), new PropertyMetadata(""));
-    public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(NotificationBox), new PropertyMetadata(""));
-    public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(NotificationBox), new PropertyMetadata(""));
-    public static readonly DependencyProperty ClickCallbackProperty = DependencyProperty.Register("ClickCallback", typeof(Action), typeof(NotificationBox), new PropertyMetadata());
+    private static readonly DependencyProperty MessageProperty = DependencyProperty.Register("Message", typeof(string), typeof(NotificationBox), new PropertyMetadata(""));
+    private static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(NotificationBox), new PropertyMetadata(""));
+    private static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(NotificationBox), new PropertyMetadata(""));
+    private static readonly DependencyProperty ClickCallbackProperty = DependencyProperty.Register("ClickCallback", typeof(Action), typeof(NotificationBox), new PropertyMetadata());
 
     /// <summary>
-    /// 用于添加 NotificationBox
+    /// 默认显示时长
     /// </summary>
-    private static UIElementCollection? PanelChildren;
+    public const uint DefaultDisplayDuration = 3000;
+    /// <summary>
+    /// 当只有一个窗口时，默认的消息面板
+    /// </summary>
+    private static UIElementCollection? DefaultWindowPanel;
+    /// <summary>
+    /// 显示时间 (ms)
+    /// </summary>
+    private readonly uint DisplayDuration = 4500;
+    /// <summary>
+    /// 关闭定时器
+    /// </summary>
+    private readonly System.Timers.Timer UnloadTimer;
+    /// <summary>
+    /// 窗口对应消息面板
+    /// </summary>
+    private static readonly IDictionary<Window, UIElementCollection> WindowPanelDict = new Dictionary<Window, UIElementCollection>();
+
     /// <summary>
     /// Background
     /// </summary>
@@ -23,77 +41,82 @@ public partial class NotificationBox : UserControl {
     /// <summary>
     /// 消息
     /// </summary>
-    public string Message {
+    private string Message {
         get { return (string)GetValue(MessageProperty); }
         set { SetValue(MessageProperty, value); }
     }
     /// <summary>
     /// 标题
     /// </summary>
-    public string Title {
+    private string Title {
         get { return (string)GetValue(TitleProperty); }
         set { SetValue(TitleProperty, value); }
     }
     /// <summary>
     /// 图标
     /// </summary>
-    public string Icon {
+    private string Icon {
         get { return (string)GetValue(IconProperty); }
         set { SetValue(IconProperty, value); }
     }
     /// <summary>
-    /// 显示时间 (ms)
-    /// </summary>
-    public int ShowingDuration { get; set; } = 4500;
-    /// <summary>
-    /// 关闭定时器
-    /// </summary>
-    private readonly System.Timers.Timer UnloadTimer;
-    /// <summary>
     /// 点击回调
     /// </summary>
-    public Action? ClickCallback {
+    private Action? ClickCallback {
         get { return (Action?)GetValue(ClickCallbackProperty); }
         set { SetValue(ClickCallbackProperty, value); }
     }
 
     /// <summary>
-    /// 设置内容 Panel
+    /// 注册消息 Panel
     /// </summary>
-    /// <param name="contentPanel"></param>
-    public static void SetContentPanel(Panel contentPanel) => PanelChildren = contentPanel.Children;
+    /// <param name="window"></param>
+    /// <param name="panel"></param>
+    public static void RegisterNotificationPanel(Window window, Panel panel) => WindowPanelDict[window] = panel.Children;
 
-    public static void ShowNotification(string title, string message, MessageType messageType = MessageType.Info, Action? callback = null) {
-        // 检查权限
-        if (Application.Current.Dispatcher.CheckAccess()) {
-            PanelChildren?.Add(new NotificationBox(title, message, messageType, callback));
-        } else {
-            Application.Current.Dispatcher.Invoke(() => {
-                PanelChildren?.Add(new NotificationBox(title, message, messageType, callback));
+    /// <summary>
+    /// 显示通知消息
+    /// </summary>
+    /// <param name="title">标题</param>
+    /// <param name="message">信息</param>
+    /// <param name="this">多窗口情况下使用，将调用方作为此参数传入</param>
+    /// <param name="displayDuration">显示时长</param>
+    /// <param name="messageType">消息类型</param>
+    /// <param name="callback">回调</param>
+    internal static void ShowNotification(string title, string message, DependencyObject? @this = null, uint displayDuration = DefaultDisplayDuration, MessageType messageType = MessageType.Info, Action? callback = null) {
+        if (WindowPanelDict.Count == 0) {
+            Logger.Error("No window has registered NotificationPanel");
+            return;
+        }
+        // 单窗口
+        if (WindowPanelDict.Count == 1) {
+            DefaultWindowPanel ??= WindowPanelDict.First().Value;
+            UIUtils.RunOnUIThread(() => {
+                DefaultWindowPanel.Add(new NotificationBox(title, message, displayDuration, messageType, callback));
+            });
+            return;
+        }
+        // 多窗口
+        if (Window.GetWindow(@this) is Window window) {
+            if (!WindowPanelDict.TryGetValue(window, out var panel)) {
+                Logger.Error("No NotificationPanel has registered with this window");
+                return;
+            }
+            UIUtils.RunOnUIThread(() => {
+                panel.Add(new NotificationBox(title, message, displayDuration, messageType, callback));
             });
         }
     }
 
-    public static void Info(string title, string message, Action? callback = null)
-       => ShowNotification(title, message, MessageType.Info, callback);
-
-    public static void Warning(string title, string message, Action? callback = null)
-       => ShowNotification(title, message, MessageType.Warning, callback);
-
-    public static void Success(string title, string message, Action? callback = null)
-       => ShowNotification(title, message, MessageType.Success, callback);
-
-    public static void Error(string title, string message, Action? callback = null)
-       => ShowNotification(title, message, MessageType.Error, callback);
-
-    public NotificationBox(string title, string message, MessageType messageType = MessageType.Info, Action? callback = null) {
+    private NotificationBox(string title, string message, uint displayDuration = DefaultDisplayDuration, MessageType messageType = MessageType.Info, Action? callback = null) {
         Message = message;
         Title = title;
         ClickCallback = callback;
         Icon = WidgetGlobal.MessageInfoDict[messageType].Icon;
         BoxForeground = WidgetGlobal.MessageInfoDict[messageType].Foreground;
+        DisplayDuration = displayDuration;
         InitializeComponent();
-        UnloadTimer = new(ShowingDuration) { AutoReset = false };
+        UnloadTimer = new(displayDuration) { AutoReset = false };
         UnloadTimer.Elapsed += RootUnLoad;
         UnloadTimer.Start();
     }
@@ -119,7 +142,7 @@ public partial class NotificationBox : UserControl {
         }
         unLoadStoryboard.Completed += (s, e) => {
             Visibility = Visibility.Collapsed;
-            PanelChildren?.Remove(this);
+            WindowPanelDict[Window.GetWindow(this)].Remove(this);
         };
         unLoadStoryboard.Begin();
         UnloadTimer.Dispose();
@@ -150,7 +173,11 @@ public partial class NotificationBox : UserControl {
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void ActionTextBlockMouseUp(object sender, MouseButtonEventArgs e) => ClickCallback?.Invoke();
+    private void ActionTextBlockMouseUp(object sender, MouseButtonEventArgs e) {
+        e.Handled = true;
+        ClickCallback?.Invoke();
+        UnLoadNotificationBox();
+    }
 
     /// <summary>
     /// 关闭

@@ -37,7 +37,7 @@ internal static class WindowAdorner {
         var notificationPanel = CreateNotificationPanel();
         #region 设置 ContentPanel
         Widget.MessageBox.RegisterMessagePanel(window, messageBoxPanel);
-        Widget.NotificationBox.SetContentPanel(notificationPanel);
+        Widget.NotificationBox.RegisterNotificationPanel(window, notificationPanel);
         #endregion
         return new CommonAdorner(adornedElement, new CommonAdorner.ElementInfo[] {
             new (messageBoxPanel , targetBindingElement: window),

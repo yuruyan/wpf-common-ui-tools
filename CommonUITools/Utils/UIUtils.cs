@@ -203,10 +203,10 @@ public static class UIUtils {
     /// <param name="title"></param>
     /// <param name="message"></param>
     public static void NotificationOpenFileInExplorerAsync(string filepath, string title = "成功", string message = "点击打开") {
-        Widget.NotificationBox.Success(
+        MessageBoxUtils.NotifySuccess(
             title,
             message,
-            () => OpenFileInExplorerAsync(filepath)
+            callback: () => OpenFileInExplorerAsync(filepath)
         );
     }
 
@@ -322,10 +322,10 @@ public static class UIUtils {
             successCallback?.Invoke();
             // 通知用户
             if (notify) {
-                Widget.NotificationBox.Success(
+                MessageBoxUtils.NotifySuccess(
                     notificationTitle,
                     notificationMessage,
-                    () => OpenFileInExplorerAsync(outputPath)
+                    callback: () => OpenFileInExplorerAsync(outputPath)
                 );
             }
         } catch (IOException) {

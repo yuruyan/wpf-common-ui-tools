@@ -84,9 +84,9 @@ public partial class MessageBox : UserControl {
     /// </summary>
     /// <param name="message">消息</param>
     /// <param name="this">多窗口情况下使用，将调用方作为此参数传入</param>
-    /// <param name="dispalyDuration">显示时长</param>
+    /// <param name="displayDuration">显示时长</param>
     /// <param name="type">消息类型</param>
-    internal static void ShowMessage(string message, DependencyObject? @this = null, uint dispalyDuration = DefaultDisplayDuration, MessageType type = MessageType.Info) {
+    internal static void ShowMessage(string message, DependencyObject? @this = null, uint displayDuration = DefaultDisplayDuration, MessageType type = MessageType.Info) {
         if (WindowPanelDict.Count == 0) {
             Logger.Error("No window has registered MessagePanel");
             return;
@@ -95,7 +95,7 @@ public partial class MessageBox : UserControl {
         if (WindowPanelDict.Count == 1) {
             DefaultWindowPanel ??= WindowPanelDict.First().Value;
             UIUtils.RunOnUIThread(() => {
-                DefaultWindowPanel.Add(new MessageBox(message, dispalyDuration, type));
+                DefaultWindowPanel.Add(new MessageBox(message, displayDuration, type));
             });
             return;
         }
@@ -106,7 +106,7 @@ public partial class MessageBox : UserControl {
                 return;
             }
             UIUtils.RunOnUIThread(() => {
-                panel.Add(new MessageBox(message, dispalyDuration, type));
+                panel.Add(new MessageBox(message, displayDuration, type));
             });
         }
     }
