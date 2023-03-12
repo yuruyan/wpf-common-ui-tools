@@ -1,10 +1,8 @@
-﻿using System.Timers;
+﻿using CommonTools.Model;
+using System.Timers;
 
 namespace CommonUITools.Widget;
 
-/// <summary>
-/// 无论是否在 ui 线程，都可以调用静态方法
-/// </summary>
 public partial class MessageBox : UserControl {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private static readonly DependencyProperty BoxBackgroundProperty = DependencyProperty.Register("BoxBackground", typeof(SolidColorBrush), typeof(MessageBox), new PropertyMetadata());
@@ -13,6 +11,7 @@ public partial class MessageBox : UserControl {
     private static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
     public static readonly DependencyProperty MessageTypeProperty = DependencyProperty.Register("MessageType", typeof(MessageType), typeof(MessageBox), new PropertyMetadata(MessageType.Info));
+    public const uint DefaultDisplayDuration = 3000;
 
     public string Text {
         get { return (string)GetValue(TextProperty); }
@@ -64,11 +63,12 @@ public partial class MessageBox : UserControl {
     /// <summary>
     /// 显示时间 (ms)
     /// </summary>
-    public int ShowingDuration { get; set; } = 3000;
+    private readonly uint DisplayDuration = 3000;
     /// <summary>
     /// 当只有一个窗口时，默认的消息面板
     /// </summary>
     private static UIElementCollection? DefaultWindowPanel;
+
     /// <summary>
     /// 注册消息 Panel
     /// </summary>
@@ -79,10 +79,11 @@ public partial class MessageBox : UserControl {
     /// <summary>
     /// ShowMessage
     /// </summary>
-    /// <param name="message"></param>
-    /// <param name="this"></param>
-    /// <param name="type"></param>
-    internal static void ShowMessage(string message, DependencyObject? @this = null, MessageType type = MessageType.Info) {
+    /// <param name="message">消息</param>
+    /// <param name="this">多窗口情况下使用，将调用方作为此参数传入</param>
+    /// <param name="dispalyDuration">显示时长</param>
+    /// <param name="type">消息类型</param>
+    internal static void ShowMessage(string message, DependencyObject? @this = null, uint dispalyDuration = DefaultDisplayDuration, MessageType type = MessageType.Info) {
         if (WindowPanelDict.Count == 0) {
             Logger.Error("No window has registered MessagePanel");
             return;
@@ -91,7 +92,7 @@ public partial class MessageBox : UserControl {
         if (WindowPanelDict.Count == 1) {
             DefaultWindowPanel ??= WindowPanelDict.First().Value;
             UIUtils.RunOnUIThread(() => {
-                DefaultWindowPanel.Add(new MessageBox(message, type));
+                DefaultWindowPanel.Add(new MessageBox(message, dispalyDuration, type));
             });
             return;
         }
@@ -102,17 +103,18 @@ public partial class MessageBox : UserControl {
                 return;
             }
             UIUtils.RunOnUIThread(() => {
-                panel.Add(new MessageBox(message, type));
+                panel.Add(new MessageBox(message, dispalyDuration, type));
             });
         }
     }
 
-    private MessageBox(string message, MessageType messageType = MessageType.Info) {
+    private MessageBox(string message, uint displayDuration = DefaultDisplayDuration, MessageType messageType = MessageType.Info) {
         Text = message;
         MessageType = messageType;
         Icon = WidgetGlobal.MessageInfoDict[MessageType].Icon;
         InitializeComponent();
-        UnloadTimer = new(ShowingDuration) { AutoReset = false };
+        DisplayDuration = displayDuration;
+        UnloadTimer = new(DisplayDuration) { AutoReset = false };
         UnloadTimer.Elapsed += RootUnLoad;
         UnloadTimer.Start();
     }

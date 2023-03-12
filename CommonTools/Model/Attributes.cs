@@ -39,7 +39,7 @@ public sealed class ThreadSafeAttribute : Attribute { }
 /// 表示可以被任意线程调用
 /// </summary>
 [AttributeUsage(
-    AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Delegate,
+   AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Delegate,
     Inherited = false,
     AllowMultiple = true
 )]

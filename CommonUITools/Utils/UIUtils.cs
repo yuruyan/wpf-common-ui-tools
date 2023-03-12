@@ -215,7 +215,7 @@ public static class UIUtils {
     /// </summary>
     /// <param name="task"></param>
     public static void RunOnUIThread(Action task) {
-        Application.Current.Dispatcher.Invoke(() => task());
+        Application.Current.Dispatcher.BeginInvoke(() => task());
     }
 
     /// <summary>
