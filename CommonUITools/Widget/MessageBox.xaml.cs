@@ -132,7 +132,7 @@ public partial class MessageBox : UserControl {
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void RootLoaded(object sender, RoutedEventArgs e) {
+    private void ViewLoadedHandler(object sender, RoutedEventArgs e) {
         if (Parent is not FrameworkElement) {
             return;
         }

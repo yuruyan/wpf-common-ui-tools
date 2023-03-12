@@ -6,18 +6,17 @@
   xmlns:local="clr-namespace:CommonUITools.Widget"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:ui="http://schemas.modernwpf.com/2019"
-  Name="Root"
+  Name="MessageBoxRoot"
   Margin="0,8,0,8"
   d:DesignHeight="50"
   d:DesignWidth="300"
-  DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-  Loaded="RootLoaded"
+  Loaded="ViewLoadedHandler"
   mc:Ignorable="d">
   <UserControl.RenderTransform>
     <TranslateTransform x:Name="RootTranslateTransform" />
   </UserControl.RenderTransform>
+
   <UserControl.Resources>
-    <Duration x:Key="Duration">0:0:0.4</Duration>
     <Storyboard x:Key="LoadStoryboard">
       <DoubleAnimation
         Name="TranslateTransformAnimation"
@@ -25,34 +24,35 @@
         Storyboard.TargetProperty="(TranslateTransform.Y)"
         From="-50"
         To="0"
-        Duration="{StaticResource Duration}">
+        Duration="{StaticResource AnimationDuration}">
         <DoubleAnimation.EasingFunction>
           <PowerEase EasingMode="EaseOut" Power="3" />
         </DoubleAnimation.EasingFunction>
       </DoubleAnimation>
       <DoubleAnimation
-        Storyboard.TargetName="Root"
+        Storyboard.TargetName="MessageBoxRoot"
         Storyboard.TargetProperty="Opacity"
         From="0"
         To="1"
-        Duration="{StaticResource Duration}" />
+        Duration="{StaticResource AnimationDuration}" />
     </Storyboard>
     <Storyboard x:Key="UnLoadStoryboard">
       <DoubleAnimation
-        Storyboard.TargetName="Root"
+        Storyboard.TargetName="MessageBoxRoot"
         Storyboard.TargetProperty="Opacity"
         From="1"
         To="0"
-        Duration="{StaticResource Duration}" />
+        Duration="{StaticResource AnimationDuration}" />
       <!--  由后台设置  -->
       <DoubleAnimation
         x:Name="HeightAnimation"
-        Storyboard.TargetName="Root"
+        Storyboard.TargetName="MessageBoxRoot"
         Storyboard.TargetProperty="Height"
         To="0"
-        Duration="{StaticResource Duration}" />
+        Duration="{StaticResource AnimationDuration}" />
     </Storyboard>
   </UserControl.Resources>
+
   <ui:ThemeShadowChrome
     HorizontalAlignment="Center"
     VerticalAlignment="Center"
@@ -61,25 +61,25 @@
     <Border
       MinWidth="250"
       MinHeight="43"
-      MaxWidth="450"
-      Background="{Binding ElementName=Root, Path=BoxBackground}"
-      BorderBrush="{Binding ElementName=Root, Path=BorderColor}"
+      Padding="16"
+      Background="{Binding ElementName=MessageBoxRoot, Path=BoxBackground}"
+      BorderBrush="{Binding ElementName=MessageBoxRoot, Path=BorderColor}"
       BorderThickness="1"
       CornerRadius="4">
       <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
         <TextBlock
-          Margin="12,0,8,0"
+          Padding="0,0,12,0"
           HorizontalAlignment="Center"
           VerticalAlignment="Center"
-          Foreground="{Binding ElementName=Root, Path=BoxForeground}"
+          Foreground="{Binding ElementName=MessageBoxRoot, Path=BoxForeground}"
           Style="{StaticResource CommonUIToolsIconFontStyle}"
-          Text="{Binding ElementName=Root, Path=Icon}" />
+          Text="{Binding ElementName=MessageBoxRoot, Path=Icon}" />
         <TextBlock
           MaxWidth="400"
           HorizontalAlignment="Center"
           VerticalAlignment="Center"
-          Foreground="{Binding ElementName=Root, Path=BoxForeground}"
-          Text="{Binding ElementName=Root, Path=Text}"
+          Foreground="{Binding ElementName=MessageBoxRoot, Path=BoxForeground}"
+          Text="{Binding ElementName=MessageBoxRoot, Path=Text}"
           TextWrapping="WrapWithOverflow" />
       </StackPanel>
     </Border>
