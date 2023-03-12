@@ -1,5 +1,4 @@
-﻿using CommonTools.Model;
-using System.Timers;
+﻿using System.Timers;
 
 namespace CommonUITools.Widget;
 
@@ -9,9 +8,29 @@ public partial class MessageBox : UserControl {
     private static readonly DependencyProperty BoxForegroundProperty = DependencyProperty.Register("BoxForeground", typeof(SolidColorBrush), typeof(MessageBox), new PropertyMetadata());
     private static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(SolidColorBrush), typeof(MessageBox), new PropertyMetadata());
     private static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
-    public static readonly DependencyProperty MessageTypeProperty = DependencyProperty.Register("MessageType", typeof(MessageType), typeof(MessageBox), new PropertyMetadata(MessageType.Info));
+    private static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(MessageBox), new PropertyMetadata(""));
+    private static readonly DependencyProperty MessageTypeProperty = DependencyProperty.Register("MessageType", typeof(MessageType), typeof(MessageBox), new PropertyMetadata(MessageType.Info));
+
+    /// <summary>
+    /// 默认显示时长
+    /// </summary>
     public const uint DefaultDisplayDuration = 3000;
+    /// <summary>
+    /// 窗口对应消息面板
+    /// </summary>
+    private static readonly IDictionary<Window, UIElementCollection> WindowPanelDict = new Dictionary<Window, UIElementCollection>();
+    /// <summary>
+    /// 关闭定时器
+    /// </summary>
+    private readonly System.Timers.Timer UnloadTimer;
+    /// <summary>
+    /// 显示时间 (ms)
+    /// </summary>
+    private readonly uint DisplayDuration = 3000;
+    /// <summary>
+    /// 当只有一个窗口时，默认的消息面板
+    /// </summary>
+    private static UIElementCollection? DefaultWindowPanel;
 
     public string Text {
         get { return (string)GetValue(TextProperty); }
@@ -52,22 +71,6 @@ public partial class MessageBox : UserControl {
         get { return (MessageType)GetValue(MessageTypeProperty); }
         set { SetValue(MessageTypeProperty, value); }
     }
-    /// <summary>
-    /// 窗口对应消息面板
-    /// </summary>
-    private static readonly IDictionary<Window, UIElementCollection> WindowPanelDict = new Dictionary<Window, UIElementCollection>();
-    /// <summary>
-    /// 关闭定时器
-    /// </summary>
-    private readonly System.Timers.Timer UnloadTimer;
-    /// <summary>
-    /// 显示时间 (ms)
-    /// </summary>
-    private readonly uint DisplayDuration = 3000;
-    /// <summary>
-    /// 当只有一个窗口时，默认的消息面板
-    /// </summary>
-    private static UIElementCollection? DefaultWindowPanel;
 
     /// <summary>
     /// 注册消息 Panel
