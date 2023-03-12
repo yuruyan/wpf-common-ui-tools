@@ -130,7 +130,7 @@ public partial class NotificationBox : UserControl {
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void RootLoaded(object sender, RoutedEventArgs e) {
+    private void ViewLoadedHandler(object sender, RoutedEventArgs e) {
         if (Parent is not FrameworkElement parent) {
             return;
         }
@@ -146,16 +146,19 @@ public partial class NotificationBox : UserControl {
     }
 
     /// <summary>
-    /// 关闭通知
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void CloseMouseUp(object sender, MouseButtonEventArgs e) => UnLoadNotificationBox();
-
-    /// <summary>
     /// 点击
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void ActionTextBlockMouseUp(object sender, MouseButtonEventArgs e) => ClickCallback?.Invoke();
+
+    /// <summary>
+    /// 关闭
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void CloseClickHandler(object sender, RoutedEventArgs e) {
+        e.Handled = true;
+        UnLoadNotificationBox();
+    }
 }

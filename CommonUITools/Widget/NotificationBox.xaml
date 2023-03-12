@@ -6,27 +6,26 @@
   xmlns:local="clr-namespace:CommonUITools.Widget"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:ui="http://schemas.modernwpf.com/2019"
-  Name="Root"
+  Name="NotificationBoxRoot"
   Margin="0,8,0,8"
   HorizontalAlignment="Right"
   VerticalAlignment="Bottom"
   d:DesignHeight="450"
   d:DesignWidth="800"
-  DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-  Loaded="RootLoaded"
+  Loaded="ViewLoadedHandler"
   mc:Ignorable="d">
   <UserControl.RenderTransform>
     <TransformGroup>
       <TranslateTransform x:Name="RootTranslateTransform" />
-      <!--<ScaleTransform x:Name="RootScaleTransform" CenterY="60"/>-->
     </TransformGroup>
   </UserControl.RenderTransform>
+
   <UserControl.Resources>
     <ExponentialEase
       x:Key="AnimationEaseFunction"
       EasingMode="EaseOut"
       Exponent="4" />
-    <Duration x:Key="Duration">0:0:0.4</Duration>
+    <!--  LoadStoryboard  -->
     <Storyboard x:Key="LoadStoryboard">
       <DoubleAnimation
         Name="TranslateTransformAnimation"
@@ -35,33 +34,35 @@
         Storyboard.TargetProperty="(TranslateTransform.X)"
         From="500"
         To="0"
-        Duration="{StaticResource Duration}" />
+        Duration="{StaticResource AnimationDuration}" />
       <!--  后台设置  -->
       <DoubleAnimation
         x:Name="LoadHeightAnimation"
         EasingFunction="{StaticResource AnimationEaseFunction}"
-        Storyboard.TargetName="Root"
+        Storyboard.TargetName="NotificationBoxRoot"
         Storyboard.TargetProperty="Height"
         From="0"
-        Duration="{StaticResource Duration}" />
+        Duration="{StaticResource AnimationDuration}" />
     </Storyboard>
+    <!--  UnLoadStoryboard  -->
     <Storyboard x:Key="UnLoadStoryboard">
       <DoubleAnimation
-        Storyboard.TargetName="Root"
+        Storyboard.TargetName="NotificationBoxRoot"
         Storyboard.TargetProperty="Opacity"
         From="1"
         To="0"
-        Duration="{StaticResource Duration}" />
+        Duration="{StaticResource AnimationDuration}" />
       <!--  由后台设置  -->
       <DoubleAnimation
         x:Name="UnLoadHeightAnimation"
         EasingFunction="{StaticResource AnimationEaseFunction}"
-        Storyboard.TargetName="Root"
+        Storyboard.TargetName="NotificationBoxRoot"
         Storyboard.TargetProperty="Height"
         To="0"
-        Duration="{StaticResource Duration}" />
+        Duration="{StaticResource AnimationDuration}" />
     </Storyboard>
   </UserControl.Resources>
+
   <ui:ThemeShadowChrome
     HorizontalAlignment="Center"
     VerticalAlignment="Center"
@@ -71,7 +72,6 @@
       MinWidth="270"
       MinHeight="70"
       MaxWidth="450"
-      MaxHeight="200"
       Padding="12"
       Background="{DynamicResource ApplicationBackgroundBrush}"
       BorderThickness="1"
@@ -86,58 +86,46 @@
         <TextBlock
           VerticalAlignment="Top"
           FontSize="20"
-          Foreground="{Binding BoxForeground}"
+          Foreground="{Binding BoxForeground, ElementName=NotificationBoxRoot}"
           Style="{StaticResource CommonUIToolsIconFontStyle}"
-          Text="{Binding Icon}" />
-        <Grid Grid.Column="1" Margin="8,0,8,0">
+          Text="{Binding Icon, ElementName=NotificationBoxRoot}" />
+        <Grid Grid.Column="1" Margin="12,0">
           <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition />
           </Grid.RowDefinitions>
           <!--  标题  -->
           <TextBlock
-            Margin="0,0,0,8"
-            FontSize="19"
+            Padding="0,0,0,8"
+            FontSize="{StaticResource HeaderFontSize}"
             FontWeight="Bold"
-            Text="{Binding Title}"
+            Text="{Binding Title, ElementName=NotificationBoxRoot}"
             TextWrapping="Wrap" />
           <!--  信息  -->
           <TextBlock
             x:Name="NonInteractiveTextBlock"
             Grid.Row="1"
-            Text="{Binding Message}"
+            Text="{Binding Message, ElementName=NotificationBoxRoot}"
             TextWrapping="Wrap"
-            Visibility="{Binding ClickCallback, Converter={StaticResource HideIfNotNullConverter}}" />
+            Visibility="{Binding ClickCallback, ElementName=NotificationBoxRoot, Converter={StaticResource HideIfNotNullConverter}}" />
           <TextBlock
             x:Name="InteractiveTextBlock"
             Grid.Row="1"
             MouseUp="ActionTextBlockMouseUp"
             Style="{StaticResource HyperLinkStyle}"
-            Text="{Binding Message}"
+            Text="{Binding Message, ElementName=NotificationBoxRoot}"
             TextWrapping="Wrap"
-            Visibility="{Binding ClickCallback, Converter={StaticResource HideIfNullConverter}}" />
+            Visibility="{Binding ClickCallback, ElementName=NotificationBoxRoot, Converter={StaticResource HideIfNullConverter}}" />
         </Grid>
         <!--  关闭图标  -->
-        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
-          <StackPanel.Resources>
-            <Style
-              x:Key="CommonUIToolsIconFontStyle"
-              BasedOn="{StaticResource CommonUIToolsIconFontStyle}"
-              TargetType="TextBlock">
-              <Setter Property="FontSize" Value="20" />
-              <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                  <Setter Property="Foreground" Value="{StaticResource RedBrush8}" />
-                  <Setter Property="Cursor" Value="Hand" />
-                </Trigger>
-              </Style.Triggers>
-            </Style>
-          </StackPanel.Resources>
-          <TextBlock
-            MouseUp="CloseMouseUp"
-            Style="{StaticResource CommonUIToolsIconFontStyle}"
-            Text="&#xe614;" />
-        </StackPanel>
+        <Button
+          Grid.Column="2"
+          Margin="0,-8,-8,0"
+          VerticalAlignment="Top"
+          Click="CloseClickHandler"
+          Style="{StaticResource GlobalSingleIconButtonStyle}">
+          <TextBlock FontFamily="{StaticResource CommonUIToolsIconFontUrI}" Text="&#xe614;" />
+        </Button>
       </Grid>
     </Border>
   </ui:ThemeShadowChrome>
