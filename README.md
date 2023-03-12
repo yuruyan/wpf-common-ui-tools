@@ -77,3 +77,5 @@
   </ResourceDictionary>
 </Application.Resources>
 ```
+
+3. 将 **Window** 继承自 **CommonUITools.Widget.BaseWindow**
