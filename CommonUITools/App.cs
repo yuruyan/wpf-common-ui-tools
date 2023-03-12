@@ -2,15 +2,16 @@
 
 namespace CommonUITools;
 
-public partial class App {
+internal static class App {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly object UniqueObject = new();
 
     /// <summary>
     /// 注册 MessageBox 和 NotificationBox 界面
-    /// 多次调用无效果
     /// </summary>
+    /// <remarks>多次调用无效果</remarks>
     public static void RegisterWidgetPage(Window window) {
-        TaskUtils.EnsureCalledOnce((window, typeof(App)), () => {
+        TaskUtils.EnsureCalledOnce((window, UniqueObject), () => {
             UIUtils.SetLoadedOnceEventHandler(window, static (obj, _) => {
                 if (obj is not Window window) {
                     return;
