@@ -40,7 +40,7 @@
     x:Key="GlobalContextMenuStyle"
     BasedOn="{StaticResource DefaultContextMenuStyle}"
     TargetType="ContextMenu">
-    <Setter Property="utils:ScaleAnimationHelper.IsEnabled" Value="True" />
+    <Setter Property="utils:ContextMenuHelper.EnableOpeningAnimation" Value="True" />
     <Setter Property="MinWidth" Value="{DynamicResource ContextMenuMinWidth}" />
   </Style>
   <Style BasedOn="{StaticResource GlobalContextMenuStyle}" TargetType="ContextMenu" />

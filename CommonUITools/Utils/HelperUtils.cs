@@ -1,8 +1,6 @@
 ﻿using CommonUITools.Widget;
 using System.Reflection;
-using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 
 namespace CommonUITools.Utils;
@@ -1126,7 +1124,6 @@ public static class ContextMenuHelper {
             storyboard = CreateOpeningStoryboard(menu);
             OpeningStoroboardDict[menu] = storyboard;
         }
-        Console.WriteLine(menu.ActualHeight);
         return storyboard;
     }
 
