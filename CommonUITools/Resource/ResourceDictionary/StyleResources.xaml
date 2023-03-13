@@ -45,7 +45,7 @@
   </Style>
   <Style BasedOn="{StaticResource GlobalContextMenuStyle}" TargetType="ContextMenu" />
   <Style BasedOn="{StaticResource TextControlContextMenu}" TargetType="ui:TextContextMenu">
-    <Setter Property="utils:ScaleAnimationHelper.IsEnabled" Value="True" />
+    <Setter Property="utils:ContextMenuHelper.EnableOpeningAnimation" Value="True" />
     <Setter Property="MinWidth" Value="{DynamicResource ContextMenuMinWidth}" />
   </Style>
   <!--  GlobalMenuItemStyle  -->
