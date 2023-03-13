@@ -1064,3 +1064,41 @@ public static class ListViewGroupHelper {
         };
     }
 }
+
+/// <summary>
+/// ContextMenuHelper
+/// </summary>
+public static class ContextMenuHelper {
+    private static Logger logger = LogManager.GetCurrentClassLogger();
+    public static readonly DependencyProperty OpenOnMouseLeftClickProperty = DependencyProperty.RegisterAttached("OpenOnMouseLeftClick", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, OpenOnMouseLeftClickPropertyChangedHandler));
+
+    /// <summary>
+    /// 鼠标左键单击时是否显示
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static bool GetOpenOnMouseLeftClick(DependencyObject obj) {
+        return (bool)obj.GetValue(OpenOnMouseLeftClickProperty);
+    }
+    public static void SetOpenOnMouseLeftClick(DependencyObject obj, bool value) {
+        obj.SetValue(OpenOnMouseLeftClickProperty, value);
+    }
+
+    private static void OpenOnMouseLeftClickPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not FrameworkElement element) {
+            logger.Warn($"Element is not of type FrameworkElement");
+            return;
+        }
+        if ((bool)e.NewValue) {
+            element.PreviewMouseLeftButtonUp += ShowContextMenuHandler;
+        } else {
+            element.PreviewMouseLeftButtonUp -= ShowContextMenuHandler;
+        }
+    }
+
+    private static void ShowContextMenuHandler(object sender, MouseButtonEventArgs e) {
+        if (sender is FrameworkElement element && element.ContextMenu is not null) {
+            element.ContextMenu.IsOpen = true;
+        }
+    }
+}
