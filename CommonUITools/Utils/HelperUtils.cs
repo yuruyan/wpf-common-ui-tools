@@ -1,6 +1,8 @@
 ﻿using CommonUITools.Widget;
 using System.Reflection;
+using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 
 namespace CommonUITools.Utils;
@@ -1069,26 +1071,84 @@ public static class ListViewGroupHelper {
 /// ContextMenuHelper
 /// </summary>
 public static class ContextMenuHelper {
-    private static Logger logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty OpenOnMouseLeftClickProperty = DependencyProperty.RegisterAttached("OpenOnMouseLeftClick", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, OpenOnMouseLeftClickPropertyChangedHandler));
+    public static readonly DependencyProperty EnableOpeningAnimationProperty = DependencyProperty.RegisterAttached("EnableOpeningAnimation", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, EnableOpeningAnimationPropertyChangedHandler));
+    private static readonly IDictionary<ContextMenu, Storyboard> OpeningStoroboardDict = new Dictionary<ContextMenu, Storyboard>();
 
+    public static bool GetOpenOnMouseLeftClick(DependencyObject obj) {
+        return (bool)obj.GetValue(OpenOnMouseLeftClickProperty);
+    }
     /// <summary>
     /// 鼠标左键单击时是否显示
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static bool GetOpenOnMouseLeftClick(DependencyObject obj) {
-        return (bool)obj.GetValue(OpenOnMouseLeftClickProperty);
-    }
+    /// <remarks>设置在宿主上</remarks>
     public static void SetOpenOnMouseLeftClick(DependencyObject obj, bool value) {
         obj.SetValue(OpenOnMouseLeftClickProperty, value);
     }
+    public static bool GetEnableOpeningAnimation(DependencyObject obj) {
+        return (bool)obj.GetValue(EnableOpeningAnimationProperty);
+    }
+    /// <summary>
+    /// 设置显示动画
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    /// <remarks>设置在 ContextMenu 上</remarks>
+    public static void SetEnableOpeningAnimation(DependencyObject obj, bool value) {
+        obj.SetValue(EnableOpeningAnimationProperty, value);
+    }
 
-    private static void OpenOnMouseLeftClickPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-        if (d is not FrameworkElement element) {
-            logger.Warn($"Element is not of type FrameworkElement");
+    private static void EnableOpeningAnimationPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not ContextMenu menu) {
+            Logger.Warn($"Element is not of type ContextMenu");
             return;
         }
+        if ((bool)e.NewValue) {
+            menu.Opened += ContextMenuOpenedHandler;
+        } else {
+            menu.Opened -= ContextMenuOpenedHandler;
+        }
+    }
+
+    private static void ContextMenuOpenedHandler(object sender, RoutedEventArgs e) {
+        if (sender is ContextMenu menu) {
+            GetOpeningStoryboard(menu).Begin();
+        }
+    }
+
+    private static Storyboard GetOpeningStoryboard(ContextMenu menu) {
+        if (!OpeningStoroboardDict.TryGetValue(menu, out var storyboard)) {
+            storyboard = CreateOpeningStoryboard(menu);
+            OpeningStoroboardDict[menu] = storyboard;
+        }
+        Console.WriteLine(menu.ActualHeight);
+        return storyboard;
+    }
+
+    private static Storyboard CreateOpeningStoryboard(FrameworkElement element) {
+        // Override RenderTransform
+        element.RenderTransform = new TranslateTransform();
+        var translateYAnimation = new DoubleAnimation(-16, 0, (Duration)element.FindResource("AnimationDuration")) {
+            EasingFunction = (IEasingFunction)element.FindResource("AnimationEaseFunction")
+        };
+        Storyboard.SetTarget(translateYAnimation, element);
+        Storyboard.SetTargetProperty(translateYAnimation, new("(UIElement.RenderTransform).(TranslateTransform.Y)"));
+        return new Storyboard() {
+            Children = { translateYAnimation }
+        };
+    }
+
+    private static void OpenOnMouseLeftClickPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not FrameworkElement && d is not FrameworkContentElement) {
+            Logger.Warn($"Element is not of type FrameworkElement and FrameworkContentElement");
+            return;
+        }
+        var element = (UIElement)d;
         if ((bool)e.NewValue) {
             element.PreviewMouseLeftButtonUp += ShowContextMenuHandler;
         } else {
@@ -1096,9 +1156,16 @@ public static class ContextMenuHelper {
         }
     }
 
+    /// <summary>
+    /// 显示 ContextMenu
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private static void ShowContextMenuHandler(object sender, MouseButtonEventArgs e) {
         if (sender is FrameworkElement element && element.ContextMenu is not null) {
             element.ContextMenu.IsOpen = true;
+        } else if (sender is FrameworkContentElement contentElement && contentElement.ContextMenu is not null) {
+            contentElement.ContextMenu.IsOpen = true;
         }
     }
 }
