@@ -3,7 +3,7 @@ using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Utilities.Encoders;
 using System.Collections.Concurrent;
 
-namespace CommonTools.Core;
+namespace CommonTools.Utils;
 
 public static class DigestUtils {
     /// <summary>
