@@ -30,8 +30,9 @@ public static class DigestUtils {
     /// </summary>
     /// <param name="stream"></param>
     /// <param name="digest"></param>
-    /// <returns></returns>
-    private static string GeneralDigest(FileStream stream, IDigest digest) {
+    /// <returns>digest</returns>
+    /// <remarks>不会自动关闭 stream</remarks>
+    private static string GeneralDigest(Stream stream, IDigest digest) {
         byte[] resultBuffer = new byte[digest.GetDigestSize()];
         var readBuffer = new byte[ReadBufferSize];
         int readCount;
@@ -53,8 +54,8 @@ public static class DigestUtils {
     /// md5 摘要
     /// </summary>
     /// <param name="stream"></param>
-    /// <returns></returns>
-    public static string MD5Digest(FileStream stream) => GeneralDigest(stream, new MD5Digest());
+    /// <inheritdoc cref="GeneralDigest(Stream, IDigest)"/>
+    public static string MD5Digest(Stream stream) => GeneralDigest(stream, new MD5Digest());
 
     /// <summary>
     /// Sha256Digest 摘要
@@ -67,8 +68,8 @@ public static class DigestUtils {
     /// Sha256Digest 摘要
     /// </summary>
     /// <param name="stream"></param>
-    /// <returns></returns>
-    public static string Sha256Digest(FileStream stream) => GeneralDigest(stream, new Sha256Digest());
+    /// <inheritdoc cref="GeneralDigest(Stream, IDigest)"/>
+    public static string Sha256Digest(Stream stream) => GeneralDigest(stream, new Sha256Digest());
 
     /// <summary>
     /// Sha512Digest 摘要
@@ -81,6 +82,6 @@ public static class DigestUtils {
     /// Sha512Digest 摘要
     /// </summary>
     /// <param name="stream"></param>
-    /// <returns></returns>
-    public static string Sha512Digest(FileStream stream) => GeneralDigest(stream, new Sha512Digest());
+    /// <inheritdoc cref="GeneralDigest(Stream, IDigest)"/>
+    public static string Sha512Digest(Stream stream) => GeneralDigest(stream, new Sha512Digest());
 }
