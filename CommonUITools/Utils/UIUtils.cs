@@ -483,6 +483,7 @@ public static class UIUtils {
         using var bitmap = new SysDrawBitmap(filepath);
         var memoryStream = new MemoryStream();
         bitmap.Save(memoryStream, SysDrawImg.ImageFormat.Png);
+        memoryStream.Position = 0;
         bi.BeginInit();
         bi.StreamSource = memoryStream;
         bi.EndInit();
@@ -538,6 +539,7 @@ public static class UIUtils {
     public static Stream BitmapToStream(SysDrawBitmap bitmap) {
         var memoryStream = new MemoryStream();
         bitmap.Save(memoryStream, SysDrawImg.ImageFormat.Png);
+        memoryStream.Position = 0;
         return memoryStream;
     }
 

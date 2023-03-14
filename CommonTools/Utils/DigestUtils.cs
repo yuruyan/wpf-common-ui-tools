@@ -33,6 +33,7 @@ public static class DigestUtils {
     /// <returns>digest</returns>
     /// <remarks>不会自动关闭 stream</remarks>
     private static string GeneralDigest(Stream stream, IDigest digest) {
+        stream.Position = 0;
         byte[] resultBuffer = new byte[digest.GetDigestSize()];
         var readBuffer = new byte[ReadBufferSize];
         int readCount;
