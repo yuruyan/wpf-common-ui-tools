@@ -1,5 +1,7 @@
 ﻿using CommonUITools.Widget;
+using ModernWpf;
 using System.Reflection;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media.Effects;
 
@@ -1164,5 +1166,124 @@ public static class ContextMenuHelper {
         } else if (sender is FrameworkContentElement contentElement && contentElement.ContextMenu is not null) {
             contentElement.ContextMenu.IsOpen = true;
         }
+    }
+}
+
+/// <summary>
+/// 控件自动显示 / 隐藏
+/// </summary>
+public static class ElementVisibilityHelper {
+    private class State {
+        public State(UIElement element) {
+            Element = element;
+        }
+
+        public UIElement Element { get; set; }
+        public Window ElementWindow { get; set; } = Application.Current.MainWindow;
+        public bool IsToggled { get; set; }
+        public bool PreventOpen { get; set; }
+    }
+
+    private static readonly string MessageGroupNamePrefix = $"{nameof(ElementVisibilityHelper)}_{Random.Shared.Next()}-";
+    private static readonly IDictionary<string, State> TargetElementStateDict = new Dictionary<string, State>();
+    private static readonly IDictionary<DependencyObject, string> SourceElementTargetIdDict = new Dictionary<DependencyObject, string>();
+
+    /// <summary>
+    /// 启用当点击 <paramref name="element"/> 外部时自动隐藏
+    /// </summary>
+    /// <param name="element">要隐藏 / 显示的控件</param>
+    /// <param name="targetId">标识 <paramref name="element"/> id</param>
+    public static void EnableAutoHideOnClickOuter(FrameworkElement element, string targetId) {
+        TargetElementStateDict[targetId] = new(element);
+        if (Window.GetWindow(element) is Window window) {
+            TargetElementStateDict[targetId].ElementWindow = window;
+            window.PreviewMouseUp -= WindowPreviewMouseUpHandler;
+            window.PreviewMouseUp += WindowPreviewMouseUpHandler;
+        } else {
+            UIUtils.SetLoadedOnceEventHandler(element, (_, _) => {
+                var window = Window.GetWindow(element);
+                TargetElementStateDict[targetId].ElementWindow = window;
+                window.PreviewMouseUp -= WindowPreviewMouseUpHandler;
+                window.PreviewMouseUp += WindowPreviewMouseUpHandler;
+            });
+        }
+    }
+
+    private static void WindowPreviewMouseUpHandler(object sender, MouseButtonEventArgs e) {
+        foreach (var state in TargetElementStateDict.Values) {
+            // Invisible
+            if (!state.Element.IsVisible) {
+                state.IsToggled = false;
+                continue;
+            }
+            // Toggle state
+            if (state.IsToggled) {
+                state.IsToggled = false;
+                state.Element.Visibility = Visibility.Collapsed;
+                state.PreventOpen = true;
+                continue;
+            }
+            // Check if mouse clicks element
+            if (e.OriginalSource is Visual element && (
+                element.GetType() == state.Element.GetType() ||
+                (element.FindAscendant(state.Element.GetType()) is not null)
+            )) {
+                continue;
+            }
+            // Click outer
+            state.Element.Visibility = Visibility.Collapsed;
+        }
+    }
+
+    /// <summary>
+    /// 设置点击 <paramref name="element"/> 时显示 <paramref name="targetId"/> 对应的控件
+    /// </summary>
+    /// <param name="element"></param>
+    /// <param name="targetId"></param>
+    public static void SetOpenOnClick(UIElement element, string targetId) {
+        SourceElementTargetIdDict[element] = targetId;
+        element.PreviewMouseDown -= PreviewMouseDownHandler;
+        element.PreviewMouseDown += PreviewMouseDownHandler;
+        if (element is ButtonBase button) {
+            button.Click -= ButtonClickHandler;
+            button.Click += ButtonClickHandler;
+        } else {
+            element.MouseUp -= MouseUpHandler;
+            element.MouseUp += MouseUpHandler;
+        }
+    }
+
+    private static void PreviewMouseDownHandler(object sender, MouseButtonEventArgs e) {
+        if (sender is DependencyObject dp) {
+            // Toggle state
+            if (TargetElementStateDict.TryGetValue(SourceElementTargetIdDict[dp], out var state)) {
+                state.IsToggled = true;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Toggle open state
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <remarks>Happens after WindowPreviewMouseUp</remarks>
+    private static void HandleMouseEvent(object sender) {
+        if (sender is not UIElement element) {
+            return;
+        }
+        var state = TargetElementStateDict[SourceElementTargetIdDict[element]];
+        if (state.PreventOpen) {
+            state.PreventOpen = false;
+            return;
+        }
+        state.Element.Visibility = Visibility.Visible;
+    }
+
+    private static void MouseUpHandler(object sender, MouseButtonEventArgs e) {
+        HandleMouseEvent(sender);
+    }
+
+    private static void ButtonClickHandler(object sender, RoutedEventArgs e) {
+        HandleMouseEvent(sender);
     }
 }
