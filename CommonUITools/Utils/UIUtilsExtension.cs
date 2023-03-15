@@ -11,6 +11,26 @@ public static class UIUtilsExtension {
     /// </summary>
     public const double ContentDialogResizeRatio = 2;
 
+    /// <inheritdoc cref="UIUtils.IsLeftButtonDown(MouseButtonEventArgs)"/>
+    public static bool IsLeftButtonDown(this MouseButtonEventArgs e) => UIUtils.IsLeftButtonDown(e);
+
+    /// <inheritdoc cref="UIUtils.IsRightButtonDown(MouseButtonEventArgs)"/>
+    public static bool IsRightButtonDown(MouseButtonEventArgs e) => UIUtils.IsRightButtonDown(e);
+
+    /// <summary>
+    /// 鼠标左键是否按下
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+    public static bool IsLeftButtonDown(this MouseEventArgs e) => e.LeftButton == MouseButtonState.Pressed;
+
+    /// <summary>
+    /// 鼠标右键是否按下
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+    public static bool IsRightButtonDown(this MouseEventArgs e) => e.RightButton == MouseButtonState.Pressed;
+
     /// <summary>
     /// 启用 ContentDialog 自动调整大小
     /// </summary>
