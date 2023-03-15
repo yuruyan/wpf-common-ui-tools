@@ -1287,3 +1287,37 @@ public static class ElementVisibilityHelper {
         HandleMouseEvent(sender);
     }
 }
+
+/// <summary>
+/// 鼠标移入显示，移除隐藏 TargetElement
+/// </summary>
+public static class HoverVisibleHelper {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    public static readonly DependencyProperty TargetElementProperty = DependencyProperty.RegisterAttached("TargetElement", typeof(FrameworkElement), typeof(HoverVisibleHelper), new PropertyMetadata(TargetElementPropertyChangedHandler));
+
+    public static FrameworkElement GetTargetElement(DependencyObject obj) {
+        return (FrameworkElement)obj.GetValue(TargetElementProperty);
+    }
+    /// <summary>
+    /// 目标元素
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetTargetElement(DependencyObject obj, FrameworkElement value) {
+        obj.SetValue(TargetElementProperty, value);
+    }
+
+    private static void TargetElementPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not UIElement element) {
+            Logger.Warn("Element is not UIElement");
+            return;
+        }
+        DependencyPropertyDescriptor
+            .FromProperty(UIElement.IsMouseOverProperty, element.GetType())
+            .AddValueChanged(element, (sender, _) => {
+                if (sender is UIElement element) {
+                    GetTargetElement(element).Visibility = element.IsMouseOver ? Visibility.Visible : Visibility.Collapsed;
+                }
+            });
+    }
+}
