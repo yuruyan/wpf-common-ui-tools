@@ -656,4 +656,14 @@ public static class UIUtilsExtension {
             }
         }
     }
+
+    /// <inheritdoc cref="UIUtils.SetLoadedOnceEventHandler(FrameworkContentElement, RoutedEventHandler)"/>
+    public static void SetLoadedOnceEventHandler(this FrameworkContentElement element, RoutedEventHandler handler) {
+        UIUtils.SetLoadedOnceEventHandler(element, handler);
+    }
+
+    /// <inheritdoc cref="UIUtils.SetLoadedOnceEventHandler(FrameworkElement, RoutedEventHandler)"/>
+    public static void SetLoadedOnceEventHandler(this FrameworkElement element, RoutedEventHandler handler) {
+        UIUtils.SetLoadedOnceEventHandler(element, handler);
+    }
 }
