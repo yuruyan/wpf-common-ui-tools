@@ -436,7 +436,7 @@ public static class UIUtils {
         }
     }
 
-    private static readonly IDictionary<FrameworkElement, ICollection<RoutedEventHandler>> LoadedOnceEventHandlersDict = new Dictionary<FrameworkElement, ICollection<RoutedEventHandler>>();
+    private static readonly IDictionary<DependencyObject, ICollection<RoutedEventHandler>> LoadedOnceEventHandlersDict = new Dictionary<DependencyObject, ICollection<RoutedEventHandler>>();
 
     /// <summary>
     /// 设置只执行一次的 Loaded EventHandler
@@ -444,23 +444,37 @@ public static class UIUtils {
     /// <param name="element"></param>
     /// <param name="handler"></param>
     public static void SetLoadedOnceEventHandler(FrameworkElement element, RoutedEventHandler handler) {
-        // 初始化
-        if (!LoadedOnceEventHandlersDict.ContainsKey(element)) {
-            LoadedOnceEventHandlersDict[element] = new List<RoutedEventHandler>();
-            element.Loaded += LoadedOnceEventHandlerInternal;
+        SetLoadedOnceEventHandler(element, handler);
+    }
+
+    /// <inheritdoc cref="SetLoadedOnceEventHandler(FrameworkElement, RoutedEventHandler)"/>
+    public static void SetLoadedOnceEventHandler(FrameworkContentElement element, RoutedEventHandler handler) {
+        SetLoadedOnceEventHandler(element, handler);
+    }
+
+    private static void SetLoadedOnceEventHandler(DependencyObject dp, RoutedEventHandler handler) {
+        // Initialize
+        if (!LoadedOnceEventHandlersDict.TryGetValue(dp, out var handlers)) {
+            LoadedOnceEventHandlersDict[dp] = handlers = new List<RoutedEventHandler>();
         }
-        LoadedOnceEventHandlersDict[element].Add(handler);
+        if (dp is FrameworkElement element) {
+            element.Loaded += LoadedOnceEventHandlerInternal;
+        } else if (dp is FrameworkContentElement contentElement) {
+            contentElement.Loaded += LoadedOnceEventHandlerInternal;
+        }
+        handlers.Add(handler);
     }
 
     private static void LoadedOnceEventHandlerInternal(object sender, RoutedEventArgs e) {
-        if (sender is FrameworkElement element) {
-            // 逐一调用
-            foreach (var handler in LoadedOnceEventHandlersDict[element]) {
-                handler(sender, e);
-            }
-            // 清除
-            LoadedOnceEventHandlersDict[element].Clear();
+        if (sender is not DependencyObject element) {
+            return;
         }
+        // 逐一调用
+        foreach (var handler in LoadedOnceEventHandlersDict[element]) {
+            handler(sender, e);
+        }
+        // 清除
+        LoadedOnceEventHandlersDict[element].Clear();
     }
 
     /// <summary>
