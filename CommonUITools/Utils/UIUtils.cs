@@ -444,12 +444,12 @@ public static class UIUtils {
     /// <param name="element"></param>
     /// <param name="handler"></param>
     public static void SetLoadedOnceEventHandler(FrameworkElement element, RoutedEventHandler handler) {
-        SetLoadedOnceEventHandler(element, handler);
+        SetLoadedOnceEventHandler(element as DependencyObject, handler);
     }
 
     /// <inheritdoc cref="SetLoadedOnceEventHandler(FrameworkElement, RoutedEventHandler)"/>
     public static void SetLoadedOnceEventHandler(FrameworkContentElement element, RoutedEventHandler handler) {
-        SetLoadedOnceEventHandler(element, handler);
+        SetLoadedOnceEventHandler(element as DependencyObject, handler);
     }
 
     private static void SetLoadedOnceEventHandler(DependencyObject dp, RoutedEventHandler handler) {
