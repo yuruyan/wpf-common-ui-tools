@@ -128,7 +128,7 @@ public static class UIUtils {
     }
 
     /// <summary>
-    /// SystemDrawing.Color 转 System.Windows.Media.Color
+    /// <see cref="System.Drawing.Color"/> 转 <see cref="System.Windows.Media.Color"/>
     /// </summary>
     /// <param name="color"></param>
     /// <returns></returns>
@@ -505,7 +505,7 @@ public static class UIUtils {
     }
 
     /// <summary>
-    /// BitmapSource 转为Bitmap
+    /// BitmapSource 转为 <see cref="System.Drawing.Bitmap"/>
     /// </summary>
     /// <param name="bitmapSource"></param>
     /// <returns></returns>
@@ -531,7 +531,7 @@ public static class UIUtils {
     }
 
     /// <summary>
-    /// Bitmap 转为位图
+    /// <see cref="System.Drawing.Bitmap"/> 转为 ImageSource
     /// </summary>
     /// <param name="bitmap"></param>
     /// <returns></returns>

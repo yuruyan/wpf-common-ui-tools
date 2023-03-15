@@ -1,4 +1,5 @@
 ﻿using ModernWpf.Controls;
+using System.Windows.Media.Imaging;
 
 namespace CommonUITools.Utils;
 
@@ -15,7 +16,7 @@ public static class UIUtilsExtension {
     public static bool IsLeftButtonDown(this MouseButtonEventArgs e) => UIUtils.IsLeftButtonDown(e);
 
     /// <inheritdoc cref="UIUtils.IsRightButtonDown(MouseButtonEventArgs)"/>
-    public static bool IsRightButtonDown(MouseButtonEventArgs e) => UIUtils.IsRightButtonDown(e);
+    public static bool IsRightButtonDown(this MouseButtonEventArgs e) => UIUtils.IsRightButtonDown(e);
 
     /// <summary>
     /// 鼠标左键是否按下
@@ -23,6 +24,61 @@ public static class UIUtilsExtension {
     /// <param name="e"></param>
     /// <returns></returns>
     public static bool IsLeftButtonDown(this MouseEventArgs e) => e.LeftButton == MouseButtonState.Pressed;
+
+    /// <inheritdoc cref="UIUtils.StringToBrush(string)"/>
+    public static SolidColorBrush ToBrush(this string color) => UIUtils.StringToBrush(color);
+
+    /// <inheritdoc cref="UIUtils.StringToColor(string)"/>
+    public static Color ToColor(this string color) => UIUtils.StringToColor(color);
+
+    /// <inheritdoc cref="UIUtils.DrawingColorToColor(System.Drawing.Color)"/>
+    public static Color ToColor(this System.Drawing.Color color) => UIUtils.DrawingColorToColor(color);
+
+    /// <inheritdoc cref="UIUtils.OpenFileInExplorerAsync(string, Action{Exception}?)"/>
+    public static void OpenFileInExplorerAsync(this string path, Action<Exception>? failedCallback = null) {
+        UIUtils.OpenFileInExplorerAsync(path, failedCallback);
+    }
+
+    /// <inheritdoc cref="UIUtils.OpenFileInExistingExplorerAsync(string, Action{Exception}?)"/>
+    public static void OpenFileInExistingExplorerAsync(this string path, Action<Exception>? failedCallback = null) {
+        UIUtils.OpenFileInExistingExplorerAsync(path, failedCallback);
+    }
+
+    /// <inheritdoc cref="UIUtils.OpenFileWithAsync(string, Action{Exception}?)"/>
+    public static void OpenFileWithAsync(this string path, Action<Exception>? failedCallback = null) {
+        UIUtils.OpenFileWithAsync(path, failedCallback);
+    }
+
+    /// <inheritdoc cref="UIUtils.OpenInBrowser(string)"/>
+    public static void OpenInBrowser(this string url) => UIUtils.OpenInBrowser(url);
+
+    /// <inheritdoc cref="UIUtils.ReversePanelChildrenOrder(Panel)"/>
+    public static void ReverseChildrenOrder(this Panel panel) => UIUtils.ReversePanelChildrenOrder(panel);
+
+    /// <inheritdoc cref="UIUtils.CopyImageSource(string)"/>
+    public static BitmapImage GetImageSource(this string filepath) => UIUtils.CopyImageSource(filepath);
+
+    /// <inheritdoc cref="UIUtils.BitmapSourceToBitmap(BitmapSource)"/>
+    public static System.Drawing.Bitmap ToBitmap(this BitmapSource bitmapSource) => UIUtils.BitmapSourceToBitmap(bitmapSource);
+
+    /// <inheritdoc cref="UIUtils.BitmapToImageSource(System.Drawing.Bitmap)"/>
+    public static ImageSource ToImageSource(this System.Drawing.Bitmap bitmap) => UIUtils.BitmapToImageSource(bitmap);
+
+    /// <inheritdoc cref="UIUtils.BitmapToStream(System.Drawing.Bitmap)"/>
+    public static Stream ToStream(this System.Drawing.Bitmap bitmap) => UIUtils.BitmapToStream(bitmap);
+
+    /// <inheritdoc cref="UIUtils.FindResourceInMergedDictionaries(Collection{ResourceDictionary}, string)"/>
+    public static ResourceDictionary? FindResource(this Collection<ResourceDictionary> mergedDictionaries, string sourcePath) {
+        return UIUtils.FindResourceInMergedDictionaries(mergedDictionaries, sourcePath);
+    }
+
+    /// <inheritdoc cref="UIUtils.ReplaceResourceDictionary(Collection{ResourceDictionary}, string, string)"/>
+    public static bool ReplaceResourceDictionary(this Collection<ResourceDictionary> mergedDictionaries, string oldSource, string newSource) {
+        return UIUtils.ReplaceResourceDictionary(mergedDictionaries, oldSource, newSource);
+    }
+
+    /// <inheritdoc cref="UIUtils.GetElementDataContext{T}(object)"/>
+    public static T? GetElementDataContext<T>(this object sender) => UIUtils.GetElementDataContext<T>(sender);
 
     /// <summary>
     /// 鼠标右键是否按下
