@@ -303,6 +303,15 @@ public class Router {
 }
 
 public class RouterService {
+    private class RouterInfo {
+        public RouterInfo(Type classType) {
+            ClassType = classType;
+        }
+
+        public Type ClassType { get; set; }
+        public object? Instance { get; set; }
+    }
+
     private readonly IDictionary<Type, RouterInfo> Routers = new Dictionary<Type, RouterInfo>();
     private readonly IDictionary<NavigationTransitionEffect, NavigationTransitionInfo> NavigationTransitionEffectDict = new Dictionary<NavigationTransitionEffect, NavigationTransitionInfo>() {
         {NavigationTransitionEffect.DrillIn, new DrillInNavigationTransitionInfo()},
@@ -328,14 +337,6 @@ public class RouterService {
     /// </summary>
     public object? CurrentPage => Frame.Content;
 
-    private record RouterInfo {
-        public RouterInfo(Type classType) {
-            ClassType = classType;
-        }
-        public Type ClassType { get; set; }
-        public object? Instance { get; set; }
-    }
-
     /// <summary>
     /// 获取实例对象，对象未创建则会动态创建
     /// </summary>
@@ -355,6 +356,22 @@ public class RouterService {
 
     public T GetInstance<T>() {
         return (T)GetInstance(typeof(T));
+    }
+
+    /// <summary>
+    /// 移除页面实例
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public void RemovePage<T>() {
+        Routers.Remove(typeof(T));
+    }
+
+    /// <summary>
+    /// 移除页面实例
+    /// </summary>
+    /// <param name="pageType"></param>
+    public void RemovePage(Type pageType) {
+        Routers.Remove(pageType);
     }
 
     /// <summary>
