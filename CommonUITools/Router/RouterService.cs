@@ -37,17 +37,17 @@ public class RouterService {
     /// <summary>
     /// 获取实例对象，对象未创建则会动态创建
     /// </summary>
-    /// <param name="page"></param>
+    /// <param name="pageType"></param>
     /// <returns></returns>
     /// <exception cref="KeyNotFoundException">View 不存在</exception>
     /// <exception cref="NullReferenceException">对象创建失败</exception>
-    public object GetInstance(Type page) {
-        if (!RouterInstanceDict.ContainsKey(page)) {
-            throw new KeyNotFoundException("View 不存在");
+    public object GetInstance(Type pageType) {
+        if (!Routers.Contains(pageType)) {
+            throw new KeyNotFoundException($"{pageType} dosen't exist in Routers");
         }
         // Initialize
-        if (!RouterInstanceDict.TryGetValue(page, out var instance)) {
-            RouterInstanceDict[page] = instance = Activator.CreateInstance(page)!;
+        if (!RouterInstanceDict.TryGetValue(pageType, out var instance)) {
+            RouterInstanceDict[pageType] = instance = Activator.CreateInstance(pageType)!;
         }
         return instance;
     }
@@ -113,12 +113,14 @@ public class RouterService {
         }
     }
 
-    public void Navigate(Type view) {
-        Navigate(view, DefaultTransitionEffect);
-    }
+    /// <inheritdoc cref="Navigate(Type, object, NavigationTransitionEffect)"/>
+    public void Navigate(Type view) => Navigate(view, null, DefaultTransitionEffect);
 
     /// <inheritdoc cref="Navigate(Type, object?, NavigationTransitionEffect)"/>
     public void Navigate(Type view, NavigationTransitionEffect effect) => Navigate(view, null, effect);
+
+    /// <inheritdoc cref="Navigate(Type, object, NavigationTransitionEffect)"/>
+    public void Navigate(Type view, object? args) => Navigate(view, args, DefaultTransitionEffect);
 
     /// <summary>
     /// 导航
@@ -127,8 +129,8 @@ public class RouterService {
     /// <param name="args">Extra data</param>
     /// <param name="effect">Navigation animation</param>
     public void Navigate(Type view, object? args, NavigationTransitionEffect effect) {
-        if (!RouterInstanceDict.ContainsKey(view)) {
-            throw new KeyNotFoundException("View 不存在");
+        if (!Routers.Contains(view)) {
+            throw new KeyNotFoundException($"{view} dosen't exist in Routers");
         }
         // 设置过渡动画
         if (effect != DefaultTransitionEffect) {
@@ -137,9 +139,6 @@ public class RouterService {
         PageArgsDict[view] = args;
         Frame.Navigate(GetInstance(view));
     }
-
-    /// <inheritdoc cref="Navigate(Type, object, NavigationTransitionEffect)"/>
-    public void Navigate(Type view, object? args) => Navigate(view, args, DefaultTransitionEffect);
 
     private void SetTransitionEffect(NavigationTransitionEffect effect) {
         TransitionFieldInfo?.SetValue(
