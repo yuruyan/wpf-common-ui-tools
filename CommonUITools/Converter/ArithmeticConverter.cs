@@ -141,3 +141,29 @@ public class DivideInvertConverter : IValueConverter {
         throw new NotImplementedException();
     }
 }
+
+/// <summary>
+/// 转为负数
+/// </summary>
+public class ToNegativeConverter : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        return -Math.Abs(System.Convert.ToDouble(value));
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}
+
+/// <summary>
+/// 转为正数
+/// </summary>
+public class ToPositiveConverter : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        return Math.Abs(System.Convert.ToDouble(value));
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}
