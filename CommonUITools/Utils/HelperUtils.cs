@@ -1184,7 +1184,6 @@ public static class ElementVisibilityHelper {
         public bool PreventOpen { get; set; }
     }
 
-    private static readonly string MessageGroupNamePrefix = $"{nameof(ElementVisibilityHelper)}_{Random.Shared.Next()}-";
     private static readonly IDictionary<string, State> TargetElementStateDict = new Dictionary<string, State>();
     private static readonly IDictionary<DependencyObject, string> SourceElementTargetIdDict = new Dictionary<DependencyObject, string>();
 
