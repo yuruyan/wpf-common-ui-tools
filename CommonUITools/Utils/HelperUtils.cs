@@ -166,6 +166,10 @@ public static class ScaleAnimationHelper {
         return ScaleTransformFactory.CreateScaleTransform(element, scaleOption);
     }
 
+    /// <summary>
+    /// 清除引用
+    /// </summary>
+    /// <param name="element"></param>
     public static void Dispose(FrameworkElement element) {
         if (StoryboardDict.TryGetValue(element, out var storyboard)) {
             if (storyboard.Storyboard?.CanFreeze == true) {
@@ -307,6 +311,10 @@ public static class CenterScaleAnimationHelper {
         return new();
     }
 
+    /// <summary>
+    /// 清除引用
+    /// </summary>
+    /// <param name="element"></param>
     public static void Dispose(FrameworkElement element) {
         element.ClearValue(IsEnabledProperty);
         element.ClearValue(UIElement.RenderTransformProperty);
@@ -326,35 +334,37 @@ public static class CenterScaleAnimationHelper {
 /// </summary>
 public static class FadeInAnimationHelper {
     /// <summary>
-    /// 是否启用
+    /// 默认动画持续时间
     /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
+    public const int DefaultDuration = 300;
+    public static readonly DependencyProperty DurationProperty = DependencyProperty.RegisterAttached("Duration", typeof(int), typeof(FadeInAnimationHelper), new PropertyMetadata(DefaultDuration, DurationPropertyChangedHandler));
+    public static readonly DependencyProperty EnabledProperty = DependencyProperty.RegisterAttached("Enabled", typeof(bool), typeof(FadeInAnimationHelper), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
+    private static readonly IDictionary<FrameworkElement, Storyboard> StoryBoardDict = new Dictionary<FrameworkElement, Storyboard>();
+
     public static bool GetEnabled(DependencyObject obj) {
         return (bool)obj.GetValue(EnabledProperty);
     }
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public static void SetEnabled(DependencyObject obj, bool value) {
         obj.SetValue(EnabledProperty, value);
+    }
+    public static int GetDuration(DependencyObject obj) {
+        return (int)obj.GetValue(DurationProperty);
     }
     /// <summary>
     /// 持续时间 ms
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static int GetDuration(DependencyObject obj) {
-        return (int)obj.GetValue(DurationProperty);
-    }
     public static void SetDuration(DependencyObject obj, int value) {
         obj.SetValue(DurationProperty, value);
     }
-
-    /// <summary>
-    /// 默认动画持续时间
-    /// </summary>
-    public const int DefaultDuration = 250;
-    public static readonly DependencyProperty DurationProperty = DependencyProperty.RegisterAttached("Duration", typeof(int), typeof(FadeInAnimationHelper), new PropertyMetadata(DefaultDuration, DurationPropertyChangedHandler));
-    public static readonly DependencyProperty EnabledProperty = DependencyProperty.RegisterAttached("Enabled", typeof(bool), typeof(FadeInAnimationHelper), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
-    private static readonly Dictionary<FrameworkElement, Storyboard> StoryBoardDict = new();
 
     /// <summary>
     /// IsEnabled 改变
@@ -362,8 +372,9 @@ public static class FadeInAnimationHelper {
     /// <param name="d"></param>
     /// <param name="e"></param>
     private static void IsEnabledPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        var enabled = (bool)e.NewValue;
         if (d is FrameworkElement element) {
-            if ((bool)e.NewValue) {
+            if (enabled) {
                 element.IsVisibleChanged += IsVisibleChangedHandler;
             } else {
                 element.IsVisibleChanged -= IsVisibleChangedHandler;
@@ -390,7 +401,7 @@ public static class FadeInAnimationHelper {
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private static void IsVisibleChangedHandler(object sender, DependencyPropertyChangedEventArgs e) {
-        if (sender is FrameworkElement element && Convert.ToBoolean(e.NewValue)) {
+        if (sender is FrameworkElement element && e.NewValue is true) {
             element.BeginStoryboard(GetStoryboard(element));
         }
     }
@@ -402,7 +413,9 @@ public static class FadeInAnimationHelper {
     /// <returns></returns>
     private static Storyboard GetStoryboard(FrameworkElement element) {
         if (!StoryBoardDict.TryGetValue(element, out var storyboard)) {
-            DoubleAnimation doubleAnimation = new(0, 1, new(TimeSpan.FromMilliseconds(GetDuration(element))));
+            DoubleAnimation doubleAnimation = new(0, 1, new(
+                TimeSpan.FromMilliseconds(GetDuration(element))
+            ));
             Storyboard.SetTarget(doubleAnimation, element);
             Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath("Opacity"));
             storyboard = new Storyboard() {
@@ -411,6 +424,17 @@ public static class FadeInAnimationHelper {
             StoryBoardDict[element] = storyboard;
         }
         return storyboard;
+    }
+
+    /// <summary>
+    /// 清除引用
+    /// </summary>
+    /// <param name="element"></param>
+    public static void Dispose(FrameworkElement element) {
+        element.IsVisibleChanged -= IsVisibleChangedHandler;
+        element.ClearValue(EnabledProperty);
+        element.ClearValue(DurationProperty);
+        StoryBoardDict.Remove(element);
     }
 }
 
