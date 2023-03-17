@@ -1,6 +1,6 @@
 ﻿namespace CommonUITools.Widget;
 
-public partial class DragDropTextBox : UserControl {
+public partial class DragDropTextBox : UserControl, IDisposable {
     public static readonly DependencyProperty TextBoxProperty = DependencyProperty.Register("TextBox", typeof(TextBox), typeof(DragDropTextBox), new PropertyMetadata());
     public static readonly DependencyProperty FileViewProperty = DependencyProperty.Register("FileView", typeof(object), typeof(DragDropTextBox), new PropertyMetadata());
     public static readonly DependencyProperty HasFileProperty = DependencyProperty.Register("HasFile", typeof(bool), typeof(DragDropTextBox), new PropertyMetadata(false));
@@ -37,7 +37,12 @@ public partial class DragDropTextBox : UserControl {
     public object? FileData { get; private set; }
 
     public DragDropTextBox() {
-        UIUtils.SetLoadedOnceEventHandler(this, (_, _) => this.Content = TextBox);
+        // Set content to TextBox
+        UIUtils.SetLoadedOnceEventHandler(this, static (sender, _) => {
+            if (sender is DragDropTextBox box) {
+                box.Content = box.TextBox;
+            }
+        });
         DependencyPropertyDescriptor
             .FromProperty(TextBoxProperty, this.GetType())
             .AddValueChanged(this, TextBoxPropertyChangedHandler);
@@ -102,6 +107,22 @@ public partial class DragDropTextBox : UserControl {
         TextBox.Clear();
         HasFile = false;
         FileData = null;
+    }
+
+    public void Dispose() {
+        DataContext = null;
+        DragDropEvent = null;
+        Content = null;
+        Clear();
+        DependencyPropertyDescriptor
+            .FromProperty(TextBoxProperty, this.GetType())
+            .RemoveValueChanged(this, TextBoxPropertyChangedHandler);
+        DependencyPropertyDescriptor
+            .FromProperty(HasFileProperty, this.GetType())
+            .RemoveValueChanged(this, HasFilePropertyChangedHandler);
+        TextBox.PreviewDragOver -= FileDragOverHandler;
+        DragDropHelper.Dispose(TextBox);
+        GC.SuppressFinalize(this);
     }
 
 }
