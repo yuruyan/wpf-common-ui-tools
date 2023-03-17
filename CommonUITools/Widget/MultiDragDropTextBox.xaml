@@ -29,11 +29,35 @@
         To="0"
         Duration="{StaticResource AnimationDurationLong}" />
     </Storyboard>
+    <ContextMenu x:Key="FileNameListBoxItemContextMenu">
+      <MenuItem Click="OpenFileClickHandler" Header="打开文件">
+        <MenuItem.Icon>
+          <TextBlock Style="{StaticResource CommonUIToolsIconFontStyle}" Text="&#xe671;" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Click="OpenDirectoryClickHandler" Header="打开所在目录">
+        <MenuItem.Icon>
+          <TextBlock
+            Foreground="#f5a623"
+            Style="{StaticResource CommonUIToolsColorIconFontStyle}"
+            Text="&#xe660;" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Click="DeleteClickHandler" Header="移除">
+        <MenuItem.Icon>
+          <TextBlock
+            Foreground="{StaticResource ErrorBackground}"
+            Style="{StaticResource CommonUIToolsColorIconFontStyle}"
+            Text="&#xe6b4;" />
+        </MenuItem.Icon>
+      </MenuItem>
+    </ContextMenu>
   </UserControl.Resources>
 
   <Grid>
     <!--  文本框  -->
     <TextBox
+      x:Name="InputTextBox"
       util:DragDropHelper.BackgroundProperty="{x:Static TextBox.BackgroundProperty}"
       util:DragDropHelper.IsEnabled="True"
       Style="{Binding TextBoxStyle, ElementName=MultiDragDropTextBoxRoot}"
@@ -43,50 +67,23 @@
     <!--  文件列表  -->
     <Grid Visibility="{Binding HasFile, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfFalseConverter}}">
       <!--  只有一个文件时不显示列表  -->
-      <local:FileNameSizeWidget FileName="{Binding FirstFileName, ElementName=MultiDragDropTextBoxRoot}" Visibility="{Binding FileNameList.Count, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfNotEuqalConverter}, ConverterParameter={StaticResource One}}" />
+      <local:FileNameSizeWidget
+        x:Name="FileNameSizeWidget"
+        FileName="{Binding FirstFileName, ElementName=MultiDragDropTextBoxRoot}"
+        Visibility="{Binding FileNameList.Count, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfNotEuqalConverter}, ConverterParameter={StaticResource One}}" />
       <!--  文件列表  -->
       <Grid Visibility="{Binding FileNameList.Count, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfEuqalConverter}, ConverterParameter={StaticResource One}}">
         <ListBox
           Name="FileNameListBox"
           ItemsSource="{Binding FileNameList, ElementName=MultiDragDropTextBoxRoot}"
           SelectionMode="Extended">
-          <ListBox.ItemContainerStyle>
-            <Style BasedOn="{StaticResource DefaultListBoxItemStyle}" TargetType="ListBoxItem">
-              <Setter Property="Padding" Value="0" />
-            </Style>
-          </ListBox.ItemContainerStyle>
           <ListBox.ItemTemplate>
             <DataTemplate>
-              <Grid Width="{Binding ElementName=FileNameListBox, Path=ActualWidth, Converter={StaticResource SubtractConverter}, ConverterParameter=10}" Background="Transparent">
+              <Grid Background="Transparent" ContextMenu="{StaticResource FileNameListBoxItemContextMenu}">
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition />
                   <ColumnDefinition Width="120" />
                 </Grid.ColumnDefinitions>
-                <Grid.ContextMenu>
-                  <ContextMenu>
-                    <MenuItem Click="OpenFileClickHandler" Header="打开文件">
-                      <MenuItem.Icon>
-                        <TextBlock Style="{StaticResource CommonUIToolsIconFontStyle}" Text="&#xe671;" />
-                      </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Click="OpenDirectoryClickHandler" Header="打开所在目录">
-                      <MenuItem.Icon>
-                        <TextBlock
-                          Foreground="#f5a623"
-                          Style="{StaticResource CommonUIToolsColorIconFontStyle}"
-                          Text="&#xe660;" />
-                      </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Click="DeleteClickHandler" Header="移除">
-                      <MenuItem.Icon>
-                        <TextBlock
-                          Foreground="{StaticResource ErrorBackground}"
-                          Style="{StaticResource CommonUIToolsColorIconFontStyle}"
-                          Text="&#xe6b4;" />
-                      </MenuItem.Icon>
-                    </MenuItem>
-                  </ContextMenu>
-                </Grid.ContextMenu>
                 <!--  Name  -->
                 <local:FileNameIconWidget
                   Padding="0,8"
@@ -118,7 +115,7 @@
             <TextBlock
               FontSize="{StaticResource SystemFontSizeSmall}"
               Text="{Binding SelectedItems.Count, ElementName=FileNameListBox, StringFormat='已选中 {0} 项'}"
-              Visibility="{Binding SelectedItems.Count, ElementName=FileNameListBox, Converter={StaticResource HideIfEuqalConverter}, ConverterParameter=0}" />
+              Visibility="{Binding SelectedItems.Count, ElementName=FileNameListBox, Converter={StaticResource HideIfZeroConverter}}" />
           </StackPanel>
         </Border>
       </Grid>

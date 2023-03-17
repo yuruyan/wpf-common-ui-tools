@@ -1,17 +1,37 @@
-﻿namespace CommonUITools.Widget;
+﻿using System.Collections.Specialized;
 
-public partial class MultiDragDropTextBox : UserControl {
+namespace CommonUITools.Widget;
+
+public partial class MultiDragDropTextBox : UserControl, IDisposable {
     public static readonly DependencyProperty InputTextProperty = DependencyProperty.Register("InputText", typeof(string), typeof(MultiDragDropTextBox), new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
     public static readonly DependencyProperty TextBoxStyleProperty = DependencyProperty.Register("TextBoxStyle", typeof(Style), typeof(MultiDragDropTextBox), new PropertyMetadata());
     public static readonly DependencyProperty HasFileProperty = DependencyProperty.Register("HasFile", typeof(bool), typeof(MultiDragDropTextBox), new PropertyMetadata(false));
-    private static readonly DependencyProperty FileNameListProperty = DependencyProperty.Register("FileNameList", typeof(ObservableCollection<string>), typeof(MultiDragDropTextBox), new PropertyMetadata());
+    private static readonly DependencyPropertyKey FileNameListPropertyKey = DependencyProperty.RegisterReadOnly("FileNameList", typeof(ExtendedObservableCollection<string>), typeof(MultiDragDropTextBox), new PropertyMetadata());
+    public static readonly DependencyProperty FileNameListProperty = FileNameListPropertyKey.DependencyProperty;
     private static readonly DependencyProperty FirstFileNameProperty = DependencyProperty.Register("FirstFileName", typeof(string), typeof(MultiDragDropTextBox), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty IsSupportDirectoryProperty = DependencyProperty.Register("IsSupportDirectory", typeof(bool), typeof(MultiDragDropTextBox), new PropertyMetadata(false));
+    private const string FileListInfoBorderFadeOutStoryboardName = "FileListInfoBorderFadeOutStoryboard";
 
     /// <summary>
     /// DragDropEvent，参数为 本次拖拽的 FileNames
     /// </summary>
     public event EventHandler<IList<string>>? DragDropEvent;
+    /// <summary>
+    /// 文件名集合
+    /// </summary>
+    private readonly ISet<string> FileNameSet = new HashSet<string>();
+    /// <summary>
+    /// 文件数据
+    /// </summary>
+    public object? FileData { get; private set; }
+    /// <summary>
+    /// 获取完整文件名列表
+    /// </summary>
+    public IList<string> FileNames => FileNameList.ToList();
+    /// <summary>
+    /// FileListInfoBorderFadeOut 动画
+    /// </summary>
+    private Storyboard FileListInfoBorderFadeOutStoryboard;
 
     /// <summary>
     /// 输入文本，默认双向绑定
@@ -37,10 +57,7 @@ public partial class MultiDragDropTextBox : UserControl {
     /// <summary>
     /// 文件名列表
     /// </summary>
-    private ObservableCollection<string> FileNameList {
-        get { return (ObservableCollection<string>)GetValue(FileNameListProperty); }
-        set { SetValue(FileNameListProperty, value); }
-    }
+    private ExtendedObservableCollection<string> FileNameList => (ExtendedObservableCollection<string>)GetValue(FileNameListProperty);
     /// <summary>
     /// 第一个文件名
     /// </summary>
@@ -55,48 +72,38 @@ public partial class MultiDragDropTextBox : UserControl {
         get { return (bool)GetValue(IsSupportDirectoryProperty); }
         set { SetValue(IsSupportDirectoryProperty, value); }
     }
-    /// <summary>
-    /// 文件名集合
-    /// </summary>
-    private readonly ISet<string> FileNameSet = new HashSet<string>();
-    /// <summary>
-    /// 文件数据
-    /// </summary>
-    public object? FileData { get; private set; }
-    /// <summary>
-    /// 获取完整文件名列表
-    /// </summary>
-    public IList<string> FileNames => FileNameList.ToList();
-    /// <summary>
-    /// FileListInfoBorderFadeOut 动画
-    /// </summary>
-    private Storyboard? FileListInfoBorderFadeOutStoryboard;
 
     public MultiDragDropTextBox() {
-        FileNameList = new();
+        SetValue(FileNameListPropertyKey, new ExtendedObservableCollection<string>());
         // 更新 FirstFileName
-        FileNameList.CollectionChanged += (_, _) => {
-            if (FileNameList.Count > 0) {
-                FirstFileName = FileNameList[0];
-            }
-        };
+        FileNameList.CollectionChanged += FileNameListCollectionChangedHandler;
         DependencyPropertyDescriptor
             .FromProperty(HasFileProperty, this.GetType())
-            .AddValueChanged(this, (_, _) => {
-                if (!HasFile) {
-                    FileData = null;
-                    FileNameSet.Clear();
-                    FileNameList.Clear();
+            .AddValueChanged(this, HasFilePropertyChangedHandler);
+        // Set TextBox default style
+        UIUtils.SetLoadedOnceEventHandler(this, static (sender, _) => {
+            if (sender is MultiDragDropTextBox textBox) {
+                if (textBox.TryFindResource("MultilineTextBoxStyle") is Style style) {
+                    textBox.TextBoxStyle ??= style;
                 }
-            });
-        // 设置 TextBox 默认 Style
-        UIUtils.SetLoadedOnceEventHandler(this, (_, _) => {
-            if (TryFindResource("MultilineTextBoxStyle") is Style style) {
-                TextBoxStyle ??= style;
+                textBox.FileListInfoBorderFadeOutStoryboard = (Storyboard)textBox.Resources[FileListInfoBorderFadeOutStoryboardName];
             }
-            FileListInfoBorderFadeOutStoryboard = (Storyboard)Resources["FileListInfoBorderFadeOutStoryboard"];
         });
         InitializeComponent();
+    }
+
+    private void HasFilePropertyChangedHandler(object? sender, EventArgs e) {
+        if (!HasFile) {
+            FileData = null;
+            FileNameSet.Clear();
+            FileNameList.Clear();
+        }
+    }
+
+    private void FileNameListCollectionChangedHandler(object? sender, NotifyCollectionChangedEventArgs e) {
+        if (FileNameList.Count > 0) {
+            FirstFileName = FileNameList[0];
+        }
     }
 
     /// <summary>
@@ -187,7 +194,7 @@ public partial class MultiDragDropTextBox : UserControl {
     /// <param name="e"></param>
     private void ViewMouseLeaveHandler(object sender, MouseEventArgs e) {
         e.Handled = true;
-        FileListInfoBorderFadeOutStoryboard?.Begin();
+        FileListInfoBorderFadeOutStoryboard.Begin();
     }
 
     /// <summary>
@@ -196,7 +203,28 @@ public partial class MultiDragDropTextBox : UserControl {
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void ViewMouseEnterHandler(object sender, MouseEventArgs e) {
-        FileListInfoBorderFadeOutStoryboard?.Stop();
+        e.Handled = true;
+        FileListInfoBorderFadeOutStoryboard.Stop();
         FileListInfoBorder.Opacity = 1;
+    }
+
+    public void Dispose() {
+        FileNameSizeWidget.Dispose();
+        #region Events
+        MouseEnter -= ViewMouseEnterHandler;
+        MouseLeave -= ViewMouseLeaveHandler;
+        PreviewDrop -= PreviewDropHandler;
+        FileNameList.CollectionChanged += FileNameListCollectionChangedHandler;
+        DependencyPropertyDescriptor
+            .FromProperty(HasFileProperty, this.GetType())
+            .RemoveValueChanged(this, HasFilePropertyChangedHandler);
+        DragDropEvent = null;
+        DragDropHelper.Dispose(this);
+        DragDropHelper.Dispose(InputTextBox);
+        #endregion
+        ClearValue(DataContextProperty);
+        ClearValue(ContentProperty);
+        Clear();
+        GC.SuppressFinalize(this);
     }
 }
