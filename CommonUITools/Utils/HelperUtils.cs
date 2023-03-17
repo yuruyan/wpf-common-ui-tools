@@ -785,21 +785,11 @@ public static class LongPressHelper {
 
     private const int LongPressTimeThreshold = 700;
     public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(LongPressHelper), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
-    public static readonly DependencyProperty IsLongPressEventHappendProperty = DependencyProperty.RegisterAttached("IsLongPressEventHappend", typeof(bool), typeof(LongPressHelper), new PropertyMetadata(false));
+    public static readonly DependencyPropertyKey IsLongPressEventHappendPropertyKey = DependencyProperty.RegisterAttachedReadOnly("IsLongPressEventHappend", typeof(bool), typeof(LongPressHelper), new PropertyMetadata(false));
+    public static readonly DependencyProperty IsLongPressEventHappendProperty = IsLongPressEventHappendPropertyKey.DependencyProperty;
     public static readonly DependencyProperty LongPressProperty = DependencyProperty.RegisterAttached("LongPress", typeof(EventHandler), typeof(LongPressHelper), new PropertyMetadata());
     private static readonly IDictionary<FrameworkElement, LongPressEventInfo> ElementLongPressEventInfoDict = new Dictionary<FrameworkElement, LongPressEventInfo>();
 
-    /// <summary>
-    /// 长按事件
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static EventHandler GetLongPress(DependencyObject obj) {
-        return (EventHandler)obj.GetValue(LongPressProperty);
-    }
-    public static void SetLongPress(DependencyObject obj, EventHandler value) {
-        obj.SetValue(LongPressProperty, value);
-    }
     /// <summary>
     /// 是否触发了长按事件
     /// </summary>
@@ -808,17 +798,27 @@ public static class LongPressHelper {
     public static bool GetIsLongPressEventHappend(DependencyObject obj) {
         return (bool)obj.GetValue(IsLongPressEventHappendProperty);
     }
-    private static void SetIsLongPressEventHappend(DependencyObject obj, bool value) {
-        obj.SetValue(IsLongPressEventHappendProperty, value);
+    public static EventHandler GetLongPress(DependencyObject obj) {
+        return (EventHandler)obj.GetValue(LongPressProperty);
+    }
+    /// <summary>
+    /// 长按事件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static void SetLongPress(DependencyObject obj, EventHandler value) {
+        obj.SetValue(LongPressProperty, value);
+    }
+    public static bool GetIsEnabled(DependencyObject obj) {
+        return (bool)obj.GetValue(IsEnabledProperty);
     }
     /// <summary>
     /// 是否启用
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static bool GetIsEnabled(DependencyObject obj) {
-        return (bool)obj.GetValue(IsEnabledProperty);
-    }
     public static void SetIsEnabled(DependencyObject obj, bool value) {
         obj.SetValue(IsEnabledProperty, value);
     }
@@ -852,7 +852,7 @@ public static class LongPressHelper {
                 info.Timer.Stop();
                 info.Invoked = true;
                 Application.Current.Dispatcher.Invoke(() => {
-                    SetIsLongPressEventHappend(element, true);
+                    element.SetValue(IsLongPressEventHappendPropertyKey, true);
                     GetLongPress(element)?.Invoke(element, EventArgs.Empty);
                 });
             }
@@ -867,7 +867,7 @@ public static class LongPressHelper {
         var info = ElementLongPressEventInfoDict[element];
         // 重置
         info.Invoked = false;
-        SetIsLongPressEventHappend(element, false);
+        element.SetValue(IsLongPressEventHappendPropertyKey, false);
         info.MouseDownTime = DateTime.Now;
         info.Timer.Start();
     }
@@ -878,6 +878,22 @@ public static class LongPressHelper {
         }
 
         ElementLongPressEventInfoDict[element].Timer.Stop();
+    }
+
+    /// <summary>
+    /// 清除引用
+    /// </summary>
+    /// <param name="element"></param>
+    public static void Dispose(FrameworkElement element) {
+        if (ElementLongPressEventInfoDict.TryGetValue(element, out var info)) {
+            ElementLongPressEventInfoDict.Remove(element);
+            info.Timer.Stop();
+        }
+        element.ClearValue(LongPressProperty);
+        element.ClearValue(IsEnabledProperty);
+        element.ClearValue(IsLongPressEventHappendProperty);
+        element.PreviewMouseLeftButtonDown -= PreviewLeftButtonDown;
+        element.PreviewMouseLeftButtonUp -= PreviewLeftButtonUp;
     }
 }
 
