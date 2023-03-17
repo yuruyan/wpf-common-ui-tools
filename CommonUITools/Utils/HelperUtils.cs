@@ -1,6 +1,5 @@
 ﻿using CommonUITools.Widget;
 using ModernWpf;
-using System.Reflection;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media.Effects;
@@ -437,81 +436,88 @@ public static class GridViewColumnHelper {
 
 /// <summary>
 /// DragDropHelper，DragOver 时背景会发生变化
-/// 默认背景为 ApplicationBackgroundBrushLight1
+/// 默认背景为 DragDropOverBackgroundBrush
 /// </summary>
 public static class DragDropHelper {
     public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(DragDropHelper), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
     public static readonly DependencyProperty OverBackgroundProperty = DependencyProperty.RegisterAttached("OverBackground", typeof(Brush), typeof(DragDropHelper), new PropertyMetadata());
+    public static readonly DependencyProperty BackgroundPropertyProperty = DependencyProperty.RegisterAttached("BackgroundProperty", typeof(DependencyProperty), typeof(DragDropHelper), new PropertyMetadata());
+    private static readonly Brush TransparentBackgroundBrush = new SolidColorBrush(Colors.Transparent);
 
+    public static DependencyProperty GetBackgroundProperty(DependencyObject obj) {
+        return (DependencyProperty)obj.GetValue(BackgroundPropertyProperty);
+    }
     /// <summary>
-    /// 是否启用
+    /// BackgroundPropertyProperty
     /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetBackgroundProperty(DependencyObject obj, DependencyProperty value) {
+        obj.SetValue(BackgroundPropertyProperty, value);
+    }
     public static bool GetIsEnabled(DependencyObject obj) {
         return (bool)obj.GetValue(IsEnabledProperty);
     }
+    /// <summary>
+    /// 是否启用
+    /// </summary>
     public static void SetIsEnabled(DependencyObject obj, bool value) {
         obj.SetValue(IsEnabledProperty, value);
+    }
+    public static Brush GetOverBackground(DependencyObject obj) {
+        return (Brush)obj.GetValue(OverBackgroundProperty);
     }
     /// <summary>
     /// 拖拽进入区域时背景颜色
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static Brush GetOverBackground(DependencyObject obj) {
-        return (Brush)obj.GetValue(OverBackgroundProperty);
-    }
     public static void SetOverBackground(DependencyObject obj, Brush value) {
         obj.SetValue(OverBackgroundProperty, value);
     }
 
-    /// <summary>
-    /// 元素初始状态设置的 Background
-    /// </summary>
-    private static readonly IDictionary<DependencyObject, Brush> ElementBackgroundDict = new Dictionary<DependencyObject, Brush>();
-    private static readonly IDictionary<DependencyObject, BindingExpression?> ElementBackgroundBindingDict = new Dictionary<DependencyObject, BindingExpression?>();
-    /// <summary>
-    /// 元素 Background PropertyInfo
-    /// </summary>
-    private static readonly IDictionary<DependencyObject, PropertyInfo> ElementPropertyDict = new Dictionary<DependencyObject, PropertyInfo>();
-    private static readonly Brush FallbackOverBackgroundBrush = new SolidColorBrush(Colors.Transparent);
-
     private static void IsEnabledPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-        if (d is not FrameworkElement element) {
+        if (d is not FrameworkElement && d is not FrameworkContentElement) {
             return;
         }
 
         var isEnabled = (bool)e.NewValue;
-        var backgroundInfo = d.GetType()
-            .GetProperty("Background", BindingFlags.Default | BindingFlags.Instance | BindingFlags.Public);
-        // 没有 BackgroundProperty 属性或类型不正确
-        if (backgroundInfo == null || backgroundInfo.PropertyType != typeof(Brush)) {
-            return;
-        }
-
-        // 设置初始值
-        if (!ElementBackgroundDict.ContainsKey(element)) {
-            ElementPropertyDict[element] = backgroundInfo;
-            // 还没有初始化 background 时设置为 transparent
-            ElementBackgroundDict[element] = backgroundInfo.GetValue(d) as Brush ?? new SolidColorBrush(Colors.Transparent);
-        }
         // 设置事件
-        if (isEnabled) {
-            element.AllowDrop = true;
-            element.PreviewDragEnter += PreviewDragEnterHandler;
-            element.PreviewDragLeave += PreviewDragLeaveHandler;
-            element.PreviewDrop += PreviewDropHandler;
-        } else {
-            element.AllowDrop = false;
-            element.PreviewDragEnter -= PreviewDragEnterHandler;
-            element.PreviewDragLeave -= PreviewDragLeaveHandler;
-            element.PreviewDrop -= PreviewDropHandler;
-        }
         // 文本框特殊处理
-        if (element is TextBox textBox) {
+        if (d is TextBoxBase textBox) {
             if (isEnabled) {
                 textBox.PreviewDragOver += TextBoxPreviewDragOverHandler;
             } else {
                 textBox.PreviewDragOver -= TextBoxPreviewDragOverHandler;
+            }
+        }
+        // FrameworkElement
+        if (d is FrameworkElement element) {
+            if (isEnabled) {
+                element.AllowDrop = true;
+                element.PreviewDragEnter += PreviewDragEnterHandler;
+                element.PreviewDragLeave += PreviewDragLeaveHandler;
+                element.PreviewDrop += PreviewDropHandler;
+            } else {
+                element.AllowDrop = false;
+                element.PreviewDragEnter -= PreviewDragEnterHandler;
+                element.PreviewDragLeave -= PreviewDragLeaveHandler;
+                element.PreviewDrop -= PreviewDropHandler;
+            }
+        }
+        // FrameworkContentElement
+        else if (d is FrameworkContentElement contentElement) {
+            if (isEnabled) {
+                contentElement.AllowDrop = true;
+                contentElement.PreviewDragEnter += PreviewDragEnterHandler;
+                contentElement.PreviewDragLeave += PreviewDragLeaveHandler;
+                contentElement.PreviewDrop += PreviewDropHandler;
+            } else {
+                contentElement.AllowDrop = false;
+                contentElement.PreviewDragEnter -= PreviewDragEnterHandler;
+                contentElement.PreviewDragLeave -= PreviewDragLeaveHandler;
+                contentElement.PreviewDrop -= PreviewDropHandler;
             }
         }
     }
@@ -526,27 +532,52 @@ public static class DragDropHelper {
         e.Effects = DragDropEffects.Copy;
     }
 
-    private static void PreviewDropHandler(object sender, DragEventArgs e) {
-        if (sender is DependencyObject element) {
-            ElementPropertyDict[element].SetValue(element, FallbackOverBackgroundBrush);
-        }
-    }
+    private static void PreviewDropHandler(object sender, DragEventArgs e) => ResetBackground(sender);
 
-    private static void PreviewDragLeaveHandler(object sender, DragEventArgs e) {
-        if (sender is DependencyObject element) {
-            ElementPropertyDict[element].SetValue(element, FallbackOverBackgroundBrush);
+    private static void PreviewDragLeaveHandler(object sender, DragEventArgs e) => ResetBackground(sender);
+
+    /// <summary>
+    /// 重置 Background
+    /// </summary>
+    /// <param name="sender"></param>
+    private static void ResetBackground(object sender) {
+        if (sender is DependencyObject element && GetBackgroundProperty(element) is { } backgroundProperty) {
+            element.SetValue(backgroundProperty, TransparentBackgroundBrush);
         }
     }
 
     private static void PreviewDragEnterHandler(object sender, DragEventArgs e) {
-        if (sender is FrameworkElement element) {
+        if (sender is FrameworkElement element && GetBackgroundProperty(element) is { } backgroundProperty) {
             var newBrush = GetOverBackground(element);
             newBrush ??= element.TryFindResource("DragDropOverBackgroundBrush") as SolidColorBrush;
-            ElementPropertyDict[element].SetValue(
-                element,
-                newBrush ?? FallbackOverBackgroundBrush
-            );
+            newBrush ??= TransparentBackgroundBrush;
+            element.SetValue(backgroundProperty, newBrush);
         }
+    }
+
+    /// <summary>
+    /// 释放引用
+    /// </summary>
+    /// <param name="dp"></param>
+    public static void Dispose(DependencyObject dp) {
+        dp.ClearValue(IsEnabledProperty);
+        dp.ClearValue(OverBackgroundProperty);
+        dp.ClearValue(BackgroundPropertyProperty);
+
+        #region Remove event handlers
+        if (dp is TextBoxBase textBox) {
+            textBox.PreviewDragOver -= TextBoxPreviewDragOverHandler;
+        }
+        if (dp is FrameworkElement element) {
+            element.PreviewDragEnter -= PreviewDragEnterHandler;
+            element.PreviewDragLeave -= PreviewDragLeaveHandler;
+            element.PreviewDrop -= PreviewDropHandler;
+        } else if (dp is FrameworkContentElement contentElement) {
+            contentElement.PreviewDragEnter -= PreviewDragEnterHandler;
+            contentElement.PreviewDragLeave -= PreviewDragLeaveHandler;
+            contentElement.PreviewDrop -= PreviewDropHandler;
+        }
+        #endregion
     }
 }
 
