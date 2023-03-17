@@ -66,8 +66,8 @@ public partial class FileNameIconWidget : UserControl, IDisposable {
         DependencyPropertyDescriptor
             .FromProperty(AutoIconProperty, typeof(FileNameIconWidget))
             .RemoveValueChanged(this, AutoIconPropertyChangedHandler);
-        ClearValue(DataContextProperty);
         ClearValue(ContentProperty);
+        ClearValue(DataContextProperty);
         FileIconImage.ClearValue(Image.SourceProperty);
         GC.SuppressFinalize(this);
     }

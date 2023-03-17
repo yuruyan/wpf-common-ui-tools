@@ -40,7 +40,9 @@ public partial class FileNameSizeWidget : SimpleStackPanel, IDisposable {
     public void Dispose() {
         FileNameIconWidget.Dispose();
         FileSizeWidget.Dispose();
-        ClearValue(DataContextProperty);
+        BindingOperations.ClearAllBindings(FileNameSizeWidgetRoot);
+        BindingOperations.ClearAllBindings(FileSizeWidget);
+        BindingOperations.ClearAllBindings(this);
         FileName = string.Empty;
         Children.Clear();
         Resources.Clear();

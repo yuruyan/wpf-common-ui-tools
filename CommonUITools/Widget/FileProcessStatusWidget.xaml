@@ -12,6 +12,27 @@
   Loaded="ViewLoadedHandler"
   Unloaded="ViewUnloadedHandler"
   mc:Ignorable="d">
+  <UserControl.Resources>
+    <ContextMenu x:Key="FileProcessListBoxItemContextMenu">
+      <!--  文件未完成则不显示  -->
+      <MenuItem
+        Click="OpenFileClickHandler"
+        Header="打开文件"
+        Loaded="OpenFileMenuItemLoadedHandler">
+        <MenuItem.Icon>
+          <TextBlock Style="{StaticResource CommonUIToolsIconFontStyle}" Text="&#xe671;" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Click="OpenDirectoryClickHandler" Header="打开所在目录">
+        <MenuItem.Icon>
+          <TextBlock
+            Foreground="#f5a623"
+            Style="{StaticResource CommonUIToolsColorIconFontStyle}"
+            Text="&#xe660;" />
+        </MenuItem.Icon>
+      </MenuItem>
+    </ContextMenu>
+  </UserControl.Resources>
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition />
@@ -19,43 +40,18 @@
     </Grid.RowDefinitions>
     <!--  列表  -->
     <ListBox x:Name="FileProcessListBox" ItemsSource="{Binding FileProcessStatusList, ElementName=FileProcessStatusWidgetRoot}">
-      <ListBox.ItemContainerStyle>
-        <Style BasedOn="{StaticResource DefaultListBoxItemStyle}" TargetType="ListBoxItem">
-          <Setter Property="Padding" Value="0" />
-        </Style>
-      </ListBox.ItemContainerStyle>
       <ListBox.ItemTemplate>
         <DataTemplate>
-          <Grid Width="{Binding ElementName=FileProcessListBox, Path=ActualWidth, Converter={StaticResource SubtractConverter}, ConverterParameter=10}" Background="Transparent">
+          <Grid Background="Transparent" ContextMenu="{StaticResource FileProcessListBoxItemContextMenu}">
             <Grid.ColumnDefinitions>
               <ColumnDefinition />
               <ColumnDefinition Width="auto" />
               <ColumnDefinition Width="auto" />
-              <ColumnDefinition Width="80" />
+              <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            <Grid.ContextMenu>
-              <ContextMenu>
-                <!--  文件未完成则不显示  -->
-                <MenuItem
-                  Click="OpenFileClickHandler"
-                  Header="打开文件"
-                  Loaded="OpenFileMenuItemLoadedHandler">
-                  <MenuItem.Icon>
-                    <TextBlock Style="{StaticResource CommonUIToolsIconFontStyle}" Text="&#xe671;" />
-                  </MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Click="OpenDirectoryClickHandler" Header="打开所在目录">
-                  <MenuItem.Icon>
-                    <TextBlock
-                      Foreground="#f5a623"
-                      Style="{StaticResource CommonUIToolsColorIconFontStyle}"
-                      Text="&#xe660;" />
-                  </MenuItem.Icon>
-                </MenuItem>
-              </ContextMenu>
-            </Grid.ContextMenu>
             <!--  Name  -->
             <local:FileNameIconWidget
+              x:Name="FileNameIconWidget"
               Padding="0,8"
               HorizontalAlignment="Left"
               FileName="{Binding FileName}" />

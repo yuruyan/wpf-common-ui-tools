@@ -1,6 +1,8 @@
-﻿namespace CommonUITools.Widget;
+﻿using ModernWpf;
 
-public partial class FileProcessStatusWidget : UserControl {
+namespace CommonUITools.Widget;
+
+public partial class FileProcessStatusWidget : UserControl, IDisposable {
     public static readonly DependencyProperty FileProcessStatusListProperty = DependencyProperty.Register("FileProcessStatusList", typeof(ObservableCollection<FileProcessStatus>), typeof(FileProcessStatusWidget), new PropertyMetadata());
     public static readonly DependencyProperty FinishedCountProperty = DependencyProperty.Register("FinishedCount", typeof(int), typeof(FileProcessStatusWidget), new PropertyMetadata(0));
     public static readonly DependencyProperty HasTaskRunningProperty = DependencyProperty.Register("HasTaskRunning", typeof(bool), typeof(FileProcessStatusWidget), new PropertyMetadata(false));
@@ -35,14 +37,16 @@ public partial class FileProcessStatusWidget : UserControl {
 
     public FileProcessStatusWidget() {
         FileProcessStatusList = new();
-        UpdateStatusTimer.Tick += (_, _) => {
-            HasTaskRunning = FileProcessStatusList.Any(f => f.Status == ProcessResult.Processing);
-            FinishedCount = FileProcessStatusList.Count(f => f.Status switch {
-                ProcessResult.Interrupted or ProcessResult.Successful or ProcessResult.Failed => true,
-                _ => false
-            });
-        };
+        UpdateStatusTimer.Tick += UpdateStatusTimerTickHandler;
         InitializeComponent();
+    }
+
+    private void UpdateStatusTimerTickHandler(object? sender, EventArgs e) {
+        HasTaskRunning = FileProcessStatusList.Any(f => f.Status == ProcessResult.Processing);
+        FinishedCount = FileProcessStatusList.Count(f => f.Status switch {
+            ProcessResult.Interrupted or ProcessResult.Successful or ProcessResult.Failed => true,
+            _ => false
+        });
     }
 
     /// <summary>
@@ -102,5 +106,14 @@ public partial class FileProcessStatusWidget : UserControl {
     private void ViewUnloadedHandler(object sender, RoutedEventArgs e) {
         e.Handled = true;
         UpdateStatusTimer.Stop();
+    }
+
+    public void Dispose() {
+        ClearValue(ContentProperty);
+        BindingOperations.ClearAllBindings(this);
+        FileProcessStatusList?.Clear();
+        UpdateStatusTimer.Tick -= UpdateStatusTimerTickHandler;
+        UpdateStatusTimer.Stop();
+        GC.SuppressFinalize(this);
     }
 }
