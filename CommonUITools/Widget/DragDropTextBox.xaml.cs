@@ -118,11 +118,8 @@ public partial class DragDropTextBox : UserControl, IDisposable {
     }
 
     public void Dispose() {
+        #region Events
         PreviewDrop -= PreviewDropHandler;
-        DataContext = null;
-        DragDropEvent = null;
-        Content = null;
-        Clear();
         DependencyPropertyDescriptor
             .FromProperty(TextBoxProperty, this.GetType())
             .RemoveValueChanged(this, TextBoxPropertyChangedHandler);
@@ -130,6 +127,11 @@ public partial class DragDropTextBox : UserControl, IDisposable {
             .FromProperty(HasFileProperty, this.GetType())
             .RemoveValueChanged(this, HasFilePropertyChangedHandler);
         TextBox.PreviewDragOver -= FileDragOverHandler;
+        #endregion
+        DataContext = null;
+        DragDropEvent = null;
+        Content = null;
+        Clear();
         DragDropHelper.Dispose(TextBox);
         DragDropHelper.Dispose(this);
         GC.SuppressFinalize(this);
