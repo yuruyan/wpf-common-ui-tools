@@ -458,8 +458,10 @@ public static class UIUtils {
             LoadedOnceEventHandlersDict[dp] = handlers = new List<RoutedEventHandler>();
         }
         if (dp is FrameworkElement element) {
+            element.Loaded -= LoadedOnceEventHandlerInternal;
             element.Loaded += LoadedOnceEventHandlerInternal;
         } else if (dp is FrameworkContentElement contentElement) {
+            contentElement.Loaded -= LoadedOnceEventHandlerInternal;
             contentElement.Loaded += LoadedOnceEventHandlerInternal;
         }
         handlers.Add(handler);
