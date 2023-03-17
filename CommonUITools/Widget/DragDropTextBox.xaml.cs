@@ -15,7 +15,14 @@ public partial class DragDropTextBox : UserControl, IDisposable {
     /// </summary>
     public TextBox TextBox {
         get { return (TextBox)GetValue(TextBoxProperty); }
-        set { SetValue(TextBoxProperty, value); }
+        set {
+            // 释放引用
+            if (GetValue(TextBoxProperty) is TextBox oldValue) {
+                DragDropHelper.Dispose(oldValue);
+                oldValue.PreviewDragOver -= FileDragOverHandler;
+            }
+            SetValue(TextBoxProperty, value);
+        }
     }
     /// <summary>
     /// 文件界面
@@ -66,6 +73,7 @@ public partial class DragDropTextBox : UserControl, IDisposable {
         TextBox.PreviewDragOver -= FileDragOverHandler;
         TextBox.PreviewDragOver += FileDragOverHandler;
         DragDropHelper.SetIsEnabled(TextBox, true);
+        DragDropHelper.SetBackgroundProperty(TextBox, BackgroundProperty);
     }
 
     /// <summary>
@@ -110,6 +118,7 @@ public partial class DragDropTextBox : UserControl, IDisposable {
     }
 
     public void Dispose() {
+        PreviewDrop -= PreviewDropHandler;
         DataContext = null;
         DragDropEvent = null;
         Content = null;
@@ -122,6 +131,7 @@ public partial class DragDropTextBox : UserControl, IDisposable {
             .RemoveValueChanged(this, HasFilePropertyChangedHandler);
         TextBox.PreviewDragOver -= FileDragOverHandler;
         DragDropHelper.Dispose(TextBox);
+        DragDropHelper.Dispose(this);
         GC.SuppressFinalize(this);
     }
 
