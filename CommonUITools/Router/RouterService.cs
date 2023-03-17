@@ -6,7 +6,7 @@ namespace CommonUITools.Route;
 /// <summary>
 /// 如果需要接受参数，需要实现 <see cref="INavigationService"/> 接口
 /// </summary>
-public class RouterService {
+public class RouterService : IDisposable {
     private readonly IReadOnlyList<Type> Routers;
     /// <summary>
     /// 页面实例
@@ -33,6 +33,23 @@ public class RouterService {
     /// 当前页面实例
     /// </summary>
     public object? CurrentPage => Frame.Content;
+    /// <summary>
+    /// 路由类型信息
+    /// </summary>
+    public IReadOnlyList<Type> RouteTypes => Routers;
+
+    public RouterService(ModernWpf.Controls.Frame frame, IEnumerable<Type> routers, NavigationTransitionEffect defaultNavigationTransitionEffect = NavigationTransitionEffect.Entrance) {
+        Frame = frame;
+        Routers = routers.ToArray();
+        DefaultTransitionEffect = defaultNavigationTransitionEffect;
+        TransitionFieldInfo = frame
+            .GetType()
+            .GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
+            .FirstOrDefault(f => f.Name == "_transitionInfoOverride");
+        SetTransitionEffect(defaultNavigationTransitionEffect);
+
+        frame.Navigated += FrameNavigatedHandler;
+    }
 
     /// <summary>
     /// 获取实例对象，对象未创建则会动态创建
@@ -73,25 +90,6 @@ public class RouterService {
     public void RemovePage(Type pageType) {
         RouterInstanceDict.Remove(pageType);
         PageArgsDict.Remove(pageType);
-    }
-
-    /// <summary>
-    /// 获取子路由类型信息
-    /// </summary>
-    /// <returns></returns>
-    public IReadOnlyList<Type> GetRouteTypes() => Routers;
-
-    public RouterService(ModernWpf.Controls.Frame frame, IEnumerable<Type> routers, NavigationTransitionEffect defaultNavigationTransitionEffect = NavigationTransitionEffect.Entrance) {
-        Frame = frame;
-        Routers = routers.ToArray();
-        DefaultTransitionEffect = defaultNavigationTransitionEffect;
-        TransitionFieldInfo = frame
-            .GetType()
-            .GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
-            .FirstOrDefault(f => f.Name == "_transitionInfoOverride");
-        SetTransitionEffect(defaultNavigationTransitionEffect);
-
-        frame.Navigated += FrameNavigatedHandler;
     }
 
     /// <summary>
@@ -154,5 +152,12 @@ public class RouterService {
         if (Frame.CanGoBack) {
             Frame.GoBack();
         }
+    }
+
+    public void Dispose() {
+        Frame.Navigated -= FrameNavigatedHandler;
+        RouterInstanceDict.Clear();
+        PageArgsDict.Clear();
+        GC.SuppressFinalize(this);
     }
 }
