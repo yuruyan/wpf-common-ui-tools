@@ -898,6 +898,49 @@ public static class LongPressHelper {
 }
 
 /// <summary>
+/// 显示 / 隐藏动画
+/// </summary>
+public static class VisibilityAnimationHelper {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    public static readonly DependencyProperty VisibleStoryboardProperty = DependencyProperty.RegisterAttached("VisibleStoryboard", typeof(Storyboard), typeof(VisibilityAnimationHelper), new PropertyMetadata(VisibleStoryboardPropertyChangedHandler));
+
+    public static Storyboard GetVisibleStoryboard(DependencyObject obj) {
+        return (Storyboard)obj.GetValue(VisibleStoryboardProperty);
+    }
+    /// <summary>
+    /// 显示动画
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetVisibleStoryboard(DependencyObject obj, Storyboard value) {
+        obj.SetValue(VisibleStoryboardProperty, value);
+    }
+
+    private static void VisibleStoryboardPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not FrameworkElement element) {
+            Logger.Error($"{d} is not of type FrameworkElement");
+            return;
+        }
+        element.IsVisibleChanged -= ElementIsVisibleChanged;
+        element.IsVisibleChanged += ElementIsVisibleChanged;
+    }
+
+    private static void ElementIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
+        if (sender is not FrameworkElement element) {
+            return;
+        }
+        if (e.NewValue is true) {
+            GetVisibleStoryboard(element)?.Begin();
+        }
+    }
+
+    public static void Dispose(FrameworkElement element) {
+        element.IsVisibleChanged -= ElementIsVisibleChanged;
+        element.ClearValue(VisibleStoryboardProperty);
+    }
+}
+
+/// <summary>
 /// 添加阴影
 /// </summary>
 public static class DropShadowEffectHelper {
