@@ -1,4 +1,5 @@
-﻿using CommonUITools.Widget;
+﻿using CommonTools.Utils;
+using CommonUITools.Widget;
 using ModernWpf;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
@@ -183,35 +184,41 @@ public static class ScaleAnimationHelper {
 /// <summary>
 /// 点击自身开始缩放动画
 /// </summary>
-public static class MouseEventScaleAnimationHelper {
-
+public static class CenterScaleAnimationHelper {
     private enum Direction {
         X, Y
     }
 
     private static readonly int AnimationDuration = 200;
-    private static readonly IDictionary<FrameworkElement, IEnumerable<TriggerBase>> TriggerCollectionDict = new Dictionary<FrameworkElement, IEnumerable<TriggerBase>>();
-    public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(MouseEventScaleAnimationHelper), new PropertyMetadata(false, IsEnabledChangedHandler));
+    private static readonly IDictionary<FrameworkElement, IList<EventTrigger>> TriggerCollectionDict = new Dictionary<FrameworkElement, IList<EventTrigger>>();
+    public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(CenterScaleAnimationHelper), new PropertyMetadata(false, IsEnabledChangedHandler));
 
     public static bool GetIsEnabled(DependencyObject obj) {
         return (bool)obj.GetValue(IsEnabledProperty);
     }
-
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
     public static void SetIsEnabled(DependencyObject obj, bool value) {
         obj.SetValue(IsEnabledProperty, value);
     }
 
     private static void IsEnabledChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-        if (d is FrameworkElement element) {
-            // 添加 trigger
-            if ((bool)e.NewValue) {
-                foreach (var item in GetTriggerCollection(element)) {
-                    element.Triggers.Add(item);
-                }
-            } else {
-                foreach (var item in GetTriggerCollection(element)) {
-                    element.Triggers.Remove(item);
-                }
+        if (d is not FrameworkElement element) {
+            return;
+        }
+        // 添加 trigger
+        if ((bool)e.NewValue) {
+            foreach (var item in GetTriggerCollection(element)) {
+                element.Triggers.Add(item);
+            }
+        }
+        // Remove trigger
+        else {
+            foreach (var item in GetTriggerCollection(element)) {
+                element.Triggers.Remove(item);
             }
         }
     }
@@ -221,13 +228,11 @@ public static class MouseEventScaleAnimationHelper {
     /// </summary>
     /// <param name="element"></param>
     /// <returns></returns>
-    private static IEnumerable<TriggerBase> GetTriggerCollection(FrameworkElement element) {
-        if (TriggerCollectionDict.ContainsKey(element)) {
-            return TriggerCollectionDict[element];
+    private static IList<EventTrigger> GetTriggerCollection(FrameworkElement element) {
+        // Initialized
+        if (!TriggerCollectionDict.TryGetValue(element, out var triggers)) {
+            TriggerCollectionDict[element] = triggers = CreateTriggerCollection(element);
         }
-        var triggers = CreateTriggerCollection(element);
-        // 缓存
-        TriggerCollectionDict[element] = triggers;
         return triggers;
     }
 
@@ -236,9 +241,9 @@ public static class MouseEventScaleAnimationHelper {
     /// </summary>
     /// <param name="element"></param>
     /// <returns></returns>
-    private static IEnumerable<TriggerBase> CreateTriggerCollection(FrameworkElement element) {
+    private static IList<EventTrigger> CreateTriggerCollection(FrameworkElement element) {
         CheckAndSetRenderTransform(element);
-        return new List<TriggerBase>() {
+        return new List<EventTrigger>() {
             CreateTrigger(element, FrameworkElement.MouseDownEvent, 0.96),
             CreateTrigger(element, FrameworkElement.MouseUpEvent, 1),
             CreateTrigger(element, FrameworkElement.MouseLeaveEvent, 1),
@@ -252,7 +257,7 @@ public static class MouseEventScaleAnimationHelper {
     /// <param name="routedEvent"></param>
     /// <param name="to"></param>
     /// <returns></returns>
-    private static TriggerBase CreateTrigger(FrameworkElement element, RoutedEvent routedEvent, double to) {
+    private static EventTrigger CreateTrigger(FrameworkElement element, RoutedEvent routedEvent, double to) {
         EventTrigger eventTrigger = new(routedEvent);
         BeginStoryboard beginStoryboard = new();
         int beginTime = to == 1 ? AnimationDuration : 0;
@@ -270,7 +275,9 @@ public static class MouseEventScaleAnimationHelper {
     /// 创建 DoubleAnimation
     /// </summary>
     /// <param name="element"></param>
+    /// <param name="to"></param>
     /// <param name="direction"></param>
+    /// <param name="beginTime"></param>
     /// <returns></returns>
     private static DoubleAnimation CreateDoubleAnimation(FrameworkElement element, double to, Direction direction, int beginTime = 0) {
         DoubleAnimation animation = new(to, new Duration(TimeSpan.FromMilliseconds(AnimationDuration))) {
@@ -288,19 +295,6 @@ public static class MouseEventScaleAnimationHelper {
     /// <param name="element"></param>
     private static void CheckAndSetRenderTransform(FrameworkElement element) {
         element.RenderTransform = CreateScaleTransform(element);
-        //Transform renderTransform = element.RenderTransform;
-        //if (renderTransform is TransformGroup group) {
-        //    // 不包含 ScaleTransform
-        //    if (!group.Children.Select(t => t.GetType()).Contains(typeof(ScaleTransform))) {
-        //        group.Children.Add(CreateScaleTransform(element));
-        //    }
-        //} else if (renderTransform is not ScaleTransform) {
-        //    // 将其他 Transform 添加到 TransformGroup
-        //    var newGroup = new TransformGroup();
-        //    newGroup.Children.Add(element.RenderTransform);
-        //    newGroup.Children.Add(CreateScaleTransform(element));
-        //    element.RenderTransform = newGroup;
-        //}
     }
 
     /// <summary>
@@ -311,6 +305,19 @@ public static class MouseEventScaleAnimationHelper {
     private static ScaleTransform CreateScaleTransform(FrameworkElement element) {
         element.RenderTransformOrigin = new Point(0.5, 0.5);
         return new();
+    }
+
+    public static void Dispose(FrameworkElement element) {
+        element.ClearValue(IsEnabledProperty);
+        element.ClearValue(UIElement.RenderTransformProperty);
+        element.ClearValue(UIElement.RenderTransformOriginProperty);
+        // Remove trigger
+        if (TriggerCollectionDict.TryGetValue(element, out var triggers)) {
+            element.Triggers.RemoveList(triggers);
+            triggers.ForEach(t => t.Actions.Clear());
+            triggers.Clear();
+        }
+        TriggerCollectionDict.Remove(element);
     }
 }
 
