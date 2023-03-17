@@ -11,6 +11,7 @@
   Name="MultiDragDropTextBoxRoot"
   d:DesignHeight="450"
   d:DesignWidth="800"
+  util:DragDropHelper.BackgroundProperty="{x:Static UserControl.BackgroundProperty}"
   util:DragDropHelper.IsEnabled="True"
   Background="Transparent"
   MouseEnter="ViewMouseEnterHandler"
@@ -33,8 +34,8 @@
   <Grid>
     <!--  文本框  -->
     <TextBox
+      util:DragDropHelper.BackgroundProperty="{x:Static TextBox.BackgroundProperty}"
       util:DragDropHelper.IsEnabled="True"
-      util:DragDropHelper.OverBackground="{DynamicResource ApplicationBackgroundBrushDark1}"
       Style="{Binding TextBoxStyle, ElementName=MultiDragDropTextBoxRoot}"
       Text="{Binding InputText, ElementName=MultiDragDropTextBoxRoot}"
       Visibility="{Binding HasFile, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfTrueConverter}}" />
