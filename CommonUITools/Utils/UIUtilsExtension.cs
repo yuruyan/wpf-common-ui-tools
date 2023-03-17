@@ -1,4 +1,5 @@
 ﻿using ModernWpf.Controls;
+using System.IO;
 using System.Windows.Media.Imaging;
 
 namespace CommonUITools.Utils;
@@ -57,6 +58,21 @@ public static class UIUtilsExtension {
 
     /// <inheritdoc cref="UIUtils.CopyImageSource(string)"/>
     public static BitmapImage GetImageSource(this string filepath) => UIUtils.CopyImageSource(filepath);
+
+    /// <summary>
+    /// 获取 BitmapImage
+    /// </summary>
+    /// <param name="uri"></param>
+    /// <returns></returns>
+    public static BitmapImage GetApplicationResourceBitmapImage(this Uri uri) {
+        var stream = Application.GetResourceStream(uri).Stream;
+        stream.Position = 0;
+        var bi = new BitmapImage();
+        bi.BeginInit();
+        bi.StreamSource = stream;
+        bi.EndInit();
+        return bi;
+    }
 
     /// <inheritdoc cref="UIUtils.BitmapSourceToBitmap(BitmapSource)"/>
     public static System.Drawing.Bitmap ToBitmap(this BitmapSource bitmapSource) => UIUtils.BitmapSourceToBitmap(bitmapSource);
