@@ -40,10 +40,12 @@
   </ui:SimpleStackPanel.ContextMenu>
 
   <local:FileNameIconWidget
+    x:Name="FileNameIconWidget"
     HorizontalAlignment="Center"
     FileName="{Binding FileName, ElementName=FileNameSizeWidgetRoot}"
     IconSize="30" />
   <local:FileSizeWidget
+    x:Name="FileSizeWidget"
     HorizontalAlignment="Center"
     FileName="{Binding FileName, ElementName=FileNameSizeWidgetRoot}"
     Prefix="文件大小："
