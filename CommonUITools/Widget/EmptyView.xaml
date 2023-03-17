@@ -5,10 +5,11 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:local="clr-namespace:CommonUITools.Widget"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  Width="256"
+  Width="800"
   HorizontalContentAlignment="Stretch"
+  VerticalContentAlignment="Stretch"
   d:DesignHeight="450"
   d:DesignWidth="800"
   mc:Ignorable="d">
-  <Image Source="/CommonUITools;component/Resource/Images/Empty.png" Stretch="Uniform" />
+  <Image x:Name="DescriptionImage" Stretch="Uniform" />
 </UserControl>

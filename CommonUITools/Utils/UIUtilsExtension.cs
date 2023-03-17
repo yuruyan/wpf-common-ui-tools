@@ -60,7 +60,7 @@ public static class UIUtilsExtension {
     public static BitmapImage GetImageSource(this string filepath) => UIUtils.CopyImageSource(filepath);
 
     /// <summary>
-    /// 获取 BitmapImage
+    /// 获取资源文件 BitmapImage
     /// </summary>
     /// <param name="uri"></param>
     /// <returns></returns>
