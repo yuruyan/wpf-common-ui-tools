@@ -466,15 +466,23 @@ public static class UIUtils {
     }
 
     private static void LoadedOnceEventHandlerInternal(object sender, RoutedEventArgs e) {
-        if (sender is not DependencyObject element) {
+        if (sender is not DependencyObject dp) {
             return;
         }
+        var handlers = LoadedOnceEventHandlersDict[dp];
+        // 清除
+        LoadedOnceEventHandlersDict.Remove(dp);
+        // Remove event handler
+        if (sender is FrameworkElement element) {
+            element.Loaded -= LoadedOnceEventHandlerInternal;
+        } else if (sender is FrameworkContentElement contentElement) {
+            contentElement.Loaded -= LoadedOnceEventHandlerInternal;
+        }
         // 逐一调用
-        foreach (var handler in LoadedOnceEventHandlersDict[element]) {
+        foreach (var handler in handlers) {
             handler(sender, e);
         }
-        // 清除
-        LoadedOnceEventHandlersDict[element].Clear();
+        handlers.Clear();
     }
 
     /// <summary>
