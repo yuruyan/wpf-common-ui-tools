@@ -1,7 +1,6 @@
 ﻿namespace CommonUITools.Widget;
 
-public partial class FileSizeWidget : UserControl {
-
+public partial class FileSizeWidget : UserControl, IDisposable {
     public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register("FileName", typeof(string), typeof(FileSizeWidget), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty FileSizeProperty = DependencyProperty.Register("FileSize", typeof(long), typeof(FileSizeWidget), new PropertyMetadata(0L));
     public static readonly DependencyProperty PrefixProperty = DependencyProperty.Register("Prefix", typeof(string), typeof(FileSizeWidget), new PropertyMetadata(string.Empty));
@@ -37,7 +36,8 @@ public partial class FileSizeWidget : UserControl {
     }
 
     public FileSizeWidget() {
-        DependencyPropertyDescriptor.FromProperty(FileNameProperty, this.GetType())
+        DependencyPropertyDescriptor
+            .FromProperty(FileNameProperty, this.GetType())
             .AddValueChanged(this, FileNamePropertyChangedHandler);
         InitializeComponent();
     }
@@ -53,5 +53,14 @@ public partial class FileSizeWidget : UserControl {
             return;
         }
         FileSize = new FileInfo(FileName).Length;
+    }
+
+    public void Dispose() {
+        DataContext = null;
+        FileName = Prefix = Suffix = string.Empty;
+        DependencyPropertyDescriptor
+            .FromProperty(FileNameProperty, this.GetType())
+            .RemoveValueChanged(this, FileNamePropertyChangedHandler);
+        GC.SuppressFinalize(this);
     }
 }
