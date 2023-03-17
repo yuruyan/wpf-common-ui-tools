@@ -56,11 +56,12 @@ public partial class FileSizeWidget : UserControl, IDisposable {
     }
 
     public void Dispose() {
-        DataContext = null;
-        FileName = Prefix = Suffix = string.Empty;
         DependencyPropertyDescriptor
             .FromProperty(FileNameProperty, this.GetType())
             .RemoveValueChanged(this, FileNamePropertyChangedHandler);
+        ClearValue(ContentProperty);
+        ClearValue(DataContextProperty);
+        FileName = Prefix = Suffix = string.Empty;
         GC.SuppressFinalize(this);
     }
 }
