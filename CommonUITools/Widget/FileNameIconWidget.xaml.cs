@@ -63,11 +63,12 @@ public partial class FileNameIconWidget : UserControl, IDisposable {
     }
 
     public void Dispose() {
-        DataContext = null;
-        FileIconImage.ClearValue(Image.SourceProperty);
         DependencyPropertyDescriptor
             .FromProperty(AutoIconProperty, typeof(FileNameIconWidget))
             .RemoveValueChanged(this, AutoIconPropertyChangedHandler);
+        ClearValue(DataContextProperty);
+        ClearValue(ContentProperty);
+        FileIconImage.ClearValue(Image.SourceProperty);
         GC.SuppressFinalize(this);
     }
 }

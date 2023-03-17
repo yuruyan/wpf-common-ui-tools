@@ -13,8 +13,9 @@ public partial class EmptyView : UserControl, IDisposable {
     }
 
     public void Dispose() {
-        DataContext = null;
-        DescriptionImage.Source = null;
+        ClearValue(ContentProperty);
+        ClearValue(DataContextProperty);
+        DescriptionImage.ClearValue(Image.SourceProperty);
         BitmapImage.StreamSource?.Dispose();
         if (BitmapImage.CanFreeze) {
             BitmapImage.Freeze();
