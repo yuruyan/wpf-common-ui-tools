@@ -31,7 +31,7 @@ public partial class MultiDragDropTextBox : UserControl, IDisposable {
     /// <summary>
     /// FileListInfoBorderFadeOut 动画
     /// </summary>
-    private Storyboard FileListInfoBorderFadeOutStoryboard;
+    private Storyboard FileListInfoBorderFadeOutStoryboard = default!;
 
     /// <summary>
     /// 输入文本，默认双向绑定
@@ -138,7 +138,7 @@ public partial class MultiDragDropTextBox : UserControl, IDisposable {
     /// </summary>
     public void Clear() {
         HasFile = false;
-        InputText = string.Empty;
+        FirstFileName = InputText = string.Empty;
         FileData = null;
         FileNameSet.Clear();
         FileNameList.Clear();
@@ -222,6 +222,9 @@ public partial class MultiDragDropTextBox : UserControl, IDisposable {
         DragDropHelper.Dispose(this);
         DragDropHelper.Dispose(InputTextBox);
         #endregion
+
+        Resources.Clear();
+        FileListInfoBorderFadeOutStoryboard = null!;
         ClearValue(DataContextProperty);
         ClearValue(ContentProperty);
         Clear();

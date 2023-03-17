@@ -132,6 +132,9 @@ public partial class DragDropTextBox : UserControl, IDisposable {
         DragDropEvent = null;
         #endregion
 
+        FileView = null!;
+        TextBox = null!;
+        FileData = null;
         ClearValue(DataContextProperty);
         ClearValue(ContentProperty);
         Clear();
