@@ -442,33 +442,38 @@ public static class FadeInAnimationHelper {
 /// GridViewColumnHelper
 /// </summary>
 public static class GridViewColumnHelper {
+    public static readonly DependencyProperty HeaderMinWidthProperty = DependencyProperty.RegisterAttached("HeaderMinWidth", typeof(double), typeof(GridViewColumnHelper), new PropertyMetadata(0.0, HeaderMinWidthPropertyChangedHandler));
 
     public static double GetHeaderMinWidth(DependencyObject obj) {
         return (double)obj.GetValue(HeaderMinWidthProperty);
     }
+    /// <summary>
+    /// HeaderColumn 最小宽度
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
     public static void SetHeaderMinWidth(DependencyObject obj, double value) {
         obj.SetValue(HeaderMinWidthProperty, value);
     }
-    /// <summary>
-    /// Header 最小宽度
-    /// </summary>
-    public static readonly DependencyProperty HeaderMinWidthProperty = DependencyProperty.RegisterAttached("HeaderMinWidth", typeof(double), typeof(GridViewColumnHelper), new PropertyMetadata(0.0, HeaderMinWidthPropertyChangedHandler));
 
     private static void HeaderMinWidthPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is GridViewColumnHeader header) {
             // 设置 SizeChanged 事件
-            TaskUtils.EnsureCalledOnce(header, () => {
-                header.SizeChanged += (sender, args) => {
-                    if (args.NewSize.Width <= GetHeaderMinWidth(header)) {
-                        // 可能为 null
-                        if (header.Column is null) {
-                            return;
-                        }
-                        header.Column.Width = GetHeaderMinWidth(header);
-                        args.Handled = true;
-                    }
-                };
-            });
+            header.SizeChanged -= GridViewColumnHeaderSizeChangedHandler;
+            header.SizeChanged += GridViewColumnHeaderSizeChangedHandler;
+        }
+    }
+
+    private static void GridViewColumnHeaderSizeChangedHandler(object sender, SizeChangedEventArgs args) {
+        if (sender is GridViewColumnHeader header) {
+            if (args.NewSize.Width <= GetHeaderMinWidth(header)) {
+                // 可能为 null
+                if (header.Column is null) {
+                    return;
+                }
+                header.Column.Width = GetHeaderMinWidth(header);
+                args.Handled = true;
+            }
         }
     }
 }
