@@ -24,7 +24,7 @@ public class BaseDialog : ContentDialog {
         // 设置 ScaleAnimation
         Opened += (dialog, _) => TaskUtils.EnsureCalledOnce((dialog, Application.Current), () => {
             Utils.ScaleAnimationHelper.SetIsEnabled((DependencyObject)dialog.Content, true);
-            Utils.ScaleAnimationHelper.SetScaleOption((DependencyObject)dialog.Content, Utils.ScaleAnimationHelper.ScaleOption.Center);
+            Utils.ScaleAnimationHelper.SetScaleOption((DependencyObject)dialog.Content, ScaleAnimationOption.Center);
         });
     }
 }

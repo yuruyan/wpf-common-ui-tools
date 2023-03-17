@@ -10,57 +10,74 @@ namespace CommonUITools.Utils;
 /// 显示时开始动画
 /// </summary>
 public static class ScaleAnimationHelper {
-
-    public enum ScaleOption {
-        TopLeft,
-        Center,
+    private record State {
+        public ScaleAnimationOption ScaleOption { get; set; } = ScaleAnimationOption.TopLeft;
+        public Storyboard Storyboard { get; set; } = default!;
     }
 
-    private record State {
-        public ScaleOption ScaleOption { get; set; } = ScaleOption.TopLeft;
-        public Storyboard? Storyboard { get; set; }
+    /// <summary>
+    /// ScaleTransformFactory
+    /// </summary>
+    private static class ScaleTransformFactory {
+        public static ScaleTransform CreateScaleTransform(FrameworkElement element, ScaleAnimationOption scaleOption) {
+            return scaleOption switch {
+                ScaleAnimationOption.Center => CreateCenterScaleTransform(element),
+                ScaleAnimationOption.TopLeft => CreateTopLeftScaleTransform(element),
+                _ => throw new NotImplementedException(),
+            };
+        }
+
+        private static ScaleTransform CreateCenterScaleTransform(FrameworkElement element) {
+            element.RenderTransformOrigin = new Point(0.5, 0.5);
+            return new();
+        }
+
+        private static ScaleTransform CreateTopLeftScaleTransform(FrameworkElement element) {
+            return new ScaleTransform();
+        }
     }
 
     /// <summary>
     /// Storyboard 缓存
     /// </summary>
     private static readonly IDictionary<FrameworkElement, State> StoryboardDict = new Dictionary<FrameworkElement, State>();
-
     public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(ScaleAnimationHelper), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
-    public static readonly DependencyProperty ScaleOptionProperty = DependencyProperty.RegisterAttached("ScaleOption", typeof(ScaleOption), typeof(ScaleAnimationHelper), new PropertyMetadata(ScaleOption.TopLeft, ScaleOptionPropertyChangedHandler));
+    public static readonly DependencyProperty ScaleOptionProperty = DependencyProperty.RegisterAttached("ScaleOption", typeof(ScaleAnimationOption), typeof(ScaleAnimationHelper), new PropertyMetadata(ScaleAnimationOption.TopLeft, ScaleOptionPropertyChangedHandler));
 
+    public static bool GetIsEnabled(DependencyObject obj) {
+        return (bool)obj.GetValue(IsEnabledProperty);
+    }
     /// <summary>
     /// 是否启用
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static bool GetIsEnabled(DependencyObject obj) {
-        return (bool)obj.GetValue(IsEnabledProperty);
-    }
     public static void SetIsEnabled(DependencyObject obj, bool value) {
         obj.SetValue(IsEnabledProperty, value);
+    }
+    public static ScaleAnimationOption GetScaleOption(DependencyObject obj) {
+        return (ScaleAnimationOption)obj.GetValue(ScaleOptionProperty);
     }
     /// <summary>
     /// 缩放选项
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static ScaleOption GetScaleOption(DependencyObject obj) {
-        return (ScaleOption)obj.GetValue(ScaleOptionProperty);
-    }
-    public static void SetScaleOption(DependencyObject obj, ScaleOption value) {
+    public static void SetScaleOption(DependencyObject obj, ScaleAnimationOption value) {
         obj.SetValue(ScaleOptionProperty, value);
     }
 
     /// <summary>
-    /// ScaleOptionPropertyChangedHandler
+    /// ScaleAnimationOptionPropertyChangedHandler
     /// </summary>
     /// <param name="d"></param>
     /// <param name="e"></param>
     /// <exception cref="NotImplementedException"></exception>
     private static void ScaleOptionPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is FrameworkElement element) {
-            var option = (ScaleOption)e.NewValue;
+            var option = (ScaleAnimationOption)e.NewValue;
             CheckAndSetStoryboardDict(element);
             StoryboardDict[element].ScaleOption = option;
             element.RenderTransform = CreateScaleTransform(element, option);
@@ -118,7 +135,7 @@ public static class ScaleAnimationHelper {
     private static Storyboard GetStoryboard(FrameworkElement element) {
         CheckAndSetStoryboardDict(element);
         if (StoryboardDict[element].Storyboard is not null) {
-            return StoryboardDict[element].Storyboard!;
+            return StoryboardDict[element].Storyboard;
         }
         // 必须要有 RenderTransform
         element.RenderTransform = CreateScaleTransform(element, StoryboardDict[element].ScaleOption);
@@ -144,31 +161,22 @@ public static class ScaleAnimationHelper {
     /// </summary>
     /// <param name="element"></param>
     /// <returns></returns>
-    private static ScaleTransform CreateScaleTransform(FrameworkElement element, ScaleOption scaleOption) {
+    private static ScaleTransform CreateScaleTransform(FrameworkElement element, ScaleAnimationOption scaleOption) {
         return ScaleTransformFactory.CreateScaleTransform(element, scaleOption);
     }
 
-    /// <summary>
-    /// ScaleTransformFactory
-    /// </summary>
-    private static class ScaleTransformFactory {
-        public static ScaleTransform CreateScaleTransform(FrameworkElement element, ScaleOption scaleOption) {
-            return scaleOption switch {
-                ScaleOption.Center => CreateCenterScaleTransform(element),
-                ScaleOption.TopLeft => CreateTopLeftScaleTransform(element),
-                _ => throw new NotImplementedException(),
-            };
+    public static void Dispose(FrameworkElement element) {
+        if (StoryboardDict.TryGetValue(element, out var storyboard)) {
+            if (storyboard.Storyboard?.CanFreeze == true) {
+                storyboard.Storyboard.Freeze();
+            }
         }
-
-        private static ScaleTransform CreateCenterScaleTransform(FrameworkElement element) {
-            element.RenderTransformOrigin = new Point(0.5, 0.5);
-            return new();
-        }
-
-        private static ScaleTransform CreateTopLeftScaleTransform(FrameworkElement element) {
-            return new ScaleTransform();
-        }
-
+        StoryboardDict.Remove(element);
+        element.IsVisibleChanged -= IsVisibleChangedHandler;
+        element.ClearValue(IsEnabledProperty);
+        element.ClearValue(ScaleOptionProperty);
+        element.ClearValue(UIElement.RenderTransformProperty);
+        element.ClearValue(UIElement.RenderTransformOriginProperty);
     }
 }
 
