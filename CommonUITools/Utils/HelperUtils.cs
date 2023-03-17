@@ -632,55 +632,66 @@ public static class LoadingBoxHelper {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.RegisterAttached("IsLoading", typeof(bool), typeof(LoadingBoxHelper), new PropertyMetadata(false, IsLoadingPropertyChangedHandler));
     public static readonly DependencyProperty SizeProperty = DependencyProperty.RegisterAttached("Size", typeof(double), typeof(LoadingBoxHelper), new PropertyMetadata(LoadingBox.DefaultSize, SizePropertyChangedHandler));
+    private static readonly IDictionary<FrameworkElement, LoadingBox> LoadingBoxDict = new Dictionary<FrameworkElement, LoadingBox>();
 
+    public static bool GetIsLoading(DependencyObject obj) {
+        return (bool)obj.GetValue(IsLoadingProperty);
+    }
     /// <summary>
     /// 是否显示加载
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static bool GetIsLoading(DependencyObject obj) {
-        return (bool)obj.GetValue(IsLoadingProperty);
-    }
     public static void SetIsLoading(DependencyObject obj, bool value) {
         obj.SetValue(IsLoadingProperty, value);
+    }
+    public static double GetSize(DependencyObject obj) {
+        return (double)obj.GetValue(SizeProperty);
     }
     /// <summary>
     /// loading size
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static double GetSize(DependencyObject obj) {
-        return (double)obj.GetValue(SizeProperty);
-    }
     public static void SetSize(DependencyObject obj, double value) {
         obj.SetValue(SizeProperty, value);
     }
-
-    private static readonly IDictionary<FrameworkElement, LoadingBox> LoadingBoxDict = new Dictionary<FrameworkElement, LoadingBox>();
-    /// <summary>
-    /// 未完成的任务
-    /// </summary>
-    private static readonly Queue<Action> UndoneTasks = new();
 
     private static void IsLoadingPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not FrameworkElement element) {
             return;
         }
-        bool isLoading = (bool)e.NewValue;
-        // 初始化过
-        if (LoadingBoxDict.ContainsKey(element)) {
-            Proceed(element, isLoading);
-            return;
+        // Has Initialized
+        if (LoadingBoxDict.TryGetValue(element, out var loading)) {
+            if (e.NewValue is true) {
+                LoadingBoxDict[element].Show();
+            } else {
+                LoadingBoxDict[element].Close();
+            }
         }
-
-        // 进行初始化工作
+        // Initialized
         if (element.IsLoaded) {
-            AddLoadingAdorner(element);
-            Proceed(element, isLoading);
+            EnsureLoadingBoxIsInitialized(element);
+            if (e.NewValue is true) {
+                LoadingBoxDict[element].Show();
+            } else {
+                LoadingBoxDict[element].Close();
+            }
             return;
         }
-        element.Loaded -= ElementLoadedHandler;
-        element.Loaded += ElementLoadedHandler;
+        // 等待加载
+        element.SetLoadedOnceEventHandler((sender, _) => {
+            if (sender is FrameworkElement element) {
+                EnsureLoadingBoxIsInitialized(element);
+                if (GetIsLoading(element)) {
+                    LoadingBoxDict[element].Show();
+                } else {
+                    LoadingBoxDict[element].Close();
+                }
+            }
+        });
     }
 
     private static void SizePropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -688,45 +699,34 @@ public static class LoadingBoxHelper {
             return;
         }
         double size = (double)e.NewValue;
-        // 已初始化
+        // Is Initialized
         if (LoadingBoxDict.TryGetValue(element, out var loadingBox)) {
             loadingBox.Size = size;
             return;
         }
-        UndoneTasks.Enqueue(() => LoadingBoxDict[element].Size = size);
-    }
-
-    private static void ElementLoadedHandler(object sender, RoutedEventArgs e) {
-        if (sender is FrameworkElement element) {
-            AddLoadingAdorner(element);
-            Proceed(element, (bool)element.GetValue(IsLoadingProperty));
+        if (element.IsLoaded) {
+            EnsureLoadingBoxIsInitialized(element);
+            LoadingBoxDict[element].Size = size;
+            return;
         }
+        // Waiting for Loaded
+        element.SetLoadedOnceEventHandler((sender, _) => {
+            if (sender is FrameworkElement element) {
+                EnsureLoadingBoxIsInitialized(element);
+                LoadingBoxDict[element].Size = GetSize(element);
+            }
+        });
     }
 
     /// <summary>
-    /// 继续
+    /// 确保已创建 LoadingBox
     /// </summary>
     /// <param name="element"></param>
-    /// <param name="isLoading"></param>
-    private static void Proceed(FrameworkElement element, bool isLoading) {
-        if (LoadingBoxDict.TryGetValue(element, out var loadingBox)) {
-            // 执行未完成的任务
-            while (UndoneTasks.Count > 0) {
-                UndoneTasks.Dequeue()();
-            }
-            if (isLoading) {
-                loadingBox.Show();
-            } else {
-                loadingBox.Close();
-            }
+    private static void EnsureLoadingBoxIsInitialized(FrameworkElement element) {
+        // 已经加载过
+        if (LoadingBoxDict.ContainsKey(element)) {
+            return;
         }
-    }
-
-    /// <summary>
-    /// 添加 LoadingAdorner
-    /// </summary>
-    /// <param name="element"></param>
-    private static void AddLoadingAdorner(FrameworkElement element) {
         if (AdornerLayer.GetAdornerLayer(element) is not AdornerLayer adornerLayer) {
             Logger.Error($"The AdornerLayer of {element.GetType()} is null");
             return;
@@ -737,6 +737,16 @@ public static class LoadingBoxHelper {
             element,
             new CommonAdorner.ElementInfo[] { new(loadingBox) }
         ));
+    }
+
+    /// <summary>
+    /// 清除引用
+    /// </summary>
+    /// <param name="element"></param>
+    public static void Dispose(FrameworkElement element) {
+        element.ClearValue(SizeProperty);
+        element.ClearValue(IsLoadingProperty);
+        LoadingBoxDict.Remove(element);
     }
 }
 
