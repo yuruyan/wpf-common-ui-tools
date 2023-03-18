@@ -11,12 +11,12 @@
   Name="MultiDragDropTextBoxRoot"
   d:DesignHeight="450"
   d:DesignWidth="800"
-  util:DragDropHelper.BackgroundProperty="{x:Static UserControl.BackgroundProperty}"
-  util:DragDropHelper.IsEnabled="True"
   Background="Transparent"
+  Loaded="RootLoadedHandler"
   MouseEnter="ViewMouseEnterHandler"
   MouseLeave="ViewMouseLeaveHandler"
   PreviewDrop="PreviewDropHandler"
+  Unloaded="RootUnloadedHandler"
   mc:Ignorable="d">
   <UserControl.Resources>
     <system:Int32 x:Key="One">1</system:Int32>
@@ -58,8 +58,6 @@
     <!--  文本框  -->
     <TextBox
       x:Name="InputTextBox"
-      util:DragDropHelper.BackgroundProperty="{x:Static TextBox.BackgroundProperty}"
-      util:DragDropHelper.IsEnabled="True"
       Style="{Binding TextBoxStyle, ElementName=MultiDragDropTextBoxRoot}"
       Text="{Binding InputText, ElementName=MultiDragDropTextBoxRoot}"
       Visibility="{Binding HasFile, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfTrueConverter}}" />
@@ -67,10 +65,7 @@
     <!--  文件列表  -->
     <Grid Visibility="{Binding HasFile, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfFalseConverter}}">
       <!--  只有一个文件时不显示列表  -->
-      <local:FileNameSizeWidget
-        x:Name="FileNameSizeWidget"
-        FileName="{Binding FirstFileName, ElementName=MultiDragDropTextBoxRoot}"
-        Visibility="{Binding FileNameList.Count, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfNotEuqalConverter}, ConverterParameter={StaticResource One}}" />
+      <local:FileNameSizeWidget FileName="{Binding FirstFileName, ElementName=MultiDragDropTextBoxRoot}" Visibility="{Binding FileNameList.Count, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfNotEuqalConverter}, ConverterParameter={StaticResource One}}" />
       <!--  文件列表  -->
       <Grid Visibility="{Binding FileNameList.Count, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfEuqalConverter}, ConverterParameter={StaticResource One}}">
         <ListBox
