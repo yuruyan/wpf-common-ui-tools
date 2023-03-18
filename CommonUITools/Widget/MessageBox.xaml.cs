@@ -126,6 +126,7 @@ public partial class MessageBox : UserControl {
     /// 卸载 MessageBox
     /// </summary>
     private void UnloadMessageBox() {
+        UnloadTimer.Dispose();
         if (Resources["UnLoadStoryboard"] is not Storyboard unLoadStoryboard) {
             return;
         }
@@ -139,7 +140,6 @@ public partial class MessageBox : UserControl {
             Visibility = Visibility.Collapsed;
             WindowPanelDict[Window.GetWindow(this)].Remove(this);
         };
-        UnloadTimer.Dispose();
         unLoadStoryboard.Begin();
     }
 

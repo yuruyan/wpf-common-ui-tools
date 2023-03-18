@@ -20,15 +20,12 @@
     <Storyboard x:Key="LoadStoryboard">
       <DoubleAnimation
         Name="TranslateTransformAnimation"
+        EasingFunction="{StaticResource AnimationEaseFunction}"
         Storyboard.TargetName="RootTranslateTransform"
         Storyboard.TargetProperty="(TranslateTransform.Y)"
         From="-50"
         To="0"
-        Duration="{StaticResource AnimationDuration}">
-        <DoubleAnimation.EasingFunction>
-          <PowerEase EasingMode="EaseOut" Power="3" />
-        </DoubleAnimation.EasingFunction>
-      </DoubleAnimation>
+        Duration="{StaticResource AnimationDuration}" />
       <DoubleAnimation
         Storyboard.TargetName="MessageBoxRoot"
         Storyboard.TargetProperty="Opacity"
@@ -46,6 +43,7 @@
       <!--  由后台设置  -->
       <DoubleAnimation
         x:Name="HeightAnimation"
+        EasingFunction="{StaticResource AnimationEaseFunction}"
         Storyboard.TargetName="MessageBoxRoot"
         Storyboard.TargetProperty="Height"
         To="0"
