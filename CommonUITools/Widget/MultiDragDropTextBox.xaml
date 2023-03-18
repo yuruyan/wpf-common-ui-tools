@@ -87,6 +87,7 @@
                 <!--  Size  -->
                 <local:FileSizeWidget
                   Grid.Column="1"
+                  Padding="8,0"
                   HorizontalAlignment="Right"
                   FileName="{Binding}" />
               </Grid>

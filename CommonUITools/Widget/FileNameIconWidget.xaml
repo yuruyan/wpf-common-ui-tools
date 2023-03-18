@@ -13,8 +13,7 @@
     <Image
       Name="FileIconImage"
       Width="{Binding IconSize, ElementName=FileNameIconWidgetRoot}"
-      Height="{Binding IconSize, ElementName=FileNameIconWidgetRoot}"
-      Margin="10,0"
+      Margin="8,0"
       Source="{Binding FileName, Converter={StaticResource FilePngIconConverter}, ElementName=FileNameIconWidgetRoot}"
       Stretch="Uniform" />
     <TextBlock Text="{Binding FileName, ElementName=FileNameIconWidgetRoot, Converter={StaticResource FileNameConverter}}" />
