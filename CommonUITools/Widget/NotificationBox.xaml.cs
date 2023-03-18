@@ -116,7 +116,7 @@ public partial class NotificationBox : UserControl {
         BoxForeground = WidgetGlobal.MessageInfoDict[messageType].Foreground;
         DisplayDuration = displayDuration;
         InitializeComponent();
-        UnloadTimer = new(displayDuration) { AutoReset = false };
+        UnloadTimer = new(DisplayDuration) { AutoReset = false };
         UnloadTimer.Elapsed += RootUnLoad;
         UnloadTimer.Start();
     }
@@ -132,6 +132,7 @@ public partial class NotificationBox : UserControl {
     /// 关闭通知
     /// </summary>
     private void UnLoadNotificationBox() {
+        UnloadTimer.Dispose();
         if (Resources["UnLoadStoryboard"] is not Storyboard unLoadStoryboard) {
             return;
         }
@@ -145,7 +146,6 @@ public partial class NotificationBox : UserControl {
             WindowPanelDict[Window.GetWindow(this)].Remove(this);
         };
         unLoadStoryboard.Begin();
-        UnloadTimer.Dispose();
     }
 
     /// <summary>
