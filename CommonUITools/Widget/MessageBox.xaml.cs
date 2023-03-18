@@ -114,7 +114,7 @@ public partial class MessageBox : UserControl {
     private MessageBox(string message, uint displayDuration = DefaultDisplayDuration, MessageType messageType = MessageType.Info) {
         Text = message;
         MessageType = messageType;
-        Icon = WidgetGlobal.MessageInfoDict[MessageType].Icon;
+        Icon = ConstantCollections.MessageInfoDict[MessageType].Icon;
         InitializeComponent();
         DisplayDuration = displayDuration;
         UnloadTimer = new(DisplayDuration) { AutoReset = false };

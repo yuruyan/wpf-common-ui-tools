@@ -112,8 +112,8 @@ public partial class NotificationBox : UserControl {
         Message = message;
         Title = title;
         ClickCallback = callback;
-        Icon = WidgetGlobal.MessageInfoDict[messageType].Icon;
-        BoxForeground = WidgetGlobal.MessageInfoDict[messageType].Foreground;
+        Icon = ConstantCollections.MessageInfoDict[messageType].Icon;
+        BoxForeground = ConstantCollections.MessageInfoDict[messageType].Foreground;
         DisplayDuration = displayDuration;
         InitializeComponent();
         UnloadTimer = new(DisplayDuration) { AutoReset = false };
