@@ -10,8 +10,8 @@
   VerticalContentAlignment="Stretch"
   d:DesignHeight="450"
   d:DesignWidth="800"
-  Loaded="LoadedHandler"
-  Unloaded="UnloadedHandler"
+  Loaded="RootLoadedHandler"
+  Unloaded="RootUnloadedHandler"
   mc:Ignorable="d">
   <Image x:Name="DescriptionImage" Stretch="Uniform" />
 </UserControl>

@@ -15,7 +15,7 @@ public partial class EmptyView : UserControl {
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void LoadedHandler(object sender, RoutedEventArgs e) {
+    private void RootLoadedHandler(object sender, RoutedEventArgs e) {
         BitmapImage = ImageUri.GetApplicationResourceBitmapImage();
         DescriptionImage.Source = BitmapImage;
     }
@@ -25,7 +25,7 @@ public partial class EmptyView : UserControl {
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void UnloadedHandler(object sender, RoutedEventArgs e) {
+    private void RootUnloadedHandler(object sender, RoutedEventArgs e) {
         DescriptionImage.ClearValue(Image.SourceProperty);
         BitmapImage.StreamSource.Dispose();
         if (BitmapImage.CanFreeze) {
