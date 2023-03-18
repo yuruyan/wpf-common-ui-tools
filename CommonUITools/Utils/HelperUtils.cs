@@ -1208,7 +1208,7 @@ public static class ContextMenuHelper {
             Logger.Warn($"Element is not of type ContextMenu");
             return;
         }
-        if ((bool)e.NewValue) {
+        if (e.NewValue is true) {
             menu.Opened += ContextMenuOpenedHandler;
         } else {
             menu.Opened -= ContextMenuOpenedHandler;
@@ -1223,8 +1223,7 @@ public static class ContextMenuHelper {
 
     private static Storyboard GetOpeningStoryboard(ContextMenu menu) {
         if (!OpeningStoroboardDict.TryGetValue(menu, out var storyboard)) {
-            storyboard = CreateOpeningStoryboard(menu);
-            OpeningStoroboardDict[menu] = storyboard;
+            OpeningStoroboardDict[menu] = storyboard = CreateOpeningStoryboard(menu);
         }
         return storyboard;
     }
@@ -1243,12 +1242,11 @@ public static class ContextMenuHelper {
     }
 
     private static void OpenOnMouseLeftClickPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-        if (d is not FrameworkElement && d is not FrameworkContentElement) {
-            Logger.Warn($"Element is not of type FrameworkElement and FrameworkContentElement");
+        if (d is not FrameworkElement element) {
+            Logger.Warn($"{d} is not of type FrameworkElement");
             return;
         }
-        var element = (UIElement)d;
-        if ((bool)e.NewValue) {
+        if (e.NewValue is true) {
             element.PreviewMouseLeftButtonUp += ShowContextMenuHandler;
         } else {
             element.PreviewMouseLeftButtonUp -= ShowContextMenuHandler;
@@ -1266,6 +1264,16 @@ public static class ContextMenuHelper {
         } else if (sender is FrameworkContentElement contentElement && contentElement.ContextMenu is not null) {
             contentElement.ContextMenu.IsOpen = true;
         }
+    }
+
+    public static void Dispose(FrameworkElement element) {
+        if (element.ContextMenu is ContextMenu menu) {
+            menu.Opened -= ContextMenuOpenedHandler;
+            OpeningStoroboardDict.Remove(menu);
+            menu.ClearValue(EnableOpeningAnimationProperty);
+        }
+        element.PreviewMouseLeftButtonUp -= ShowContextMenuHandler;
+        element.ClearValue(OpenOnMouseLeftClickProperty);
     }
 }
 
