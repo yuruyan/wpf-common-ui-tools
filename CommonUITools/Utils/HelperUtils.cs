@@ -1416,15 +1416,35 @@ public static class HoverVisibleHelper {
 
     private static void TargetElementPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not UIElement element) {
-            Logger.Warn("Element is not UIElement");
+            Logger.Error($"{d} is not UIElement");
             return;
         }
-        DependencyPropertyDescriptor
-            .FromProperty(UIElement.IsMouseOverProperty, element.GetType())
-            .AddValueChanged(element, (sender, _) => {
-                if (sender is UIElement element) {
-                    GetTargetElement(element).Visibility = element.IsMouseOver ? Visibility.Visible : Visibility.Collapsed;
-                }
-            });
+        if (e.NewValue is not null) {
+            element.MouseEnter -= ElementMouseEnterHandler;
+            element.MouseLeave -= ElementMouseLeaveHandler;
+            element.MouseEnter += ElementMouseEnterHandler;
+            element.MouseLeave += ElementMouseLeaveHandler;
+        } else {
+            element.MouseEnter -= ElementMouseEnterHandler;
+            element.MouseLeave -= ElementMouseLeaveHandler;
+        }
+    }
+
+    private static void ElementMouseLeaveHandler(object sender, MouseEventArgs e) {
+        if (sender is UIElement element) {
+            GetTargetElement(element).Visibility = Visibility.Collapsed;
+        }
+    }
+
+    private static void ElementMouseEnterHandler(object sender, MouseEventArgs e) {
+        if (sender is UIElement element) {
+            GetTargetElement(element).Visibility = Visibility.Visible;
+        }
+    }
+
+    public static void Dispose(FrameworkElement element) {
+        element.MouseEnter -= ElementMouseEnterHandler;
+        element.MouseLeave -= ElementMouseLeaveHandler;
+        element.ClearValue(TargetElementProperty);
     }
 }
