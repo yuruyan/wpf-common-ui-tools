@@ -38,7 +38,7 @@ public partial class FileNameSizeWidget : SimpleStackPanel, IDisposable {
     }
 
     public void Dispose() {
-        FileNameIconWidget.Dispose();
+        //FileNameIconWidget.Dispose();
         FileSizeWidget.Dispose();
         BindingOperations.ClearAllBindings(FileNameSizeWidgetRoot);
         BindingOperations.ClearAllBindings(FileSizeWidget);

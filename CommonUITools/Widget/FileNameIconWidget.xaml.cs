@@ -5,12 +5,12 @@ namespace CommonUITools.Widget;
 /// <summary>
 /// 文件名、图标 widget
 /// </summary>
-public partial class FileNameIconWidget : UserControl, IDisposable {
+public partial class FileNameIconWidget : UserControl {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register("FileName", typeof(string), typeof(FileNameIconWidget), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty IconPathProperty = DependencyProperty.Register("IconPath", typeof(string), typeof(FileNameIconWidget), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty IconSizeProperty = DependencyProperty.Register("IconSize", typeof(double), typeof(FileNameIconWidget), new PropertyMetadata(20.0));
-    public static readonly DependencyProperty AutoIconProperty = DependencyProperty.Register("AutoIcon", typeof(bool), typeof(FileNameIconWidget), new PropertyMetadata(true));
+    public static readonly DependencyProperty AutoIconProperty = DependencyProperty.Register("AutoIcon", typeof(bool), typeof(FileNameIconWidget), new PropertyMetadata(true, AutoIconPropertyChangedHandler));
 
     public string FileName {
         get { return (string)GetValue(FileNameProperty); }
@@ -40,35 +40,21 @@ public partial class FileNameIconWidget : UserControl, IDisposable {
     private readonly IValueConverter FileIconConverter = new FileIconConverter();
 
     public FileNameIconWidget() {
-        DependencyPropertyDescriptor
-            .FromProperty(AutoIconProperty, typeof(FileNameIconWidget))
-            .AddValueChanged(this, AutoIconPropertyChangedHandler);
         InitializeComponent();
     }
 
-    /// <summary>
-    /// AutoIconProperty 改变
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void AutoIconPropertyChangedHandler(object? sender, EventArgs e) {
-        // 自动获取
-        if (!AutoIcon) {
-            FileIconImage.SetBinding(Image.SourceProperty, new Binding(nameof(IconPath)));
+    private static void AutoIconPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not FileNameIconWidget self) {
             return;
         }
-        FileIconImage.SetBinding(Image.SourceProperty, new Binding(nameof(FileName)) {
-            Converter = FileIconConverter
-        });
-    }
 
-    public void Dispose() {
-        DependencyPropertyDescriptor
-            .FromProperty(AutoIconProperty, typeof(FileNameIconWidget))
-            .RemoveValueChanged(this, AutoIconPropertyChangedHandler);
-        ClearValue(ContentProperty);
-        ClearValue(DataContextProperty);
-        FileIconImage.ClearValue(Image.SourceProperty);
-        GC.SuppressFinalize(this);
+        // 自动获取
+        if (e.NewValue is false) {
+            self.FileIconImage.SetBinding(Image.SourceProperty, new Binding(nameof(IconPath)));
+            return;
+        }
+        self.FileIconImage.SetBinding(Image.SourceProperty, new Binding(nameof(FileName)) {
+            Converter = self.FileIconConverter
+        });
     }
 }
