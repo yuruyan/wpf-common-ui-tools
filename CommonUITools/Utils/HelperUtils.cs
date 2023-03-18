@@ -981,14 +981,16 @@ public static class DropShadowEffectHelper {
 /// </summary>
 public static class RemoveListBoxDefaultSelectionBehavior {
     public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(RemoveListBoxDefaultSelectionBehavior), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
+
+    public static bool GetIsEnabled(DependencyObject obj) {
+        return (bool)obj.GetValue(IsEnabledProperty);
+    }
     /// <summary>
     /// 是否启用
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static bool GetIsEnabled(DependencyObject obj) {
-        return (bool)obj.GetValue(IsEnabledProperty);
-    }
     public static void SetIsEnabled(DependencyObject obj, bool value) {
         obj.SetValue(IsEnabledProperty, value);
     }
@@ -997,8 +999,7 @@ public static class RemoveListBoxDefaultSelectionBehavior {
         if (d is not UIElement element) {
             return;
         }
-        var isEnabled = (bool)e.NewValue;
-        if (isEnabled) {
+        if (e.NewValue is true) {
             element.PreviewMouseMove += PreviewMouseMoveHandler;
         } else {
             element.PreviewMouseMove -= PreviewMouseMoveHandler;
@@ -1009,6 +1010,11 @@ public static class RemoveListBoxDefaultSelectionBehavior {
         if (sender is UIElement element) {
             element.ReleaseMouseCapture();
         }
+    }
+
+    public static void Dispose(FrameworkElement element) {
+        element.PreviewMouseMove -= PreviewMouseMoveHandler;
+        element.ClearValue(IsEnabledProperty);
     }
 }
 
