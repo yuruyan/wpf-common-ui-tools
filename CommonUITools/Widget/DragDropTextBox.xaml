@@ -9,9 +9,8 @@
   Name="DragDropTextBoxRoot"
   d:DesignHeight="450"
   d:DesignWidth="800"
-  util:DragDropHelper.BackgroundProperty="{x:Static UserControl.BackgroundProperty}"
-  util:DragDropHelper.IsEnabled="True"
   AllowDrop="True"
   Background="Transparent"
-  PreviewDrop="PreviewDropHandler"
+  Loaded="RootLoadedHandler"
+  Unloaded="RootUnloadedHandler"
   mc:Ignorable="d" />

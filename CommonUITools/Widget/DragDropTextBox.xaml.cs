@@ -1,9 +1,9 @@
 ﻿namespace CommonUITools.Widget;
 
-public partial class DragDropTextBox : UserControl, IDisposable {
-    public static readonly DependencyProperty TextBoxProperty = DependencyProperty.Register("TextBox", typeof(TextBox), typeof(DragDropTextBox), new PropertyMetadata());
+public partial class DragDropTextBox : UserControl {
+    public static readonly DependencyProperty TextBoxProperty = DependencyProperty.Register("TextBox", typeof(TextBox), typeof(DragDropTextBox), new PropertyMetadata(TextBoxPropertyChangedHandler));
     public static readonly DependencyProperty FileViewProperty = DependencyProperty.Register("FileView", typeof(object), typeof(DragDropTextBox), new PropertyMetadata());
-    public static readonly DependencyProperty HasFileProperty = DependencyProperty.Register("HasFile", typeof(bool), typeof(DragDropTextBox), new PropertyMetadata(false));
+    public static readonly DependencyProperty HasFileProperty = DependencyProperty.Register("HasFile", typeof(bool), typeof(DragDropTextBox), new PropertyMetadata(false, HasFilePropertyChangedHandler));
 
     /// <summary>
     /// DragDropEvent，参数为 FileData
@@ -15,14 +15,7 @@ public partial class DragDropTextBox : UserControl, IDisposable {
     /// </summary>
     public TextBox TextBox {
         get { return (TextBox)GetValue(TextBoxProperty); }
-        set {
-            // 释放引用
-            if (GetValue(TextBoxProperty) is TextBox oldValue) {
-                DragDropHelper.Dispose(oldValue);
-                oldValue.PreviewDragOver -= FileDragOverHandler;
-            }
-            SetValue(TextBoxProperty, value);
-        }
+        set { SetValue(TextBoxProperty, value); }
     }
     /// <summary>
     /// 文件界面
@@ -50,30 +43,35 @@ public partial class DragDropTextBox : UserControl, IDisposable {
                 box.Content = box.TextBox;
             }
         });
-        DependencyPropertyDescriptor
-            .FromProperty(TextBoxProperty, this.GetType())
-            .AddValueChanged(this, TextBoxPropertyChangedHandler);
-        DependencyPropertyDescriptor
-            .FromProperty(HasFileProperty, this.GetType())
-            .AddValueChanged(this, HasFilePropertyChangedHandler);
         InitializeComponent();
     }
 
-    /// <summary>
-    /// TextBox 变化
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void TextBoxPropertyChangedHandler(object? sender, EventArgs e) {
-        if (TextBox == null) {
+    private static void TextBoxPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not DragDropTextBox self) {
             return;
         }
-        TextBox.AllowDrop = true;
+
+        // Clear reference
+        if (e.OldValue is TextBox oldTextBox) {
+            oldTextBox.PreviewDragOver -= self.FileDragOverHandler;
+            DragDropHelper.Dispose(oldTextBox);
+        }
+        if (e.NewValue is not TextBox textBox) {
+            return;
+        }
+        textBox.AllowDrop = true;
         // 先清除
-        TextBox.PreviewDragOver -= FileDragOverHandler;
-        TextBox.PreviewDragOver += FileDragOverHandler;
-        DragDropHelper.SetIsEnabled(TextBox, true);
-        DragDropHelper.SetBackgroundProperty(TextBox, BackgroundProperty);
+        textBox.PreviewDragOver -= self.FileDragOverHandler;
+        textBox.PreviewDragOver += self.FileDragOverHandler;
+        DragDropHelper.SetIsEnabled(textBox, true);
+        DragDropHelper.SetBackgroundProperty(textBox, BackgroundProperty);
+    }
+
+    private static void HasFilePropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not DragDropTextBox self) {
+            return;
+        }
+        self.Content = e.NewValue is true ? self.FileView : self.TextBox;
     }
 
     /// <summary>
@@ -84,15 +82,6 @@ public partial class DragDropTextBox : UserControl, IDisposable {
     private void FileDragOverHandler(object sender, DragEventArgs e) {
         e.Handled = true;
         e.Effects = DragDropEffects.Copy;
-    }
-
-    /// <summary>
-    /// HasFile 变化
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void HasFilePropertyChangedHandler(object? sender, EventArgs e) {
-        Content = HasFile ? FileView : TextBox;
     }
 
     /// <summary>
@@ -117,28 +106,24 @@ public partial class DragDropTextBox : UserControl, IDisposable {
         FileData = null;
     }
 
-    public void Dispose() {
-        #region Events
-        PreviewDrop -= PreviewDropHandler;
-        DependencyPropertyDescriptor
-            .FromProperty(TextBoxProperty, this.GetType())
-            .RemoveValueChanged(this, TextBoxPropertyChangedHandler);
-        DependencyPropertyDescriptor
-            .FromProperty(HasFileProperty, this.GetType())
-            .RemoveValueChanged(this, HasFilePropertyChangedHandler);
-        TextBox.PreviewDragOver -= FileDragOverHandler;
-        DragDropHelper.Dispose(TextBox);
-        DragDropHelper.Dispose(this);
-        DragDropEvent = null;
-        #endregion
-
-        FileView = null!;
-        TextBox = null!;
-        FileData = null;
-        ClearValue(ContentProperty);
-        ClearValue(DataContextProperty);
-        Clear();
-        GC.SuppressFinalize(this);
+    private void RootLoadedHandler(object sender, RoutedEventArgs e) {
+        DragDropHelper.SetBackgroundProperty(this, BackgroundProperty);
+        DragDropHelper.SetIsEnabled(this, true);
+        PreviewDrop += PreviewDropHandler;
+        if (TextBox is not null) {
+            TextBox.PreviewDragOver -= FileDragOverHandler;
+            TextBox.PreviewDragOver += FileDragOverHandler;
+            DragDropHelper.SetIsEnabled(TextBox, true);
+            DragDropHelper.SetBackgroundProperty(TextBox, BackgroundProperty);
+        }
     }
 
+    private void RootUnloadedHandler(object sender, RoutedEventArgs e) {
+        DragDropHelper.Dispose(this);
+        PreviewDrop -= PreviewDropHandler;
+        if (TextBox is not null) {
+            TextBox.PreviewDragOver -= FileDragOverHandler;
+            DragDropHelper.Dispose(TextBox);
+        }
+    }
 }
