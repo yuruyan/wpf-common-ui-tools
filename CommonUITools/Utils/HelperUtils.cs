@@ -1024,14 +1024,15 @@ public static class RemoveListBoxDefaultSelectionBehavior {
 public static class RemoveListBoxItemDefaultSelectionBehavior {
     public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(RemoveListBoxItemDefaultSelectionBehavior), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
 
+    public static bool GetIsEnabled(DependencyObject obj) {
+        return (bool)obj.GetValue(IsEnabledProperty);
+    }
     /// <summary>
     /// 是否启用
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static bool GetIsEnabled(DependencyObject obj) {
-        return (bool)obj.GetValue(IsEnabledProperty);
-    }
     public static void SetIsEnabled(DependencyObject obj, bool value) {
         obj.SetValue(IsEnabledProperty, value);
     }
@@ -1040,8 +1041,7 @@ public static class RemoveListBoxItemDefaultSelectionBehavior {
         if (d is not UIElement element) {
             return;
         }
-        var isEnabled = (bool)e.NewValue;
-        if (isEnabled) {
+        if (e.NewValue is true) {
             element.MouseRightButtonDown += MouseRightButtonDownHandler;
         } else {
             element.MouseRightButtonDown -= MouseRightButtonDownHandler;
@@ -1050,6 +1050,11 @@ public static class RemoveListBoxItemDefaultSelectionBehavior {
 
     private static void MouseRightButtonDownHandler(object sender, MouseButtonEventArgs e) {
         e.Handled = true;
+    }
+
+    public static void Dispose(FrameworkElement element) {
+        element.MouseRightButtonDown -= MouseRightButtonDownHandler;
+        element.ClearValue(IsEnabledProperty);
     }
 }
 
