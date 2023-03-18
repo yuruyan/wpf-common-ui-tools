@@ -92,7 +92,7 @@ public partial class MultiDragDropTextBox : UserControl {
         if (d is not MultiDragDropTextBox self) {
             return;
         }
-        if (e.NewValue is true) {
+        if (e.NewValue is false) {
             self.FileData = null;
             self.FileNameSet.Clear();
             self.FileNameList.Clear();
