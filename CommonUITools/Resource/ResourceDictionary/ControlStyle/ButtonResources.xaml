@@ -36,8 +36,6 @@
   <Style x:Key="TitleBarButtonstyle" TargetType="ui:TitleBarButton">
     <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
   </Style>
-  <!--  GlobalWorkingButtonStyle  -->
-  <Style BasedOn="{StaticResource GlobalButtonStyle}" TargetType="widget:WorkingButton" />
   <!--  GlobalSingleIconButtonStyle  -->
   <Style
     x:Key="GlobalSingleIconButtonStyle"
