@@ -2,24 +2,34 @@
 
 namespace CommonUITools.Widget;
 
-public partial class EmptyView : UserControl, IDisposable {
-    private readonly BitmapImage BitmapImage;
+public partial class EmptyView : UserControl {
+    private BitmapImage BitmapImage = default!;
     private readonly Uri ImageUri = new("/CommonUITools;component/Resource/Images/Empty.png", UriKind.Relative);
 
     public EmptyView() {
-        BitmapImage = ImageUri.GetApplicationResourceBitmapImage();
         InitializeComponent();
+    }
+
+    /// <summary>
+    /// Load Image
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void LoadedHandler(object sender, RoutedEventArgs e) {
+        BitmapImage = ImageUri.GetApplicationResourceBitmapImage();
         DescriptionImage.Source = BitmapImage;
     }
 
-    public void Dispose() {
-        ClearValue(ContentProperty);
-        ClearValue(DataContextProperty);
+    /// <summary>
+    /// Release Memory
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void UnloadedHandler(object sender, RoutedEventArgs e) {
         DescriptionImage.ClearValue(Image.SourceProperty);
-        BitmapImage.StreamSource?.Dispose();
+        BitmapImage.StreamSource.Dispose();
         if (BitmapImage.CanFreeze) {
             BitmapImage.Freeze();
         }
-        GC.SuppressFinalize(this);
     }
 }
