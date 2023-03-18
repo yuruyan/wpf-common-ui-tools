@@ -9,8 +9,8 @@
   Name="FileProcessStatusWidgetRoot"
   d:DesignHeight="450"
   d:DesignWidth="800"
-  Loaded="ViewLoadedHandler"
-  Unloaded="ViewUnloadedHandler"
+  Loaded="RootLoadedHandler"
+  Unloaded="RootUnloadedHandler"
   mc:Ignorable="d">
   <UserControl.Resources>
     <ContextMenu x:Key="FileProcessListBoxItemContextMenu">
@@ -33,13 +33,14 @@
       </MenuItem>
     </ContextMenu>
   </UserControl.Resources>
+
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition />
       <RowDefinition Height="auto" />
     </Grid.RowDefinitions>
     <!--  列表  -->
-    <ListBox x:Name="FileProcessListBox" ItemsSource="{Binding FileProcessStatusList, ElementName=FileProcessStatusWidgetRoot}">
+    <ListBox ItemsSource="{Binding FileProcessStatusList, ElementName=FileProcessStatusWidgetRoot}">
       <ListBox.ItemTemplate>
         <DataTemplate>
           <Grid Background="Transparent" ContextMenu="{StaticResource FileProcessListBoxItemContextMenu}">
@@ -87,6 +88,7 @@
         </DataTemplate>
       </ListBox.ItemTemplate>
     </ListBox>
+
     <!--  状态信息  -->
     <Border
       Grid.Row="1"

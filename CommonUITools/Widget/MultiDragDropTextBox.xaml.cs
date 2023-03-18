@@ -209,7 +209,7 @@ public partial class MultiDragDropTextBox : UserControl, IDisposable {
     }
 
     public void Dispose() {
-        FileNameSizeWidget.Dispose();
+        //FileNameSizeWidget.Dispose();
         #region Events
         MouseEnter -= ViewMouseEnterHandler;
         MouseLeave -= ViewMouseLeaveHandler;

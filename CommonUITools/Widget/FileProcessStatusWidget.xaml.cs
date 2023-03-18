@@ -1,8 +1,6 @@
-﻿using ModernWpf;
+﻿namespace CommonUITools.Widget;
 
-namespace CommonUITools.Widget;
-
-public partial class FileProcessStatusWidget : UserControl, IDisposable {
+public partial class FileProcessStatusWidget : UserControl {
     public static readonly DependencyProperty FileProcessStatusListProperty = DependencyProperty.Register("FileProcessStatusList", typeof(ObservableCollection<FileProcessStatus>), typeof(FileProcessStatusWidget), new PropertyMetadata());
     public static readonly DependencyProperty FinishedCountProperty = DependencyProperty.Register("FinishedCount", typeof(int), typeof(FileProcessStatusWidget), new PropertyMetadata(0));
     public static readonly DependencyProperty HasTaskRunningProperty = DependencyProperty.Register("HasTaskRunning", typeof(bool), typeof(FileProcessStatusWidget), new PropertyMetadata(false));
@@ -56,7 +54,7 @@ public partial class FileProcessStatusWidget : UserControl, IDisposable {
     /// <param name="e"></param>
     private void OpenFileClickHandler(object sender, RoutedEventArgs e) {
         e.Handled = true;
-        if (sender is FrameworkElement element && element.DataContext is FileProcessStatus status) {
+        if (sender.GetElementDataContext<FileProcessStatus>() is { } status) {
             UIUtils.OpenFileWithAsync(status.FileName);
         }
     }
@@ -68,7 +66,7 @@ public partial class FileProcessStatusWidget : UserControl, IDisposable {
     /// <param name="e"></param>
     private void OpenDirectoryClickHandler(object sender, RoutedEventArgs e) {
         e.Handled = true;
-        if (sender is FrameworkElement element && element.DataContext is FileProcessStatus status) {
+        if (sender.GetElementDataContext<FileProcessStatus>() is { } status) {
             UIUtils.OpenFileInExplorerAsync(status.FileName);
         }
     }
@@ -93,8 +91,7 @@ public partial class FileProcessStatusWidget : UserControl, IDisposable {
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void ViewLoadedHandler(object sender, RoutedEventArgs e) {
-        e.Handled = true;
+    private void RootLoadedHandler(object sender, RoutedEventArgs e) {
         UpdateStatusTimer.Start();
     }
 
@@ -103,17 +100,7 @@ public partial class FileProcessStatusWidget : UserControl, IDisposable {
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void ViewUnloadedHandler(object sender, RoutedEventArgs e) {
-        e.Handled = true;
+    private void RootUnloadedHandler(object sender, RoutedEventArgs e) {
         UpdateStatusTimer.Stop();
-    }
-
-    public void Dispose() {
-        ClearValue(ContentProperty);
-        BindingOperations.ClearAllBindings(this);
-        FileProcessStatusList?.Clear();
-        UpdateStatusTimer.Tick -= UpdateStatusTimerTickHandler;
-        UpdateStatusTimer.Stop();
-        GC.SuppressFinalize(this);
     }
 }
