@@ -944,38 +944,34 @@ public static class VisibilityAnimationHelper {
 /// 添加阴影
 /// </summary>
 public static class DropShadowEffectHelper {
-    public enum EffectWeight {
-        None,
-        Normal,
-        Lighter,
-        Darker,
-    }
+    public static readonly DependencyProperty WeightProperty = DependencyProperty.RegisterAttached("Weight", typeof(DropShadowEffectWeight), typeof(DropShadowEffectHelper), new PropertyMetadata(DropShadowEffectWeight.None, EffectWeightChangedHandler));
+    private static readonly Color DropShadowColor = UIUtils.StringToColor("#dfdfdf");
 
+    public static DropShadowEffectWeight GetWeight(DependencyObject obj) {
+        return (DropShadowEffectWeight)obj.GetValue(WeightProperty);
+    }
     /// <summary>
     /// 阴影程度
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static EffectWeight GetWeight(DependencyObject obj) {
-        return (EffectWeight)obj.GetValue(WeightProperty);
-    }
-    public static void SetWeight(DependencyObject obj, EffectWeight value) {
+    public static void SetWeight(DependencyObject obj, DropShadowEffectWeight value) {
         obj.SetValue(WeightProperty, value);
     }
-    public static readonly DependencyProperty WeightProperty = DependencyProperty.RegisterAttached("Weight", typeof(EffectWeight), typeof(DropShadowEffectHelper), new PropertyMetadata(EffectWeight.None, EffectWeightChangedHandler));
-    private static readonly Color DropShadowColor = UIUtils.StringToColor("#dfdfdf");
 
     private static void EffectWeightChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-        if (d is UIElement element) {
-            if (e.NewValue is EffectWeight weight) {
-                element.Effect = weight switch {
-                    EffectWeight.None => null,
-                    EffectWeight.Lighter => new DropShadowEffect() { Color = DropShadowColor, ShadowDepth = 0, BlurRadius = 8 },
-                    EffectWeight.Normal => new DropShadowEffect() { Color = DropShadowColor, ShadowDepth = 0, BlurRadius = 16 },
-                    EffectWeight.Darker => new DropShadowEffect() { Color = DropShadowColor, ShadowDepth = 0, BlurRadius = 32 },
-                    _ => throw new ArgumentException("Invalid value")
-                };
-            }
+        if (d is not UIElement element) {
+            return;
+        }
+        if (e.NewValue is DropShadowEffectWeight weight) {
+            element.Effect = weight switch {
+                DropShadowEffectWeight.None => null,
+                DropShadowEffectWeight.Lighter => new DropShadowEffect() { Color = DropShadowColor, ShadowDepth = 0, BlurRadius = 8 },
+                DropShadowEffectWeight.Normal => new DropShadowEffect() { Color = DropShadowColor, ShadowDepth = 0, BlurRadius = 16 },
+                DropShadowEffectWeight.Darker => new DropShadowEffect() { Color = DropShadowColor, ShadowDepth = 0, BlurRadius = 32 },
+                _ => null
+            };
         }
     }
 }
