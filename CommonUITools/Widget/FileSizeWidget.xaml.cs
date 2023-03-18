@@ -1,7 +1,7 @@
 ﻿namespace CommonUITools.Widget;
 
-public partial class FileSizeWidget : UserControl, IDisposable {
-    public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register("FileName", typeof(string), typeof(FileSizeWidget), new PropertyMetadata(string.Empty));
+public partial class FileSizeWidget : UserControl {
+    public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register("FileName", typeof(string), typeof(FileSizeWidget), new PropertyMetadata(string.Empty, FileNamePropertyChangedHandler));
     public static readonly DependencyProperty FileSizeProperty = DependencyProperty.Register("FileSize", typeof(long), typeof(FileSizeWidget), new PropertyMetadata(0L));
     public static readonly DependencyProperty PrefixProperty = DependencyProperty.Register("Prefix", typeof(string), typeof(FileSizeWidget), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty SuffixProperty = DependencyProperty.Register("Suffix", typeof(string), typeof(FileSizeWidget), new PropertyMetadata(string.Empty));
@@ -36,32 +36,18 @@ public partial class FileSizeWidget : UserControl, IDisposable {
     }
 
     public FileSizeWidget() {
-        DependencyPropertyDescriptor
-            .FromProperty(FileNameProperty, this.GetType())
-            .AddValueChanged(this, FileNamePropertyChangedHandler);
         InitializeComponent();
     }
 
-    /// <summary>
-    /// FileNamePropertyChanged
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void FileNamePropertyChangedHandler(object? sender, EventArgs e) {
-        if (!File.Exists(FileName)) {
-            FileSize = 0;
+    private static void FileNamePropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not FileSizeWidget self) {
             return;
         }
-        FileSize = new FileInfo(FileName).Length;
-    }
 
-    public void Dispose() {
-        DependencyPropertyDescriptor
-            .FromProperty(FileNameProperty, this.GetType())
-            .RemoveValueChanged(this, FileNamePropertyChangedHandler);
-        ClearValue(ContentProperty);
-        ClearValue(DataContextProperty);
-        FileName = Prefix = Suffix = string.Empty;
-        GC.SuppressFinalize(this);
+        if (!File.Exists(self.FileName)) {
+            self.FileSize = 0;
+            return;
+        }
+        self.FileSize = new FileInfo(self.FileName).Length;
     }
 }
