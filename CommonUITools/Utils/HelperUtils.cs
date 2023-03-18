@@ -1,6 +1,7 @@
 ﻿using CommonTools.Utils;
 using CommonUITools.Widget;
 using ModernWpf;
+using System.Runtime.Intrinsics.Arm;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media.Effects;
@@ -1292,7 +1293,13 @@ public static class AutoHideHelper {
         public bool PreventOpen { get; set; }
     }
 
+    /// <summary>
+    /// One to one
+    /// </summary>
     private static readonly IDictionary<string, State> TargetElementStateDict = new Dictionary<string, State>();
+    /// <summary>
+    /// Many to one
+    /// </summary>
     private static readonly IDictionary<DependencyObject, string> SourceElementTargetIdDict = new Dictionary<DependencyObject, string>();
 
     /// <summary>
@@ -1313,6 +1320,32 @@ public static class AutoHideHelper {
                 window.PreviewMouseUp -= WindowPreviewMouseUpHandler;
                 window.PreviewMouseUp += WindowPreviewMouseUpHandler;
             });
+        }
+    }
+
+    /// <summary>
+    /// 设置点击 <paramref name="dp"/> 时显示 <paramref name="targetId"/> 对应的控件
+    /// </summary>
+    /// <param name="dp"></param>
+    /// <param name="targetId"></param>
+    public static void SetOpenOnClick(DependencyObject dp, string targetId) {
+        SourceElementTargetIdDict[dp] = targetId;
+        if (dp is UIElement element) {
+            element.PreviewMouseDown -= PreviewMouseDownHandler;
+            element.PreviewMouseDown += PreviewMouseDownHandler;
+            // 按钮
+            if (element is ButtonBase button) {
+                button.Click -= ButtonClickHandler;
+                button.Click += ButtonClickHandler;
+            } else {
+                element.MouseUp -= MouseUpHandler;
+                element.MouseUp += MouseUpHandler;
+            }
+        } else if (dp is ContentElement contentElement) {
+            contentElement.PreviewMouseDown -= PreviewMouseDownHandler;
+            contentElement.PreviewMouseDown += PreviewMouseDownHandler;
+            contentElement.MouseUp -= MouseUpHandler;
+            contentElement.MouseUp += MouseUpHandler;
         }
     }
 
@@ -1342,24 +1375,6 @@ public static class AutoHideHelper {
         }
     }
 
-    /// <summary>
-    /// 设置点击 <paramref name="element"/> 时显示 <paramref name="targetId"/> 对应的控件
-    /// </summary>
-    /// <param name="element"></param>
-    /// <param name="targetId"></param>
-    public static void SetOpenOnClick(UIElement element, string targetId) {
-        SourceElementTargetIdDict[element] = targetId;
-        element.PreviewMouseDown -= PreviewMouseDownHandler;
-        element.PreviewMouseDown += PreviewMouseDownHandler;
-        if (element is ButtonBase button) {
-            button.Click -= ButtonClickHandler;
-            button.Click += ButtonClickHandler;
-        } else {
-            element.MouseUp -= MouseUpHandler;
-            element.MouseUp += MouseUpHandler;
-        }
-    }
-
     private static void PreviewMouseDownHandler(object sender, MouseButtonEventArgs e) {
         if (sender is DependencyObject dp) {
             // Toggle state
@@ -1378,12 +1393,13 @@ public static class AutoHideHelper {
         if (sender is not UIElement element) {
             return;
         }
-        var state = TargetElementStateDict[SourceElementTargetIdDict[element]];
-        if (state.PreventOpen) {
-            state.PreventOpen = false;
-            return;
+        if (TargetElementStateDict.TryGetValue(SourceElementTargetIdDict[element], out var state)) {
+            if (state.PreventOpen) {
+                state.PreventOpen = false;
+                return;
+            }
+            state.Element.Visibility = Visibility.Visible;
         }
-        state.Element.Visibility = Visibility.Visible;
     }
 
     private static void MouseUpHandler(object sender, MouseButtonEventArgs e) {
@@ -1392,6 +1408,29 @@ public static class AutoHideHelper {
 
     private static void ButtonClickHandler(object sender, RoutedEventArgs e) {
         HandleMouseEvent(sender);
+    }
+
+    public static void DisposeTargetElement(FrameworkElement targetElement) {
+        var kv = TargetElementStateDict.FirstOrDefault(kv => kv.Value.Element == targetElement);
+        if (!kv.Equals(default(KeyValuePair<string, State>))) {
+            TargetElementStateDict.Remove(kv.Key);
+        }
+    }
+
+    public static void DisposeSourceElement(DependencyObject sourceElement) {
+        SourceElementTargetIdDict.Remove(sourceElement);
+        if (sourceElement is UIElement element) {
+            element.PreviewMouseDown -= PreviewMouseDownHandler;
+            // 按钮
+            if (element is ButtonBase button) {
+                button.Click -= ButtonClickHandler;
+            } else {
+                element.MouseUp -= MouseUpHandler;
+            }
+        } else if (sourceElement is ContentElement contentElement) {
+            contentElement.PreviewMouseDown -= PreviewMouseDownHandler;
+            contentElement.MouseUp -= MouseUpHandler;
+        }
     }
 }
 
