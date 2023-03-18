@@ -1067,14 +1067,15 @@ public static class DoubleMouseClickHelper {
     private static readonly IDictionary<UIElement, long> ElementClickTime = new Dictionary<UIElement, long>();
     private static readonly IDictionary<UIElement, long> ElementEventRaisedTime = new Dictionary<UIElement, long>();
 
+    public static MouseButtonEventHandler GetHandler(DependencyObject obj) {
+        return (MouseButtonEventHandler)obj.GetValue(HandlerProperty);
+    }
     /// <summary>
     /// MouseButtonEventHandler
     /// </summary>
     /// <param name="obj"></param>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static MouseButtonEventHandler GetHandler(DependencyObject obj) {
-        return (MouseButtonEventHandler)obj.GetValue(HandlerProperty);
-    }
     public static void SetHandler(DependencyObject obj, MouseButtonEventHandler value) {
         obj.SetValue(HandlerProperty, value);
     }
@@ -1083,25 +1084,36 @@ public static class DoubleMouseClickHelper {
         if (d is not UIElement element) {
             return;
         }
-        TaskUtils.EnsureCalledOnce(d, () => {
-            element.MouseLeftButtonUp += (sender, args) => {
-                var notTime = DateTimeUtils.CuruentMilliseconds;
-                var elem = (UIElement)sender;
-                if (ElementClickTime.TryGetValue(elem, out var lastClickTime)) {
-                    // Raise event
-                    if (notTime - lastClickTime <= DoubleClickTime) {
-                        // Restrict raise times
-                        if (!ElementEventRaisedTime.TryGetValue(elem, out var lastRaisedTime) || notTime - lastRaisedTime >= DoubleClickTime) {
-                            ElementEventRaisedTime[elem] = notTime;
-                            GetHandler(elem).Invoke(sender, args);
-                        }
-                    }
-                }
-                ElementClickTime[elem] = DateTimeUtils.CuruentMilliseconds;
-            };
-        });
+        if (e.NewValue is not null) {
+            element.MouseLeftButtonUp -= ElementMouseLeftButtonUpHandler;
+            element.MouseLeftButtonUp += ElementMouseLeftButtonUpHandler;
+        } else {
+            element.MouseLeftButtonUp -= ElementMouseLeftButtonUpHandler;
+        }
     }
 
+    private static void ElementMouseLeftButtonUpHandler(object sender, MouseButtonEventArgs e) {
+        var nowTime = DateTimeUtils.CuruentMilliseconds;
+        var elem = (UIElement)sender;
+        if (ElementClickTime.TryGetValue(elem, out var lastClickTime)) {
+            // Raise event
+            if (nowTime - lastClickTime <= DoubleClickTime) {
+                // Restrict raise times
+                if (!ElementEventRaisedTime.TryGetValue(elem, out var lastRaisedTime) || nowTime - lastRaisedTime >= DoubleClickTime) {
+                    ElementEventRaisedTime[elem] = nowTime;
+                    GetHandler(elem).Invoke(sender, e);
+                }
+            }
+        }
+        ElementClickTime[elem] = DateTimeUtils.CuruentMilliseconds;
+    }
+
+    public static void Dispose(FrameworkElement element) {
+        element.MouseLeftButtonUp -= ElementMouseLeftButtonUpHandler;
+        ElementClickTime.Remove(element);
+        ElementEventRaisedTime.Remove(element);
+        element.ClearValue(HandlerProperty);
+    }
 }
 
 /// <summary>
