@@ -1280,7 +1280,7 @@ public static class ContextMenuHelper {
 /// <summary>
 /// 控件自动显示 / 隐藏。点击外部隐藏，点击内部不会
 /// </summary>
-public static class ElementVisibilityHelper {
+public static class AutoHideHelper {
     private class State {
         public State(UIElement element) {
             Element = element;
