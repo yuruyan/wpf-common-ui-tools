@@ -2,7 +2,7 @@
 
 namespace CommonUITools.Widget;
 
-public partial class FileNameSizeWidget : SimpleStackPanel, IDisposable {
+public partial class FileNameSizeWidget : SimpleStackPanel {
     public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register("FileName", typeof(string), typeof(FileNameSizeWidget), new PropertyMetadata(string.Empty));
 
     /// <summary>
@@ -35,17 +35,5 @@ public partial class FileNameSizeWidget : SimpleStackPanel, IDisposable {
     private void OpenInFileExplorerHandler(object sender, RoutedEventArgs e) {
         e.Handled = true;
         UIUtils.OpenFileInExplorerAsync(FileName);
-    }
-
-    public void Dispose() {
-        //FileNameIconWidget.Dispose();
-        //FileSizeWidget.Dispose();
-        BindingOperations.ClearAllBindings(FileNameSizeWidgetRoot);
-        BindingOperations.ClearAllBindings(FileSizeWidget);
-        BindingOperations.ClearAllBindings(this);
-        FileName = string.Empty;
-        Children.Clear();
-        Resources.Clear();
-        GC.SuppressFinalize(this);
     }
 }
