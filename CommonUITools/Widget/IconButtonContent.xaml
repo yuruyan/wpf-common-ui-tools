@@ -17,8 +17,4 @@
       Text="{Binding Icon, ElementName=IconButtonContentRoot}" />
     <TextBlock FontWeight="{Binding FontWeight, ElementName=IconButtonContentRoot}" Text="{Binding Text, ElementName=IconButtonContentRoot}" />
   </StackPanel>
-  <!--<TextBlock>
-    <Run FontFamily="{StaticResource IconFontUrI}" Text="{Binding Icon, ElementName=IconButtonContentRoot}" />
-    <Run Text="{Binding Text, ElementName=IconButtonContentRoot}" />
-  </TextBlock>-->
 </UserControl>
