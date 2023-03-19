@@ -15,9 +15,11 @@
   <system:Double x:Key="ContextMenuItemHeight">35</system:Double>
   <system:Double x:Key="ContextMenuMinWidth">200</system:Double>
   <system:TimeSpan x:Key="AnimationTimeSpan">0:0:0.3</system:TimeSpan>
-  <system:TimeSpan x:Key="AnimationTimeSpanLong">0:0:0.8</system:TimeSpan>
+  <system:TimeSpan x:Key="AnimationTimeSpanLong">0:0:0.5</system:TimeSpan>
+  <system:TimeSpan x:Key="AnimationTimeSpanLonger">0:0:0.8</system:TimeSpan>
   <Duration x:Key="AnimationDuration">0:0:0.3</Duration>
-  <Duration x:Key="AnimationDurationLong">0:0:0.8</Duration>
+  <Duration x:Key="AnimationDurationLong">0:0:0.5</Duration>
+  <Duration x:Key="AnimationDurationLonger">0:0:0.8</Duration>
   <system:Int32 x:Key="ToolTipServiceInitialShowDelay">250</system:Int32>
   <system:Double x:Key="HeaderFontSize">20</system:Double>
   <!--  彩色 Icon 可能会出现失真现象，设置 opacity 为此值  -->
