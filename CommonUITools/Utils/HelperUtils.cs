@@ -901,9 +901,11 @@ public static class LongPressHelper {
 /// <summary>
 /// 显示 / 隐藏动画
 /// </summary>
+/// <remarks>不应直接设置 Visibility, 而是使用 <see cref="SetVisible(FrameworkElement, bool)"/></remarks>
 public static class VisibilityAnimationHelper {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    //private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty VisibleStoryboardProperty = DependencyProperty.RegisterAttached("VisibleStoryboard", typeof(Storyboard), typeof(VisibilityAnimationHelper), new PropertyMetadata(VisibleStoryboardPropertyChangedHandler));
+    public static readonly DependencyProperty InVisibleStoryboardProperty = DependencyProperty.RegisterAttached("InVisibleStoryboard", typeof(Storyboard), typeof(VisibilityAnimationHelper), new PropertyMetadata(InVisibleStoryboardPropertyChangedHandler));
 
     public static Storyboard GetVisibleStoryboard(DependencyObject obj) {
         return (Storyboard)obj.GetValue(VisibleStoryboardProperty);
@@ -916,28 +918,61 @@ public static class VisibilityAnimationHelper {
     public static void SetVisibleStoryboard(DependencyObject obj, Storyboard value) {
         obj.SetValue(VisibleStoryboardProperty, value);
     }
+    public static Storyboard GetInVisibleStoryboard(DependencyObject obj) {
+        return (Storyboard)obj.GetValue(InVisibleStoryboardProperty);
+    }
+    /// <summary>
+    /// 隐藏动画
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetInVisibleStoryboard(DependencyObject obj, Storyboard value) {
+        obj.SetValue(InVisibleStoryboardProperty, value);
+    }
+
+    public static void SetVisible(this FrameworkElement element, bool isVisible) {
+        if ((isVisible ? GetVisibleStoryboard(element) : GetInVisibleStoryboard(element)) is Storyboard storyboard) {
+            element.Visibility = Visibility.Visible;
+            storyboard.Begin();
+        }
+        // No storyboard
+        else {
+            element.Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
+        }
+    }
 
     private static void VisibleStoryboardPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-        if (d is not FrameworkElement element) {
-            Logger.Error($"{d} is not of type FrameworkElement");
-            return;
-        }
-        element.IsVisibleChanged -= ElementIsVisibleChanged;
-        element.IsVisibleChanged += ElementIsVisibleChanged;
-    }
-
-    private static void ElementIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) {
-        if (sender is not FrameworkElement element) {
-            return;
-        }
-        if (e.NewValue is true) {
-            GetVisibleStoryboard(element)?.Begin();
+        if (e.NewValue is Storyboard storyboard) {
+            storyboard.Completed -= VisibleStoryboardCompletedHandler;
+            storyboard.Completed += VisibleStoryboardCompletedHandler;
         }
     }
 
-    public static void Dispose(FrameworkElement element) {
-        element.IsVisibleChanged -= ElementIsVisibleChanged;
-        element.ClearValue(VisibleStoryboardProperty);
+    private static void InVisibleStoryboardPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (e.NewValue is Storyboard storyboard) {
+            storyboard.Completed -= InVisibleStoryboardCompletedHandler;
+            storyboard.Completed += InVisibleStoryboardCompletedHandler;
+        }
+    }
+
+    private static void VisibleStoryboardCompletedHandler(object? sender, EventArgs e) {
+        if (sender is Clock clock && clock.Timeline is Storyboard storyboard) {
+            if (storyboard.Children.FirstOrDefault() is Timeline timeline) {
+                if (Storyboard.GetTarget(timeline) is FrameworkElement element) {
+                    element.Visibility = Visibility.Visible;
+                }
+            }
+        }
+    }
+
+    private static void InVisibleStoryboardCompletedHandler(object? sender, EventArgs e) {
+        if (sender is Clock clock && clock.Timeline is Storyboard storyboard) {
+            if (storyboard.Children.FirstOrDefault() is Timeline timeline) {
+                if (Storyboard.GetTarget(timeline) is FrameworkElement element) {
+                    element.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
     }
 }
 
