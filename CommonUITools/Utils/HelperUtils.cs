@@ -2,9 +2,11 @@
 using CommonUITools.Widget;
 using ModernWpf;
 using System.Runtime.Intrinsics.Arm;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media.Effects;
+using Windows.Devices.Radios;
 
 namespace CommonUITools.Utils;
 
@@ -1520,5 +1522,159 @@ public static class HoverVisibleHelper {
         element.MouseEnter -= ElementMouseEnterHandler;
         element.MouseLeave -= ElementMouseLeaveHandler;
         element.ClearValue(TargetElementProperty);
+    }
+}
+
+public static class RevealBackgroundHelper {
+    public const double DefaultRadius = 50;
+    public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(RevealBackgroundHelper), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
+    public static readonly DependencyProperty BackgroundPropertyProperty = DependencyProperty.RegisterAttached("BackgroundProperty", typeof(DependencyProperty), typeof(RevealBackgroundHelper), new PropertyMetadata(BackgroundPropertyPropertyChangedHandler));
+    public static readonly DependencyProperty RadiusProperty = DependencyProperty.RegisterAttached("Radius", typeof(double), typeof(RevealBackgroundHelper), new PropertyMetadata(DefaultRadius, RadiusPropertyChangedHandler));
+    private static readonly IDictionary<Window, ICollection<(FrameworkElement, RadialGradientBrush)>> WindowElementDict = new Dictionary<Window, ICollection<(FrameworkElement, RadialGradientBrush)>>();
+
+    public static bool GetIsEnabled(DependencyObject obj) {
+        return (bool)obj.GetValue(IsEnabledProperty);
+    }
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetIsEnabled(DependencyObject obj, bool value) {
+        obj.SetValue(IsEnabledProperty, value);
+    }
+    public static DependencyProperty GetBackgroundProperty(DependencyObject obj) {
+        return (DependencyProperty)obj.GetValue(BackgroundPropertyProperty);
+    }
+    /// <summary>
+    /// BackgroundProperty
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetBackgroundProperty(DependencyObject obj, DependencyProperty value) {
+        obj.SetValue(BackgroundPropertyProperty, value);
+    }
+    public static double GetRadius(DependencyObject obj) {
+        return (double)obj.GetValue(RadiusProperty);
+    }
+    /// <summary>
+    /// 径向渐变 Radius
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetRadius(DependencyObject obj, double value) {
+        obj.SetValue(RadiusProperty, value);
+    }
+
+    private static void RadiusPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not FrameworkElement element) {
+            return;
+        }
+        if (element.IsLoaded) {
+            if (!GetIsEnabled(element)) {
+                return;
+            }
+            SetBackground(element);
+            return;
+        }
+        element.Loaded -= ElementLoadedHandler;
+        element.Loaded += ElementLoadedHandler;
+    }
+
+    private static void BackgroundPropertyPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not FrameworkElement element) {
+            return;
+        }
+        if (element.IsLoaded) {
+            if (!GetIsEnabled(element)) {
+                return;
+            }
+            SetBackground(element);
+            return;
+        }
+        element.Loaded -= ElementLoadedHandler;
+        element.Loaded += ElementLoadedHandler;
+    }
+
+    private static void IsEnabledPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not FrameworkElement element) {
+            return;
+        }
+        if (element.IsLoaded) {
+            // 直接调用，减少代码重复
+            ElementLoadedHandler(element, new(FrameworkElement.LoadedEvent, element));
+            return;
+        }
+        element.Loaded -= ElementLoadedHandler;
+        element.Loaded += ElementLoadedHandler;
+    }
+
+    private static void ElementLoadedHandler(object sender, RoutedEventArgs e) {
+        if (sender is not FrameworkElement element) {
+            return;
+        }
+        element.Loaded -= ElementLoadedHandler;
+        // Remove Background
+        if (GetIsEnabled(element) is false) {
+            if (GetBackgroundProperty(element) is DependencyProperty backgroundProperty) {
+                element.ClearValue(backgroundProperty);
+            }
+        }
+        // Set Background
+        else {
+            SetBackground(element);
+        }
+    }
+
+    private static void SetBackground(FrameworkElement element) {
+        if (GetBackgroundProperty(element) is DependencyProperty backgroundProperty) {
+            var window = Window.GetWindow(element);
+            window.MouseMove -= WindowMouseMoveHandler;
+            window.MouseMove += WindowMouseMoveHandler;
+            var brush = CreateBrush(element);
+            element.SetValue(backgroundProperty, brush);
+            AddToWindowElementDict(window, (element, brush));
+        }
+    }
+
+    private static void AddToWindowElementDict(Window window, (FrameworkElement, RadialGradientBrush) value) {
+        if (!WindowElementDict.TryGetValue(window, out var elements)) {
+            WindowElementDict[window] = elements = new List<(FrameworkElement, RadialGradientBrush)>();
+        }
+        elements.Remove(item => item.Item1 == value.Item1);
+        elements.Add(value);
+    }
+
+    private static void WindowMouseMoveHandler(object sender, MouseEventArgs e) {
+        if (sender is not Window window) {
+            return;
+        }
+        foreach (var (element, brush) in WindowElementDict[window]) {
+            if (brush is RadialGradientBrush radialGradientBrush) {
+                var position = e.GetPosition(element);
+                radialGradientBrush.GradientOrigin = position;
+                radialGradientBrush.Center = position;
+            }
+        }
+    }
+
+    private static RadialGradientBrush CreateBrush(FrameworkElement element) {
+        return new RadialGradientBrush((Color)ColorConverter.ConvertFromString("#8f8f8f"), Colors.Transparent) {
+            MappingMode = BrushMappingMode.Absolute,
+            RadiusX = GetRadius(element),
+            RadiusY = GetRadius(element),
+            Opacity = 1,
+            Transform = Transform.Identity,
+            RelativeTransform = Transform.Identity,
+        };
+    }
+
+    public static void Dispose(FrameworkElement element) {
+        element.ClearValue(RadiusProperty);
+        element.ClearValue(IsEnabledProperty);
+        element.ClearValue(BackgroundPropertyProperty);
+        if (WindowElementDict.TryGetValue(Window.GetWindow(element), out var elements)) {
+            elements.Remove(item => item.Item1 == element);
+        }
     }
 }
