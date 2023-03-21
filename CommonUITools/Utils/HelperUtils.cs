@@ -609,6 +609,9 @@ public static class DragDropHelper {
     public static void Dispose(DependencyObject dp) {
         dp.ClearValue(IsEnabledProperty);
         dp.ClearValue(OverBackgroundProperty);
+        if (GetBackgroundProperty(dp) is DependencyProperty backgroundProperty) {
+            dp.ClearValue(backgroundProperty);
+        }
         dp.ClearValue(BackgroundPropertyProperty);
 
         #region Remove event handlers
@@ -1674,9 +1677,15 @@ public static class RevealBackgroundHelper {
     public static void Dispose(FrameworkElement element) {
         element.ClearValue(RadiusProperty);
         element.ClearValue(IsEnabledProperty);
+        if (GetBackgroundProperty(element) is DependencyProperty backgroundProperty) {
+            element.ClearValue(backgroundProperty);
+        }
         element.ClearValue(BackgroundPropertyProperty);
-        if (WindowElementDict.TryGetValue(Window.GetWindow(element), out var elements)) {
-            elements.Remove(item => item.Item1 == element);
+        foreach (var (_, elements) in WindowElementDict) {
+            var target = elements.FirstOrDefault(item => item.Item1 == element);
+            if (target != default((FrameworkElement, RadialGradientBrush))) {
+                elements.Remove(target);
+            }
         }
     }
 }
