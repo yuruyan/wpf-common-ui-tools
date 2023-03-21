@@ -1,0 +1,21 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="clr-namespace:CommonUITools.Widget">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ConverterResources.xaml" />
+  </ResourceDictionary.MergedDictionaries>
+
+  <Style TargetType="local:ToggleControl">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="local:ToggleControl">
+          <Grid>
+            <ContentPresenter Content="{TemplateBinding FirstControl}" Visibility="{TemplateBinding State, Converter={StaticResource HideIfFalseConverter}}" />
+            <ContentPresenter Content="{TemplateBinding SecondControl}" Visibility="{TemplateBinding State, Converter={StaticResource HideIfTrueConverter}}" />
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</ResourceDictionary>

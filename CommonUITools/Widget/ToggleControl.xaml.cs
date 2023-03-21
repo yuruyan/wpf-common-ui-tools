@@ -1,6 +1,6 @@
 ﻿namespace CommonUITools.Widget;
 
-public partial class ToggleControl : UserControl {
+public class ToggleControl : Control {
     public static readonly DependencyProperty StateProperty = DependencyProperty.Register("State", typeof(bool), typeof(ToggleControl), new PropertyMetadata(true));
     public static readonly DependencyProperty FirstControlProperty = DependencyProperty.Register("FirstControl", typeof(object), typeof(ToggleControl), new PropertyMetadata());
     public static readonly DependencyProperty SecondControlProperty = DependencyProperty.Register("SecondControl", typeof(object), typeof(ToggleControl), new PropertyMetadata());
@@ -27,7 +27,7 @@ public partial class ToggleControl : UserControl {
         set { SetValue(SecondControlProperty, value); }
     }
 
-    public ToggleControl() {
-        InitializeComponent();
+    static ToggleControl() {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(ToggleControl), new FrameworkPropertyMetadata(typeof(ToggleControl)));
     }
 }
