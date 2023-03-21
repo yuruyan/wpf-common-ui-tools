@@ -1664,6 +1664,8 @@ public static class RevealBackgroundHelper {
             RadiusX = GetRadius(element),
             RadiusY = GetRadius(element),
             Opacity = 1,
+            // 设置初次加载时背景
+            GradientOrigin = new(int.MaxValue, int.MaxValue),
             Transform = Transform.Identity,
             RelativeTransform = Transform.Identity,
         };
