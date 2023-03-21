@@ -379,4 +379,21 @@ public static class ExtensionUtils {
         }
         return results;
     }
+
+    /// <summary>
+    /// 查看是否包含指定 Predicate 的元素
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    public static bool Contains<T>(this IEnumerable<T> source, Predicate<T> predicate) {
+        foreach (var item in source) {
+            if (predicate(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
