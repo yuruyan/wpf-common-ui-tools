@@ -10,12 +10,8 @@ namespace CommonUITools.Utils;
 /// <summary>
 /// Extention for UIUtils
 /// </summary>
-public static class UIUtilsExtension {
+public static partial class UIUtilsExtension {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    /// <summary>
-    /// ContentDialogResizeRatio
-    /// </summary>
-    public const double ContentDialogResizeRatio = 2;
 
     /// <summary>
     /// 左键是否单击
@@ -304,49 +300,6 @@ public static class UIUtilsExtension {
         return default;
     }
 
-    /// <summary>
-    /// 启用 ContentDialog 自动调整大小
-    /// </summary>
-    /// <param name="dialog"></param>
-    /// <param name="minWidth"></param>
-    /// <param name="maxWidth"></param>
-    /// <param name="resizeRatio">NewWidth = Window.ActualWidth / <paramref name="resizeRatio"/></param>
-    public static void EnableContentDialogAutoResize(
-        this ContentDialog dialog,
-        double minWidth,
-        double maxWidth = double.MaxValue,
-        double resizeRatio = ContentDialogResizeRatio
-    ) {
-        dialog.SetLoadedOnceEventHandler((_, _) => {
-            var window = Window.GetWindow(dialog);
-            var dialogDebounceId = new object();
-            // Update now
-            UpdateDialogWidth(dialog, window.ActualWidth / resizeRatio, minWidth, maxWidth);
-            window.SizeChanged += (_, arg) => DebounceUtils.Debounce(dialogDebounceId, () => {
-                // Reduce update frequency
-                dialog.Dispatcher.Invoke(() => {
-                    UpdateDialogWidth(dialog, arg.NewSize.Width / resizeRatio, minWidth, maxWidth);
-                });
-            }, true, 100);
-        });
-        // Update DialogContent Width
-        static void UpdateDialogWidth(
-            ContentDialog dialog,
-            double newWidth,
-            double minWidth,
-            double maxWidth
-        ) {
-            if (newWidth < minWidth) {
-                newWidth = minWidth;
-            } else if (newWidth > maxWidth) {
-                newWidth = maxWidth;
-            }
-            if (dialog.Content is FrameworkElement element) {
-                element.Width = newWidth;
-            }
-        }
-    }
-
     private static readonly IDictionary<DependencyObject, ICollection<RoutedEventHandler>> LoadedOnceEventHandlersDict = new Dictionary<DependencyObject, ICollection<RoutedEventHandler>>();
 
     /// <summary>
@@ -396,5 +349,144 @@ public static class UIUtilsExtension {
             handler(sender, e);
         }
         handlers.Clear();
+    }
+}
+
+/// <summary>
+/// For ContentDialogAutoResize
+/// </summary>
+public static partial class UIUtilsExtension {
+    /// <summary>
+    /// ContentDialogResizeRatio
+    /// </summary>
+    public const double ContentDialogResizeRatio = 2;
+
+    private readonly struct ContentDialogAutoResizeArgs {
+        public ContentDialogAutoResizeArgs(WeakReference<ContentDialog> dialog, double minWidth, double maxWidth, double resizeRatio) {
+            Dialog = dialog;
+            MinWidth = minWidth;
+            MaxWidth = maxWidth;
+            ResizeRatio = resizeRatio;
+        }
+
+        public WeakReference<ContentDialog> Dialog { get; }
+        public double MinWidth { get; }
+        public double MaxWidth { get; }
+        public double ResizeRatio { get; }
+    }
+
+    private static readonly IDictionary<Window, ICollection<ContentDialogAutoResizeArgs>> ContentDialogAutoResizeDict = new Dictionary<Window, ICollection<ContentDialogAutoResizeArgs>>();
+    /// <summary>
+    /// 用于获取 <see cref="ContentDialogAutoResizeArgs"/>
+    /// </summary>
+    private static readonly IDictionary<ContentDialog, ContentDialogAutoResizeArgs> ContentDialogDict = new Dictionary<ContentDialog, ContentDialogAutoResizeArgs>();
+
+    /// <summary>
+    /// 启用 ContentDialog 自动调整大小
+    /// </summary>
+    /// <param name="dialog"></param>
+    /// <param name="minWidth"></param>
+    /// <param name="maxWidth"></param>
+    /// <param name="resizeRatio">NewWidth = Window.ActualWidth / <paramref name="resizeRatio"/></param>
+    public static void EnableAutoResize(
+        this ContentDialog dialog,
+        double minWidth,
+        double maxWidth = double.MaxValue,
+        double resizeRatio = ContentDialogResizeRatio
+    ) {
+        ContentDialogDict[dialog] = new(new(dialog), minWidth, maxWidth, resizeRatio);
+        if (dialog.IsLoaded) {
+            // Manual invoke method
+            DialogLoadedHandler(dialog, new(FrameworkElement.LoadedEvent, dialog));
+            return;
+        }
+        dialog.Loaded -= DialogLoadedHandler;
+        dialog.Loaded += DialogLoadedHandler;
+    }
+
+    /// <summary>
+    /// Update DialogContent Width
+    /// </summary>
+    /// <param name="args"></param>
+    /// <param name="newWidth"></param>
+    private static void UpdateAutoResizeDialogWidth(ContentDialogAutoResizeArgs args, double newWidth) {
+        double minWidth = args.MinWidth, maxWidth = args.MaxWidth;
+        if (newWidth < minWidth) {
+            newWidth = minWidth;
+        } else if (newWidth > maxWidth) {
+            newWidth = maxWidth;
+        }
+        if (args.Dialog.TryGetTarget(out var dialog)) {
+            if (dialog.Content is FrameworkElement element) {
+                element.Width = newWidth;
+            }
+        }
+    }
+
+    private static void DialogLoadedHandler(object sender, RoutedEventArgs e) {
+        if (sender is not ContentDialog dialog) {
+            return;
+        }
+        dialog.Loaded -= DialogLoadedHandler;
+        var window = Window.GetWindow(dialog);
+        var args = ContentDialogDict[dialog];
+        AddToContentDialogAutoResizeDict(window, args);
+        // Remove reference
+        ContentDialogDict.Remove(dialog);
+        // Update now
+        UpdateAutoResizeDialogWidth(args, window.ActualWidth / args.ResizeRatio);
+        window.SizeChanged -= AutoResizeDialogWindowSizeChangedHandler;
+        window.SizeChanged += AutoResizeDialogWindowSizeChangedHandler;
+    }
+
+    private static void AddToContentDialogAutoResizeDict(Window window, ContentDialogAutoResizeArgs args) {
+        if (!ContentDialogAutoResizeDict.TryGetValue(window, out var dialogArgs)) {
+            ContentDialogAutoResizeDict[window] = dialogArgs = new List<ContentDialogAutoResizeArgs>();
+        }
+        // Remove duplicated
+        dialogArgs.Remove(item => {
+            if (item.Dialog.TryGetTarget(out var dialog)) {
+                if (args.Dialog.TryGetTarget(out var currentDialog) && dialog == currentDialog) {
+                    return true;
+                }
+            }
+            return false;
+        });
+        dialogArgs.Add(args);
+    }
+
+    /// <summary>
+    /// Update ContentDialog width
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private static void AutoResizeDialogWindowSizeChangedHandler(object sender, SizeChangedEventArgs e) {
+        if (sender is not Window window) {
+            return;
+        }
+        if (ContentDialogAutoResizeDict.TryGetValue(window, out var dialogArgs)) {
+            bool cleanFlag = false;
+            foreach (var args in dialogArgs) {
+                if (args.Dialog.TryGetTarget(out var _)) {
+                    UpdateAutoResizeDialogWidth(args, window.ActualWidth / args.ResizeRatio);
+                } else {
+                    cleanFlag = true;
+                }
+            }
+            // 清除
+            if (cleanFlag) {
+                CleanContentDialogAutoResizeDict(window);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Clean dict
+    /// </summary>
+    /// <param name="window"></param>
+    private static void CleanContentDialogAutoResizeDict(Window window) {
+        if (ContentDialogAutoResizeDict.TryGetValue(window, out var dialogArgList)) {
+            dialogArgList.RemoveAll(args => !args.Dialog.TryGetTarget(out _));
+        }
     }
 }
