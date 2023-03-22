@@ -1,11 +1,9 @@
-﻿using Newtonsoft.Json;
-using NLog;
-using System.Globalization;
+﻿using NLog;
 using System.Text.RegularExpressions;
 
 namespace CommonTools.Utils;
 
-public static class CommonUtils {
+public static partial class CommonUtils {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     /// <summary>
     /// 拷贝对象
@@ -90,8 +88,13 @@ public static class CommonUtils {
     /// <summary>
     /// 路径分隔符正则
     /// </summary>
+#if NET7_0_OR_GREATER
+    private static readonly Regex PathSpliterRegex = GetPathSpliterRegex();
+    [GeneratedRegex("[/\\\\]")]
+    private static partial Regex GetPathSpliterRegex();
+#elif NET6_0_OR_GREATER
     private static readonly Regex PathSpliterRegex = new(@"[/\\]");
-
+#endif
     /// <summary>
     /// 移除路径分隔符(\, /)
     /// </summary>
