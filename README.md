@@ -79,3 +79,5 @@
 ```
 
 3. 将 **Window** 继承自 **CommonUITools.Widget.BaseWindow**
+
+4. 引用：**xmlns:tools="wpf-common-ui-tools"**
