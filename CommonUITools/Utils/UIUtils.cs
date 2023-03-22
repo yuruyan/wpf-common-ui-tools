@@ -1,5 +1,4 @@
 ﻿using CommonUITools.View;
-using ModernWpf.Controls;
 using System.Diagnostics;
 using System.Windows.Documents;
 using System.Windows.Media.Imaging;

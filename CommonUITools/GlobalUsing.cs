@@ -3,7 +3,6 @@ global using CommonUITools.Model;
 global using CommonUITools.Utils;
 global using NLog;
 global using System.Collections.ObjectModel;
-global using System.ComponentModel;
 global using System.IO;
 global using System.Text;
 global using System.Windows;

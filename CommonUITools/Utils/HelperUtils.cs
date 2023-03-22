@@ -1,12 +1,8 @@
-﻿using CommonTools.Utils;
-using CommonUITools.Widget;
+﻿using CommonUITools.Widget;
 using ModernWpf;
-using System.Runtime.Intrinsics.Arm;
-using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media.Effects;
-using Windows.Devices.Radios;
 
 namespace CommonUITools.Utils;
 

@@ -1,5 +1,4 @@
 ﻿using ModernWpf.Controls;
-using System.IO;
 using System.Windows.Media.Imaging;
 
 namespace CommonUITools.Utils;
