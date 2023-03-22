@@ -129,7 +129,7 @@ public static class TaskUtils {
         return EnsureCalledOnce((identifier, identifier), callback);
     }
 
-    /// <inheritdoc cref="EnsureCalledOnce"/>
+    /// <inheritdoc cref="EnsureCalledOnce(object, Delegate)"/>
     public static bool EnsureCalledOnce((object, object) identifier, Delegate callback) {
         ArgumentNullException.ThrowIfNull(identifier);
         if (MethodCalledSet.Contains(identifier)) {
@@ -168,11 +168,21 @@ public static class TaskUtils {
         var previousTask = PreviousTaskDict[Identifier];
         // 已经完成，立即执行
         if (previousTask.IsCompleted) {
-            PreviousTaskDict[Identifier] = Task.Run(() => newTaskCallback(previousTask));
+            PreviousTaskDict[Identifier] = Task.Factory.StartNew(
+                args => {
+                    var (previousTask, newTaskCallback) = ((Task, Action<Task>))args!;
+                    newTaskCallback(previousTask);
+                },
+                (previousTask, newTaskCallback)
+            );
         } else {
-            PreviousTaskDict[Identifier] = Task.Run(async () => {
-                await previousTask.ContinueWith(newTaskCallback);
-            });
+            PreviousTaskDict[Identifier] = Task.Factory.StartNew(
+                args => {
+                    var (previousTask, newTaskCallback) = ((Task, Action<Task>))args!;
+                    previousTask.ContinueWith(newTaskCallback).Wait();
+                },
+                (previousTask, newTaskCallback)
+            );
         }
     }
 }
