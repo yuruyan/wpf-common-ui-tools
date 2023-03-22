@@ -12,7 +12,7 @@ internal static class App {
     /// <remarks>多次调用无效果</remarks>
     public static void RegisterWidgetPage(Window window) {
         TaskUtils.EnsureCalledOnce((window, UniqueObject), () => {
-            UIUtils.SetLoadedOnceEventHandler(window, static (obj, _) => {
+            window.SetLoadedOnceEventHandler(static (obj, _) => {
                 if (obj is not Window window) {
                     return;
                 }

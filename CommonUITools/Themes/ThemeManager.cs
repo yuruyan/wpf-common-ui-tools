@@ -11,15 +11,10 @@ public static class ThemeManager {
     private static readonly ResourceDictionary GenericResourceDictionary;
 
     static ThemeManager() {
+        var dictionary = Application.Current.Resources.MergedDictionaries;
         // 查找 GenericResourceDictionary
-        var res = UIUtils.FindResourceInMergedDictionaries(
-            Application.Current.Resources.MergedDictionaries,
-            GenericSource1
-        );
-        res ??= UIUtils.FindResourceInMergedDictionaries(
-            Application.Current.Resources.MergedDictionaries,
-            GenericSource2
-        );
+        var res = dictionary.FindResource(GenericSource1);
+        res ??= dictionary.FindResource(GenericSource2);
         if (res is null) {
             throw new KeyNotFoundException("Cannot find CommonUITools Generic Resource");
         }
@@ -30,8 +25,7 @@ public static class ThemeManager {
     /// 切换为 LightTheme
     /// </summary>
     public static void SwitchToLightTheme() {
-        UIUtils.ReplaceResourceDictionary(
-            GenericResourceDictionary.MergedDictionaries,
+        GenericResourceDictionary.MergedDictionaries.ReplaceResourceDictionary(
             DarkThemeSource,
             LightThemeSource
         );
@@ -42,8 +36,7 @@ public static class ThemeManager {
     /// 切换为 DarkTheme
     /// </summary>
     public static void SwitchToDarkTheme() {
-        UIUtils.ReplaceResourceDictionary(
-            GenericResourceDictionary.MergedDictionaries,
+        GenericResourceDictionary.MergedDictionaries.ReplaceResourceDictionary(
             LightThemeSource,
             DarkThemeSource
         );

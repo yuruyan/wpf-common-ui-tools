@@ -66,9 +66,9 @@ public class ProcessResultIconForegroundConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
         if (value is ProcessResult result) {
             return result switch {
-                ProcessResult.Interrupted => UIUtils.StringToBrush("#f2a416"),
-                ProcessResult.Successful => UIUtils.StringToBrush("#39b54d"),
-                ProcessResult.Failed => UIUtils.StringToBrush("#cf3736"),
+                ProcessResult.Interrupted => "#f2a416".ToBrush(),
+                ProcessResult.Successful => "#39b54d".ToBrush(),
+                ProcessResult.Failed => "#cf3736".ToBrush(),
                 _ => new SolidColorBrush(Colors.Black)
             };
         }

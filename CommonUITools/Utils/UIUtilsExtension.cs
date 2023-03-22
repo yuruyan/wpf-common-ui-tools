@@ -1,5 +1,9 @@
 ﻿using ModernWpf.Controls;
+using System.Diagnostics;
 using System.Windows.Media.Imaging;
+using SysDraw = System.Drawing;
+using SysDrawBitmap = System.Drawing.Bitmap;
+using SysDrawImg = System.Drawing.Imaging;
 
 namespace CommonUITools.Utils;
 
@@ -7,16 +11,29 @@ namespace CommonUITools.Utils;
 /// Extention for UIUtils
 /// </summary>
 public static class UIUtilsExtension {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     /// <summary>
     /// ContentDialogResizeRatio
     /// </summary>
     public const double ContentDialogResizeRatio = 2;
 
-    /// <inheritdoc cref="UIUtils.IsLeftButtonDown(MouseButtonEventArgs)"/>
-    public static bool IsLeftButtonDown(this MouseButtonEventArgs e) => UIUtils.IsLeftButtonDown(e);
+    /// <summary>
+    /// 左键是否单击
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+    public static bool IsLeftButtonDown(this MouseButtonEventArgs e) {
+        return e.LeftButton == MouseButtonState.Pressed;
+    }
 
-    /// <inheritdoc cref="UIUtils.IsRightButtonDown(MouseButtonEventArgs)"/>
-    public static bool IsRightButtonDown(this MouseButtonEventArgs e) => UIUtils.IsRightButtonDown(e);
+    /// <summary>
+    /// 右键是否单击
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+    public static bool IsRightButtonDown(this MouseButtonEventArgs e) {
+        return e.RightButton == MouseButtonState.Pressed;
+    }
 
     /// <summary>
     /// 鼠标左键是否按下
@@ -25,38 +42,152 @@ public static class UIUtilsExtension {
     /// <returns></returns>
     public static bool IsLeftButtonDown(this MouseEventArgs e) => e.LeftButton == MouseButtonState.Pressed;
 
-    /// <inheritdoc cref="UIUtils.StringToBrush(string)"/>
-    public static SolidColorBrush ToBrush(this string color) => UIUtils.StringToBrush(color);
+    /// <summary>
+    /// 鼠标右键是否按下
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+    public static bool IsRightButtonDown(this MouseEventArgs e) => e.RightButton == MouseButtonState.Pressed;
 
-    /// <inheritdoc cref="UIUtils.StringToColor(string)"/>
-    public static Color ToColor(this string color) => UIUtils.StringToColor(color);
+    /// <summary>
+    /// <see cref="string"/> 转 <see cref="SolidColorBrush"/>
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns></returns>
+    public static SolidColorBrush ToBrush(this string color) {
+        return new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
+    }
 
-    /// <inheritdoc cref="UIUtils.DrawingColorToColor(System.Drawing.Color)"/>
-    public static Color ToColor(this System.Drawing.Color color) => UIUtils.DrawingColorToColor(color);
+    /// <summary>
+    /// <see cref="string"/> 转 <see cref="Color"/>
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns></returns>
+    public static Color ToColor(this string color) {
+        return color.ToBrush().Color;
+    }
 
-    /// <inheritdoc cref="UIUtils.OpenFileInExplorerAsync(string, Action{Exception}?)"/>
+    /// <summary>
+    /// <see cref="System.Drawing.Color"/> 转 <see cref="System.Windows.Media.Color"/>
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns></returns>
+    public static Color ToColor(this SysDraw.Color color) {
+        return Color.FromArgb(color.A, color.R, color.G, color.B);
+    }
+
+    /// <summary>
+    /// 在文件资源管理器中异步打开文件
+    /// </summary>
+    /// <param name="path">文件绝对路径</param>
+    /// <param name="failedCallback">发生异常回调</param>
     public static void OpenFileInExplorerAsync(this string path, Action<Exception>? failedCallback = null) {
-        UIUtils.OpenFileInExplorerAsync(path, failedCallback);
+        try {
+            Process.Start("explorer.exe", "/select," + path.ReplaceSlashWithBackSlash());
+        } catch (Exception error) {
+            if (failedCallback != null) {
+                failedCallback(error);
+                return;
+            }
+            MessageBoxUtils.Error("打开失败," + error.Message);
+            Logger.Info(error);
+        }
     }
 
-    /// <inheritdoc cref="UIUtils.OpenFileInExistingExplorerAsync(string, Action{Exception}?)"/>
+    /// <summary>
+    /// 在文件资源管理器中异步打开文件，如果存在路径相同的窗口，则不会新建窗口
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="failedCallback"></param>
     public static void OpenFileInExistingExplorerAsync(this string path, Action<Exception>? failedCallback = null) {
-        UIUtils.OpenFileInExistingExplorerAsync(path, failedCallback);
+        try {
+            PInvokeUtils.ShellExecuteW(
+                IntPtr.Zero,
+                "open",
+                path.ReplaceSlashWithBackSlash(),
+                string.Empty,
+                string.Empty,
+                ShowCommands.SW_SHOWNORMAL
+            );
+        } catch (Exception error) {
+            if (failedCallback != null) {
+                failedCallback(error);
+                return;
+            }
+            MessageBoxUtils.Error("打开失败," + error.Message);
+            Logger.Info(error);
+        }
     }
 
-    /// <inheritdoc cref="UIUtils.OpenFileWithAsync(string, Action{Exception}?)"/>
+    /// <summary>
+    /// 选择以什么方式异步打开文件
+    /// </summary>
+    /// <param name="path">文件绝对路径</param>
+    /// <param name="failedCallback">发生异常回调</param>
     public static void OpenFileWithAsync(this string path, Action<Exception>? failedCallback = null) {
-        UIUtils.OpenFileWithAsync(path, failedCallback);
+        try {
+            Process.Start("rundll32.exe", $"shell32.dll, OpenAs_RunDLL {path.ReplaceSlashWithBackSlash()}");
+        } catch (Exception error) {
+            if (failedCallback != null) {
+                failedCallback(error);
+                return;
+            }
+            MessageBoxUtils.Error("打开失败," + error.Message);
+            Logger.Info(error);
+        }
     }
 
-    /// <inheritdoc cref="UIUtils.OpenInBrowser(string)"/>
-    public static void OpenInBrowser(this string url) => UIUtils.OpenInBrowser(url);
+    /// <summary>
+    /// 通知打开文件
+    /// </summary>
+    /// <param name="filepath"></param>
+    /// <param name="title"></param>
+    /// <param name="message"></param>
+    public static void NotificationOpenFileInExplorerAsync(string filepath, string title = "成功", string message = "点击打开") {
+        MessageBoxUtils.NotifySuccess(
+            title,
+            message,
+            callback: () => filepath.OpenFileInExplorerAsync()
+        );
+    }
 
-    /// <inheritdoc cref="UIUtils.ReversePanelChildrenOrder(Panel)"/>
-    public static void ReverseChildrenOrder(this Panel panel) => UIUtils.ReversePanelChildrenOrder(panel);
+    /// <summary>
+    /// 在浏览器中打开
+    /// </summary>
+    /// <param name="url"></param>
+    public static void OpenInBrowser(this string url) {
+        Process.Start(new ProcessStartInfo() {
+            UseShellExecute = true,
+            FileName = url,
+        });
+    }
 
-    /// <inheritdoc cref="UIUtils.CopyImageSource(string)"/>
-    public static BitmapImage GetImageSource(this string filepath) => UIUtils.CopyImageSource(filepath);
+    /// <summary>
+    /// 反转 Panel Children 顺序
+    /// </summary>
+    /// <param name="panel"></param>
+    public static void ReverseChildrenOrder(this Panel panel) {
+        var children = panel.Children.Cast(o => o as UIElement).Reverse();
+        panel.Children.Clear();
+        children.ForEach(item => panel.Children.Add(item));
+    }
+
+    /// <summary>
+    /// 获取 <see cref="ImageSource"/>
+    /// </summary>
+    /// <param name="filepath">图像路径</param>
+    /// <returns></returns>
+    public static BitmapImage GetImageSource(this string filepath) {
+        var bi = new BitmapImage();
+        using var bitmap = new SysDrawBitmap(filepath);
+        var memoryStream = new MemoryStream();
+        bitmap.Save(memoryStream, SysDrawImg.ImageFormat.Png);
+        memoryStream.Position = 0;
+        bi.BeginInit();
+        bi.StreamSource = memoryStream;
+        bi.EndInit();
+        return bi;
+    }
 
     /// <summary>
     /// 获取资源文件 BitmapImage
@@ -73,34 +204,105 @@ public static class UIUtilsExtension {
         return bi;
     }
 
-    /// <inheritdoc cref="UIUtils.BitmapSourceToBitmap(BitmapSource)"/>
-    public static System.Drawing.Bitmap ToBitmap(this BitmapSource bitmapSource) => UIUtils.BitmapSourceToBitmap(bitmapSource);
-
-    /// <inheritdoc cref="UIUtils.BitmapToImageSource(System.Drawing.Bitmap)"/>
-    public static ImageSource ToImageSource(this System.Drawing.Bitmap bitmap) => UIUtils.BitmapToImageSource(bitmap);
-
-    /// <inheritdoc cref="UIUtils.BitmapToStream(System.Drawing.Bitmap)"/>
-    public static Stream ToStream(this System.Drawing.Bitmap bitmap) => UIUtils.BitmapToStream(bitmap);
-
-    /// <inheritdoc cref="UIUtils.FindResourceInMergedDictionaries(Collection{ResourceDictionary}, string)"/>
-    public static ResourceDictionary? FindResource(this Collection<ResourceDictionary> mergedDictionaries, string sourcePath) {
-        return UIUtils.FindResourceInMergedDictionaries(mergedDictionaries, sourcePath);
+    /// <summary>
+    /// <see cref="BitmapSource"/> 转为 <see cref="SysDrawBitmap"/>
+    /// </summary>
+    /// <param name="bitmapSource"></param>
+    /// <returns></returns>
+    public static SysDrawBitmap ToBitmap(this BitmapSource bitmapSource) {
+        SysDrawBitmap bitmap = new(
+            bitmapSource.PixelWidth,
+            bitmapSource.PixelHeight,
+            SysDrawImg.PixelFormat.Format32bppArgb
+        );
+        SysDrawImg.BitmapData data = bitmap.LockBits(
+            new SysDraw.Rectangle(SysDraw.Point.Empty, bitmap.Size),
+            SysDrawImg.ImageLockMode.WriteOnly,
+            SysDrawImg.PixelFormat.Format32bppArgb
+        );
+        bitmapSource.CopyPixels(
+            Int32Rect.Empty,
+            data.Scan0,
+            data.Height * data.Stride,
+            data.Stride
+        );
+        bitmap.UnlockBits(data);
+        return bitmap;
     }
-
-    /// <inheritdoc cref="UIUtils.ReplaceResourceDictionary(Collection{ResourceDictionary}, string, string)"/>
-    public static bool ReplaceResourceDictionary(this Collection<ResourceDictionary> mergedDictionaries, string oldSource, string newSource) {
-        return UIUtils.ReplaceResourceDictionary(mergedDictionaries, oldSource, newSource);
-    }
-
-    /// <inheritdoc cref="UIUtils.GetElementDataContext{T}(object)"/>
-    public static T? GetElementDataContext<T>(this object sender) => UIUtils.GetElementDataContext<T>(sender);
 
     /// <summary>
-    /// 鼠标右键是否按下
+    /// <see cref="SysDrawBitmap"/> 转为 <see cref="ImageSource"/>
     /// </summary>
-    /// <param name="e"></param>
+    /// <param name="bitmap"></param>
     /// <returns></returns>
-    public static bool IsRightButtonDown(this MouseEventArgs e) => e.RightButton == MouseButtonState.Pressed;
+    public static ImageSource ToImageSource(this SysDrawBitmap bitmap) {
+        IntPtr intPtr = bitmap.GetHbitmap();
+        return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+            intPtr,
+            IntPtr.Zero,
+            Int32Rect.Empty,
+            BitmapSizeOptions.FromEmptyOptions()
+        );
+    }
+
+    /// <summary>
+    /// <see cref="SysDrawBitmap"/> 转 <see cref="Stream"/>
+    /// </summary>
+    /// <param name="bitmap"></param>
+    /// <returns></returns>
+    public static Stream ToStream(this SysDrawBitmap bitmap) {
+        var memoryStream = new MemoryStream();
+        bitmap.Save(memoryStream, SysDrawImg.ImageFormat.Png);
+        memoryStream.Position = 0;
+        return memoryStream;
+    }
+
+    /// <summary>
+    /// 在 MergedDictionaries 中查找
+    /// </summary>
+    /// <param name="mergedDictionaries"></param>
+    /// <param name="sourcePath"></param>
+    /// <returns></returns>
+    public static ResourceDictionary? FindResource(this Collection<ResourceDictionary> mergedDictionaries, string sourcePath) {
+        return mergedDictionaries.FirstOrDefault(
+            r => r.Source != null && r.Source.OriginalString == sourcePath
+        );
+    }
+
+    /// <summary>
+    /// 替换 <see cref="ResourceDictionary"/>
+    /// </summary>
+    /// <param name="mergedDictionaries"></param>
+    /// <param name="oldSource"></param>
+    /// <param name="newSource"></param>
+    /// <returns></returns>
+    public static bool ReplaceResourceDictionary(this Collection<ResourceDictionary> mergedDictionaries, string oldSource, string newSource) {
+        var oldResource = mergedDictionaries.FindResource(oldSource);
+        if (oldResource is null) {
+            Logger.Error($"Cannot find resource {oldSource}");
+            return false;
+        }
+        oldResource.BeginInit();
+        oldResource.Source = new(newSource, UriKind.Relative);
+        oldResource.EndInit();
+        return true;
+    }
+
+    /// <summary>
+    /// 获取 <paramref name="sender"/> 的 <see cref="FrameworkElement.DataContext"/>
+    /// </summary>
+    /// <typeparam name="T">DataContext type</typeparam>
+    /// <param name="sender">继承自 FrameworkContentElement 或 FrameworkElement</param>
+    /// <returns>获取失败返回 default(<typeparamref name="T"/>)</returns>
+    public static T? GetElementDataContext<T>(this object sender) {
+        if (sender is FrameworkElement element && element.DataContext is T data) {
+            return data;
+        }
+        if (sender is FrameworkContentElement contentElement && contentElement.DataContext is T contentData) {
+            return contentData;
+        }
+        return default;
+    }
 
     /// <summary>
     /// 启用 ContentDialog 自动调整大小
@@ -115,7 +317,7 @@ public static class UIUtilsExtension {
         double maxWidth = double.MaxValue,
         double resizeRatio = ContentDialogResizeRatio
     ) {
-        UIUtils.SetLoadedOnceEventHandler(dialog, (_, _) => {
+        dialog.SetLoadedOnceEventHandler((_, _) => {
             var window = Window.GetWindow(dialog);
             var dialogDebounceId = new object();
             // Update now
@@ -145,13 +347,54 @@ public static class UIUtilsExtension {
         }
     }
 
-    /// <inheritdoc cref="UIUtils.SetLoadedOnceEventHandler(FrameworkContentElement, RoutedEventHandler)"/>
-    public static void SetLoadedOnceEventHandler(this FrameworkContentElement element, RoutedEventHandler handler) {
-        UIUtils.SetLoadedOnceEventHandler(element, handler);
+    private static readonly IDictionary<DependencyObject, ICollection<RoutedEventHandler>> LoadedOnceEventHandlersDict = new Dictionary<DependencyObject, ICollection<RoutedEventHandler>>();
+
+    /// <summary>
+    /// 设置只执行一次的 Loaded EventHandler
+    /// </summary>
+    /// <param name="element"></param>
+    /// <param name="handler"></param>
+    public static void SetLoadedOnceEventHandler(this FrameworkElement element, RoutedEventHandler handler) {
+        SetLoadedOnceEventHandler(element as DependencyObject, handler);
     }
 
-    /// <inheritdoc cref="UIUtils.SetLoadedOnceEventHandler(FrameworkElement, RoutedEventHandler)"/>
-    public static void SetLoadedOnceEventHandler(this FrameworkElement element, RoutedEventHandler handler) {
-        UIUtils.SetLoadedOnceEventHandler(element, handler);
+    /// <inheritdoc cref="SetLoadedOnceEventHandler(FrameworkElement, RoutedEventHandler)"/>
+    public static void SetLoadedOnceEventHandler(this FrameworkContentElement element, RoutedEventHandler handler) {
+        SetLoadedOnceEventHandler(element as DependencyObject, handler);
+    }
+
+    private static void SetLoadedOnceEventHandler(DependencyObject dp, RoutedEventHandler handler) {
+        // Initialize
+        if (!LoadedOnceEventHandlersDict.TryGetValue(dp, out var handlers)) {
+            LoadedOnceEventHandlersDict[dp] = handlers = new List<RoutedEventHandler>();
+        }
+        if (dp is FrameworkElement element) {
+            element.Loaded -= LoadedOnceEventHandlerInternal;
+            element.Loaded += LoadedOnceEventHandlerInternal;
+        } else if (dp is FrameworkContentElement contentElement) {
+            contentElement.Loaded -= LoadedOnceEventHandlerInternal;
+            contentElement.Loaded += LoadedOnceEventHandlerInternal;
+        }
+        handlers.Add(handler);
+    }
+
+    private static void LoadedOnceEventHandlerInternal(object sender, RoutedEventArgs e) {
+        if (sender is not DependencyObject dp) {
+            return;
+        }
+        var handlers = LoadedOnceEventHandlersDict[dp];
+        // 清除
+        LoadedOnceEventHandlersDict.Remove(dp);
+        // Remove event handler
+        if (sender is FrameworkElement element) {
+            element.Loaded -= LoadedOnceEventHandlerInternal;
+        } else if (sender is FrameworkContentElement contentElement) {
+            contentElement.Loaded -= LoadedOnceEventHandlerInternal;
+        }
+        // 逐一调用
+        foreach (var handler in handlers) {
+            handler(sender, e);
+        }
+        handlers.Clear();
     }
 }

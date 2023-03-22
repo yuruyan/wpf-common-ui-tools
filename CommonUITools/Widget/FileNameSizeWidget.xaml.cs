@@ -24,7 +24,7 @@ public partial class FileNameSizeWidget : SimpleStackPanel {
     /// <param name="e"></param>
     private void OpenFileClickHandler(object sender, RoutedEventArgs e) {
         e.Handled = true;
-        UIUtils.OpenFileWithAsync(FileName);
+        FileName.OpenFileWithAsync();
     }
 
     /// <summary>
@@ -34,6 +34,6 @@ public partial class FileNameSizeWidget : SimpleStackPanel {
     /// <param name="e"></param>
     private void OpenInFileExplorerHandler(object sender, RoutedEventArgs e) {
         e.Handled = true;
-        UIUtils.OpenFileInExplorerAsync(FileName);
+        FileName.OpenFileInExplorerAsync();
     }
 }

@@ -32,7 +32,7 @@ public class BrushToColorConverter : IValueConverter {
 /// </summary>
 public class StringToBrushConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return UIUtils.StringToBrush((string)value);
+        return value.ToString()!.ToBrush();
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -45,7 +45,7 @@ public class StringToBrushConverter : IValueConverter {
 /// </summary>
 public class StringToColorConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return ((SolidColorBrush)UIUtils.StringToBrush((string)value)).Color;
+        return value.ToString()!.ToColor();
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {

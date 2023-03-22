@@ -982,7 +982,7 @@ public static class VisibilityAnimationHelper {
 /// </summary>
 public static class DropShadowEffectHelper {
     public static readonly DependencyProperty WeightProperty = DependencyProperty.RegisterAttached("Weight", typeof(DropShadowEffectWeight), typeof(DropShadowEffectHelper), new PropertyMetadata(DropShadowEffectWeight.None, EffectWeightChangedHandler));
-    private static readonly Color DropShadowColor = UIUtils.StringToColor("#dfdfdf");
+    private static readonly Color DropShadowColor = "#dfdfdf".ToColor();
 
     public static DropShadowEffectWeight GetWeight(DependencyObject obj) {
         return (DropShadowEffectWeight)obj.GetValue(WeightProperty);
@@ -1350,7 +1350,7 @@ public static class AutoHideHelper {
             window.PreviewMouseUp -= WindowPreviewMouseUpHandler;
             window.PreviewMouseUp += WindowPreviewMouseUpHandler;
         } else {
-            UIUtils.SetLoadedOnceEventHandler(element, (_, _) => {
+            element.SetLoadedOnceEventHandler((_, _) => {
                 var window = Window.GetWindow(element);
                 TargetElementStateDict[targetId].ElementWindow = window;
                 window.PreviewMouseUp -= WindowPreviewMouseUpHandler;

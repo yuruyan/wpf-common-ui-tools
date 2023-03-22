@@ -38,7 +38,7 @@ public partial class DragDropTextBox : UserControl {
 
     public DragDropTextBox() {
         // Set content to TextBox
-        UIUtils.SetLoadedOnceEventHandler(this, static (sender, _) => {
+        this.SetLoadedOnceEventHandler(static (sender, _) => {
             if (sender is DragDropTextBox box) {
                 box.Content = box.TextBox;
             }

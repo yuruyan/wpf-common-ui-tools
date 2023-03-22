@@ -11,7 +11,7 @@ public partial class ButtonResources {
                     file = tag;
                 }
             }
-            UIUtils.OpenFileInExplorerAsync(file ?? string.Empty);
+            (file ?? string.Empty).OpenFileInExplorerAsync();
         }
     }
 }

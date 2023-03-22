@@ -77,7 +77,7 @@ public partial class MultiDragDropTextBox : UserControl {
         SetValue(FileNameListPropertyKey, new ExtendedObservableCollection<string>());
         // 更新 FirstFileName
         FileNameList.CollectionChanged += FileNameListCollectionChangedHandler;
-        UIUtils.SetLoadedOnceEventHandler(this, static (sender, _) => {
+        this.SetLoadedOnceEventHandler(static (sender, _) => {
             if (sender is MultiDragDropTextBox textBox) {
                 if (textBox.TryFindResource("MultilineTextBoxStyle") is Style style) {
                     textBox.TextBoxStyle ??= style;
@@ -151,7 +151,7 @@ public partial class MultiDragDropTextBox : UserControl {
     private void OpenFileClickHandler(object sender, RoutedEventArgs e) {
         e.Handled = true;
         if (sender.GetElementDataContext<string>() is string path) {
-            UIUtils.OpenFileWithAsync(path);
+            path.OpenFileWithAsync();
         }
     }
 
@@ -163,7 +163,7 @@ public partial class MultiDragDropTextBox : UserControl {
     private void OpenDirectoryClickHandler(object sender, RoutedEventArgs e) {
         e.Handled = true;
         if (sender.GetElementDataContext<string>() is string path) {
-            UIUtils.OpenFileInExplorerAsync(path);
+            path.OpenFileInExplorerAsync();
         }
     }
 

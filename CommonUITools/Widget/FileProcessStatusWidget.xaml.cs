@@ -55,7 +55,7 @@ public partial class FileProcessStatusWidget : UserControl {
     private void OpenFileClickHandler(object sender, RoutedEventArgs e) {
         e.Handled = true;
         if (sender.GetElementDataContext<FileProcessStatus>() is { } status) {
-            UIUtils.OpenFileWithAsync(status.FileName);
+            status.FileName.OpenFileWithAsync();
         }
     }
 
@@ -67,7 +67,7 @@ public partial class FileProcessStatusWidget : UserControl {
     private void OpenDirectoryClickHandler(object sender, RoutedEventArgs e) {
         e.Handled = true;
         if (sender.GetElementDataContext<FileProcessStatus>() is { } status) {
-            UIUtils.OpenFileInExplorerAsync(status.FileName);
+            status.FileName.OpenFileInExplorerAsync();
         }
     }
 
