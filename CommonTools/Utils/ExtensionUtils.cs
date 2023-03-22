@@ -396,4 +396,21 @@ public static class ExtensionUtils {
         return false;
     }
 
+    /// <summary>
+    /// 获取集合相同前缀
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    public static string GetSamePrefix(this IEnumerable<string> list) {
+        var shortest = list.Min()!;
+        var sb = new StringBuilder();
+        for (int i = 0; i < shortest.Length; i++) {
+            var same = list.All(item => item[i] == shortest[i]);
+            if (!same) {
+                return sb.ToString();
+            }
+            sb.Append(shortest[i]);
+        }
+        return sb.ToString();
+    }
 }

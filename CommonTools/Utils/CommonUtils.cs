@@ -18,24 +18,6 @@ public static class CommonUtils {
     }
 
     /// <summary>
-    /// 获取集合相同前缀
-    /// </summary>
-    /// <param name="list"></param>
-    /// <returns></returns>
-    public static string GetSamePrefix(IEnumerable<string> list) {
-        var sb = new StringBuilder();
-        foreach (var s in list.FirstOrDefault() ?? string.Empty) {
-            foreach (var item in list) {
-                if (item[sb.Length] != s) {
-                    return sb.ToString();
-                }
-            }
-            sb.Append(s);
-        }
-        return sb.ToString();
-    }
-
-    /// <summary>
     /// 标准化多行输入文本
     /// 将 "\r\n" 替换为 '\n'
     /// </summary>
