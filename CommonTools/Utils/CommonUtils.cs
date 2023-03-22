@@ -18,16 +18,6 @@ public static class CommonUtils {
     }
 
     /// <summary>
-    /// 标准化多行输入文本
-    /// 将 "\r\n" 替换为 '\n'
-    /// </summary>
-    /// <param name="text"></param>
-    /// <returns></returns>
-    public static string NormalizeMultipleLineText(string text) {
-        return text.Replace("\r\n", "\n");
-    }
-
-    /// <summary>
     /// 单例模式对象 Dict
     /// </summary>
     private static readonly IDictionary<Type, object> SingletonDict = new Dictionary<Type, object>();

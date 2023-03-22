@@ -6,7 +6,7 @@ namespace CommonTools.Utils;
 /// <summary>
 /// 扩展方法
 /// </summary>
-public static class ExtensionUtils {
+public static partial class ExtensionUtils {
     /// <summary>
     /// 从 collection 中移除符合 predicate 条件的第一个元素
     /// </summary>
@@ -175,20 +175,6 @@ public static class ExtensionUtils {
             target[i] = converter(enumerator.Current);
         }
     }
-
-    /// <summary>
-    /// 替换 '/' 为 '\\'
-    /// </summary>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    public static string ReplaceSlashWithBackSlash(this string source) => source.Replace('/', '\\');
-
-    /// <summary>
-    /// 替换 '\\' 为 '/'
-    /// </summary>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    public static string ReplaceBackSlashWithSlash(this string source) => source.Replace('\\', '/');
 
     /// <summary>
     /// ForEach
@@ -413,4 +399,30 @@ public static class ExtensionUtils {
         }
         return sb.ToString();
     }
+}
+
+/// <summary>
+/// for string
+/// </summary>
+public static partial class ExtensionUtils {
+    /// <summary>
+    /// 替换 '/' 为 '\\'
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static string ReplaceSlashWithBackSlash(this string source) => source.Replace('/', '\\');
+
+    /// <summary>
+    /// 替换 '\\' 为 '/'
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static string ReplaceBackSlashWithSlash(this string source) => source.Replace('\\', '/');
+
+    /// <summary>
+    /// 将换行符替换为 Linux 样式 (\n)
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static string ReplaceLineFeedWithLinuxStyle(this string source) => source.Replace("\r\n", "\n");
 }
