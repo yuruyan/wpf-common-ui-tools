@@ -1530,9 +1530,11 @@ public static class HoverVisibleHelper {
 
 public static class RevealBackgroundHelper {
     public const double DefaultRadius = 50;
+    public static readonly Color DefaultBrushColor = (Color)ColorConverter.ConvertFromString("#8f8f8f");
     public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.RegisterAttached("IsEnabled", typeof(bool), typeof(RevealBackgroundHelper), new PropertyMetadata(false, IsEnabledPropertyChangedHandler));
     public static readonly DependencyProperty BackgroundPropertyProperty = DependencyProperty.RegisterAttached("BackgroundProperty", typeof(DependencyProperty), typeof(RevealBackgroundHelper), new PropertyMetadata(BackgroundPropertyPropertyChangedHandler));
     public static readonly DependencyProperty RadiusProperty = DependencyProperty.RegisterAttached("Radius", typeof(double), typeof(RevealBackgroundHelper), new PropertyMetadata(DefaultRadius, RadiusPropertyChangedHandler));
+    public static readonly DependencyProperty BrushColorProperty = DependencyProperty.RegisterAttached("BrushColor", typeof(Color), typeof(RevealBackgroundHelper), new PropertyMetadata(DefaultBrushColor, BrushColorPropertyChangedHandler));
     private static readonly IDictionary<Window, ICollection<(FrameworkElement, RadialGradientBrush)>> WindowElementDict = new Dictionary<Window, ICollection<(FrameworkElement, RadialGradientBrush)>>();
 
     public static bool GetIsEnabled(DependencyObject obj) {
@@ -1567,6 +1569,32 @@ public static class RevealBackgroundHelper {
     /// <param name="value"></param>
     public static void SetRadius(DependencyObject obj, double value) {
         obj.SetValue(RadiusProperty, value);
+    }
+    public static Color GetBrushColor(DependencyObject obj) {
+        return (Color)obj.GetValue(BrushColorProperty);
+    }
+    /// <summary>
+    /// 背景颜色
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetBrushColor(DependencyObject obj, Color value) {
+        obj.SetValue(BrushColorProperty, value);
+    }
+
+    private static void BrushColorPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not FrameworkElement element) {
+            return;
+        }
+        if (element.IsLoaded) {
+            if (!GetIsEnabled(element)) {
+                return;
+            }
+            SetBackground(element);
+            return;
+        }
+        element.Loaded -= ElementLoadedHandler;
+        element.Loaded += ElementLoadedHandler;
     }
 
     private static void RadiusPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -1622,6 +1650,7 @@ public static class RevealBackgroundHelper {
             if (GetBackgroundProperty(element) is DependencyProperty backgroundProperty) {
                 element.ClearValue(backgroundProperty);
             }
+            RemoveFromWindowElementDict(element);
         }
         // Set Background
         else {
@@ -1662,7 +1691,9 @@ public static class RevealBackgroundHelper {
     }
 
     private static RadialGradientBrush CreateBrush(FrameworkElement element) {
-        return new RadialGradientBrush((Color)ColorConverter.ConvertFromString("#8f8f8f"), Colors.Transparent) {
+        var brushColor = GetBrushColor(element);
+        brushColor = brushColor == default ? DefaultBrushColor : brushColor;
+        return new RadialGradientBrush(brushColor, Colors.Transparent) {
             MappingMode = BrushMappingMode.Absolute,
             RadiusX = GetRadius(element),
             RadiusY = GetRadius(element),
@@ -1674,18 +1705,24 @@ public static class RevealBackgroundHelper {
         };
     }
 
-    public static void Dispose(FrameworkElement element) {
-        element.ClearValue(RadiusProperty);
-        element.ClearValue(IsEnabledProperty);
-        if (GetBackgroundProperty(element) is DependencyProperty backgroundProperty) {
-            element.ClearValue(backgroundProperty);
-        }
-        element.ClearValue(BackgroundPropertyProperty);
+    private static void RemoveFromWindowElementDict(FrameworkElement element) {
         foreach (var (_, elements) in WindowElementDict) {
             var target = elements.FirstOrDefault(item => item.Item1 == element);
             if (target != default((FrameworkElement, RadialGradientBrush))) {
                 elements.Remove(target);
+                return;
             }
         }
+    }
+
+    public static void Dispose(FrameworkElement element) {
+        element.ClearValue(RadiusProperty);
+        element.ClearValue(IsEnabledProperty);
+        element.ClearValue(BrushColorProperty);
+        if (GetBackgroundProperty(element) is DependencyProperty backgroundProperty) {
+            element.ClearValue(backgroundProperty);
+        }
+        element.ClearValue(BackgroundPropertyProperty);
+        RemoveFromWindowElementDict(element);
     }
 }
