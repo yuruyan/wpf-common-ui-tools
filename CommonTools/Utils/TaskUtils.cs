@@ -46,6 +46,7 @@ public static class TaskUtils {
     /// 简化 try 代码块，以异步方式
     /// </summary>
     /// <param name="task"></param>
+    /// <param name="defaultValue"></param>
     [NoException]
     public static async Task<T?> TryAsync<T>(Func<Task<T>> task, T? defaultValue = default) {
         try {
@@ -109,28 +110,20 @@ public static class TaskUtils {
     /// 调用过的方法 Set
     /// </summary>
     private static readonly ConcurrentBag<object> MethodCalledSet = new();
-
-    /// <summary>
-    /// 调用过的方法 Set
-    /// </summary>
-    private static readonly ConcurrentBag<(object, object)> MethodCalledTupleSet = new();
     /// <summary>
     /// Tuple lock
     /// </summary>
-    private static readonly IDictionary<(object, object), object> MethodCalledLockDict = new ConcurrentDictionary<(object, object), object>();
+    private static readonly IDictionary<object, object> MethodCalledLockDict = new ConcurrentDictionary<object, object>();
 
     /// <summary>
     /// 确保方法只调用一次
     /// </summary>
     /// <param name="identifier">唯一标识</param>
     /// <param name="callback">回调方法</param>
+    /// <param name="hasParameters">是否有参数</param>
+    /// <param name="args"><paramref name="callback"/> 参数</param>
     /// <returns>返回 true 则未调用过，否则返回 false</returns>
-    public static bool EnsureCalledOnce(object identifier, Delegate callback) {
-        return EnsureCalledOnce((identifier, identifier), callback);
-    }
-
-    /// <inheritdoc cref="EnsureCalledOnce(object, Delegate)"/>
-    public static bool EnsureCalledOnce((object, object) identifier, Delegate callback) {
+    private static bool EnsureCalledOnce(object identifier, Delegate callback, bool hasParameters, object? args) {
         ArgumentNullException.ThrowIfNull(identifier);
         if (MethodCalledSet.Contains(identifier)) {
             return false;
@@ -142,11 +135,25 @@ public static class TaskUtils {
             if (MethodCalledSet.Contains(identifier)) {
                 return false;
             }
-            callback.DynamicInvoke();
+            if (hasParameters) {
+                callback.DynamicInvoke(new object[] { args });
+            } else {
+                callback.DynamicInvoke();
+            }
             // 调用成功后再 Add
             MethodCalledSet.Add(identifier);
             return true;
         }
+    }
+
+    /// <inheritdoc cref="EnsureCalledOnce(object, Delegate, bool, object?)"/>
+    public static bool EnsureCalledOnce(object identifier, Delegate callback, object? args) {
+        return EnsureCalledOnce(identifier, callback, true, args);
+    }
+
+    /// <inheritdoc cref="EnsureCalledOnce(object, Delegate, bool, object?)"/>
+    public static bool EnsureCalledOnce(object identifier, Delegate callback) {
+        return EnsureCalledOnce(identifier, callback, false, null);
     }
 
     /// <summary>
