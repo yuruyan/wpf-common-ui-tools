@@ -1,6 +1,6 @@
 ﻿using System.Timers;
 
-namespace CommonUITools.Widget;
+namespace CommonUITools.Controls;
 
 public partial class NotificationBox : UserControl {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

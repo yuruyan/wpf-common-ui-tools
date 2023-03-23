@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:local="clr-namespace:CommonUITools.Widget">
+  xmlns:local="clr-namespace:CommonUITools.Controls">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ConverterResources.xaml" />
   </ResourceDictionary.MergedDictionaries>

@@ -1,16 +1,16 @@
 ﻿using CommonUITools.Converter;
 
-namespace CommonUITools.Widget;
+namespace CommonUITools.Controls;
 
 /// <summary>
 /// 文件名、图标 widget
 /// </summary>
-public partial class FileNameIconWidget : UserControl {
+public partial class FileNameIconBox : UserControl {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register("FileName", typeof(string), typeof(FileNameIconWidget), new PropertyMetadata(string.Empty));
-    public static readonly DependencyProperty IconPathProperty = DependencyProperty.Register("IconPath", typeof(string), typeof(FileNameIconWidget), new PropertyMetadata(string.Empty));
-    public static readonly DependencyProperty IconSizeProperty = DependencyProperty.Register("IconSize", typeof(double), typeof(FileNameIconWidget), new PropertyMetadata(20.0));
-    public static readonly DependencyProperty AutoIconProperty = DependencyProperty.Register("AutoIcon", typeof(bool), typeof(FileNameIconWidget), new PropertyMetadata(true, AutoIconPropertyChangedHandler));
+    public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register("FileName", typeof(string), typeof(FileNameIconBox), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty IconPathProperty = DependencyProperty.Register("IconPath", typeof(string), typeof(FileNameIconBox), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty IconSizeProperty = DependencyProperty.Register("IconSize", typeof(double), typeof(FileNameIconBox), new PropertyMetadata(20.0));
+    public static readonly DependencyProperty AutoIconProperty = DependencyProperty.Register("AutoIcon", typeof(bool), typeof(FileNameIconBox), new PropertyMetadata(true, AutoIconPropertyChangedHandler));
 
     public string FileName {
         get { return (string)GetValue(FileNameProperty); }
@@ -39,12 +39,12 @@ public partial class FileNameIconWidget : UserControl {
     }
     private readonly IValueConverter FileIconConverter = new FileIconConverter();
 
-    public FileNameIconWidget() {
+    public FileNameIconBox() {
         InitializeComponent();
     }
 
     private static void AutoIconPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-        if (d is not FileNameIconWidget self) {
+        if (d is not FileNameIconBox self) {
             return;
         }
 

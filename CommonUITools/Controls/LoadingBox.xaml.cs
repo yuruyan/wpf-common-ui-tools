@@ -1,4 +1,4 @@
-﻿namespace CommonUITools.Widget;
+﻿namespace CommonUITools.Controls;
 
 public partial class LoadingBox : UserControl {
     public const double DefaultSize = 30;

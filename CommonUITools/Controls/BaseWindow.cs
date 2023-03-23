@@ -1,4 +1,4 @@
-﻿namespace CommonUITools.Widget;
+﻿namespace CommonUITools.Controls;
 
 public class BaseWindow : Window {
     public BaseWindow() {

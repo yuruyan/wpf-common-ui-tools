@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media.Imaging;
 
-namespace CommonUITools.Widget;
+namespace CommonUITools.Controls;
 
 public partial class EmptyView : UserControl {
     private BitmapImage BitmapImage = default!;

@@ -1,10 +1,10 @@
-﻿namespace CommonUITools.Widget;
+﻿namespace CommonUITools.Controls;
 
-public partial class FileSizeWidget : UserControl {
-    public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register("FileName", typeof(string), typeof(FileSizeWidget), new PropertyMetadata(string.Empty, FileNamePropertyChangedHandler));
-    public static readonly DependencyProperty FileSizeProperty = DependencyProperty.Register("FileSize", typeof(long), typeof(FileSizeWidget), new PropertyMetadata(0L));
-    public static readonly DependencyProperty PrefixProperty = DependencyProperty.Register("Prefix", typeof(string), typeof(FileSizeWidget), new PropertyMetadata(string.Empty));
-    public static readonly DependencyProperty SuffixProperty = DependencyProperty.Register("Suffix", typeof(string), typeof(FileSizeWidget), new PropertyMetadata(string.Empty));
+public partial class FileSizeBox : UserControl {
+    public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register("FileName", typeof(string), typeof(FileSizeBox), new PropertyMetadata(string.Empty, FileNamePropertyChangedHandler));
+    public static readonly DependencyProperty FileSizeProperty = DependencyProperty.Register("FileSize", typeof(long), typeof(FileSizeBox), new PropertyMetadata(0L));
+    public static readonly DependencyProperty PrefixProperty = DependencyProperty.Register("Prefix", typeof(string), typeof(FileSizeBox), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty SuffixProperty = DependencyProperty.Register("Suffix", typeof(string), typeof(FileSizeBox), new PropertyMetadata(string.Empty));
 
     /// <summary>
     /// 文件名
@@ -35,12 +35,12 @@ public partial class FileSizeWidget : UserControl {
         set { SetValue(SuffixProperty, value); }
     }
 
-    public FileSizeWidget() {
+    public FileSizeBox() {
         InitializeComponent();
     }
 
     private static void FileNamePropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-        if (d is not FileSizeWidget self) {
+        if (d is not FileSizeBox self) {
             return;
         }
 

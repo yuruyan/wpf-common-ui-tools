@@ -1,4 +1,4 @@
-﻿namespace CommonUITools.Widget;
+﻿namespace CommonUITools.Controls;
 
 public partial class IconButton : Button {
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(IconButton), new PropertyMetadata(""));

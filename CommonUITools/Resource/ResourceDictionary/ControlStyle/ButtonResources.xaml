@@ -3,7 +3,7 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:primitives="http://schemas.modernwpf.com/2019"
   xmlns:ui="http://schemas.modernwpf.com/2019"
-  xmlns:widget="clr-namespace:CommonUITools.Widget">
+  xmlns:widget="clr-namespace:CommonUITools.Controls">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/CommonResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/TextBlockResources.xaml" />

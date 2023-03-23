@@ -1,4 +1,4 @@
-﻿namespace CommonUITools.Widget;
+﻿namespace CommonUITools.Controls;
 
 public partial class DragDropTextBox : UserControl {
     public static readonly DependencyProperty TextBoxProperty = DependencyProperty.Register("TextBox", typeof(TextBox), typeof(DragDropTextBox), new PropertyMetadata(TextBoxPropertyChangedHandler));

@@ -1,9 +1,9 @@
 ﻿using ModernWpf.Controls;
 
-namespace CommonUITools.Widget;
+namespace CommonUITools.Controls;
 
-public partial class FileNameSizeWidget : SimpleStackPanel {
-    public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register("FileName", typeof(string), typeof(FileNameSizeWidget), new PropertyMetadata(string.Empty));
+public partial class FileNameSizeBox : SimpleStackPanel {
+    public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register("FileName", typeof(string), typeof(FileNameSizeBox), new PropertyMetadata(string.Empty));
 
     /// <summary>
     /// 文件名
@@ -13,7 +13,7 @@ public partial class FileNameSizeWidget : SimpleStackPanel {
         set { SetValue(FileNameProperty, value); }
     }
 
-    public FileNameSizeWidget() {
+    public FileNameSizeBox() {
         InitializeComponent();
     }
 

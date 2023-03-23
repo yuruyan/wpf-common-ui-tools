@@ -1,6 +1,6 @@
 ﻿using CommonTools.Model;
-using CommonUITools.Widget;
-using MessageBox = CommonUITools.Widget.MessageBox;
+using CommonUITools.Controls;
+using MessageBox = CommonUITools.Controls.MessageBox;
 
 namespace CommonUITools.Utils;
 

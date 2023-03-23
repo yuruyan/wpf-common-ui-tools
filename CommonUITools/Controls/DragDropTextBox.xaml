@@ -1,17 +1,16 @@
 ﻿<UserControl
-  x:Class="CommonUITools.Widget.EmptyView"
+  x:Class="CommonUITools.Controls.DragDropTextBox"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:local="clr-namespace:CommonUITools.Widget"
+  xmlns:local="clr-namespace:CommonUITools.Controls"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  Width="800"
-  HorizontalContentAlignment="Stretch"
-  VerticalContentAlignment="Stretch"
+  xmlns:util="clr-namespace:CommonUITools.Utils"
+  Name="DragDropTextBoxRoot"
   d:DesignHeight="450"
   d:DesignWidth="800"
+  AllowDrop="True"
+  Background="Transparent"
   Loaded="RootLoadedHandler"
   Unloaded="RootUnloadedHandler"
-  mc:Ignorable="d">
-  <Image x:Name="DescriptionImage" Stretch="Uniform" />
-</UserControl>
+  mc:Ignorable="d" />

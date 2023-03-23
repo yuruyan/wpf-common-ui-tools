@@ -1,9 +1,9 @@
-﻿namespace CommonUITools.Widget;
+﻿namespace CommonUITools.Controls;
 
-public partial class FileProcessStatusWidget : UserControl {
-    public static readonly DependencyProperty FileProcessStatusListProperty = DependencyProperty.Register("FileProcessStatusList", typeof(ObservableCollection<FileProcessStatus>), typeof(FileProcessStatusWidget), new PropertyMetadata());
-    public static readonly DependencyProperty FinishedCountProperty = DependencyProperty.Register("FinishedCount", typeof(int), typeof(FileProcessStatusWidget), new PropertyMetadata(0));
-    public static readonly DependencyProperty HasTaskRunningProperty = DependencyProperty.Register("HasTaskRunning", typeof(bool), typeof(FileProcessStatusWidget), new PropertyMetadata(false));
+public partial class FileProcessStatusBox : UserControl {
+    public static readonly DependencyProperty FileProcessStatusListProperty = DependencyProperty.Register("FileProcessStatusList", typeof(ObservableCollection<FileProcessStatus>), typeof(FileProcessStatusBox), new PropertyMetadata());
+    public static readonly DependencyProperty FinishedCountProperty = DependencyProperty.Register("FinishedCount", typeof(int), typeof(FileProcessStatusBox), new PropertyMetadata(0));
+    public static readonly DependencyProperty HasTaskRunningProperty = DependencyProperty.Register("HasTaskRunning", typeof(bool), typeof(FileProcessStatusBox), new PropertyMetadata(false));
 
     /// <summary>
     /// FileProcessStatusList
@@ -33,7 +33,7 @@ public partial class FileProcessStatusWidget : UserControl {
         Interval = TimeSpan.FromMilliseconds(1500)
     };
 
-    public FileProcessStatusWidget() {
+    public FileProcessStatusBox() {
         FileProcessStatusList = new();
         UpdateStatusTimer.Tick += UpdateStatusTimerTickHandler;
         InitializeComponent();

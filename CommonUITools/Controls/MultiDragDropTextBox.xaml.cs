@@ -1,6 +1,6 @@
 ﻿using System.Collections.Specialized;
 
-namespace CommonUITools.Widget;
+namespace CommonUITools.Controls;
 
 public partial class MultiDragDropTextBox : UserControl {
     private const string FileListInfoBorderFadeOutStoryboardName = "FileListInfoBorderFadeOutStoryboard";

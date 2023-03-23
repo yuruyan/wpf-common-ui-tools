@@ -1,6 +1,6 @@
-﻿namespace CommonUITools.Widget;
+﻿namespace CommonUITools.Controls;
 
-public class ToggleControl : Control {
+public class ToggleControl : System.Windows.Controls.Control {
     public static readonly DependencyProperty StateProperty = DependencyProperty.Register("State", typeof(bool), typeof(ToggleControl), new PropertyMetadata(true));
     public static readonly DependencyProperty FirstControlProperty = DependencyProperty.Register("FirstControl", typeof(object), typeof(ToggleControl), new PropertyMetadata());
     public static readonly DependencyProperty SecondControlProperty = DependencyProperty.Register("SecondControl", typeof(object), typeof(ToggleControl), new PropertyMetadata());

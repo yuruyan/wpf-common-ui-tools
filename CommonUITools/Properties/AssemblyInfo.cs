@@ -1,7 +1,7 @@
 ﻿using System.Windows.Markup;
 
 [assembly: XmlnsDefinition("wpf-common-ui-tools", "CommonUITools.Utils")]
-[assembly: XmlnsDefinition("wpf-common-ui-tools", "CommonUITools.Widget")]
+[assembly: XmlnsDefinition("wpf-common-ui-tools", "CommonUITools.Controls")]
 [assembly: XmlnsDefinition("wpf-common-ui-tools", "CommonUITools.Model")]
 [assembly: XmlnsDefinition("wpf-common-ui-tools", "CommonUITools.Converter")]
 [assembly: XmlnsPrefix("wpf-common-ui-tools", "tools")]
