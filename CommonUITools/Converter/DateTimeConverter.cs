@@ -35,7 +35,7 @@ public class DateTimeToDateStringConverter : IValueConverter {
 /// </summary>
 public class TimeStampStringConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return DateTimeUtils.ConvertToDateTime(System.Convert.ToInt64(value)).ToString("G");
+        return DateTimeUtils.ToDateTime(System.Convert.ToInt64(value)).ToString("G");
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {

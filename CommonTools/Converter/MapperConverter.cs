@@ -38,7 +38,7 @@ public static class MapperUtils {
 /// </summary>
 public class LongToDateTimeTypeConverter : ITypeConverter<long, DateTime> {
     public DateTime Convert(long source, DateTime destination, ResolutionContext context) {
-        return DateTimeUtils.ConvertToDateTime(source);
+        return DateTimeUtils.ToDateTime(source);
     }
 }
 
@@ -47,7 +47,7 @@ public class LongToDateTimeTypeConverter : ITypeConverter<long, DateTime> {
 /// </summary>
 public class DateTimeToLongTypeConverter : ITypeConverter<DateTime, long> {
     public long Convert(DateTime source, long destination, ResolutionContext context) {
-        return DateTimeUtils.ConvertToTimestamp(source);
+        return DateTimeUtils.ToTimestamp(source);
     }
 }
 

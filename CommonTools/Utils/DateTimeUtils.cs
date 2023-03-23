@@ -20,9 +20,7 @@ public static class DateTimeUtils {
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static long ConvertToTimestamp(DateTime value) {
-        return (long)(value - Epoch).TotalMilliseconds;
-    }
+    public static long ToTimestamp(this DateTime value) => (long)(value - Epoch).TotalMilliseconds;
 
     /// <summary>
     /// string 日期转 DateTime
@@ -30,7 +28,7 @@ public static class DateTimeUtils {
     /// <param name="value"></param>
     /// <param name="pattern"></param>
     /// <returns></returns>
-    public static DateTime ConvertToDateTime(string value, string pattern = "yyyy-MM-dd HH:mm:ss") {
+    public static DateTime ToDateTime(this string value, string pattern = "yyyy-MM-dd HH:mm:ss") {
         return Convert.ToDateTime(
             value,
             new DateTimeFormatInfo() { ShortDatePattern = pattern }
@@ -43,7 +41,7 @@ public static class DateTimeUtils {
     /// <param name="timestamp"></param>
     /// <param name="milliseconds"></param>
     /// <returns></returns>
-    public static DateTime ConvertToDateTime(long timestamp, bool milliseconds = true) {
+    public static DateTime ToDateTime(this long timestamp, bool milliseconds = true) {
         if (milliseconds) {
             return Epoch.AddMilliseconds(timestamp);
         }
@@ -55,25 +53,21 @@ public static class DateTimeUtils {
     /// </summary>
     /// <param name="date"></param>
     /// <returns></returns>
-    public static DateTime GetYesterdayTime(DateTime date) {
-        return ConvertToDateTime(ConvertToTimestamp(date) - ConstantUtils.OneDayMillisecond);
-    }
+    public static DateTime GetYesterdayTime(this DateTime date) => date.AddMilliseconds(-ConstantUtils.OneDayMillisecond);
 
     /// <summary>
     /// 获取后一天的 DateTime
     /// </summary>
     /// <param name="date"></param>
     /// <returns></returns>
-    public static DateTime GetTomorrowTime(DateTime date) {
-        return ConvertToDateTime(ConvertToTimestamp(date) + ConstantUtils.OneDayMillisecond);
-    }
+    public static DateTime GetTomorrowTime(this DateTime date) => date.AddMilliseconds(ConstantUtils.OneDayMillisecond);
 
     /// <summary>
     /// 获取指定日期一天内的 (Start, End) Range，End 不包括
     /// </summary>
     /// <param name="date"></param>
     /// <returns></returns>
-    public static (DateTime, DateTime) GetDayRangeTime(DateTime date) {
+    public static (DateTime, DateTime) GetDayRangeTime(this DateTime date) {
         return (
             new DateTime(date.Year, date.Month, date.Day),
             new DateTime(date.Year, date.Month, date.Day).AddDays(1)
