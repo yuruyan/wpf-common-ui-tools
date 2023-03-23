@@ -28,13 +28,13 @@
     x:Key="GlobalButtonStyle"
     BasedOn="{StaticResource DefaultButtonStyle}"
     TargetType="Button">
-    <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
+    <Setter Property="ToolTipService.InitialShowDelay" Value="{DynamicResource ToolTipServiceInitialShowDelay}" />
     <Setter Property="Padding" Value="16,8,16,8" />
   </Style>
   <Style BasedOn="{StaticResource GlobalButtonStyle}" TargetType="Button" />
   <!--  TitleBarButtonstyle  -->
   <Style x:Key="TitleBarButtonstyle" TargetType="ui:TitleBarButton">
-    <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
+    <Setter Property="ToolTipService.InitialShowDelay" Value="{DynamicResource ToolTipServiceInitialShowDelay}" />
   </Style>
   <!--  GlobalSingleIconButtonStyle  -->
   <Style

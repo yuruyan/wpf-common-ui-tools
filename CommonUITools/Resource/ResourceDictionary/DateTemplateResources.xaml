@@ -13,7 +13,7 @@
     <StackPanel
       Width="{Binding RelativeSource={RelativeSource AncestorType=ui:AutoSuggestBox}, Path=ActualWidth, Converter={StaticResource SubtractConverter}, ConverterParameter=10}"
       Orientation="Horizontal"
-      ToolTipService.InitialShowDelay="{StaticResource ToolTipServiceInitialShowDelay}">
+      ToolTipService.InitialShowDelay="{DynamicResource ToolTipServiceInitialShowDelay}">
       <StackPanel.ToolTip>
         <ToolTip Content="{Binding Text}" />
       </StackPanel.ToolTip>

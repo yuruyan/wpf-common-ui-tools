@@ -76,7 +76,7 @@
   <!--  GlobalBorderStyle  -->
   <Style x:Key="GlobalBorderStyle" TargetType="Border">
     <Setter Property="CornerRadius" Value="4" />
-    <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
+    <Setter Property="ToolTipService.InitialShowDelay" Value="{DynamicResource ToolTipServiceInitialShowDelay}" />
   </Style>
   <!--  GridViewColumnHeader  -->
   <Style BasedOn="{StaticResource {x:Type GridViewColumnHeader}}" TargetType="GridViewColumnHeader">
@@ -84,12 +84,12 @@
   </Style>
   <!--  FontIcon  -->
   <Style x:Key="GlobalFontIconStyle" TargetType="ui:FontIcon">
-    <Setter Property="FontFamily" Value="{StaticResource IconFontUrI}" />
+    <Setter Property="FontFamily" Value="{DynamicResource IconFontUrI}" />
   </Style>
   <Style BasedOn="{StaticResource GlobalFontIconStyle}" TargetType="ui:FontIcon" />
   <!--  NavigationViewItem  -->
   <Style x:Key="GlobalNavigationViewItemStyle" TargetType="ui:NavigationViewItem">
-    <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
+    <Setter Property="ToolTipService.InitialShowDelay" Value="{DynamicResource ToolTipServiceInitialShowDelay}" />
   </Style>
   <Style BasedOn="{StaticResource GlobalNavigationViewItemStyle}" TargetType="ui:NavigationViewItem" />
   <!--  TextElementContextMenu  -->
@@ -125,7 +125,7 @@
   <Style x:Key="GlobalNumberBoxStyle" TargetType="ui:NumberBox">
     <Setter Property="AcceptsExpression" Value="False" />
     <Setter Property="SpinButtonPlacementMode" Value="Compact" />
-    <Setter Property="MinWidth" Value="{StaticResource NumberBoxMinWidth}" />
+    <Setter Property="MinWidth" Value="{DynamicResource NumberBoxMinWidth}" />
   </Style>
   <Style BasedOn="{StaticResource GlobalNumberBoxStyle}" TargetType="ui:NumberBox" />
   <!--  IntegerNumberBoxStyle  -->

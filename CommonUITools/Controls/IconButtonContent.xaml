@@ -11,7 +11,7 @@
   mc:Ignorable="d">
   <StackPanel Orientation="Horizontal">
     <TextBlock
-      FontFamily="{StaticResource IconFontUrI}"
+      FontFamily="{DynamicResource IconFontUrI}"
       FontWeight="{Binding FontWeight, ElementName=IconButtonContentRoot}"
       Style="{StaticResource ButtonIconFontStyle}"
       Text="{Binding Icon, ElementName=IconButtonContentRoot}" />

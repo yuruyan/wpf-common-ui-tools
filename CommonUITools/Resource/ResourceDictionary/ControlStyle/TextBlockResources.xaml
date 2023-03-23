@@ -11,7 +11,7 @@
     <Setter Property="FontSize" Value="{DynamicResource SystemFontSize}" />
     <Setter Property="FontFamily" Value="{DynamicResource SystemFontFamily}" />
     <Setter Property="VerticalAlignment" Value="Center" />
-    <Setter Property="ToolTipService.InitialShowDelay" Value="{StaticResource ToolTipServiceInitialShowDelay}" />
+    <Setter Property="ToolTipService.InitialShowDelay" Value="{DynamicResource ToolTipServiceInitialShowDelay}" />
   </Style>
   <Style BasedOn="{StaticResource GlobalTextBlockStyle}" TargetType="TextBlock" />
   <!--  IconFont 样式  -->
@@ -19,21 +19,21 @@
     x:Key="IconFontStyle"
     BasedOn="{StaticResource GlobalTextBlockStyle}"
     TargetType="TextBlock">
-    <Setter Property="FontFamily" Value="{StaticResource IconFontUrI}" />
+    <Setter Property="FontFamily" Value="{DynamicResource IconFontUrI}" />
   </Style>
   <!--  ASCIIFontStyle  -->
   <Style
     x:Key="ASCIIFontStyle"
     BasedOn="{StaticResource GlobalTextBlockStyle}"
     TargetType="TextBlock">
-    <Setter Property="FontFamily" Value="{StaticResource ASCIIFontFamily}" />
+    <Setter Property="FontFamily" Value="{DynamicResource ASCIIFontFamily}" />
   </Style>
   <!--  ColorIconFont 样式  -->
   <Style
     x:Key="ColorIconFontStyle"
     BasedOn="{StaticResource GlobalTextBlockStyle}"
     TargetType="TextBlock">
-    <Setter Property="FontFamily" Value="{StaticResource IconFontUrI}" />
+    <Setter Property="FontFamily" Value="{DynamicResource IconFontUrI}" />
     <Setter Property="Opacity" Value="{StaticResource ColorIconOpacity}" />
   </Style>
   <!--  CommonUIToolsIconFontStyle 样式  -->
@@ -121,7 +121,7 @@
     x:Key="NavigationContentHeaderStyle"
     BasedOn="{StaticResource GlobalTextBlockStyle}"
     TargetType="TextBlock">
-    <Setter Property="FontSize" Value="{StaticResource NavigationContentHeaderFontSize}" />
+    <Setter Property="FontSize" Value="{DynamicResource NavigationContentHeaderFontSize}" />
     <Setter Property="FontWeight" Value="Bold" />
   </Style>
   <!--  ItemsControlGroupTextBlockStyle  -->
@@ -129,7 +129,7 @@
     x:Key="ItemsControlGroupTextBlockStyle"
     BasedOn="{StaticResource GlobalTextBlockStyle}"
     TargetType="TextBlock">
-    <Setter Property="FontSize" Value="{StaticResource DescriptionHeaderFontSize}" />
+    <Setter Property="FontSize" Value="{DynamicResource DescriptionHeaderFontSize}" />
     <Setter Property="Foreground" Value="{DynamicResource GrayTextForeground}" />
   </Style>
 </ResourceDictionary>
