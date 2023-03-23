@@ -139,7 +139,7 @@ public static partial class UIUtilsExtension {
     /// <param name="filepath"></param>
     /// <param name="title"></param>
     /// <param name="message"></param>
-    public static void NotificationOpenFileInExplorerAsync(string filepath, string title = "成功", string message = "点击打开") {
+    public static void NotificationOpenFileInExplorerAsync(this string filepath, string title = "成功", string message = "点击打开") {
         MessageBoxUtils.NotifySuccess(
             title,
             message,
