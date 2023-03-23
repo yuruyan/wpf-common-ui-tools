@@ -11,7 +11,7 @@ public static class MapperUtils {
     /// 添加常见类型转换器
     /// </summary>
     /// <param name="cfg"></param>
-    public static void AddCommonConverters(IMapperConfigurationExpression cfg) {
+    public static IMapperConfigurationExpression AddCommonConverters(this IMapperConfigurationExpression cfg) {
         cfg.CreateMap<long, DateTime>().ConvertUsing(new LongToDateTimeTypeConverter());
         cfg.CreateMap<DateTime, long>().ConvertUsing(new DateTimeToLongTypeConverter());
         cfg.CreateMap<string, byte>().ConvertUsing(new StringToByteTypeConverter());
@@ -30,6 +30,7 @@ public static class MapperUtils {
         cfg.CreateMap<long, string>().ConvertUsing(new LongToStringTypeConverter());
         cfg.CreateMap<string, ulong>().ConvertUsing(new StringToUlongTypeConverter());
         cfg.CreateMap<ulong, string>().ConvertUsing(new UlongToStringTypeConverter());
+        return cfg;
     }
 }
 
