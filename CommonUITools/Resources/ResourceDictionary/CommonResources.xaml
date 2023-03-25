@@ -30,8 +30,8 @@
     x:Key="AnimationEaseFunction"
     EasingMode="EaseOut"
     Exponent="4" />
-  <FontFamily x:Key="IconFontUrI">pack://application:,,,/resource/#IconFont</FontFamily>
-  <FontFamily x:Key="CommonUIToolsIconFontUrI">/CommonUITools;component/resource/#IconFont</FontFamily>
+  <FontFamily x:Key="IconFontUrI">pack://application:,,,/resources/#IconFont</FontFamily>
+  <FontFamily x:Key="CommonUIToolsIconFontUrI">/CommonUITools;component/resources/#IconFont</FontFamily>
   <!--  数字、字母 FontFamily  -->
   <FontFamily x:Key="ASCIIFontFamily">微软雅黑Light</FontFamily>
 
