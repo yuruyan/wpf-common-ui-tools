@@ -29,13 +29,13 @@ public static class FileIconUtils {
     /// <summary>
     /// 图标解压缩目录
     /// </summary>
-    private const string DeCompressedIconFolder = "Resource/image/FileIcon";
+    private const string DeCompressedIconFolder = "Resources/image/FileIcon";
     private const string Svg = ".svg";
     private const string Png = ".png";
 
     static FileIconUtils() {
         var iconDict = JsonConvert.DeserializeObject<IDictionary<string, string>>(
-            Encoding.UTF8.GetString(Resource.Resource.FileIconConfiguration).ToLowerInvariant()
+            Encoding.UTF8.GetString(Resources.Resource.FileIconConfiguration).ToLowerInvariant()
         );
         if (iconDict is null) {
             throw new JsonSerializationException($"解析 Icon 配置文件失败");
@@ -68,7 +68,7 @@ public static class FileIconUtils {
         Directory.CreateDirectory(DeCompressedIconFolder);
         // 将数据文件写入磁盘
         if (!File.Exists(CompressedIconFile)) {
-            File.WriteAllBytes(CompressedIconFile, Resource.Resource.FileIconData);
+            File.WriteAllBytes(CompressedIconFile, Resources.Resource.FileIconData);
         }
         var existFileIconNames = Directory
             .GetFiles(DeCompressedIconFolder)

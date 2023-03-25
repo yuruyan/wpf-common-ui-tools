@@ -4,7 +4,7 @@ namespace CommonUITools.Controls;
 
 public partial class EmptyView : UserControl {
     private BitmapImage BitmapImage = default!;
-    private readonly Uri ImageUri = new("/CommonUITools;component/Resource/Images/Empty.png", UriKind.Relative);
+    private readonly Uri ImageUri = new("/CommonUITools;component/Resources/Images/Empty.png", UriKind.Relative);
 
     public EmptyView() {
         InitializeComponent();

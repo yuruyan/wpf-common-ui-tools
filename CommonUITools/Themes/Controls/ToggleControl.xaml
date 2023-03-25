@@ -3,7 +3,7 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:local="clr-namespace:CommonUITools.Controls">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ConverterResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/ConverterResources.xaml" />
   </ResourceDictionary.MergedDictionaries>
 
   <Style TargetType="local:ToggleControl">

@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resource\Resource.Designer.cs">
+    <Compile Update="Resources\Resource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resource.resx</DependentUpon>
@@ -35,16 +35,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resource\Resource.resx">
+    <EmbeddedResource Update="Resources\Resource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resource\IconFont.ttf" />
-    <Resource Include="Resource\Images\*" />
-    <None Update="Resource\FileIconConfiguration.json">
+    <Resource Include="Resources\IconFont.ttf" />
+    <Resource Include="Resources\Images\*" />
+    <None Update="Resources\FileIconConfiguration.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="Resource\Image\FileIcon\icon.zip">

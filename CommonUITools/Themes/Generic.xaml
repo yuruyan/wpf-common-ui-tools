@@ -4,20 +4,20 @@
   xmlns:ui="http://schemas.modernwpf.com/2019">
   <ResourceDictionary.MergedDictionaries>
     <!--  以下资源位置不能颠倒  -->
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ColorResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/ColorResources.xaml" />
     <ResourceDictionary Source="/CommonUITools;component/Themes/LightThemeResources.xaml" />
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ConverterResources.xaml" />
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/CommonResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/ConverterResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/CommonResources.xaml" />
 
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/TextBlockResources.xaml" />
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/ButtonResources.xaml" />
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/TextBoxResources.xaml" />
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/ScrollBarResources.xaml" />
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/ItemsControlResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/ControlStyle/TextBlockResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/ControlStyle/ButtonResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/ControlStyle/TextBoxResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/ControlStyle/ScrollBarResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/ControlStyle/ItemsControlResources.xaml" />
 
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/StyleResources.xaml" />
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/HoverEffectResources.xaml" />
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/DateTemplateResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/StyleResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/HoverEffectResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/DateTemplateResources.xaml" />
 
     <!--#region Controls-->
     <ResourceDictionary Source="/CommonUITools;component/Themes/Controls/ToggleControl.xaml" />
