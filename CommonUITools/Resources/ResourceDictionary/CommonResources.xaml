@@ -3,7 +3,7 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:system="clr-namespace:System;assembly=System.Runtime">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ColorResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/ColorResources.xaml" />
   </ResourceDictionary.MergedDictionaries>
 
   <FontFamily x:Key="SystemFontFamily">等线</FontFamily>

@@ -1,4 +1,4 @@
-﻿namespace CommonUITools.Resource.ResourceDictionary;
+﻿namespace CommonUITools.Resources.ResourceDictionary;
 
 public partial class ButtonResources {
     private void OpenFileTextBlockMouseUpHandler(object sender, MouseButtonEventArgs e) {

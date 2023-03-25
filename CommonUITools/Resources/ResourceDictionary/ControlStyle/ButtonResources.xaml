@@ -5,8 +5,8 @@
   xmlns:ui="http://schemas.modernwpf.com/2019"
   xmlns:widget="clr-namespace:CommonUITools.Controls">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/CommonResources.xaml" />
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/ControlStyle/TextBlockResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/CommonResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/ControlStyle/TextBlockResources.xaml" />
   </ResourceDictionary.MergedDictionaries>
 
   <!--  MenuButton 样式  -->

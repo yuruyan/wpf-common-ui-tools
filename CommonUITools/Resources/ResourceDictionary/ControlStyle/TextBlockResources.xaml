@@ -1,9 +1,9 @@
 ﻿<ResourceDictionary
-  x:Class="CommonUITools.Resource.ResourceDictionary.ButtonResources"
+  x:Class="CommonUITools.Resources.ResourceDictionary.ButtonResources"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="/CommonUITools;component/Resource/ResourceDictionary/CommonResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/CommonResources.xaml" />
   </ResourceDictionary.MergedDictionaries>
 
   <!--  TextBlockStyle  -->
