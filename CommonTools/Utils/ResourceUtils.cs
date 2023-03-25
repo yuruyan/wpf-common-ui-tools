@@ -8,7 +8,7 @@ public static class ResourceUtils {
     /// 中文汉字拼音
     /// </summary>
     public static readonly IReadOnlyDictionary<char, string> ChineseCharacterPinYinDict = JsonConvert.DeserializeObject<Dictionary<char, string>>(
-        Encoding.UTF8.GetString(Resource.Resource.ChineseCharacterPinYin)
+        Encoding.UTF8.GetString(Resources.Resource.ChineseCharacterPinYin)
     )!;
     /// <summary>
     /// 声调对应字母
