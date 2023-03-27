@@ -19,6 +19,7 @@
     x:Key="GlobalCheckBoxStyle"
     BasedOn="{StaticResource DefaultCheckBoxStyle}"
     TargetType="CheckBox">
+    <Setter Property="MinWidth" Value="0" />
     <Setter Property="VerticalContentAlignment" Value="Center" />
   </Style>
   <Style BasedOn="{StaticResource GlobalCheckBoxStyle}" TargetType="CheckBox" />
