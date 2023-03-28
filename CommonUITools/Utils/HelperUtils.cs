@@ -1722,3 +1722,235 @@ public static class RevealBackgroundHelper {
         RemoveFromWindowElementDict(element);
     }
 }
+
+/// <summary>
+/// 自动设置 Width, Height
+/// </summary>
+public static class AutoSizeHelper {
+    private class GroupInfo {
+        public bool MatchMax { get; set; } = true;
+        public readonly IDictionary<DependencyObject, DependencyProperty> ElementInfoGetterList = new Dictionary<DependencyObject, DependencyProperty>();
+        public readonly IDictionary<DependencyObject, DependencyProperty> ElementInfoSetterList = new Dictionary<DependencyObject, DependencyProperty>();
+
+        public GroupInfo() { }
+
+        public GroupInfo(bool matchMax, IDictionary<DependencyObject, DependencyProperty> elementInfoList, IDictionary<DependencyObject, DependencyProperty> elementInfoSetterList) {
+            MatchMax = matchMax;
+            ElementInfoGetterList = elementInfoList;
+            ElementInfoSetterList = elementInfoSetterList;
+        }
+    }
+
+    private static readonly IDictionary<string, GroupInfo> WidthGroupInfoDict = new Dictionary<string, GroupInfo>();
+    private static readonly IDictionary<string, GroupInfo> HeightGroupInfoDict = new Dictionary<string, GroupInfo>();
+    private static readonly IDictionary<DependencyObject, string> ElementWidthGroupIdDict = new Dictionary<DependencyObject, string>();
+    private static readonly IDictionary<DependencyObject, string> ElementHeightGroupIdDict = new Dictionary<DependencyObject, string>();
+
+    private static void EnsureInitialized(string groupId) {
+        if (!WidthGroupInfoDict.ContainsKey(groupId)) {
+            WidthGroupInfoDict[groupId] = new();
+        }
+        if (!HeightGroupInfoDict.ContainsKey(groupId)) {
+            HeightGroupInfoDict[groupId] = new();
+        }
+    }
+
+    /// <summary>
+    /// Add to GroupInfoDictionary
+    /// </summary>
+    /// <param name="groupInfo"></param>
+    /// <param name="matchMax"></param>
+    /// <param name="elements">(element, getter, setter)</param>
+    private static void AddToGroupInfo(GroupInfo groupInfo, bool matchMax, IEnumerable<(FrameworkElement, DependencyProperty, DependencyProperty)> elements) {
+        groupInfo.MatchMax = matchMax;
+        // Add elementInfos
+        foreach (var elementItem in elements) {
+            groupInfo.ElementInfoGetterList[elementItem.Item1] = elementItem.Item2;
+            groupInfo.ElementInfoSetterList[elementItem.Item1] = elementItem.Item3;
+        }
+    }
+
+    private static void HandleElementLoadedEvent(object sender, IDictionary<DependencyObject, string> elementGruopIdDict, IDictionary<string, GroupInfo> groupInfoDict) {
+        if (sender is not FrameworkElement element) {
+            return;
+        }
+        if (!elementGruopIdDict.TryGetValue(element, out var groupId)) {
+            return;
+        }
+        if (!groupInfoDict.TryGetValue(groupId, out var groupInfo)) {
+            return;
+        }
+        if (!groupInfo.ElementInfoGetterList.TryGetValue(element, out var getterDp)) {
+            return;
+        }
+        if (!groupInfo.ElementInfoSetterList.TryGetValue(element, out var setterDp)) {
+            return;
+        }
+
+        element.SetValue(setterDp, groupInfo.ElementInfoGetterList.Max(
+            item => (double)item.Key.GetValue(item.Value))
+        );
+    }
+
+    private static void ElementLoadedWidthHandler(object sender, RoutedEventArgs e) {
+        HandleElementLoadedEvent(sender, ElementWidthGroupIdDict, WidthGroupInfoDict);
+    }
+
+    private static void ElementLoadedHeightHandler(object sender, RoutedEventArgs e) {
+        HandleElementLoadedEvent(sender, ElementHeightGroupIdDict, HeightGroupInfoDict);
+    }
+
+    /// <summary>
+    /// 设置自动宽度
+    /// </summary>
+    /// <param name="groupId"></param>
+    /// <param name="elements">默认 <see cref="FrameworkElement.WidthProperty"/> (set), <see cref="FrameworkElement.ActualWidthProperty"/> (get)</param>
+    /// <param name="matchMax">设置为最大宽度</param>
+    public static void SetAutoWidth(
+        string groupId,
+        IEnumerable<FrameworkElement> elements,
+        bool matchMax = true
+    ) => SetAutoWidth(groupId, elements, FrameworkElement.ActualWidthProperty, FrameworkElement.WidthProperty, matchMax);
+
+    /// <summary>
+    /// 设置自动宽度
+    /// </summary>
+    /// <param name="groupId">分组 Id</param>
+    /// <param name="elements"></param>
+    /// <param name="widthGetterProperty"></param>
+    /// <param name="widthSetterProperty"></param>
+    /// <param name="matchMax">设置为最大宽度</param>
+    public static void SetAutoWidth(
+        string groupId,
+        IEnumerable<FrameworkElement> elements,
+        DependencyProperty widthGetterProperty,
+        DependencyProperty widthSetterProperty,
+        bool matchMax = true
+    ) {
+        SetAutoWidth(
+            groupId,
+            elements.Select(item => (item, widthGetterProperty, widthSetterProperty)),
+            matchMax
+        );
+    }
+
+    /// <summary>
+    /// 设置自动 Width
+    /// </summary>
+    /// <param name="groupId">分组 Id</param>
+    /// <param name="elementInfos">(element, getter, setter)</param>
+    /// <param name="matchMax">设置为最大 Width</param>
+    public static void SetAutoWidth(
+        string groupId,
+        IEnumerable<(FrameworkElement, DependencyProperty, DependencyProperty)> elementInfos,
+        bool matchMax = true
+    ) {
+        EnsureInitialized(groupId);
+        AddToGroupInfo(WidthGroupInfoDict[groupId], matchMax, elementInfos);
+        elementInfos.ForEach(item => {
+            var element = item.Item1;
+            ElementWidthGroupIdDict[element] = groupId;
+            element.Loaded -= ElementLoadedWidthHandler;
+            element.Loaded += ElementLoadedWidthHandler;
+            // Set explicitly
+            if (element.IsLoaded) {
+                ElementLoadedWidthHandler(element, new RoutedEventArgs(FrameworkElement.LoadedEvent, element));
+            }
+        });
+    }
+
+    /// <summary>
+    /// 设置自动 Height
+    /// </summary>
+    /// <param name="groupId">分组 Id</param>
+    /// <param name="elements">默认 <see cref="FrameworkElement.HeightProperty"/> (set), <see cref="FrameworkElement.ActualHeightProperty"/> (get)</param>
+    /// <param name="matchMax">设置为最大 Height</param>
+    public static void SetAutoHeight(
+        string groupId,
+        IEnumerable<FrameworkElement> elements,
+        bool matchMax = true
+    ) => SetAutoHeight(groupId, elements, FrameworkElement.ActualHeightProperty, FrameworkElement.HeightProperty, matchMax);
+
+    /// <summary>
+    /// 设置自动 Height
+    /// </summary>
+    /// <param name="groupId">分组 Id</param>
+    /// <param name="elements"></param>
+    /// <param name="heightGetterProperty"></param>
+    /// <param name="heightSetterProperty"></param>
+    /// <param name="matchMax">设置为最大 Height</param>
+    public static void SetAutoHeight(
+        string groupId,
+        IEnumerable<FrameworkElement> elements,
+        DependencyProperty heightGetterProperty,
+        DependencyProperty heightSetterProperty,
+        bool matchMax = true
+    ) {
+        SetAutoHeight(
+            groupId,
+            elements.Select(item => (item, heightGetterProperty, heightSetterProperty)),
+            matchMax
+        );
+    }
+
+    /// <summary>
+    /// 设置自动 Height
+    /// </summary>
+    /// <param name="groupId"></param>
+    /// <param name="elementInfos">(element, getter, setter)</param>
+    /// <param name="matchMax">设置为最大 Height</param>
+    public static void SetAutoHeight(
+        string groupId,
+        IEnumerable<(FrameworkElement, DependencyProperty, DependencyProperty)> elementInfos,
+        bool matchMax = true
+    ) {
+        EnsureInitialized(groupId);
+        AddToGroupInfo(HeightGroupInfoDict[groupId], matchMax, elementInfos);
+        elementInfos.ForEach(item => {
+            var element = item.Item1;
+            ElementHeightGroupIdDict[element] = groupId;
+            element.Loaded -= ElementLoadedHeightHandler;
+            element.Loaded += ElementLoadedHeightHandler;
+            // Set explicitly
+            if (element.IsLoaded) {
+                ElementLoadedHeightHandler(element, new RoutedEventArgs(FrameworkElement.LoadedEvent, element));
+            }
+        });
+    }
+
+    /// <summary>
+    /// Disable auto adjust Width
+    /// </summary>
+    /// <param name="groupId"></param>
+    public static void DisableAutoWidth(string groupId) {
+        if (WidthGroupInfoDict.TryGetValue(groupId, out var elementInfos)) {
+            foreach (var obj in elementInfos.ElementInfoGetterList.Keys) {
+                ElementWidthGroupIdDict.Remove(obj);
+                if (obj is FrameworkElement element) {
+                    element.Loaded -= ElementLoadedWidthHandler;
+                }
+            }
+            elementInfos.ElementInfoSetterList.ForEach(item => item.Key.ClearValue(item.Value));
+            elementInfos.ElementInfoGetterList.Clear();
+            elementInfos.ElementInfoSetterList.Clear();
+        }
+    }
+
+    /// <summary>
+    /// Disable auto adjust Height
+    /// </summary>
+    /// <param name="groupId"></param>
+    public static void DisableAutoHeight(string groupId) {
+        if (HeightGroupInfoDict.TryGetValue(groupId, out var elementInfos)) {
+            foreach (var obj in elementInfos.ElementInfoGetterList.Keys) {
+                ElementHeightGroupIdDict.Remove(obj);
+                if (obj is FrameworkElement element) {
+                    element.Loaded -= ElementLoadedHeightHandler;
+                }
+            }
+            elementInfos.ElementInfoSetterList.ForEach(item => item.Key.ClearValue(item.Value));
+            elementInfos.ElementInfoGetterList.Clear();
+            elementInfos.ElementInfoSetterList.Clear();
+        }
+    }
+}

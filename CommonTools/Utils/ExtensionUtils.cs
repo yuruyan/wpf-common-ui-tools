@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace CommonTools.Utils;
@@ -51,6 +52,19 @@ public static partial class ExtensionUtils {
     public static void RemoveList<T>(this ICollection<T> thisCollection, IEnumerable<T> toBeRemovedItems) {
         foreach (var item in toBeRemovedItems) {
             thisCollection.Remove(item);
+        }
+    }
+
+    /// <summary>
+    /// 移除 Dictionary 多个 Key
+    /// </summary>
+    /// <typeparam name="Key"></typeparam>
+    /// <typeparam name="Value"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="keys"></param>
+    public static void RemoveKeyList<Key, Value>(this IDictionary<Key, Value> source, IEnumerable<Key> keys) {
+        foreach (var key in keys) {
+            source.Remove(key);
         }
     }
 
