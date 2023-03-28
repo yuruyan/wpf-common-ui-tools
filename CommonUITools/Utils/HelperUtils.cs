@@ -1801,6 +1801,30 @@ public static class AutoSizeHelper {
     }
 
     /// <summary>
+    /// 显式更新 Width
+    /// </summary>
+    /// <param name="groupId"></param>
+    public static void UpdateWidth(string groupId) {
+        if (WidthGroupInfoDict.TryGetValue(groupId, out var groupInfo)) {
+            foreach (var (element, _) in groupInfo.ElementInfoGetterList) {
+                ElementLoadedWidthHandler(element, new RoutedEventArgs(FrameworkElement.LoadedEvent, element));
+            }
+        }
+    }
+
+    /// <summary>
+    /// 显式更新 Height
+    /// </summary>
+    /// <param name="groupId"></param>
+    public static void UpdateHeight(string groupId) {
+        if (HeightGroupInfoDict.TryGetValue(groupId, out var groupInfo)) {
+            foreach (var (element, _) in groupInfo.ElementInfoGetterList) {
+                ElementLoadedHeightHandler(element, new RoutedEventArgs(FrameworkElement.LoadedEvent, element));
+            }
+        }
+    }
+
+    /// <summary>
     /// 设置自动宽度
     /// </summary>
     /// <param name="groupId"></param>
