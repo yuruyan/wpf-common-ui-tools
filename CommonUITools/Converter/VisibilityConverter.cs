@@ -3,38 +3,6 @@
 namespace CommonUITools.Converter;
 
 /// <summary>
-/// value 与 parameter 内容相同，返回 parameter 指定的 Visibility
-/// 不满足则返回 Visible
-/// parameter 格式：value|Visibility(大小写均可)
-/// </summary>
-public class VisibilityEqualConverter : IValueConverter {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        if (parameter == null) {
-            throw new ArgumentNullException($"parameter is null");
-        }
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-        string[] ls = parameter.ToString().Split("|");
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-        if (ls.Length != 2) {
-            throw new ArgumentException("content of parameter is invalid");
-        }
-        if (value.ToString() == ls[0]) {
-            // 遍历 Visibility，找到相同的
-            foreach (Visibility item in Enum.GetValues(typeof(Visibility))) {
-                if (item.ToString().ToLower() == ls[1].ToLower()) {
-                    return item;
-                }
-            }
-        }
-        return Visibility.Visible;
-    }
-
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-        throw new NotImplementedException();
-    }
-}
-
-/// <summary>
 /// value 与 parameter 包括的内容匹配，返回 parameter 指定的 Visibility
 /// 不满足则返回 Visible
 /// parameter 格式：[a b c]|Visibility(大小写均可)
@@ -95,20 +63,43 @@ public class VisibilityNotIncludesConverter : IValueConverter {
 }
 
 /// <summary>
+/// value 与 parameter 内容相同，返回 parameter 指定的 Visibility
+/// 不满足则返回 Visible
+/// parameter 格式：value|Visibility(大小写均可)
+/// </summary>
+public class VisibilityEqualConverter : IValueConverter {
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        string[] ls = parameter.ToString()!.Split("|");
+        if (ls.Length != 2) {
+            throw new ArgumentException("Content of parameter is invalid");
+        }
+        if (value.ToString() == ls[0]) {
+            // 遍历 Visibility，找到相同的
+            foreach (Visibility item in Enum.GetValues(typeof(Visibility))) {
+                if (item.ToString().ToLower() == ls[1].ToLower()) {
+                    return item;
+                }
+            }
+        }
+        return Visibility.Visible;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
+        throw new NotImplementedException();
+    }
+}
+
+/// <summary>
 /// value 与 parameter 内容不相同，返回 parameter 指定的 Visibility
 /// 不满足则返回 Visible
 /// parameter 格式：value|Visibility(大小写均可)
 /// </summary>
 public class VisibilityNotEqualConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        if (parameter == null) {
-            throw new ArgumentNullException($"parameter is null");
-        }
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-        string[] ls = parameter.ToString().Split("|");
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+        ArgumentNullException.ThrowIfNull(nameof(parameter));
+        string[] ls = parameter.ToString()!.Split("|");
         if (ls.Length != 2) {
-            throw new ArgumentException("content of parameter is invalid");
+            throw new ArgumentException("Content of parameter is invalid");
         }
         if (value.ToString() != ls[0]) {
             // 遍历 Visibility，找到相同的
