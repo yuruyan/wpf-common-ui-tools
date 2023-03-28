@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonTools", "CommonTools\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonToolsTests", "CommonToolsTests\CommonToolsTests.csproj", "{E6A7C12F-789D-490A-8FCF-8B0329E8246E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonUIToolsTests", "CommonUIToolsTests\CommonUIToolsTests.csproj", "{B2EFD0CC-0110-4550-90DD-E5A321AE0F06}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,14 @@ Global
 		{E6A7C12F-789D-490A-8FCF-8B0329E8246E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E6A7C12F-789D-490A-8FCF-8B0329E8246E}.Release|x64.ActiveCfg = Release|x64
 		{E6A7C12F-789D-490A-8FCF-8B0329E8246E}.Release|x64.Build.0 = Release|x64
+		{B2EFD0CC-0110-4550-90DD-E5A321AE0F06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2EFD0CC-0110-4550-90DD-E5A321AE0F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2EFD0CC-0110-4550-90DD-E5A321AE0F06}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B2EFD0CC-0110-4550-90DD-E5A321AE0F06}.Debug|x64.Build.0 = Debug|Any CPU
+		{B2EFD0CC-0110-4550-90DD-E5A321AE0F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2EFD0CC-0110-4550-90DD-E5A321AE0F06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2EFD0CC-0110-4550-90DD-E5A321AE0F06}.Release|x64.ActiveCfg = Release|Any CPU
+		{B2EFD0CC-0110-4550-90DD-E5A321AE0F06}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
