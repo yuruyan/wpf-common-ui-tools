@@ -131,7 +131,7 @@ public class VisibilityNotEqualConverter : IValueConverter {
 /// </summary>
 public class HideIfEuqalConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return value.ToString() == parameter.ToString() ? Visibility.Collapsed : Visibility.Visible;
+        return value?.ToString() == parameter?.ToString() ? Visibility.Collapsed : Visibility.Visible;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -144,7 +144,7 @@ public class HideIfEuqalConverter : IValueConverter {
 /// </summary>
 public class HideIfNotEuqalConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return value.ToString() != parameter.ToString() ? Visibility.Collapsed : Visibility.Visible;
+        return value?.ToString() != parameter?.ToString() ? Visibility.Collapsed : Visibility.Visible;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
