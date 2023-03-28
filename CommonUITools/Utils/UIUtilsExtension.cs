@@ -1,4 +1,5 @@
-﻿using ModernWpf.Controls;
+﻿using CommonTools.Utils;
+using ModernWpf.Controls;
 using System.Diagnostics;
 using System.Windows.Media.Imaging;
 using SysDraw = System.Drawing;
@@ -349,6 +350,45 @@ public static partial class UIUtilsExtension {
             handler(sender, e);
         }
         handlers.Clear();
+    }
+
+    /// <summary>
+    /// 递归查询匹配的子元素
+    /// </summary>
+    /// <param name="element"></param>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    public static DependencyObject? FindDescendantBy(this DependencyObject element, Predicate<DependencyObject> predicate) {
+        var childrenCount = VisualTreeHelper.GetChildrenCount(element);
+        for (int i = 0; i < childrenCount; i++) {
+            var child = VisualTreeHelper.GetChild(element, i);
+            if (predicate(child)) {
+                return child;
+            }
+            if (child.FindDescendantBy(predicate) is DependencyObject target) {
+                return target;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// 递归查询所有匹配的子元素
+    /// </summary>
+    /// <param name="element"></param>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    public static IList<DependencyObject> FindDescendantsBy(this DependencyObject element, Predicate<DependencyObject> predicate) {
+        var targets = new List<DependencyObject>();
+        var childrenCount = VisualTreeHelper.GetChildrenCount(element);
+        for (int i = 0; i < childrenCount; i++) {
+            var child = VisualTreeHelper.GetChild(element, i);
+            if (predicate(child)) {
+                targets.Add(child);
+            }
+            targets.AddRange(child.FindDescendantsBy(predicate));
+        }
+        return targets;
     }
 }
 
