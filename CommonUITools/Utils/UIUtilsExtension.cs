@@ -1,4 +1,4 @@
-﻿using CommonTools.Utils;
+﻿using ModernWpf;
 using ModernWpf.Controls;
 using System.Diagnostics;
 using System.Windows.Media.Imaging;
@@ -389,6 +389,18 @@ public static partial class UIUtilsExtension {
             targets.AddRange(child.FindDescendantsBy(predicate));
         }
         return targets;
+    }
+
+    /// <summary>
+    /// Set NavigationViewItem icon size
+    /// </summary>
+    /// <param name="navigationViewItem"></param>
+    /// <param name="size"></param>
+    public static void SetIconSize(this NavigationViewItem navigationViewItem, double size) {
+        if (navigationViewItem.FindDescendant<Viewbox>() is Viewbox viewbox) {
+            viewbox.Margin = new();
+            viewbox.Height = size;
+        }
     }
 }
 
