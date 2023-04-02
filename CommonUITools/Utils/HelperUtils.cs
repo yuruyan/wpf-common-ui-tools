@@ -1,5 +1,6 @@
 ﻿using CommonUITools.Controls;
 using ModernWpf;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media.Effects;
@@ -1211,6 +1212,7 @@ public static class ContextMenuHelper {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty OpenOnMouseLeftClickProperty = DependencyProperty.RegisterAttached("OpenOnMouseLeftClick", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, OpenOnMouseLeftClickPropertyChangedHandler));
     public static readonly DependencyProperty EnableOpeningAnimationProperty = DependencyProperty.RegisterAttached("EnableOpeningAnimation", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, EnableOpeningAnimationPropertyChangedHandler));
+    public static readonly DependencyProperty CenterHorizontalProperty = DependencyProperty.RegisterAttached("CenterHorizontal", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, CenterHorizontalPropertyChangedHandler));
     private static readonly IDictionary<ContextMenu, Storyboard> OpeningStoroboardDict = new Dictionary<ContextMenu, Storyboard>();
 
     public static bool GetOpenOnMouseLeftClick(DependencyObject obj) {
@@ -1238,6 +1240,17 @@ public static class ContextMenuHelper {
     /// <remarks>设置在 ContextMenu 上</remarks>
     public static void SetEnableOpeningAnimation(DependencyObject obj, bool value) {
         obj.SetValue(EnableOpeningAnimationProperty, value);
+    }
+    public static bool GetCenterHorizontal(DependencyObject obj) {
+        return (bool)obj.GetValue(CenterHorizontalProperty);
+    }
+    /// <summary>
+    /// 是否水平居中
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetCenterHorizontal(DependencyObject obj, bool value) {
+        obj.SetValue(CenterHorizontalProperty, value);
     }
 
     private static void EnableOpeningAnimationPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -1303,14 +1316,42 @@ public static class ContextMenuHelper {
         }
     }
 
+    private static void CenterHorizontalPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not ContextMenu menu) {
+            Logger.Error($"Element is not ContextMenu");
+            return;
+        }
+        if (e.NewValue is true) {
+            menu.Opened -= CenterHorizontalContextMenuOpenedHandler;
+            menu.Opened += CenterHorizontalContextMenuOpenedHandler;
+        } else {
+            menu.Opened -= CenterHorizontalContextMenuOpenedHandler;
+        }
+    }
+
+    private static void CenterHorizontalContextMenuOpenedHandler(object sender, RoutedEventArgs e) {
+        if (sender is not ContextMenu menu) {
+            return;
+        }
+        if (menu.PlacementTarget is not FrameworkElement target) {
+            return;
+        }
+        menu.HorizontalOffset = 0;
+        var point = menu.TranslatePoint(new(), target);
+        menu.HorizontalOffset = -point.X;
+        menu.HorizontalOffset -= (menu.ActualWidth - target.ActualWidth) / 2;
+    }
+
     public static void Dispose(FrameworkElement element) {
         if (element.ContextMenu is ContextMenu menu) {
             menu.Opened -= ContextMenuOpenedHandler;
+            menu.Opened -= CenterHorizontalContextMenuOpenedHandler;
             OpeningStoroboardDict.Remove(menu);
             menu.ClearValue(EnableOpeningAnimationProperty);
         }
         element.PreviewMouseLeftButtonUp -= ShowContextMenuHandler;
         element.ClearValue(OpenOnMouseLeftClickProperty);
+        element.ClearValue(CenterHorizontalProperty);
     }
 }
 
