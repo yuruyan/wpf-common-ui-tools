@@ -399,7 +399,7 @@ public static partial class UIUtilsExtension {
     public static void SetIconSize(this NavigationViewItem navigationViewItem, double size) {
         if (navigationViewItem.FindDescendant<Viewbox>() is Viewbox viewbox) {
             viewbox.Margin = new();
-            viewbox.Height = size;
+            viewbox.Height = viewbox.Width = size;
         }
     }
 }
