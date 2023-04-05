@@ -82,6 +82,8 @@
   <!--  页面边距  -->
   <Thickness x:Key="PageMargin">8</Thickness>
   <system:Double x:Key="NumberBoxMinWidth">100</system:Double>
+  <!--  ContentDialog  -->
+  <system:Double x:Key="ContentDialogMaxWidth">1000</system:Double>
 
   <!--#region ScrollBar-->
   <system:Double x:Key="{x:Static SystemParameters.VerticalScrollBarButtonHeightKey}">48</system:Double>

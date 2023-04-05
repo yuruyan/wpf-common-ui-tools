@@ -440,6 +440,9 @@ public static partial class UIUtilsExtension {
     /// <param name="minWidth"></param>
     /// <param name="maxWidth"></param>
     /// <param name="resizeRatio">NewWidth = Window.ActualWidth / <paramref name="resizeRatio"/></param>
+    /// <remarks>
+    /// Note resource key: ContentDialogMaxWidth
+    /// </remarks>
     public static void EnableAutoResize(
         this ContentDialog dialog,
         double minWidth,
