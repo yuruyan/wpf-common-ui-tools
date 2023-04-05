@@ -1,4 +1,4 @@
-﻿namespace CommonUITools.View;
+﻿namespace CommonUITools.Controls;
 
 public partial class WarningDialog : BaseDialog {
     /// <summary>

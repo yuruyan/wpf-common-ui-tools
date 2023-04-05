@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace CommonUITools.Converter;
+namespace CommonUITools.Converters;
 
 /// <summary>
 /// ResultIcon

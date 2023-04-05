@@ -3,7 +3,7 @@
 [assembly: XmlnsDefinition("wpf-common-ui-tools", "CommonUITools.Utils")]
 [assembly: XmlnsDefinition("wpf-common-ui-tools", "CommonUITools.Controls")]
 [assembly: XmlnsDefinition("wpf-common-ui-tools", "CommonUITools.Model")]
-[assembly: XmlnsDefinition("wpf-common-ui-tools", "CommonUITools.Converter")]
+[assembly: XmlnsDefinition("wpf-common-ui-tools", "CommonUITools.Converters")]
 [assembly: XmlnsDefinition("wpf-common-ui-tools", "CommonUITools.Extensions")]
 [assembly: XmlnsPrefix("wpf-common-ui-tools", "tools")]
 

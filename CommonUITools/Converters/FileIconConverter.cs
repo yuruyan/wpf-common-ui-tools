@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Media.Imaging;
 
-namespace CommonUITools.Converter;
+namespace CommonUITools.Converters;
 
 /// <summary>
 /// 文件图标 Converter，返回 string，以 '/' 开头

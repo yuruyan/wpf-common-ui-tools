@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace CommonUITools.Converter;
+namespace CommonUITools.Converters;
 
 /// <summary>
 /// 转 double，不抛异常，失败返回 0

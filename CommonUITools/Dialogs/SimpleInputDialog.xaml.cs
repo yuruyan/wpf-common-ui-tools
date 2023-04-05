@@ -1,6 +1,6 @@
 ﻿using ModernWpf.Controls;
 
-namespace CommonUITools.View;
+namespace CommonUITools.Controls;
 
 public partial class SimpleInputDialog : BaseDialog {
     public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register("Header", typeof(string), typeof(SimpleInputDialog), new PropertyMetadata(""));

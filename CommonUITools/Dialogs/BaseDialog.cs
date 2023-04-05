@@ -1,6 +1,6 @@
 ﻿using ModernWpf.Controls;
 
-namespace CommonUITools.View;
+namespace CommonUITools.Controls;
 
 public class BaseDialog : ContentDialog {
     public static readonly DependencyProperty DetailTextProperty = DependencyProperty.Register("DetailText", typeof(string), typeof(BaseDialog), new PropertyMetadata(""));

@@ -1,6 +1,5 @@
 ﻿using CommonUITools.Controls;
 using ModernWpf;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media.Effects;
