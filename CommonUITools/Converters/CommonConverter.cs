@@ -21,7 +21,7 @@ public class HideZeroConverter : IValueConverter {
 /// </summary>
 public class EqualConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return value == parameter;
+        return object.Equals(value, parameter);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -34,7 +34,7 @@ public class EqualConverter : IValueConverter {
 /// </summary>
 public class NotEqualConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-        return value != parameter;
+        return !object.Equals(value, parameter);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -44,7 +44,7 @@ public class NotEqualConverter : IValueConverter {
 
 /// <summary>
 /// StringAppend Converter，前后用 '||' 分开
-/// </summary
+/// </summary>
 public class StringAppendConverter : IValueConverter {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
         if (parameter == null) {
