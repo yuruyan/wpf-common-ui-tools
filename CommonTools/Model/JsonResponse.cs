@@ -31,7 +31,7 @@ public record class JsonResponse<T> : JsonResponse {
     /// <param name="data"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    public static JsonResponse<T> From(bool success, T data = default!, string? message = null) {
+    public static JsonResponse<T> When(bool success, T data = default!, string? message = null) {
         return new JsonResponse<T> {
             Code = success ? ResponseCodes.Success : ResponseCodes.Failed,
             Data = data,
@@ -76,7 +76,7 @@ public record class JsonResponse {
     /// <param name="success"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    public static JsonResponse From(bool success, string? message = null) {
+    public static JsonResponse When(bool success, string? message = null) {
         return new JsonResponse {
             Code = success ? ResponseCodes.Success : ResponseCodes.Failed,
             Message = message ?? (success ? nameof(Success) : nameof(Failed)),
