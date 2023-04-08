@@ -1,19 +1,28 @@
 ﻿namespace CommonTools.Model;
 
+public static class ResponseCodes {
+    public const int Success = 200;
+    public const int Error = 400;
+    public const int Failed = 401;
+    public const int Forbidden = 403;
+    public const int NotFound = 404;
+    public const int InternalError = 500;
+}
+
 public record class JsonResponse<T> : JsonResponse {
     public T Data { get; set; } = default!;
 
-    public new static JsonResponse<T> Success(T data = default!) => new() { Data = data, Code = 200, Message = nameof(Success) };
+    public new static JsonResponse<T> Success(T data = default!) => new() { Data = data, Code = ResponseCodes.Success, Message = nameof(Success) };
 
-    public new static JsonResponse<T> Error(T data = default!) => new() { Data = data, Code = 400, Message = nameof(Error) };
+    public new static JsonResponse<T> Error(T data = default!) => new() { Data = data, Code = ResponseCodes.Error, Message = nameof(Error) };
 
-    public new static JsonResponse<T> Failed(T data = default!) => new() { Data = data, Code = 401, Message = nameof(Failed) };
+    public new static JsonResponse<T> Failed(T data = default!) => new() { Data = data, Code = ResponseCodes.Failed, Message = nameof(Failed) };
 
-    public new static JsonResponse<T> Forbidden(T data = default!) => new() { Data = data, Code = 403, Message = nameof(Forbidden) };
+    public new static JsonResponse<T> Forbidden(T data = default!) => new() { Data = data, Code = ResponseCodes.Forbidden, Message = nameof(Forbidden) };
 
-    public new static JsonResponse<T> NotFound(T data = default!) => new() { Data = data, Code = 404, Message = nameof(NotFound) };
+    public new static JsonResponse<T> NotFound(T data = default!) => new() { Data = data, Code = ResponseCodes.NotFound, Message = nameof(NotFound) };
 
-    public new static JsonResponse<T> InternalError(T data = default!) => new() { Data = data, Code = 500, Message = nameof(InternalError) };
+    public new static JsonResponse<T> InternalError(T data = default!) => new() { Data = data, Code = ResponseCodes.InternalError, Message = nameof(InternalError) };
 
     /// <summary>
     /// 成功返回 <see cref="Success(T)"/>，失败返回 <see cref="Failed(T)"/>
@@ -22,11 +31,11 @@ public record class JsonResponse<T> : JsonResponse {
     /// <param name="data"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    public static JsonResponse<T> From(bool success, T data = default!, string message = "") {
+    public static JsonResponse<T> From(bool success, T data = default!, string? message = null) {
         return new JsonResponse<T> {
-            Code = success ? 200 : 401,
+            Code = success ? ResponseCodes.Success : ResponseCodes.Failed,
             Data = data,
-            Message = message,
+            Message = message ?? (success ? nameof(Success) : nameof(Failed)),
         };
     }
 }
@@ -35,17 +44,17 @@ public record class JsonResponse {
     public int Code { get; set; }
     public string Message { get; set; } = string.Empty;
 
-    public static JsonResponse Success => new() { Code = 200, Message = nameof(Success) };
+    public static JsonResponse Success => new() { Code = ResponseCodes.Success, Message = nameof(Success) };
 
-    public static JsonResponse Error => new() { Code = 400, Message = nameof(Error) };
+    public static JsonResponse Error => new() { Code = ResponseCodes.Error, Message = nameof(Error) };
 
-    public static JsonResponse Failed => new() { Code = 401, Message = nameof(Failed) };
+    public static JsonResponse Failed => new() { Code = ResponseCodes.Failed, Message = nameof(Failed) };
 
-    public static JsonResponse Forbidden => new() { Code = 403, Message = nameof(Forbidden) };
+    public static JsonResponse Forbidden => new() { Code = ResponseCodes.Forbidden, Message = nameof(Forbidden) };
 
-    public static JsonResponse NotFound => new() { Code = 404, Message = nameof(NotFound) };
+    public static JsonResponse NotFound => new() { Code = ResponseCodes.NotFound, Message = nameof(NotFound) };
 
-    public static JsonResponse InternalError => new() { Code = 500, Message = nameof(InternalError) };
+    public static JsonResponse InternalError => new() { Code = ResponseCodes.InternalError, Message = nameof(InternalError) };
 
     /// <summary>
     /// 成功返回 <see cref="Success"/>，是否返回 <see cref="Failed"/>
@@ -53,10 +62,10 @@ public record class JsonResponse {
     /// <param name="success"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    public static JsonResponse From(bool success, string message = "") {
+    public static JsonResponse From(bool success, string? message = null) {
         return new JsonResponse {
-            Message = message,
-            Code = success ? 200 : 401
+            Code = success ? ResponseCodes.Success : ResponseCodes.Failed,
+            Message = message ?? (success ? nameof(Success) : nameof(Failed)),
         };
     }
 }
