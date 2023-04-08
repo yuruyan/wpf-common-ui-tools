@@ -38,6 +38,20 @@ public record class JsonResponse<T> : JsonResponse {
             Message = message ?? (success ? nameof(Success) : nameof(Failed)),
         };
     }
+
+    /// <summary>
+    /// <paramref name="data"/> 不为 null 返回 <see cref="Success(T)"/>，否则返回 <see cref="Failed(T)"/>
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public static JsonResponse<T> From(T data, string? message = null) {
+        return new JsonResponse<T> {
+            Code = data is null ? ResponseCodes.Failed : ResponseCodes.Success,
+            Data = data,
+            Message = message ?? (data is null ? nameof(Failed) : nameof(Success)),
+        };
+    }
 }
 
 public record class JsonResponse {
