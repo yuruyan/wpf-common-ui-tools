@@ -4,6 +4,6 @@ public interface INavigationRequest {
     public event EventHandler NavigationRequested;
 }
 
-public interface INavigationRequest<Args> {
-    public event EventHandler<Args> NavigationRequested;
+public interface INavigationRequest<Args> : INavigationRequest {
+    public new event EventHandler<Args> NavigationRequested;
 }
