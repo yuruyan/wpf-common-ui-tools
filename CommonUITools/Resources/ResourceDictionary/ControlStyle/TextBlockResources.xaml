@@ -12,6 +12,11 @@
     <Setter Property="FontFamily" Value="{DynamicResource SystemFontFamily}" />
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="ToolTipService.InitialShowDelay" Value="{DynamicResource ToolTipServiceInitialShowDelay}" />
+    <Style.Triggers>
+      <Trigger Property="IsEnabled" Value="False">
+        <Setter Property="Foreground" Value="{DynamicResource TextControlBackgroundDisabled}" />
+      </Trigger>
+    </Style.Triggers>
   </Style>
   <Style BasedOn="{StaticResource GlobalTextBlockStyle}" TargetType="TextBlock" />
   <!--  IconFont 样式  -->
@@ -69,10 +74,16 @@
     BasedOn="{StaticResource GlobalTextBlockStyle}"
     TargetType="TextBlock">
     <Style.Triggers>
-      <Trigger Property="IsMouseOver" Value="True">
-        <Setter Property="TextDecorations" Value="Underline" />
-        <Setter Property="Cursor" Value="Hand" />
-      </Trigger>
+      <MultiTrigger>
+        <MultiTrigger.Conditions>
+          <Condition Property="IsMouseOver" Value="True" />
+          <Condition Property="IsEnabled" Value="True" />
+        </MultiTrigger.Conditions>
+        <MultiTrigger.Setters>
+          <Setter Property="TextDecorations" Value="Underline" />
+          <Setter Property="Cursor" Value="Hand" />
+        </MultiTrigger.Setters>
+      </MultiTrigger>
     </Style.Triggers>
   </Style>
   <!--  ContentDialogTitleStyle  -->
