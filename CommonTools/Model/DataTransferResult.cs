@@ -1,9 +1,5 @@
 ﻿namespace CommonTools.Model;
 
-public enum CommonStatus {
-    SUCCESS, FAILED, ERROR
-}
-
 public record DTResult<T> {
     public CommonStatus Status { get; set; } = CommonStatus.FAILED;
     public string Message { get; set; } = string.Empty;

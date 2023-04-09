@@ -1,4 +1,4 @@
-﻿namespace CommonUITools.Model.Interfaces;
+﻿namespace CommonTools.Model;
 
 public interface IRequest {
     public event EventHandler Requested;
