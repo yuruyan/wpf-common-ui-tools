@@ -1,5 +1,6 @@
 ﻿using CommonUITools.Controls;
 using ModernWpf;
+using System.ComponentModel;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media.Effects;
@@ -2016,5 +2017,65 @@ public static class AutoSizeHelper {
             elementInfos.ElementInfoGetterList.Clear();
             elementInfos.ElementInfoSetterList.Clear();
         }
+    }
+}
+
+/// <summary>
+/// 添加 Password 附加属性，OneWayToSource
+/// </summary>
+public static class PasswordBoxHelper {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    public static readonly DependencyProperty TargetProperty = DependencyProperty.RegisterAttached("Target", typeof(DependencyObject), typeof(PasswordBoxHelper), new PropertyMetadata(TargetPropertyChangedHandler));
+    public static readonly DependencyProperty PasswordPropertyProperty = DependencyProperty.RegisterAttached("PasswordProperty", typeof(DependencyProperty), typeof(PasswordBoxHelper), new PropertyMetadata());
+
+    public static DependencyProperty GetPasswordProperty(DependencyObject obj) {
+        return (DependencyProperty)obj.GetValue(PasswordPropertyProperty);
+    }
+    /// <summary>
+    /// Password Property
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetPasswordProperty(DependencyObject obj, DependencyProperty value) {
+        obj.SetValue(PasswordPropertyProperty, value);
+    }
+    public static DependencyObject GetTarget(DependencyObject obj) {
+        return (DependencyObject)obj.GetValue(TargetProperty);
+    }
+    /// <summary>
+    /// Password 所属 Element
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetTarget(DependencyObject obj, DependencyObject value) {
+        obj.SetValue(TargetProperty, value);
+    }
+
+    private static void TargetPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not PasswordBox box) {
+            Logger.Info($"Object '{d}' is not of type PasswordBox");
+            return;
+        }
+        box.PasswordChanged -= PasswordChangedHandler;
+        box.PasswordChanged += PasswordChangedHandler;
+    }
+
+    private static void PasswordChangedHandler(object sender, RoutedEventArgs e) {
+        if (sender is not PasswordBox box) {
+            return;
+        }
+        if (GetTarget(box) is not DependencyObject target) {
+            return;
+        }
+        if (GetPasswordProperty(box) is not DependencyProperty property) {
+            return;
+        }
+        target.SetValue(property, box.Password);
+    }
+
+    public static void Dispose(PasswordBox passwordBox) {
+        passwordBox.PasswordChanged -= PasswordChangedHandler;
+        passwordBox.ClearValue(TargetProperty);
+        passwordBox.ClearValue(PasswordPropertyProperty);
     }
 }
