@@ -146,4 +146,21 @@ public static partial class CommonUtils {
         // 读取前 64kb 字节
         return Array.IndexOf(reader.ReadBytes(63 * 1024), nullByte) >= 0;
     }
+
+    /// <summary>
+    /// 获取随机唯一文件名
+    /// </summary>
+    /// <param name="dirPath">随机文件所在路径，默认为 <see cref="Environment.CurrentDirectory"/></param>
+    /// <returns></returns>
+    public static string? GetUniqueRandomFileName(string? dirPath = null) {
+        dirPath = dirPath ?? Environment.CurrentDirectory;
+        int count = 0;
+        while (count++ < 16) {
+            var name = Path.GetRandomFileName();
+            if (!File.Exists(Path.Combine(dirPath, name))) {
+                return name;
+            }
+        }
+        return null;
+    }
 }
