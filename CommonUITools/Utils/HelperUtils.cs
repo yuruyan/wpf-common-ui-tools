@@ -629,7 +629,7 @@ public static class DragDropHelper {
 }
 
 /// <summary>
-/// 加载状态
+/// 加载状态，无法作用于 <see cref="Window"/>
 /// </summary>
 public static class LoadingBoxHelper {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
