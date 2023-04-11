@@ -1,6 +1,7 @@
 ﻿using CommonUITools.Controls;
 using ModernWpf;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Media.Effects;
@@ -1310,9 +1311,8 @@ public static class ContextMenuHelper {
     /// <param name="e"></param>
     private static void ShowContextMenuHandler(object sender, MouseButtonEventArgs e) {
         if (sender is FrameworkElement element && element.ContextMenu is not null) {
+            element.ContextMenu.PlacementTarget = element;
             element.ContextMenu.IsOpen = true;
-        } else if (sender is FrameworkContentElement contentElement && contentElement.ContextMenu is not null) {
-            contentElement.ContextMenu.IsOpen = true;
         }
     }
 
