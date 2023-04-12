@@ -11,8 +11,8 @@
       <Setter.Value>
         <ControlTemplate TargetType="local:ToggleControl">
           <Grid>
-            <ContentPresenter Content="{TemplateBinding FirstControl}" Visibility="{TemplateBinding State, Converter={StaticResource HideIfFalseConverter}}" />
-            <ContentPresenter Content="{TemplateBinding SecondControl}" Visibility="{TemplateBinding State, Converter={StaticResource HideIfTrueConverter}}" />
+            <ContentPresenter x:Name="FirstControl" Content="{TemplateBinding FirstControl}" />
+            <ContentPresenter x:Name="SecondControl" Content="{TemplateBinding SecondControl}" />
           </Grid>
         </ControlTemplate>
       </Setter.Value>
