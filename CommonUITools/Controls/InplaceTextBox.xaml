@@ -11,15 +11,18 @@
   mc:Ignorable="d">
   <local:ToggleControl State="{Binding IsTextBoxVisible, ElementName=InplaceTextBoxRoot, Converter={StaticResource InvertBoolConverter}}">
     <local:ToggleControl.FirstControl>
-      <TextBlock MouseUp="ShowTextBoxHandler" Text="{Binding Text}" />
+      <TextBlock
+        MouseUp="ShowTextBoxHandler"
+        Style="{Binding TextBlockStyle, ElementName=InplaceTextBoxRoot}"
+        Text="{Binding Text, ElementName=InplaceTextBoxRoot}" />
     </local:ToggleControl.FirstControl>
     <local:ToggleControl.SecondControl>
       <TextBox
-        x:Name="LocalTextBox"
         IsVisibleChanged="TextBoxIsVisibleChangedHandler"
         KeyUp="UpdateTextHandler"
         LostFocus="TextBoxLostFocusHandler"
-        Text="{Binding Text}" />
+        Style="{Binding TextBoxStyle, ElementName=InplaceTextBoxRoot}"
+        Text="{Binding Text, ElementName=InplaceTextBoxRoot}" />
     </local:ToggleControl.SecondControl>
   </local:ToggleControl>
 </UserControl>
