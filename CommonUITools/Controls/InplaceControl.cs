@@ -28,6 +28,7 @@ public class InplaceControl : Control {
         get { return (bool)GetValue(IsWriterVisibleProperty); }
         set { SetValue(IsWriterVisibleProperty, value); }
     }
+    private Window CurrentWindow = Application.Current.MainWindow;
 
     static InplaceControl() {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(InplaceControl), new FrameworkPropertyMetadata(typeof(InplaceControl)));
@@ -42,13 +43,15 @@ public class InplaceControl : Control {
     public InplaceControl() {
         // Click Reader to show writer
         this.SetLoadedOnceEventHandler((_, _) => {
+            CurrentWindow = Window.GetWindow(this);
             if (Template.FindName("ReaderControl", this) is FrameworkElement element) {
                 element.MouseUp += (_, _) => IsWriterVisible = true;
             }
         });
         PreviewMouseDown += (_, _) => IsMouseClick = true;
-        Loaded += (_, _) => Window.GetWindow(this).PreviewMouseUp += WindowPreviewMouseUpHandler;
-        Unloaded += (_, _) => Window.GetWindow(this).PreviewMouseUp -= WindowPreviewMouseUpHandler;
+        // Place after 'SetLoadedOnceEventHandler'
+        Loaded += (_, _) => CurrentWindow.PreviewMouseUp += WindowPreviewMouseUpHandler;
+        Unloaded += (_, _) => CurrentWindow.PreviewMouseUp -= WindowPreviewMouseUpHandler;
     }
 
     private void WindowPreviewMouseUpHandler(object sender, MouseButtonEventArgs e) {
