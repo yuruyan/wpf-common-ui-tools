@@ -21,6 +21,7 @@
 
     <!--#region Controls-->
     <ResourceDictionary Source="/CommonUITools;component/Themes/Controls/ToggleControl.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Themes/Controls/InplaceControl.xaml" />
     <!--#endregion-->
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
