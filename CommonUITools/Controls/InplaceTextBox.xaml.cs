@@ -61,8 +61,6 @@ public partial class InplaceTextBox : UserControl {
     }
 
     public InplaceTextBox() {
-        TextBlockStyle ??= (Style)FindResource("GlobalTextBlockStyle");
-        TextBoxStyle ??= (Style)FindResource("GlobalTextBoxStyle");
         InitializeComponent();
         PreviewMouseDown += (_, _) => IsMouseClick = true;
         // Set auto changed focus
@@ -70,6 +68,8 @@ public partial class InplaceTextBox : UserControl {
             if (obj is not InplaceTextBox self) {
                 return;
             }
+            self.TextBlockStyle ??= (Style)self.FindResource("GlobalTextBlockStyle");
+            self.TextBoxStyle ??= (Style)self.FindResource("GlobalTextBoxStyle");
             Window.GetWindow(self).PreviewMouseUp += (sender, e) => {
                 if (!self.IsMouseClick) {
                     self.IsTextBoxVisible = false;
