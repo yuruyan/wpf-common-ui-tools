@@ -157,39 +157,30 @@ public static class TaskUtils {
     }
 
     /// <summary>
-    /// (Identifier, 上一个任务)
+    /// (identifier, 上一个任务)
     /// </summary>
     private static readonly IDictionary<object, Task> PreviousTaskDict = new ConcurrentDictionary<object, Task>();
 
+    public static void AddToTaskQueue(object identifier, Action<Task> task) {
+        var previousTask = GetPreviousTaskQueueTask(identifier);
+        PreviousTaskDict[identifier] = previousTask.ContinueWith(t => task(t));
+    }
+
+    public static void AddToTaskQueue(object identifier, Func<Task, Task> task) {
+        var previousTask = GetPreviousTaskQueueTask(identifier);
+        PreviousTaskDict[identifier] = previousTask.ContinueWith(t => task(t).Wait());
+    }
+
     /// <summary>
-    /// 添加到任务队列
+    /// Get last task, auto Initialie
     /// </summary>
-    /// <param name="Identifier">标识</param>
-    /// <param name="newTaskCallback">第一个参数为已经执行完的上一个任务，第二个参数为需要执行的任务</param>
-    [ThreadSafe]
-    public static void AddToTaskQueue(object Identifier, Action<Task> newTaskCallback) {
+    /// <param name="Identifier"></param>
+    /// <returns></returns>
+    private static Task GetPreviousTaskQueueTask(object Identifier) {
         // 初始化
-        if (!PreviousTaskDict.ContainsKey(Identifier)) {
-            PreviousTaskDict[Identifier] = Task.CompletedTask;
+        if (!PreviousTaskDict.TryGetValue(Identifier, out var previousTask)) {
+            previousTask = PreviousTaskDict[Identifier] = Task.CompletedTask;
         }
-        var previousTask = PreviousTaskDict[Identifier];
-        // 已经完成，立即执行
-        if (previousTask.IsCompleted) {
-            PreviousTaskDict[Identifier] = Task.Factory.StartNew(
-                args => {
-                    var (previousTask, newTaskCallback) = ((Task, Action<Task>))args!;
-                    newTaskCallback(previousTask);
-                },
-                (previousTask, newTaskCallback)
-            );
-        } else {
-            PreviousTaskDict[Identifier] = Task.Factory.StartNew(
-                args => {
-                    var (previousTask, newTaskCallback) = ((Task, Action<Task>))args!;
-                    previousTask.ContinueWith(newTaskCallback).Wait();
-                },
-                (previousTask, newTaskCallback)
-            );
-        }
+        return previousTask;
     }
 }
