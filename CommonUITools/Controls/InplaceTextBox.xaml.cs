@@ -1,11 +1,40 @@
 ﻿namespace CommonUITools.Controls;
 
+public class InplaceTextBoxArgs : RoutedEventArgs {
+    public string Text { get; set; } = string.Empty;
+
+    public InplaceTextBoxArgs() {
+
+    }
+
+    public InplaceTextBoxArgs(RoutedEvent routedEvent) : base(routedEvent) {
+
+    }
+
+    public InplaceTextBoxArgs(RoutedEvent routedEvent, object source) : base(routedEvent, source) {
+
+    }
+
+    public InplaceTextBoxArgs(RoutedEvent routedEvent, object source, string text) : base(routedEvent, source) {
+        Text = text;
+    }
+
+    public InplaceTextBoxArgs(string text) {
+        Text = text;
+    }
+}
+
 public partial class InplaceTextBox : UserControl {
     public static readonly DependencyProperty IsTextBoxVisibleProperty = DependencyProperty.Register("IsTextBoxVisible", typeof(bool), typeof(InplaceTextBox), new PropertyMetadata(false));
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(InplaceTextBox), new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, TextPropertyChangedHandler));
     public static readonly DependencyProperty TextBlockStyleProperty = DependencyProperty.Register("TextBlockStyle", typeof(Style), typeof(InplaceTextBox), new PropertyMetadata());
     public static readonly DependencyProperty TextBoxStyleProperty = DependencyProperty.Register("TextBoxStyle", typeof(Style), typeof(InplaceTextBox), new PropertyMetadata());
-    public event EventHandler<string>? TextChanged;
+    public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent(nameof(TextChanged), RoutingStrategy.Direct, typeof(TextChangedEventHandler), typeof(InplaceTextBox));
+    public delegate void TextChangedEventHandler(object sender, InplaceTextBoxArgs e);
+    public event TextChangedEventHandler TextChanged {
+        add { this.AddHandler(TextChangedEvent, value); }
+        remove { this.RemoveHandler(TextChangedEvent, value); }
+    }
     private bool IsMouseClick;
 
     /// <summary>
@@ -35,7 +64,6 @@ public partial class InplaceTextBox : UserControl {
         TextBlockStyle ??= (Style)FindResource("GlobalTextBlockStyle");
         TextBoxStyle ??= (Style)FindResource("GlobalTextBoxStyle");
         InitializeComponent();
-
         PreviewMouseDown += (_, _) => IsMouseClick = true;
         // Set auto changed focus
         this.SetLoadedOnceEventHandler(static (obj, _) => {
@@ -53,7 +81,11 @@ public partial class InplaceTextBox : UserControl {
 
     private static void TextPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is InplaceTextBox self) {
-            self.TextChanged?.Invoke(self, (string)e.NewValue);
+            self.RaiseEvent(new InplaceTextBoxArgs(
+                InplaceTextBox.TextChangedEvent,
+                self,
+                (string)e.NewValue)
+            );
         }
     }
 
