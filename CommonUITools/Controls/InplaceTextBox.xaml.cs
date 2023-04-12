@@ -25,7 +25,7 @@ public class InplaceTextBoxArgs : RoutedEventArgs {
 }
 
 public partial class InplaceTextBox : UserControl {
-    public static readonly DependencyProperty IsTextBoxVisibleProperty = DependencyProperty.Register("IsTextBoxVisible", typeof(bool), typeof(InplaceTextBox), new PropertyMetadata(false));
+    private static readonly DependencyProperty IsTextBoxVisibleProperty = DependencyProperty.Register("IsTextBoxVisible", typeof(bool), typeof(InplaceTextBox), new PropertyMetadata(false));
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(InplaceTextBox), new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, TextPropertyChangedHandler));
     public static readonly DependencyProperty TextBlockStyleProperty = DependencyProperty.Register("TextBlockStyle", typeof(Style), typeof(InplaceTextBox), new PropertyMetadata());
     public static readonly DependencyProperty TextBoxStyleProperty = DependencyProperty.Register("TextBoxStyle", typeof(Style), typeof(InplaceTextBox), new PropertyMetadata());
