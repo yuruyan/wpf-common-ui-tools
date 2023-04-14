@@ -413,6 +413,25 @@ public static partial class ExtensionUtils {
         }
         return sb.ToString();
     }
+
+    /// <summary>
+    /// 获取一个符合 <paramref name="predicate"/> 的元素
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="predicate"></param>
+    /// <param name="result"></param>
+    /// <returns>成功返回 true，失败返回 false</returns>
+    public static bool TryGet<T>(this IEnumerable<T> source, Predicate<T> predicate, out T result) {
+        result = default!;
+        foreach (var item in source) {
+            if (predicate(item)) {
+                result = item;
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 /// <summary>
