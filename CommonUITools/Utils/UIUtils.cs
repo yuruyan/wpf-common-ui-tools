@@ -27,7 +27,39 @@ public static class UIUtils {
     /// </summary>
     /// <param name="task"></param>
     public static void RunOnUIThread(Action task) {
-        Application.Current.Dispatcher.BeginInvoke(() => task());
+        Application.Current.Dispatcher.Invoke(() => task());
+    }
+
+    /// <summary>
+    /// 在 UI 线程中异步运行
+    /// </summary>
+    /// <param name="task"></param>
+    public static void RunOnUIThreadAsync(Action task) {
+        Application.Current.Dispatcher.InvokeAsync(() => task());
+    }
+
+    /// <summary>
+    /// 在 UI 线程中运行
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="task"></param>
+    /// <param name="state"></param>
+    public static void RunOnUIThread<T>(Action<T> task, T state) {
+        _ = Application.Current.Dispatcher.Invoke(delegate (T o) {
+            task(o);
+        }, state);
+    }
+
+    /// <summary>
+    /// 在 UI 线程中异步运行
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="task"></param>
+    /// <param name="state"></param>
+    public static void RunOnUIThreadAsync<T>(Action<T> task, T state) {
+        _ = Application.Current.Dispatcher.BeginInvoke(delegate (T o) {
+            task(o);
+        }, state);
     }
 
     /// <summary>
@@ -38,6 +70,20 @@ public static class UIUtils {
     /// <returns></returns>
     public static T RunOnUIThread<T>(Func<T> task) {
         return Application.Current.Dispatcher.Invoke(() => task());
+    }
+
+    /// <summary>
+    /// 在 UI 线程中运行
+    /// </summary>
+    /// <typeparam name="TArgument"></typeparam>
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="task"></param>
+    /// <param name="arg"></param>
+    /// <returns></returns>
+    public static TResult RunOnUIThread<TArgument, TResult>(Func<TArgument, TResult> task, TArgument arg) {
+        return (TResult)Application.Current.Dispatcher.Invoke(delegate (TArgument arg) {
+            return task(arg);
+        }, arg);
     }
 
     /// <summary>
