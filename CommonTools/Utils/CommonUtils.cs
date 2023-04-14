@@ -6,6 +6,17 @@ namespace CommonTools.Utils;
 public static partial class CommonUtils {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     /// <summary>
+    /// 路径分隔符正则
+    /// </summary>
+#if NET7_0_OR_GREATER
+    private static readonly Regex PathSpliterRegex = GetPathSpliterRegex();
+    [GeneratedRegex("[/\\\\]")]
+    private static partial Regex GetPathSpliterRegex();
+#elif NET6_0_OR_GREATER
+    private static readonly Regex PathSpliterRegex = new(@"[/\\]");
+#endif
+
+    /// <summary>
     /// 拷贝对象
     /// </summary>
     /// <typeparam name="T"></typeparam>
@@ -47,12 +58,9 @@ public static partial class CommonUtils {
     /// 获取单例对象
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="type"></param>
     /// <returns></returns>
     /// <exception cref="Exception">对象创建失败</exception>
-    public static T GetSingletonInstance<T>(Type type) {
-        return (T)GetSingletonInstance(type);
-    }
+    public static T GetSingletonInstance<T>() => (T)GetSingletonInstance(typeof(T));
 
     /// <summary>
     /// 根据 init 函数创建单例对象
@@ -78,23 +86,10 @@ public static partial class CommonUtils {
     /// 根据 init 函数创建单例对象
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="type"></param>
     /// <param name="init"></param>
     /// <returns></returns>
-    public static T GetSingletonInstance<T>(Type type, Func<object> init) {
-        return (T)GetSingletonInstance(type, init);
-    }
+    public static T GetSingletonInstance<T>(Func<object> init) => (T)GetSingletonInstance(typeof(T), init);
 
-    /// <summary>
-    /// 路径分隔符正则
-    /// </summary>
-#if NET7_0_OR_GREATER
-    private static readonly Regex PathSpliterRegex = GetPathSpliterRegex();
-    [GeneratedRegex("[/\\\\]")]
-    private static partial Regex GetPathSpliterRegex();
-#elif NET6_0_OR_GREATER
-    private static readonly Regex PathSpliterRegex = new(@"[/\\]");
-#endif
     /// <summary>
     /// 移除路径分隔符(\, /)
     /// </summary>
