@@ -112,6 +112,6 @@
   <!--#endregion-->
 
   <SolidColorBrush x:Key="GrayTextForeground" Color="{StaticResource Black8}" />
-  <SolidColorBrush x:Key="HoverEffectBackgroundBrush" Color="{StaticResource GrayBrush3}" />
+  <SolidColorBrush x:Key="HoverEffectBackgroundBrush" Color="{StaticResource Gray3}" />
 
 </ResourceDictionary>
