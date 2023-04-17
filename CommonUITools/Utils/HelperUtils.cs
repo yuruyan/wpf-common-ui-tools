@@ -1,5 +1,6 @@
 ﻿using CommonUITools.Controls;
 using ModernWpf;
+using ModernWpf.Controls;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls.Primitives;
@@ -2077,5 +2078,85 @@ public static class PasswordBoxHelper {
         passwordBox.PasswordChanged -= PasswordChangedHandler;
         passwordBox.ClearValue(TargetProperty);
         passwordBox.ClearValue(PasswordPropertyProperty);
+    }
+}
+
+public static class NumberBoxStyleHelper {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    public static readonly DependencyProperty EnabledProperty = DependencyProperty.RegisterAttached("Enabled", typeof(bool), typeof(NumberBoxStyleHelper), new PropertyMetadata(false, EnabledPropertyChangedHandler));
+    private static readonly IList<NumberBox> NumberBoxes = new List<NumberBox>();
+
+    public static bool GetEnabled(DependencyObject obj) {
+        return (bool)obj.GetValue(EnabledProperty);
+    }
+    public static void SetEnabled(DependencyObject obj, bool value) {
+        obj.SetValue(EnabledProperty, value);
+    }
+
+    static NumberBoxStyleHelper() {
+        // Update theme
+        ThemeManager.Current.ActualApplicationThemeChanged += (s, e) => {
+            foreach (var box in NumberBoxes) {
+                UpdateStyle(box);
+            }
+        };
+    }
+
+    private static void EnabledPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not NumberBox box) {
+            Logger.Info($"{d} is not of type NumberBox");
+            return;
+        }
+        if (e.NewValue is false) {
+            // Clear style
+            if (GetTextBox(box) is TextBox textbox) {
+                textbox.ClearValue(FrameworkElement.StyleProperty);
+            }
+            box.Loaded -= NumberBoxLoadedHandler;
+            box.Unloaded -= NumberBoxUnloadedHandler;
+            return;
+        }
+        if (box.IsLoaded) {
+            NumberBoxLoadedHandler(box, null!);
+            return;
+        }
+        box.Loaded -= NumberBoxLoadedHandler;
+        box.Loaded += NumberBoxLoadedHandler;
+        box.Unloaded -= NumberBoxUnloadedHandler;
+        box.Unloaded += NumberBoxUnloadedHandler;
+    }
+
+    private static Style GetStyle(NumberBox box) {
+        var style = (Style)box.FindResource("GlobalTextBoxStyle");
+        var newStyle = new Style(typeof(TextBox), style);
+        newStyle.Resources["TextControlBackgroundPointerOver"] = new SolidColorBrush(Colors.Transparent);
+        newStyle.Resources["TextControlBackgroundFocused"] = new SolidColorBrush(Colors.Transparent);
+        newStyle.Resources["TextControlBackground"] = new SolidColorBrush(Colors.Transparent);
+        newStyle.Resources["TextControlBorderBrushPointerOver"] = box.FindResource("TextControlBorderBrushPointerOver");
+        newStyle.Resources["TextControlBorderBrush"] = box.FindResource("TextControlBorderBrush");
+        newStyle.Resources["TextControlCaretBrush"] = box.FindResource("TextControlCaretBrush");
+        newStyle.Resources["MenuFlyoutPresenterBackground"] = box.FindResource("MenuFlyoutPresenterBackground");
+        return newStyle;
+    }
+
+    private static TextBox? GetTextBox(NumberBox box) {
+        return box.Template.FindName("InputBox", box) as TextBox;
+    }
+
+    private static void UpdateStyle(NumberBox box) {
+        if (GetTextBox(box) is TextBox textbox) {
+            textbox.Style = GetStyle(box);
+        }
+    }
+
+    private static void NumberBoxUnloadedHandler(object sender, RoutedEventArgs e) {
+        var box = (NumberBox)sender;
+        NumberBoxes.Remove(box);
+    }
+
+    private static void NumberBoxLoadedHandler(object sender, RoutedEventArgs e) {
+        var box = (NumberBox)sender;
+        NumberBoxes.Add(box);
+        UpdateStyle(box);
     }
 }

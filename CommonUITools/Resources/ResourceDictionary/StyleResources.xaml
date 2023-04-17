@@ -124,6 +124,7 @@
   </ContextMenu>
   <!--  GlobalNumberBoxStyle  -->
   <Style x:Key="GlobalNumberBoxStyle" TargetType="ui:NumberBox">
+    <Setter Property="utils:NumberBoxStyleHelper.Enabled" Value="True" />
     <Setter Property="AcceptsExpression" Value="False" />
     <Setter Property="SpinButtonPlacementMode" Value="Compact" />
     <Setter Property="MinWidth" Value="{DynamicResource NumberBoxMinWidth}" />
