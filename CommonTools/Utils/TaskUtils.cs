@@ -20,7 +20,7 @@ public static class TaskUtils {
     /// </summary>
     /// <param name="task"></param>
     [NoException]
-    public static async void TryAsync(Func<Task> task) {
+    public static async Task TryAsync(Func<Task> task) {
         try {
             await task();
         } catch { }
