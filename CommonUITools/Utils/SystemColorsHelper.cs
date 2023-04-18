@@ -19,7 +19,9 @@ public static class SystemColorsHelper {
     }
 
     private static void ThemeColorChanged(Color oldVal, Color newVal) {
-        SystemThemeChanged?.Invoke(null, CurrentSystemTheme);
+        UIUtils.RunOnUIThreadAsync(() => {
+            SystemThemeChanged?.Invoke(null, CurrentSystemTheme);
+        });
     }
 
     private static void SystemColorValuesChanged(UISettings sender, object args) {
