@@ -8,8 +8,9 @@ public static class SystemColorsHelper {
     private static readonly Color LightThemeColor = Color.FromArgb(255, 255, 255, 255);
     private static readonly Color DarkThemeColor = Color.FromArgb(255, 0, 0, 0);
     private static readonly ObservableProperty<Color> CurrentThemeColor = new(LightThemeColor);
-    public static event EventHandler<ThemeMode>? SystemThemeChanged;
     private static readonly UISettings UISettings = new();
+    public static event EventHandler<ThemeMode>? SystemThemeChanged;
+    public static ThemeMode CurrentSystemTheme => CurrentThemeColor.Value == LightThemeColor ? ThemeMode.Light : ThemeMode.Dark;
 
     static SystemColorsHelper() {
         CurrentThemeColor.ValueChanged += ThemeColorChanged;
@@ -18,8 +19,7 @@ public static class SystemColorsHelper {
     }
 
     private static void ThemeColorChanged(Color oldVal, Color newVal) {
-        var themeMode = newVal == LightThemeColor ? ThemeMode.Light : ThemeMode.Dark;
-        SystemThemeChanged?.Invoke(null, themeMode);
+        SystemThemeChanged?.Invoke(null, CurrentSystemTheme);
     }
 
     private static void SystemColorValuesChanged(UISettings sender, object args) {
