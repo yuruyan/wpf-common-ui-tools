@@ -1,17 +1,22 @@
-﻿namespace CommonUITools.Themes;
+﻿using CommonTools.Model;
+
+namespace CommonUITools.Themes;
 
 public static class ThemeManager {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private static readonly ResourceDictionary GenericResourceDictionary;
+    private static readonly ObservableProperty<ThemeMode> CurrentThemeProperty = new(ThemeMode.Light);
 
     private const string GenericSource1 = "/CommonUITools;component/Themes/Generic.xaml";
     private const string GenericSource2 = "pack://application:,,,/CommonUITools;component/Themes/Generic.xaml";
     private const string LightThemeSource = "/CommonUITools;component/Themes/LightThemeResources.xaml";
     private const string DarkThemeSource = "/CommonUITools;component/Themes/DarkThemeResources.xaml";
 
-    public static ThemeMode CurrentTheme { get; private set; } = ThemeMode.Light;
+    public static ThemeMode CurrentTheme => CurrentThemeProperty.Value;
+    public static event EventHandler<ThemeMode>? ThemeChanged;
 
     static ThemeManager() {
+        CurrentThemeProperty.ValueChanged += CurrentThemeChanged;
         ModernWpf.ThemeManager.Current.ApplicationTheme = ModernWpf.ApplicationTheme.Light;
         var dictionary = Application.Current.Resources.MergedDictionaries;
         // 查找 GenericResourceDictionary
@@ -23,33 +28,22 @@ public static class ThemeManager {
         GenericResourceDictionary = res;
     }
 
+    private static void CurrentThemeChanged(ThemeMode oldVal, ThemeMode newVal) {
+        var oldSource = newVal is ThemeMode.Light ? DarkThemeSource : LightThemeSource;
+        var newSource = newVal is ThemeMode.Light ? LightThemeSource : DarkThemeSource;
+        var theme = newVal is ThemeMode.Light ? ModernWpf.ApplicationTheme.Light : ModernWpf.ApplicationTheme.Dark;
+        GenericResourceDictionary.MergedDictionaries.ReplaceResourceDictionary(oldSource, newSource);
+        ModernWpf.ThemeManager.Current.ApplicationTheme = theme;
+        ThemeChanged?.Invoke(null, newVal);
+    }
+
     /// <summary>
     /// 切换为 LightTheme
     /// </summary>
-    public static void SwitchToLightTheme() {
-        if (CurrentTheme == ThemeMode.Light) {
-            return;
-        }
-        GenericResourceDictionary.MergedDictionaries.ReplaceResourceDictionary(
-            DarkThemeSource,
-            LightThemeSource
-        );
-        ModernWpf.ThemeManager.Current.ApplicationTheme = ModernWpf.ApplicationTheme.Light;
-        CurrentTheme = ThemeMode.Light;
-    }
+    public static void SwitchToLightTheme() => CurrentThemeProperty.Value = ThemeMode.Light;
 
     /// <summary>
     /// 切换为 DarkTheme
     /// </summary>
-    public static void SwitchToDarkTheme() {
-        if (CurrentTheme == ThemeMode.Dark) {
-            return;
-        }
-        GenericResourceDictionary.MergedDictionaries.ReplaceResourceDictionary(
-            LightThemeSource,
-            DarkThemeSource
-        );
-        ModernWpf.ThemeManager.Current.ApplicationTheme = ModernWpf.ApplicationTheme.Dark;
-        CurrentTheme = ThemeMode.Dark;
-    }
+    public static void SwitchToDarkTheme() => CurrentThemeProperty.Value = ThemeMode.Dark;
 }
