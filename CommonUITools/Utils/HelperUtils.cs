@@ -2081,6 +2081,9 @@ public static class PasswordBoxHelper {
     }
 }
 
+/// <summary>
+/// NumberBoxStyleHelper
+/// </summary>
 public static class NumberBoxStyleHelper {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty EnabledProperty = DependencyProperty.RegisterAttached("Enabled", typeof(bool), typeof(NumberBoxStyleHelper), new PropertyMetadata(false, EnabledPropertyChangedHandler));
@@ -2143,10 +2146,21 @@ public static class NumberBoxStyleHelper {
         return box.Template.FindName("InputBox", box) as TextBox;
     }
 
+    private static void UpdatePopUpStyle(NumberBox box) {
+        if (box.Template.FindName("UpDownPopup", box) is Popup popup) {
+            popup.HorizontalOffset = 0;
+            if (popup.FindName("PopupContentRoot") is Border border) {
+                border.Background = (Brush)border.FindResource("ApplicationBackgroundBrush");
+            }
+        }
+    }
+
     private static void UpdateStyle(NumberBox box) {
         if (GetTextBox(box) is TextBox textbox) {
             textbox.Style = GetStyle(box);
         }
+        // Update border style
+        UpdatePopUpStyle(box);
     }
 
     private static void NumberBoxUnloadedHandler(object sender, RoutedEventArgs e) {
