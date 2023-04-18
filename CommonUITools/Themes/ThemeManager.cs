@@ -32,8 +32,8 @@ public static class ThemeManager {
         var oldSource = newVal is ThemeMode.Light ? DarkThemeSource : LightThemeSource;
         var newSource = newVal is ThemeMode.Light ? LightThemeSource : DarkThemeSource;
         var theme = newVal is ThemeMode.Light ? ModernWpf.ApplicationTheme.Light : ModernWpf.ApplicationTheme.Dark;
-        GenericResourceDictionary.MergedDictionaries.ReplaceResourceDictionary(oldSource, newSource);
         ModernWpf.ThemeManager.Current.ApplicationTheme = theme;
+        GenericResourceDictionary.MergedDictionaries.ReplaceResourceDictionary(oldSource, newSource);
         ThemeChanged?.Invoke(null, newVal);
     }
 

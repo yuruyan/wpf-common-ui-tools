@@ -3,8 +3,10 @@ using ModernWpf;
 using ModernWpf.Controls;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using System.Windows.Markup;
 using System.Windows.Media.Effects;
 
 namespace CommonUITools.Utils;
@@ -2098,7 +2100,7 @@ public static class NumberBoxStyleHelper {
 
     static NumberBoxStyleHelper() {
         // Update theme
-        ThemeManager.Current.ActualApplicationThemeChanged += (s, e) => {
+        CommonUITools.Themes.ThemeManager.ThemeChanged += (_, theme) => {
             foreach (var box in NumberBoxes) {
                 UpdateStyle(box);
             }
@@ -2129,7 +2131,7 @@ public static class NumberBoxStyleHelper {
         box.Unloaded += NumberBoxUnloadedHandler;
     }
 
-    private static Style GetStyle(NumberBox box) {
+    private static Style GetTextBoxStyle(NumberBox box) {
         var style = (Style)box.FindResource("GlobalTextBoxStyle");
         var newStyle = new Style(typeof(TextBox), style);
         newStyle.Resources["TextControlBackgroundPointerOver"] = new SolidColorBrush(Colors.Transparent);
@@ -2155,10 +2157,14 @@ public static class NumberBoxStyleHelper {
         }
     }
 
-    private static void UpdateStyle(NumberBox box) {
+    private static void UpdateTextBoxStyle(NumberBox box) {
         if (GetTextBox(box) is TextBox textbox) {
-            textbox.Style = GetStyle(box);
+            textbox.Style = GetTextBoxStyle(box);
         }
+    }
+
+    private static void UpdateStyle(NumberBox box) {
+        UpdateTextBoxStyle(box);
         // Update border style
         UpdatePopUpStyle(box);
     }

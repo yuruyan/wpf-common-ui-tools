@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonTools", "CommonTools\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonToolsTests", "CommonToolsTests\CommonToolsTests.csproj", "{E6A7C12F-789D-490A-8FCF-8B0329E8246E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonUIToolsTests", "CommonUIToolsTests\CommonUIToolsTests.csproj", "{B2EFD0CC-0110-4550-90DD-E5A321AE0F06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonUIToolsTests", "CommonUIToolsTests\CommonUIToolsTests.csproj", "{B2EFD0CC-0110-4550-90DD-E5A321AE0F06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
