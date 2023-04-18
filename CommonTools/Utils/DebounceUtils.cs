@@ -1,4 +1,5 @@
-﻿using Timer = System.Timers.Timer;
+﻿using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace CommonTools.Utils;
 
@@ -15,7 +16,8 @@ public class Debounce : IDisposable {
     private DateTime LastAccessTime = DateTime.MinValue;
     private bool IsAccessed;
     private bool IsDisposed;
-    private Action Callback = default!;
+    private Delegate Callback = default!;
+    private bool IsRunning;
 
     public Debounce(int interval = DefaultInterval, bool callRegular = false) {
         Interval = interval;
@@ -24,7 +26,9 @@ public class Debounce : IDisposable {
         Timer.Elapsed += TimerElapsedHandler;
     }
 
-    public void Run(Action callback) {
+    public async void Run(Action callback) => await RunAsync(() => Task.Run(() => callback()));
+
+    public async Task RunAsync(Func<Task> callback) {
         if (IsDisposed) {
             throw new ObjectDisposedException(GetType().FullName);
         }
@@ -32,13 +36,17 @@ public class Debounce : IDisposable {
         IsAccessed = true;
         if (CanInvoke) {
             IsAccessed = false;
-            Callback();
+            IsRunning = true;
+            await TaskUtils.TryAsync(async () => {
+                await callback();
+            });
+            IsRunning = false;
         }
         Timer.Start();
         LastAccessTime = DateTime.Now;
     }
 
-    private void TimerElapsedHandler(object? sender, System.Timers.ElapsedEventArgs e) {
+    private async void TimerElapsedHandler(object? sender, ElapsedEventArgs e) {
         // 没有访问
         if (!IsAccessed) {
             // 暂停计时，节流
@@ -51,7 +59,13 @@ public class Debounce : IDisposable {
         if (CallRegular || CanInvoke) {
             IsAccessed = false;
             LastAccessTime = DateTime.Now;
-            Callback();
+            IsRunning = true;
+            await TaskUtils.TryAsync(async () => {
+                if (Callback.DynamicInvoke() is Task task) {
+                    await task;
+                }
+            });
+            IsRunning = false;
         }
     }
 
@@ -59,7 +73,7 @@ public class Debounce : IDisposable {
     /// 是否可以调用
     /// </summary>
     /// <returns></returns>
-    private bool CanInvoke => LastAccessTime.AddMilliseconds(Interval) <= DateTime.Now;
+    private bool CanInvoke => !IsRunning && LastAccessTime.AddMilliseconds(Interval) <= DateTime.Now;
 
     /// <summary>
     /// 是否可以停止计时以节省资源
