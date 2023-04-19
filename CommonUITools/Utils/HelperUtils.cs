@@ -2293,10 +2293,15 @@ public static class ComboBoxHelper {
             return;
         }
         box.Loaded -= ComboBoxLoadedOnceHandler;
-        if (box.Template.FindName("PART_Popup", box) is Popup popup) {
-            popup.Opened -= PopupOpenedHandler;
-            popup.Opened += PopupOpenedHandler;
+        if (box.Template.FindName("PART_Popup", box) is not Popup popup) {
+            // Ensure ApplyTemplate
+            if (!box.ApplyTemplate() || box.Template.FindName("PART_Popup", box) is not Popup popup1) {
+                return;
+            }
+            popup = popup1;
         }
+        popup.Opened -= PopupOpenedHandler;
+        popup.Opened += PopupOpenedHandler;
     }
 
     /// <summary>
