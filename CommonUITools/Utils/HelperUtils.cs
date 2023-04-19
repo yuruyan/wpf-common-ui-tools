@@ -1,6 +1,7 @@
 ﻿using CommonUITools.Controls;
 using ModernWpf;
 using ModernWpf.Controls;
+using ModernWpf.Controls.Primitives;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -1217,7 +1218,8 @@ public static class ContextMenuHelper {
     public static readonly DependencyProperty OpenOnMouseLeftClickProperty = DependencyProperty.RegisterAttached("OpenOnMouseLeftClick", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, OpenOnMouseLeftClickPropertyChangedHandler));
     public static readonly DependencyProperty EnableOpeningAnimationProperty = DependencyProperty.RegisterAttached("EnableOpeningAnimation", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, EnableOpeningAnimationPropertyChangedHandler));
     public static readonly DependencyProperty CenterHorizontalProperty = DependencyProperty.RegisterAttached("CenterHorizontal", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, CenterHorizontalPropertyChangedHandler));
-    private static readonly DependencyProperty OpeningStoryboardProperty = DependencyProperty.RegisterAttached("OpeningStoryboard", typeof(Storyboard), typeof(ContextMenuHelper), new PropertyMetadata());
+    private static readonly DependencyProperty OpeningBottomStoryboardProperty = DependencyProperty.RegisterAttached("OpeningBottomStoryboard", typeof(Storyboard), typeof(ContextMenuHelper), new PropertyMetadata());
+    private static readonly DependencyProperty OpeningTopStoryboardProperty = DependencyProperty.RegisterAttached("OpeningTopStoryboard", typeof(Storyboard), typeof(ContextMenuHelper), new PropertyMetadata());
 
     public static bool GetOpenOnMouseLeftClick(DependencyObject obj) {
         return (bool)obj.GetValue(OpenOnMouseLeftClickProperty);
@@ -1256,16 +1258,27 @@ public static class ContextMenuHelper {
     public static void SetCenterHorizontal(DependencyObject obj, bool value) {
         obj.SetValue(CenterHorizontalProperty, value);
     }
-    private static Storyboard GetOpeningStoryboard(DependencyObject obj) {
-        return (Storyboard)obj.GetValue(OpeningStoryboardProperty);
+    private static Storyboard GetOpeningBottomStoryboard(DependencyObject obj) {
+        return (Storyboard)obj.GetValue(OpeningBottomStoryboardProperty);
     }
     /// <summary>
     /// Open Storyboard
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="value"></param>
-    private static void SetOpeningStoryboard(DependencyObject obj, Storyboard value) {
-        obj.SetValue(OpeningStoryboardProperty, value);
+    private static void SetOpeningBottomStoryboard(DependencyObject obj, Storyboard value) {
+        obj.SetValue(OpeningBottomStoryboardProperty, value);
+    }
+    private static Storyboard GetOpeningTopStoryboard(DependencyObject obj) {
+        return (Storyboard)obj.GetValue(OpeningTopStoryboardProperty);
+    }
+    /// <summary>
+    /// OpeningTopStoryboard
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    private static void SetOpeningTopStoryboard(DependencyObject obj, Storyboard value) {
+        obj.SetValue(OpeningTopStoryboardProperty, value);
     }
 
     private static void EnableOpeningAnimationPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -1281,19 +1294,36 @@ public static class ContextMenuHelper {
     }
 
     private static void ContextMenuOpenedHandler(object sender, RoutedEventArgs e) {
-        if (sender is ContextMenu menu) {
-            if (GetOpeningStoryboard(menu) is not Storyboard storyboard) {
-                storyboard = CreateOpeningStoryboard(menu);
-                SetOpeningStoryboard(menu, storyboard);
+        if (sender is not ContextMenu menu) {
+            return;
+        }
+        GetOpeningStoryboard(menu).Begin();
+    }
+
+    private static Storyboard GetOpeningStoryboard(ContextMenu menu) {
+        var bottomHeight = Math.Abs(menu.PlacementTarget.PointFromScreen(
+            Mouse.GetPosition(menu.PlacementTarget)
+        ).Y) + menu.ActualHeight;
+        if (bottomHeight >= SystemParameters.MaximizedPrimaryScreenHeight) {
+            if (GetOpeningTopStoryboard(menu) is not Storyboard storyboard) {
+                storyboard = CreateOpeningStoryboard(menu, false);
+                SetOpeningTopStoryboard(menu, storyboard);
             }
-            storyboard.Begin();
+            return storyboard;
+        } else {
+            if (GetOpeningBottomStoryboard(menu) is not Storyboard storyboard) {
+                storyboard = CreateOpeningStoryboard(menu, true);
+                SetOpeningBottomStoryboard(menu, storyboard);
+            }
+            return storyboard;
         }
     }
 
-    private static Storyboard CreateOpeningStoryboard(FrameworkElement element) {
+    private static Storyboard CreateOpeningStoryboard(FrameworkElement element, bool topToBottom) {
         // Override RenderTransform
         element.RenderTransform = new TranslateTransform();
-        var translateYAnimation = new DoubleAnimation(-16, 0, (Duration)element.FindResource("AnimationDuration")) {
+        var from = topToBottom ? -16 : 16;
+        var translateYAnimation = new DoubleAnimation(from, 0, (Duration)element.FindResource("AnimationDuration")) {
             EasingFunction = (IEasingFunction)element.FindResource("AnimationEaseFunction")
         };
         Storyboard.SetTarget(translateYAnimation, element);
@@ -1357,7 +1387,8 @@ public static class ContextMenuHelper {
         if (element.ContextMenu is ContextMenu menu) {
             menu.Opened -= ContextMenuOpenedHandler;
             menu.Opened -= CenterHorizontalContextMenuOpenedHandler;
-            menu.ClearValue(OpeningStoryboardProperty);
+            menu.ClearValue(OpeningBottomStoryboardProperty);
+            menu.ClearValue(OpeningTopStoryboardProperty);
             menu.ClearValue(EnableOpeningAnimationProperty);
         }
         element.PreviewMouseLeftButtonUp -= ShowContextMenuHandler;
