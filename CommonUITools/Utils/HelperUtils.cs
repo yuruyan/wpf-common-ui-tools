@@ -2190,7 +2190,8 @@ public static class NumberBoxStyleHelper {
 public static class ComboBoxHelper {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty EnableStylePopupProperty = DependencyProperty.RegisterAttached("EnableStylePopup", typeof(bool), typeof(ComboBoxHelper), new PropertyMetadata(false, EnableStylePopupPropertyChangedHandler));
-    private static readonly DependencyProperty PopupStoryboardProperty = DependencyProperty.RegisterAttached("PopupStoryboard", typeof(Storyboard), typeof(ComboBoxHelper), new PropertyMetadata());
+    private static readonly DependencyProperty PopupBottomStoryboardProperty = DependencyProperty.RegisterAttached("PopupBottomStoryboard", typeof(Storyboard), typeof(ComboBoxHelper), new PropertyMetadata());
+    public static readonly DependencyProperty PopupTopStoryboardProperty = DependencyProperty.RegisterAttached("PopupTopStoryboard", typeof(Storyboard), typeof(ComboBoxHelper), new PropertyMetadata());
 
     public static bool GetEnableStylePopup(DependencyObject obj) {
         return (bool)obj.GetValue(EnableStylePopupProperty);
@@ -2203,16 +2204,27 @@ public static class ComboBoxHelper {
     public static void SetEnableStylePopup(DependencyObject obj, bool value) {
         obj.SetValue(EnableStylePopupProperty, value);
     }
-    private static Storyboard GetPopupStoryboard(DependencyObject obj) {
-        return (Storyboard)obj.GetValue(PopupStoryboardProperty);
+    private static Storyboard GetPopupBottomStoryboard(DependencyObject obj) {
+        return (Storyboard)obj.GetValue(PopupBottomStoryboardProperty);
     }
     /// <summary>
-    /// Popup Storyboard
+    /// Popup bottom Storyboard
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="value"></param>
-    private static void SetPopupStoryboard(DependencyObject obj, Storyboard value) {
-        obj.SetValue(PopupStoryboardProperty, value);
+    private static void SetPopupBottomStoryboard(DependencyObject obj, Storyboard value) {
+        obj.SetValue(PopupBottomStoryboardProperty, value);
+    }
+    public static Storyboard GetPopupTopStoryboard(DependencyObject obj) {
+        return (Storyboard)obj.GetValue(PopupTopStoryboardProperty);
+    }
+    /// <summary>
+    /// Popup Top Storyboard
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetPopupTopStoryboard(DependencyObject obj, Storyboard value) {
+        obj.SetValue(PopupTopStoryboardProperty, value);
     }
 
     private static void EnableStylePopupPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -2242,7 +2254,6 @@ public static class ComboBoxHelper {
         }
         box.Loaded -= ComboBoxLoadedOnceHandler;
         if (box.Template.FindName("PART_Popup", box) is Popup popup) {
-            SetPopupStoryboard(popup, CreateOpeningStoryboard(popup.Child));
             popup.Opened -= PopupOpenedHandler;
             popup.Opened += PopupOpenedHandler;
         }
@@ -2254,18 +2265,34 @@ public static class ComboBoxHelper {
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private static void PopupOpenedHandler(object? sender, EventArgs e) {
-        if (sender is Popup popup) {
+        if (sender is not Popup popup) {
+            return;
+        }
+        popup.HorizontalOffset = -(popup.Child.RenderSize.Width - popup.PlacementTarget.RenderSize.Width) / 2;
+        double bottomHeight = Math.Abs(popup.PointFromScreen(new()).Y) + popup.Child.RenderSize.Height;
+        // Check final placement
+        if (bottomHeight >= SystemParameters.MaximizedPrimaryScreenHeight) {
+            popup.Placement = PlacementMode.Top;
+            popup.VerticalOffset = -4;
+            if (GetPopupTopStoryboard(popup) == null) {
+                SetPopupTopStoryboard(popup, CreateOpeningStoryboard(popup.Child, false));
+            }
+            GetPopupTopStoryboard(popup).Begin();
+        } else {
+            popup.Placement = PlacementMode.Bottom;
             popup.VerticalOffset = 4;
-            popup.HorizontalOffset = 0;
-            popup.HorizontalOffset = -(popup.Child.RenderSize.Width - popup.PlacementTarget.RenderSize.Width) / 2;
-            GetPopupStoryboard(popup).Begin();
+            if (GetPopupBottomStoryboard(popup) == null) {
+                SetPopupBottomStoryboard(popup, CreateOpeningStoryboard(popup.Child, true));
+            }
+            GetPopupBottomStoryboard(popup).Begin();
         }
     }
 
-    private static Storyboard CreateOpeningStoryboard(UIElement element) {
+    private static Storyboard CreateOpeningStoryboard(UIElement element, bool topToBottom) {
         element.RenderTransform = new TranslateTransform();
         var window = Application.Current.MainWindow;
-        DoubleAnimation doubleAnimation = new DoubleAnimation(-16.0, 0.0, (Duration)window.FindResource("AnimationDuration")) {
+        var from = topToBottom ? -16.0 : 16.0;
+        var doubleAnimation = new DoubleAnimation(from, 0.0, (Duration)window.FindResource("AnimationDuration")) {
             EasingFunction = (IEasingFunction)window.FindResource("AnimationEaseFunction")
         };
         Storyboard.SetTarget(doubleAnimation, element);
