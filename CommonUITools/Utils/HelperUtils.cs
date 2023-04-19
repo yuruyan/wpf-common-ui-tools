@@ -1301,9 +1301,9 @@ public static class ContextMenuHelper {
     }
 
     private static Storyboard GetOpeningStoryboard(ContextMenu menu) {
-        var bottomHeight = Math.Abs(menu.PlacementTarget.PointFromScreen(
-            Mouse.GetPosition(menu.PlacementTarget)
-        ).Y) + menu.ActualHeight;
+        var bottomHeight = Math.Abs(menu.PlacementTarget.PointFromScreen(new()).Y)
+            + Mouse.GetPosition(menu.PlacementTarget).Y
+            + menu.ActualHeight;
         if (bottomHeight >= SystemParameters.MaximizedPrimaryScreenHeight) {
             if (GetOpeningTopStoryboard(menu) is not Storyboard storyboard) {
                 storyboard = CreateOpeningStoryboard(menu, false);
