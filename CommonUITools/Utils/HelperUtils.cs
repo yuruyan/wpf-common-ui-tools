@@ -1217,7 +1217,7 @@ public static class ContextMenuHelper {
     public static readonly DependencyProperty OpenOnMouseLeftClickProperty = DependencyProperty.RegisterAttached("OpenOnMouseLeftClick", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, OpenOnMouseLeftClickPropertyChangedHandler));
     public static readonly DependencyProperty EnableOpeningAnimationProperty = DependencyProperty.RegisterAttached("EnableOpeningAnimation", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, EnableOpeningAnimationPropertyChangedHandler));
     public static readonly DependencyProperty CenterHorizontalProperty = DependencyProperty.RegisterAttached("CenterHorizontal", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, CenterHorizontalPropertyChangedHandler));
-    private static readonly IDictionary<ContextMenu, Storyboard> OpeningStoroboardDict = new Dictionary<ContextMenu, Storyboard>();
+    private static readonly DependencyProperty OpeningStoryboardProperty = DependencyProperty.RegisterAttached("OpeningStoryboard", typeof(Storyboard), typeof(ContextMenuHelper), new PropertyMetadata());
 
     public static bool GetOpenOnMouseLeftClick(DependencyObject obj) {
         return (bool)obj.GetValue(OpenOnMouseLeftClickProperty);
@@ -1256,6 +1256,17 @@ public static class ContextMenuHelper {
     public static void SetCenterHorizontal(DependencyObject obj, bool value) {
         obj.SetValue(CenterHorizontalProperty, value);
     }
+    private static Storyboard GetOpeningStoryboard(DependencyObject obj) {
+        return (Storyboard)obj.GetValue(OpeningStoryboardProperty);
+    }
+    /// <summary>
+    /// Open Storyboard
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    private static void SetOpeningStoryboard(DependencyObject obj, Storyboard value) {
+        obj.SetValue(OpeningStoryboardProperty, value);
+    }
 
     private static void EnableOpeningAnimationPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not ContextMenu menu) {
@@ -1271,15 +1282,12 @@ public static class ContextMenuHelper {
 
     private static void ContextMenuOpenedHandler(object sender, RoutedEventArgs e) {
         if (sender is ContextMenu menu) {
-            GetOpeningStoryboard(menu).Begin();
+            if (GetOpeningStoryboard(menu) is not Storyboard storyboard) {
+                storyboard = CreateOpeningStoryboard(menu);
+                SetOpeningStoryboard(menu, storyboard);
+            }
+            storyboard.Begin();
         }
-    }
-
-    private static Storyboard GetOpeningStoryboard(ContextMenu menu) {
-        if (!OpeningStoroboardDict.TryGetValue(menu, out var storyboard)) {
-            OpeningStoroboardDict[menu] = storyboard = CreateOpeningStoryboard(menu);
-        }
-        return storyboard;
     }
 
     private static Storyboard CreateOpeningStoryboard(FrameworkElement element) {
@@ -1349,7 +1357,7 @@ public static class ContextMenuHelper {
         if (element.ContextMenu is ContextMenu menu) {
             menu.Opened -= ContextMenuOpenedHandler;
             menu.Opened -= CenterHorizontalContextMenuOpenedHandler;
-            OpeningStoroboardDict.Remove(menu);
+            menu.ClearValue(OpeningStoryboardProperty);
             menu.ClearValue(EnableOpeningAnimationProperty);
         }
         element.PreviewMouseLeftButtonUp -= ShowContextMenuHandler;
