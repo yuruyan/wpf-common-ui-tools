@@ -1354,6 +1354,7 @@ public static class ContextMenuHelper {
         if (sender is FrameworkElement element && element.ContextMenu is not null) {
             element.ContextMenu.PlacementTarget = element;
             element.ContextMenu.IsOpen = true;
+            element.UpdateDefaultStyle();
         }
     }
 
