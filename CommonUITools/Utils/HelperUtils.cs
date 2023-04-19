@@ -1568,6 +1568,9 @@ public static class HoverVisibleHelper {
     }
 }
 
+/// <summary>
+/// RevealBackgroundHelper
+/// </summary>
 public static class RevealBackgroundHelper {
     public const double DefaultRadius = 50;
     public static readonly Color DefaultBrushColor = (Color)ColorConverter.ConvertFromString("#8f8f8f");
@@ -2178,5 +2181,97 @@ public static class NumberBoxStyleHelper {
         var box = (NumberBox)sender;
         NumberBoxes.Add(box);
         UpdateStyle(box);
+    }
+}
+
+/// <summary>
+/// ComboBoxHelper
+/// </summary>
+public static class ComboBoxHelper {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    public static readonly DependencyProperty EnableStylePopupProperty = DependencyProperty.RegisterAttached("EnableStylePopup", typeof(bool), typeof(ComboBoxHelper), new PropertyMetadata(false, EnableStylePopupPropertyChangedHandler));
+    private static readonly DependencyProperty PopupStoryboardProperty = DependencyProperty.RegisterAttached("PopupStoryboard", typeof(Storyboard), typeof(ComboBoxHelper), new PropertyMetadata());
+
+    public static bool GetEnableStylePopup(DependencyObject obj) {
+        return (bool)obj.GetValue(EnableStylePopupProperty);
+    }
+    /// <summary>
+    /// 设置 Popup 样式
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetEnableStylePopup(DependencyObject obj, bool value) {
+        obj.SetValue(EnableStylePopupProperty, value);
+    }
+    private static Storyboard GetPopupStoryboard(DependencyObject obj) {
+        return (Storyboard)obj.GetValue(PopupStoryboardProperty);
+    }
+    /// <summary>
+    /// Popup Storyboard
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    private static void SetPopupStoryboard(DependencyObject obj, Storyboard value) {
+        obj.SetValue(PopupStoryboardProperty, value);
+    }
+
+    private static void EnableStylePopupPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not ComboBox box) {
+            Logger.Info($"{d} not of type ComboBox");
+            return;
+        }
+
+        if (e.NewValue is true) {
+            if (box.IsLoaded) {
+                ComboBoxLoadedOnceHandler(box, null!);
+                return;
+            }
+            box.Loaded -= ComboBoxLoadedOnceHandler;
+            box.Loaded += ComboBoxLoadedOnceHandler;
+        } else {
+            box.Loaded -= ComboBoxLoadedOnceHandler;
+            if (box.Template.FindName("PART_Popup", box) is Popup popup) {
+                popup.Opened -= PopupOpenedHandler;
+            }
+        }
+    }
+
+    private static void ComboBoxLoadedOnceHandler(object sender, RoutedEventArgs e) {
+        if (sender is not ComboBox box) {
+            return;
+        }
+        box.Loaded -= ComboBoxLoadedOnceHandler;
+        if (box.Template.FindName("PART_Popup", box) is Popup popup) {
+            SetPopupStoryboard(popup, CreateOpeningStoryboard(popup.Child));
+            popup.Opened -= PopupOpenedHandler;
+            popup.Opened += PopupOpenedHandler;
+        }
+    }
+
+    /// <summary>
+    /// Begin animation
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private static void PopupOpenedHandler(object? sender, EventArgs e) {
+        if (sender is Popup popup) {
+            popup.VerticalOffset = 4;
+            popup.HorizontalOffset = 0;
+            popup.HorizontalOffset = -(popup.Child.RenderSize.Width - popup.PlacementTarget.RenderSize.Width) / 2;
+            GetPopupStoryboard(popup).Begin();
+        }
+    }
+
+    private static Storyboard CreateOpeningStoryboard(UIElement element) {
+        element.RenderTransform = new TranslateTransform();
+        var window = Application.Current.MainWindow;
+        DoubleAnimation doubleAnimation = new DoubleAnimation(-16.0, 0.0, (Duration)window.FindResource("AnimationDuration")) {
+            EasingFunction = (IEasingFunction)window.FindResource("AnimationEaseFunction")
+        };
+        Storyboard.SetTarget(doubleAnimation, element);
+        Storyboard.SetTargetProperty(doubleAnimation, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
+        return new Storyboard {
+            Children = { doubleAnimation }
+        };
     }
 }
