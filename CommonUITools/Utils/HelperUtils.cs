@@ -2189,9 +2189,9 @@ public static class NumberBoxStyleHelper {
 /// </summary>
 public static class ComboBoxHelper {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    public static readonly DependencyProperty EnableStylePopupProperty = DependencyProperty.RegisterAttached("EnableStylePopup", typeof(bool), typeof(ComboBoxHelper), new PropertyMetadata(false, EnableStylePopupPropertyChangedHandler));
     private static readonly DependencyProperty PopupBottomStoryboardProperty = DependencyProperty.RegisterAttached("PopupBottomStoryboard", typeof(Storyboard), typeof(ComboBoxHelper), new PropertyMetadata());
-    public static readonly DependencyProperty PopupTopStoryboardProperty = DependencyProperty.RegisterAttached("PopupTopStoryboard", typeof(Storyboard), typeof(ComboBoxHelper), new PropertyMetadata());
+    private static readonly DependencyProperty PopupTopStoryboardProperty = DependencyProperty.RegisterAttached("PopupTopStoryboard", typeof(Storyboard), typeof(ComboBoxHelper), new PropertyMetadata());
+    public static readonly DependencyProperty EnableStylePopupProperty = DependencyProperty.RegisterAttached("EnableStylePopup", typeof(bool), typeof(ComboBoxHelper), new PropertyMetadata(false, EnableStylePopupPropertyChangedHandler));
 
     public static bool GetEnableStylePopup(DependencyObject obj) {
         return (bool)obj.GetValue(EnableStylePopupProperty);
@@ -2215,7 +2215,7 @@ public static class ComboBoxHelper {
     private static void SetPopupBottomStoryboard(DependencyObject obj, Storyboard value) {
         obj.SetValue(PopupBottomStoryboardProperty, value);
     }
-    public static Storyboard GetPopupTopStoryboard(DependencyObject obj) {
+    private static Storyboard GetPopupTopStoryboard(DependencyObject obj) {
         return (Storyboard)obj.GetValue(PopupTopStoryboardProperty);
     }
     /// <summary>
@@ -2223,7 +2223,7 @@ public static class ComboBoxHelper {
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="value"></param>
-    public static void SetPopupTopStoryboard(DependencyObject obj, Storyboard value) {
+    private static void SetPopupTopStoryboard(DependencyObject obj, Storyboard value) {
         obj.SetValue(PopupTopStoryboardProperty, value);
     }
 
