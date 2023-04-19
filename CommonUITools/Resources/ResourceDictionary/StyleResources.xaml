@@ -145,4 +145,12 @@
     <Setter Property="Background" Value="Transparent" />
   </Style>
   <Style BasedOn="{StaticResource GlobalGridSplitterStyle}" TargetType="GridSplitter" />
+  <!--  GlobalComboBoxStyle  -->
+  <Style
+    x:Key="GlobalComboBoxStyle"
+    BasedOn="{StaticResource {x:Type ComboBox}}"
+    TargetType="ComboBox">
+    <Setter Property="utils:ComboBoxHelper.EnableStylePopup" Value="True" />
+  </Style>
+  <Style BasedOn="{StaticResource GlobalComboBoxStyle}" TargetType="ComboBox" />
 </ResourceDictionary>
