@@ -2309,7 +2309,9 @@ public static class ComboBoxHelper {
             return;
         }
         popup.HorizontalOffset = -(popup.Child.RenderSize.Width - popup.PlacementTarget.RenderSize.Width) / 2;
-        double bottomHeight = Math.Abs(popup.PointFromScreen(new()).Y) + popup.Child.RenderSize.Height;
+        double bottomHeight = Math.Abs(popup.PlacementTarget.PointFromScreen(new()).Y)
+            + popup.PlacementTarget.RenderSize.Height
+            + popup.Child.RenderSize.Height;
         // Check final placement
         if (bottomHeight >= SystemParameters.MaximizedPrimaryScreenHeight) {
             popup.Placement = PlacementMode.Top;
