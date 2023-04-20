@@ -32,6 +32,10 @@ public class ObservableProperty<T> {
         Value = value;
     }
 
+    public static implicit operator ObservableProperty<T>(T data) => new ObservableProperty<T>(data);
+
+    public static implicit operator T(ObservableProperty<T> prop) => prop.Value;
+
     public override string ToString() {
         return $"{Value}";
     }
