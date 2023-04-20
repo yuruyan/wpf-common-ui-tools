@@ -7,14 +7,19 @@ namespace CommonUITools.Utils;
 public static class SystemColorsHelper {
     private static readonly Color LightThemeColor = Color.FromArgb(255, 255, 255, 255);
     private static readonly Color DarkThemeColor = Color.FromArgb(255, 0, 0, 0);
-    private static readonly ObservableProperty<Color> CurrentThemeColor = new(LightThemeColor);
+    private static readonly ObservableProperty<Color> CurrentThemeColorProperty = LightThemeColor;
+    private static readonly ObservableProperty<Color> CurrentAccentColorProperty = new();
     private static readonly UISettings UISettings = new();
     public static event EventHandler<ThemeMode>? SystemThemeChanged;
-    public static ThemeMode CurrentSystemTheme => CurrentThemeColor.Value == LightThemeColor ? ThemeMode.Light : ThemeMode.Dark;
+    public static event EventHandler<Color>? SystemAccentColorChanged;
+    public static ThemeMode CurrentSystemTheme => CurrentThemeColorProperty.Value == LightThemeColor ? ThemeMode.Light : ThemeMode.Dark;
+    public static Color CurrentSystemAccentColor => CurrentAccentColorProperty.Value;
 
     static SystemColorsHelper() {
-        CurrentThemeColor.ValueChanged += ThemeColorChanged;
-        CurrentThemeColor.Value = UISettings.GetColorValue(UIColorType.Background);
+        CurrentThemeColorProperty.Value = UISettings.GetColorValue(UIColorType.Background);
+        CurrentAccentColorProperty.Value = UISettings.GetColorValue(UIColorType.Accent);
+        CurrentThemeColorProperty.ValueChanged += ThemeColorChanged;
+        CurrentAccentColorProperty.ValueChanged += AccentColorChanged;
         UISettings.ColorValuesChanged += SystemColorValuesChanged;
     }
 
@@ -24,7 +29,14 @@ public static class SystemColorsHelper {
         });
     }
 
+    private static void AccentColorChanged(Color oldVal, Color newVal) {
+        UIUtils.RunOnUIThreadAsync(() => {
+            SystemAccentColorChanged?.Invoke(null, newVal);
+        });
+    }
+
     private static void SystemColorValuesChanged(UISettings sender, object args) {
-        CurrentThemeColor.Value = sender.GetColorValue(UIColorType.Background);
+        CurrentThemeColorProperty.Value = sender.GetColorValue(UIColorType.Background);
+        CurrentAccentColorProperty.Value = UISettings.GetColorValue(UIColorType.Accent);
     }
 }
