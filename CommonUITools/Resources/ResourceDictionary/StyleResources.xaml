@@ -150,7 +150,16 @@
     x:Key="GlobalComboBoxStyle"
     BasedOn="{StaticResource {x:Type ComboBox}}"
     TargetType="ComboBox">
-    <Setter Property="utils:ComboBoxHelper.EnableStylePopup" Value="True" />
+    <Setter Property="utils:PopupHelper.EnableStylePopup" Value="True" />
   </Style>
   <Style BasedOn="{StaticResource GlobalComboBoxStyle}" TargetType="ComboBox" />
+  <!--  GlobalDatePickerStyle  -->
+  <Style
+    x:Key="GlobalDatePickerStyle"
+    BasedOn="{StaticResource {x:Type DatePicker}}"
+    TargetType="DatePicker">
+    <Setter Property="utils:PopupHelper.EnableStylePopup" Value="True" />
+    <Setter Property="utils:PopupHelper.PlacementTarget" Value="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+  </Style>
+  <Style BasedOn="{StaticResource GlobalDatePickerStyle}" TargetType="DatePicker" />
 </ResourceDictionary>
