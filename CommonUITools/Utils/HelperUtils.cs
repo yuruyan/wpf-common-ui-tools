@@ -2211,13 +2211,15 @@ public static class NumberBoxStyleHelper {
 }
 
 /// <summary>
-/// ComboBoxHelper
+/// ControlHelper
 /// </summary>
-public static class ComboBoxHelper {
+public static class PopupHelper {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private static readonly DependencyProperty PopupBottomStoryboardProperty = DependencyProperty.RegisterAttached("PopupBottomStoryboard", typeof(Storyboard), typeof(ComboBoxHelper), new PropertyMetadata());
-    private static readonly DependencyProperty PopupTopStoryboardProperty = DependencyProperty.RegisterAttached("PopupTopStoryboard", typeof(Storyboard), typeof(ComboBoxHelper), new PropertyMetadata());
-    public static readonly DependencyProperty EnableStylePopupProperty = DependencyProperty.RegisterAttached("EnableStylePopup", typeof(bool), typeof(ComboBoxHelper), new PropertyMetadata(false, EnableStylePopupPropertyChangedHandler));
+    private static readonly DependencyProperty PopupBottomStoryboardProperty = DependencyProperty.RegisterAttached("PopupBottomStoryboard", typeof(Storyboard), typeof(PopupHelper), new PropertyMetadata());
+    private static readonly DependencyProperty PopupTopStoryboardProperty = DependencyProperty.RegisterAttached("PopupTopStoryboard", typeof(Storyboard), typeof(PopupHelper), new PropertyMetadata());
+    private static readonly DependencyProperty PopupParentProperty = DependencyProperty.RegisterAttached("PopupParent", typeof(Control), typeof(PopupHelper), new PropertyMetadata());
+    public static readonly DependencyProperty EnableStylePopupProperty = DependencyProperty.RegisterAttached("EnableStylePopup", typeof(bool), typeof(PopupHelper), new PropertyMetadata(false, EnableStylePopupPropertyChangedHandler));
+    public static readonly DependencyProperty PlacementTargetProperty = DependencyProperty.RegisterAttached("PlacementTarget", typeof(UIElement), typeof(PopupHelper), new PropertyMetadata());
 
     public static bool GetEnableStylePopup(DependencyObject obj) {
         return (bool)obj.GetValue(EnableStylePopupProperty);
@@ -2229,6 +2231,17 @@ public static class ComboBoxHelper {
     /// <param name="value"></param>
     public static void SetEnableStylePopup(DependencyObject obj, bool value) {
         obj.SetValue(EnableStylePopupProperty, value);
+    }
+    public static UIElement GetPlacementTarget(DependencyObject obj) {
+        return (UIElement)obj.GetValue(PlacementTargetProperty);
+    }
+    /// <summary>
+    /// When cannot get PlacementTarget for this popup, this works
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetPlacementTarget(DependencyObject obj, UIElement value) {
+        obj.SetValue(PlacementTargetProperty, value);
     }
     private static Storyboard GetPopupBottomStoryboard(DependencyObject obj) {
         return (Storyboard)obj.GetValue(PopupBottomStoryboardProperty);
@@ -2252,34 +2265,46 @@ public static class ComboBoxHelper {
     private static void SetPopupTopStoryboard(DependencyObject obj, Storyboard value) {
         obj.SetValue(PopupTopStoryboardProperty, value);
     }
+    private static Control GetPopupParent(DependencyObject obj) {
+        return (Control)obj.GetValue(PopupParentProperty);
+    }
+    /// <summary>
+    /// The parent of popup
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    private static void SetPopupParent(DependencyObject obj, Control value) {
+        obj.SetValue(PopupParentProperty, value);
+    }
 
     private static void EnableStylePopupPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-        if (d is not ComboBox box) {
-            Logger.Info($"{d} not of type ComboBox");
+        if (d is not Control box) {
+            Logger.Info($"{d} is not of type Control");
             return;
         }
 
         if (e.NewValue is true) {
             if (box.IsLoaded) {
-                ComboBoxLoadedOnceHandler(box, null!);
+                ControlLoadedOnceHandler(box, null!);
                 return;
             }
-            box.Loaded -= ComboBoxLoadedOnceHandler;
-            box.Loaded += ComboBoxLoadedOnceHandler;
+            box.Loaded -= ControlLoadedOnceHandler;
+            box.Loaded += ControlLoadedOnceHandler;
         } else {
-            box.Loaded -= ComboBoxLoadedOnceHandler;
+            box.Loaded -= ControlLoadedOnceHandler;
             if (box.Template.FindName("PART_Popup", box) is Popup popup) {
                 popup.Opened -= PopupOpenedHandler;
             }
         }
     }
 
-    private static void ComboBoxLoadedOnceHandler(object sender, RoutedEventArgs e) {
-        if (sender is not ComboBox box) {
+    private static void ControlLoadedOnceHandler(object sender, RoutedEventArgs e) {
+        if (sender is not Control control) {
             return;
         }
-        box.Loaded -= ComboBoxLoadedOnceHandler;
-        if (box.FindTemplateChild<Popup>("PART_Popup") is Popup popup) {
+        control.Loaded -= ControlLoadedOnceHandler;
+        if (control.FindTemplateChild<Popup>("PART_Popup") is Popup popup) {
+            SetPopupParent(popup, control);
             popup.Opened -= PopupOpenedHandler;
             popup.Opened += PopupOpenedHandler;
         }
@@ -2293,6 +2318,13 @@ public static class ComboBoxHelper {
     private static void PopupOpenedHandler(object? sender, EventArgs e) {
         if (sender is not Popup popup) {
             return;
+        }
+        if (popup.PlacementTarget is null) {
+            if (GetPlacementTarget(GetPopupParent(popup)) is not UIElement target) {
+                Logger.Info("Popup.PlacementTarget is null");
+                return;
+            }
+            popup.PlacementTarget = target;
         }
         popup.AlignCenterParent();
         double bottomHeight = Math.Abs(popup.PlacementTarget.PointFromScreen(new()).Y)
