@@ -38,6 +38,17 @@ public static class ThemeManager {
     }
 
     /// <summary>
+    /// Update Current Theme
+    /// </summary>
+    public static void UpdateTheme() {
+        var source = CurrentTheme is ThemeMode.Light ? LightThemeSource : DarkThemeSource;
+        GenericResourceDictionary.MergedDictionaries.ReplaceResourceDictionary(
+            source,
+            source
+        );
+    }
+
+    /// <summary>
     /// 切换为 LightTheme
     /// </summary>
     public static void SwitchToLightTheme() => CurrentThemeProperty.Value = ThemeMode.Light;
