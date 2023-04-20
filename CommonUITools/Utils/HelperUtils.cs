@@ -1306,31 +1306,17 @@ public static class ContextMenuHelper {
             + menu.ActualHeight;
         if (bottomHeight >= SystemParameters.MaximizedPrimaryScreenHeight) {
             if (GetOpeningTopStoryboard(menu) is not Storyboard storyboard) {
-                storyboard = CreateOpeningStoryboard(menu, false);
+                storyboard = menu.CreateOpeningStoryboard(false);
                 SetOpeningTopStoryboard(menu, storyboard);
             }
             return storyboard;
         } else {
             if (GetOpeningBottomStoryboard(menu) is not Storyboard storyboard) {
-                storyboard = CreateOpeningStoryboard(menu, true);
+                storyboard = menu.CreateOpeningStoryboard(true);
                 SetOpeningBottomStoryboard(menu, storyboard);
             }
             return storyboard;
         }
-    }
-
-    private static Storyboard CreateOpeningStoryboard(FrameworkElement element, bool topToBottom) {
-        // Override RenderTransform
-        element.RenderTransform = new TranslateTransform();
-        var from = topToBottom ? -16 : 16;
-        var translateYAnimation = new DoubleAnimation(from, 0, (Duration)element.FindResource("AnimationDuration")) {
-            EasingFunction = (IEasingFunction)element.FindResource("AnimationEaseFunction")
-        };
-        Storyboard.SetTarget(translateYAnimation, element);
-        Storyboard.SetTargetProperty(translateYAnimation, new("(UIElement.RenderTransform).(TranslateTransform.Y)"));
-        return new Storyboard() {
-            Children = { translateYAnimation }
-        };
     }
 
     private static void OpenOnMouseLeftClickPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -2293,15 +2279,10 @@ public static class ComboBoxHelper {
             return;
         }
         box.Loaded -= ComboBoxLoadedOnceHandler;
-        if (box.Template.FindName("PART_Popup", box) is not Popup popup) {
-            // Ensure ApplyTemplate
-            if (!box.ApplyTemplate() || box.Template.FindName("PART_Popup", box) is not Popup popup1) {
-                return;
-            }
-            popup = popup1;
+        if (box.FindTemplateChild<Popup>("PART_Popup") is Popup popup) {
+            popup.Opened -= PopupOpenedHandler;
+            popup.Opened += PopupOpenedHandler;
         }
-        popup.Opened -= PopupOpenedHandler;
-        popup.Opened += PopupOpenedHandler;
     }
 
     /// <summary>
@@ -2313,7 +2294,7 @@ public static class ComboBoxHelper {
         if (sender is not Popup popup) {
             return;
         }
-        popup.HorizontalOffset = -(popup.Child.RenderSize.Width - popup.PlacementTarget.RenderSize.Width) / 2;
+        popup.AlignCenterParent();
         double bottomHeight = Math.Abs(popup.PlacementTarget.PointFromScreen(new()).Y)
             + popup.PlacementTarget.RenderSize.Height
             + popup.Child.RenderSize.Height;
@@ -2322,22 +2303,30 @@ public static class ComboBoxHelper {
             popup.Placement = PlacementMode.Top;
             popup.VerticalOffset = -4;
             if (GetPopupTopStoryboard(popup) == null) {
-                SetPopupTopStoryboard(popup, CreateOpeningStoryboard(popup.Child, false));
+                SetPopupTopStoryboard(popup, popup.Child.CreateOpeningStoryboard(false));
             }
             GetPopupTopStoryboard(popup).Begin();
         } else {
             popup.Placement = PlacementMode.Bottom;
             popup.VerticalOffset = 4;
             if (GetPopupBottomStoryboard(popup) == null) {
-                SetPopupBottomStoryboard(popup, CreateOpeningStoryboard(popup.Child, true));
+                SetPopupBottomStoryboard(popup, popup.Child.CreateOpeningStoryboard(true));
             }
             GetPopupBottomStoryboard(popup).Begin();
         }
     }
+}
 
-    private static Storyboard CreateOpeningStoryboard(UIElement element, bool topToBottom) {
+internal static class HelperUtils {
+    /// <summary>
+    /// OpeningStoryboard
+    /// </summary>
+    /// <param name="element"></param>
+    /// <param name="topToBottom"></param>
+    /// <returns></returns>
+    public static Storyboard CreateOpeningStoryboard(this UIElement element, bool topToBottom) {
         element.RenderTransform = new TranslateTransform();
-        var window = Application.Current.MainWindow;
+        var window = Window.GetWindow(element) ?? Application.Current.MainWindow;
         var from = topToBottom ? -16.0 : 16.0;
         var doubleAnimation = new DoubleAnimation(from, 0.0, (Duration)window.FindResource("AnimationDuration")) {
             EasingFunction = (IEasingFunction)window.FindResource("AnimationEaseFunction")
@@ -2347,5 +2336,30 @@ public static class ComboBoxHelper {
         return new Storyboard {
             Children = { doubleAnimation }
         };
+    }
+
+    /// <summary>
+    /// Center popup to parent
+    /// </summary>
+    /// <param name="popup"></param>
+    public static void AlignCenterParent(this Popup popup) {
+        popup.HorizontalOffset = -(popup.Child.RenderSize.Width - popup.PlacementTarget.RenderSize.Width) / 2;
+    }
+
+    /// <summary>
+    /// Find Template child
+    /// </summary>
+    /// <param name="control"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public static T? FindTemplateChild<T>(this Control control, string name) where T : DependencyObject {
+        if (control.Template.FindName(name, control) is not T element) {
+            // Ensure ApplyTemplate
+            if (!control.ApplyTemplate() || control.Template.FindName(name, control) is not T element1) {
+                return null;
+            }
+            element = element1;
+        }
+        return element;
     }
 }
