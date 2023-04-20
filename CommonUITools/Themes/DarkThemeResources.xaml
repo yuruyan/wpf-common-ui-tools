@@ -120,7 +120,7 @@
   <SolidColorBrush x:Key="SystemControlDisabledChromeMediumLowBrush" Color="{StaticResource ApplicationBackgroundDark2}" />
   <SolidColorBrush x:Key="DateTimePickerFlyoutButtonBackground" Color="{StaticResource ApplicationBackground}" />
   <SolidColorBrush x:Key="TimePickerFlyoutPresenterBackground" Color="{StaticResource ApplicationBackground}" />
-  <SolidColorBrush x:Key="TimePickerButtonBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="TimePickerButtonBackground" Color="Transparent" />
   <SolidColorBrush x:Key="TimePickerButtonBackgroundPointerOver" Color="{StaticResource ApplicationBackgroundDark1}" />
   <SolidColorBrush x:Key="LoopingSelectorButtonBackground" Color="{StaticResource ApplicationBackgroundDark1}" />
   <!--#endregion-->
