@@ -112,6 +112,19 @@
   <SolidColorBrush x:Key="NavigationViewDefaultPaneBackground" Color="Transparent" />
   <!--#endregion-->
 
+  <!--#region DateTimePicker-->
+  <SolidColorBrush x:Key="CalendarDatePickerBackground" Color="Transparent" />
+  <SolidColorBrush x:Key="CalendarDatePickerBackgroundPointerOver" Color="Transparent" />
+  <SolidColorBrush x:Key="CalendarViewCalendarItemRevealBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="CalendarViewBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="SystemControlDisabledChromeMediumLowBrush" Color="{StaticResource ApplicationBackgroundDark2}" />
+  <SolidColorBrush x:Key="DateTimePickerFlyoutButtonBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="TimePickerFlyoutPresenterBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="TimePickerButtonBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="TimePickerButtonBackgroundPointerOver" Color="{StaticResource ApplicationBackgroundDark1}" />
+  <SolidColorBrush x:Key="LoopingSelectorButtonBackground" Color="{StaticResource ApplicationBackgroundDark1}" />
+  <!--#endregion-->
+
   <SolidColorBrush x:Key="GrayTextForeground" Color="{StaticResource Gray8}" />
   <SolidColorBrush x:Key="HoverEffectBackgroundBrush" Color="{StaticResource ApplicationBackgroundLight1}" />
 </ResourceDictionary>
