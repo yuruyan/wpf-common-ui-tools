@@ -29,24 +29,10 @@
   <SolidColorBrush x:Key="ContentDialogBackground" Color="{StaticResource ApplicationBackground}" />
 
   <!--#region ButtonColor-->
-  <SolidColorBrush x:Key="ButtonBackground" Color="{DynamicResource SystemAccentColor}" />
-  <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{DynamicResource SystemAccentColorDark1}" />
-  <SolidColorBrush
-    x:Key="ButtonBackgroundPressed"
-    Opacity="0.9"
-    Color="{DynamicResource SystemAccentColorDark2}" />
   <SolidColorBrush x:Key="ButtonBorderBrush" Color="Transparent" />
   <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent" />
   <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent" />
-  <SolidColorBrush x:Key="ButtonForeground" Color="White" />
-  <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White" />
-  <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White" />
-  <!--#endregion-->
-
-  <!--#region GlobalSingleIconButton-->
   <SolidColorBrush x:Key="GlobalSingleIconButtonBackgroundBrush" Color="Transparent" />
-  <SolidColorBrush x:Key="GlobalSingleIconButtonBackgroundBrushPointerOver" Color="{StaticResource ApplicationBackgroundDark1}" />
-  <SolidColorBrush x:Key="GlobalSingleIconButtonBackgroundBrushPressed" Color="{StaticResource ApplicationBackgroundDark2}" />
   <!--#endregion-->
 
   <!--#region GlobalDefaultButton-->
@@ -70,6 +56,15 @@
   <SolidColorBrush x:Key="TreeViewItemBackgroundSelectedPointerOver" Color="{StaticResource Gray3}" />
   <!--#endregion-->
 
+  <!--#region ComboBox-->
+  <SolidColorBrush x:Key="ComboBoxBackground" Color="Transparent" />
+  <SolidColorBrush x:Key="ComboBoxBackgroundPointerOver" Color="Transparent" />
+  <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackground" Color="{StaticResource ApplicationBackground}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="{StaticResource ApplicationBackgroundDark2}" />
+  <SolidColorBrush x:Key="ComboBoxItemBackgroundPressed" Color="{StaticResource ApplicationBackgroundDark3}" />
+  <!--#endregion-->
+
   <!--#region TextControl-->
   <SolidColorBrush x:Key="TextControlBackground" Color="Transparent" />
   <SolidColorBrush x:Key="TextControlCaretBrush" Color="{StaticResource ApplicationForeground}" />
@@ -85,15 +80,6 @@
     x:Key="TextControlSecondaryForeground"
     Opacity="0.8"
     Color="{StaticResource ApplicationForeground}" />
-  <!--#endregion-->
-
-  <!--#region ComboBox-->
-  <SolidColorBrush x:Key="ComboBoxBackground" Color="Transparent" />
-  <SolidColorBrush x:Key="ComboBoxBackgroundPointerOver" Color="Transparent" />
-  <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="{StaticResource ApplicationBackground}" />
-  <SolidColorBrush x:Key="ComboBoxItemBackground" Color="{StaticResource ApplicationBackground}" />
-  <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="{StaticResource ApplicationBackgroundDark2}" />
-  <SolidColorBrush x:Key="ComboBoxItemBackgroundPressed" Color="{StaticResource ApplicationBackgroundDark3}" />
   <!--#endregion-->
 
   <!--#region ScrollBar-->
@@ -126,5 +112,4 @@
 
   <SolidColorBrush x:Key="GrayTextForeground" Color="{StaticResource Black8}" />
   <SolidColorBrush x:Key="HoverEffectBackgroundBrush" Color="{StaticResource Gray3}" />
-
 </ResourceDictionary>

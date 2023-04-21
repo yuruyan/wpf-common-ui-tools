@@ -29,28 +29,10 @@
   <SolidColorBrush x:Key="ContentDialogBackground" Color="{StaticResource ApplicationBackground}" />
 
   <!--#region ButtonColor-->
-  <SolidColorBrush x:Key="ButtonBackground" Color="{DynamicResource SystemAccentColor}" />
-  <SolidColorBrush
-    x:Key="ButtonBackgroundPointerOver"
-    Opacity="0.7"
-    Color="{DynamicResource SystemAccentColor}" />
-  <SolidColorBrush
-    x:Key="ButtonBackgroundPressed"
-    Opacity="0.8"
-    Color="{DynamicResource SystemAccentColorDark1}" />
   <SolidColorBrush x:Key="ButtonBorderBrush" Color="Transparent" />
   <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent" />
   <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent" />
-  <SolidColorBrush x:Key="ButtonForeground" Color="White" />
-  <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White" />
-  <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White" />
-  <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="White" />
-  <!--#endregion-->
-
-  <!--#region GlobalSingleIconButton-->
   <SolidColorBrush x:Key="GlobalSingleIconButtonBackgroundBrush" Color="Transparent" />
-  <SolidColorBrush x:Key="GlobalSingleIconButtonBackgroundBrushPointerOver" Color="{StaticResource ApplicationBackgroundLight1}" />
-  <SolidColorBrush x:Key="GlobalSingleIconButtonBackgroundBrushPressed" Color="{StaticResource ApplicationBackgroundLight2}" />
   <!--#endregion-->
 
   <!--#region GlobalDefaultButton-->
@@ -94,7 +76,10 @@
   <SolidColorBrush x:Key="TextControlForeground" Color="{StaticResource ApplicationForeground}" />
   <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="{StaticResource ApplicationForeground}" />
   <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{StaticResource ApplicationForeground}" />
-  <SolidColorBrush x:Key="TextControlSecondaryForeground" Color="{StaticResource ApplicationForeground}" />
+  <SolidColorBrush
+    x:Key="TextControlSecondaryForeground"
+    Opacity="1.0"
+    Color="{StaticResource ApplicationForeground}" />
   <!--#endregion-->
 
   <!--#region ScrollBar-->

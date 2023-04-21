@@ -32,6 +32,14 @@
     <Setter Property="Padding" Value="16,8,16,8" />
   </Style>
   <Style BasedOn="{StaticResource GlobalButtonStyle}" TargetType="Button" />
+  <!--  AccentButtonStyle  -->
+  <Style
+    x:Key="GlobalAccentButtonStyle"
+    BasedOn="{StaticResource AccentButtonStyle}"
+    TargetType="Button">
+    <Setter Property="ToolTipService.InitialShowDelay" Value="{DynamicResource ToolTipServiceInitialShowDelay}" />
+    <Setter Property="Padding" Value="16,8,16,8" />
+  </Style>
   <!--  TitleBarButtonstyle  -->
   <Style x:Key="TitleBarButtonstyle" TargetType="ui:TitleBarButton">
     <Setter Property="ToolTipService.InitialShowDelay" Value="{DynamicResource ToolTipServiceInitialShowDelay}" />
@@ -41,50 +49,33 @@
     x:Key="GlobalSingleIconButtonStyle"
     BasedOn="{StaticResource GlobalButtonStyle}"
     TargetType="Button">
-    <Style.Resources>
-      <Style BasedOn="{StaticResource IconFontStyle}" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{DynamicResource ApplicationForegroundBrush}" />
-      </Style>
-    </Style.Resources>
     <Setter Property="Background" Value="{DynamicResource GlobalSingleIconButtonBackgroundBrush}" />
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Padding" Value="8" />
+    <Setter Property="FontSize" Value="{DynamicResource SystemFontSize}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="Button">
           <Border
             x:Name="Background"
+            Padding="{TemplateBinding Padding}"
             Background="{TemplateBinding Background}"
             CornerRadius="{TemplateBinding primitives:ControlHelper.CornerRadius}"
             SnapsToDevicePixels="True">
-            <Border
-              x:Name="Border"
-              Padding="{TemplateBinding Padding}"
-              BorderBrush="{TemplateBinding BorderBrush}"
-              BorderThickness="{TemplateBinding BorderThickness}"
-              CornerRadius="{TemplateBinding primitives:ControlHelper.CornerRadius}">
-              <ContentPresenter
-                x:Name="ContentPresenter"
-                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                Focusable="False"
-                RecognizesAccessKey="True"
-                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-            </Border>
+            <TextBlock
+              FontSize="{TemplateBinding FontSize}"
+              Style="{StaticResource IconFontStyle}"
+              Text="{TemplateBinding Content}" />
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-              <Setter TargetName="Background" Property="Background" Value="{DynamicResource GlobalSingleIconButtonBackgroundBrushPointerOver}" />
-              <Setter TargetName="Border" Property="BorderBrush" Value="Transparent" />
+              <Setter TargetName="Background" Property="Background" Value="{DynamicResource ButtonBackgroundPointerOver}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-              <Setter TargetName="Background" Property="Background" Value="{DynamicResource GlobalSingleIconButtonBackgroundBrushPressed}" />
-              <Setter TargetName="Border" Property="BorderBrush" Value="Transparent" />
+              <Setter TargetName="Background" Property="Background" Value="{DynamicResource ButtonBackgroundPressed}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
               <Setter TargetName="Background" Property="Background" Value="{DynamicResource ButtonBackgroundDisabled}" />
-              <Setter TargetName="Border" Property="BorderBrush" Value="Transparent" />
-              <Setter TargetName="ContentPresenter" Property="TextElement.Foreground" Value="{DynamicResource ButtonForegroundDisabled}" />
             </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -94,7 +85,7 @@
   <!--  GlobalIconButtonStyle  -->
   <Style
     x:Key="GlobalIconButtonStyle"
-    BasedOn="{StaticResource GlobalButtonStyle}"
+    BasedOn="{StaticResource GlobalAccentButtonStyle}"
     TargetType="widget:IconButton" />
   <Style BasedOn="{StaticResource GlobalIconButtonStyle}" TargetType="widget:IconButton" />
   <!--  GlobalTransparentTitleBarButtonStyle  -->
