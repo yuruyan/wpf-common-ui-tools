@@ -15,9 +15,7 @@ public class BaseDialog : ContentDialog {
     public BaseDialog() {
         PrimaryButtonText = "确定";
         CloseButtonText = "取消";
-        if (TryFindResource("GlobalDefaultButtonStyle") is Style closeButtonStyle) {
-            CloseButtonStyle = closeButtonStyle;
-        }
+        PrimaryButtonStyle = (Style)FindResource("GlobalAccentButtonStyle");
         if (TryFindResource("BaseDialogDataTemplate") is DataTemplate titleDataTemplate) {
             TitleTemplate = titleDataTemplate;
         }
