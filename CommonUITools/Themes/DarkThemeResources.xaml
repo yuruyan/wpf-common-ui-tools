@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/ColorResources.xaml" />
+    <ResourceDictionary Source="/CommonUITools;component/Resources/ResourceDictionary/CommonResources.xaml" />
   </ResourceDictionary.MergedDictionaries>
   <Color x:Key="ApplicationForeground">#FFDEDEDE</Color>
   <Color x:Key="ApplicationBackground">#3c3f41</Color>
@@ -63,6 +64,10 @@
   <SolidColorBrush x:Key="ComboBoxItemBackground" Color="{StaticResource ApplicationBackground}" />
   <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="{StaticResource ApplicationBackgroundLight2}" />
   <SolidColorBrush x:Key="ComboBoxItemBackgroundPressed" Color="{StaticResource ApplicationBackgroundLight3}" />
+  <SolidColorBrush
+    x:Key="ComboBoxBorderBrush"
+    Opacity="{StaticResource BorderBrushOpacity}"
+    Color="{StaticResource ApplicationForeground}" />
   <!--#endregion-->
 
   <!--#region TextControl-->
@@ -76,7 +81,7 @@
   <SolidColorBrush x:Key="TextControlForeground" Color="{StaticResource ApplicationForeground}" />
   <SolidColorBrush
     x:Key="TextControlBorderBrush"
-    Opacity="0.4"
+    Opacity="{StaticResource BorderBrushOpacity}"
     Color="{StaticResource ApplicationForeground}" />
   <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="{StaticResource ApplicationForeground}" />
   <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{StaticResource ApplicationForeground}" />
@@ -112,8 +117,31 @@
   <SolidColorBrush x:Key="TimePickerButtonBackground" Color="Transparent" />
   <SolidColorBrush x:Key="TimePickerButtonBackgroundPointerOver" Color="{StaticResource ApplicationBackgroundDark1}" />
   <SolidColorBrush x:Key="LoopingSelectorButtonBackground" Color="{StaticResource ApplicationBackgroundDark1}" />
+  <SolidColorBrush
+    x:Key="CalendarDatePickerBorderBrush"
+    Opacity="{StaticResource BorderBrushOpacity}"
+    Color="{StaticResource ApplicationForeground}" />
+  <SolidColorBrush
+    x:Key="TimePickerButtonBorderBrush"
+    Opacity="{StaticResource BorderBrushOpacity}"
+    Color="{StaticResource ApplicationForeground}" />
   <!--#endregion-->
 
   <SolidColorBrush x:Key="GrayTextForeground" Color="{StaticResource Gray8}" />
   <SolidColorBrush x:Key="HoverEffectBackgroundBrush" Color="{StaticResource ApplicationBackgroundLight1}" />
+
+  <!--#region BorderBrush-->
+  <SolidColorBrush
+    x:Key="CheckBoxCheckBackgroundStrokeUnchecked"
+    Opacity="{StaticResource BorderBrushOpacity}"
+    Color="{StaticResource ApplicationForeground}" />
+  <SolidColorBrush
+    x:Key="RadioButtonOuterEllipseStroke"
+    Opacity="{StaticResource BorderBrushOpacity}"
+    Color="{StaticResource ApplicationForeground}" />
+  <SolidColorBrush
+    x:Key="ToggleSwitchStrokeOff"
+    Opacity="{StaticResource BorderBrushOpacity}"
+    Color="{StaticResource ApplicationForeground}" />
+  <!--#endregion-->
 </ResourceDictionary>
