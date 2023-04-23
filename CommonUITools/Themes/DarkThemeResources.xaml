@@ -74,6 +74,10 @@
   <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="Transparent" />
   <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="{StaticResource Gray16}" />
   <SolidColorBrush x:Key="TextControlForeground" Color="{StaticResource ApplicationForeground}" />
+  <SolidColorBrush
+    x:Key="TextControlBorderBrush"
+    Opacity="0.4"
+    Color="{StaticResource ApplicationForeground}" />
   <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="{StaticResource ApplicationForeground}" />
   <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{StaticResource ApplicationForeground}" />
   <SolidColorBrush
