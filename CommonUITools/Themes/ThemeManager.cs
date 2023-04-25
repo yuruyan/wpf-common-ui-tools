@@ -16,6 +16,8 @@ public static class ThemeManager {
     public static event EventHandler<ThemeMode>? ThemeChanged;
 
     static ThemeManager() {
+        SystemColorsHelper.SystemAccentColorChanged += SystemAccentColorChangedHandler;
+        SystemColorsHelper.SystemThemeChanged += SystemThemeChangedHandler;
         CurrentThemeProperty.ValueChanged += CurrentThemeChanged;
         ModernWpf.ThemeManager.Current.ApplicationTheme = ModernWpf.ApplicationTheme.Light;
         var dictionary = Application.Current.Resources.MergedDictionaries;
@@ -27,6 +29,10 @@ public static class ThemeManager {
         }
         GenericResourceDictionary = res;
     }
+
+    private static void SystemThemeChangedHandler(object? sender, ThemeMode e) => CurrentThemeProperty.Value = e;
+
+    private static void SystemAccentColorChangedHandler(object? sender, Windows.UI.Color e) => UpdateTheme();
 
     private static void CurrentThemeChanged(ThemeMode oldVal, ThemeMode newVal) {
         var oldSource = newVal is ThemeMode.Light ? DarkThemeSource : LightThemeSource;
@@ -49,12 +55,27 @@ public static class ThemeManager {
     }
 
     /// <summary>
+    /// Auto theme
+    /// </summary>
+    public static void SwitchToAutoTheme() {
+        CurrentThemeProperty.Value = SystemColorsHelper.CurrentSystemTheme;
+        SystemColorsHelper.SystemThemeChanged -= SystemThemeChangedHandler;
+        SystemColorsHelper.SystemThemeChanged += SystemThemeChangedHandler;
+    }
+
+    /// <summary>
     /// 切换为 LightTheme
     /// </summary>
-    public static void SwitchToLightTheme() => CurrentThemeProperty.Value = ThemeMode.Light;
+    public static void SwitchToLightTheme() {
+        SystemColorsHelper.SystemThemeChanged -= SystemThemeChangedHandler;
+        CurrentThemeProperty.Value = ThemeMode.Light;
+    }
 
     /// <summary>
     /// 切换为 DarkTheme
     /// </summary>
-    public static void SwitchToDarkTheme() => CurrentThemeProperty.Value = ThemeMode.Dark;
+    public static void SwitchToDarkTheme() {
+        SystemColorsHelper.SystemThemeChanged -= SystemThemeChangedHandler;
+        CurrentThemeProperty.Value = ThemeMode.Dark;
+    }
 }

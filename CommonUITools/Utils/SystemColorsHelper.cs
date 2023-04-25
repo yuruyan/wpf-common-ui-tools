@@ -10,7 +10,13 @@ public static class SystemColorsHelper {
     private static readonly ObservableProperty<Color> CurrentThemeColorProperty = LightThemeColor;
     private static readonly ObservableProperty<Color> CurrentAccentColorProperty = new();
     private static readonly UISettings UISettings = new();
+    /// <summary>
+    /// Running on UI thread
+    /// </summary>
     public static event EventHandler<ThemeMode>? SystemThemeChanged;
+    /// <summary>
+    /// Running on UI thread
+    /// </summary>
     public static event EventHandler<Color>? SystemAccentColorChanged;
     public static ThemeMode CurrentSystemTheme => CurrentThemeColorProperty.Value == LightThemeColor ? ThemeMode.Light : ThemeMode.Dark;
     public static Color CurrentSystemAccentColor => CurrentAccentColorProperty.Value;
