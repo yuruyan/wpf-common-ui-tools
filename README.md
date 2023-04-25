@@ -67,6 +67,8 @@
 
 2. **App.xaml** 文件
 ``` xaml
+xmlns:ui="http://schemas.modernwpf.com/2019"
+
 <Application.Resources>
   <ResourceDictionary>
     <ResourceDictionary.MergedDictionaries>
@@ -78,6 +80,6 @@
 </Application.Resources>
 ```
 
-3. 将 **Window** 继承自 **CommonUITools.Widget.BaseWindow**
+3. 将 **Window** 继承自 **CommonUITools.Controls.BaseWindow**
 
 4. 引用：**xmlns:tools="wpf-common-ui-tools"**
