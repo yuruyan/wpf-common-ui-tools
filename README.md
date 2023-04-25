@@ -48,16 +48,20 @@
 <Choose>
   <When Condition=" '$(TargetFramework.StartsWith(`net7.0`))' == 'true' ">
     <ItemGroup>
-      <Reference Include="CommonUITools">
+      <Reference Include="CommonTools">
         <HintPath>Lib\Net7\CommonTools.dll</HintPath>
+      </Reference>
+      <Reference Include="CommonUITools">
         <HintPath>Lib\Net7\CommonUITools.dll</HintPath>
       </Reference>
     </ItemGroup>
   </When>
   <When Condition=" '$(TargetFramework.StartsWith(`net6.0`))' == 'true' ">
     <ItemGroup>
-      <Reference Include="CommonUITools">
+      <Reference Include="CommonTools">
         <HintPath>Lib\Net6\CommonTools.dll</HintPath>
+      </Reference>      
+      <Reference Include="CommonUITools">
         <HintPath>Lib\Net6\CommonUITools.dll</HintPath>
       </Reference>
     </ItemGroup>
