@@ -4,7 +4,7 @@ namespace CommonUITools.Themes;
 
 public static class ThemeManager {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private static readonly ResourceDictionary GenericResourceDictionary;
+    private static readonly ResourceDictionary ThemeResourceDictionary;
     private static readonly ObservableProperty<ThemeMode> CurrentThemeProperty = new(ThemeMode.Light);
 
     private const string GenericSource1 = "/CommonUITools;component/Themes/Generic.xaml";
@@ -16,30 +16,36 @@ public static class ThemeManager {
     public static event EventHandler<ThemeMode>? ThemeChanged;
 
     static ThemeManager() {
+        var dictionary = Application.Current.Resources.MergedDictionaries;
+        // 查找 GenericResourceDictionary
+        var genericResource = dictionary.FindResource(GenericSource1);
+        genericResource ??= dictionary.FindResource(GenericSource2);
+        if (genericResource is null) {
+            throw new KeyNotFoundException("Cannot find CommonUITools Generic Resource");
+        }
+        ThemeResourceDictionary = genericResource.MergedDictionaries.FindResource(LightThemeSource)!;
+        ModernWpf.ThemeManager.Current.ApplicationTheme = ModernWpf.ApplicationTheme.Light;
         SystemColorsHelper.SystemAccentColorChanged += SystemAccentColorChangedHandler;
         SystemColorsHelper.SystemThemeChanged += SystemThemeChangedHandler;
         CurrentThemeProperty.ValueChanged += CurrentThemeChanged;
-        ModernWpf.ThemeManager.Current.ApplicationTheme = ModernWpf.ApplicationTheme.Light;
-        var dictionary = Application.Current.Resources.MergedDictionaries;
-        // 查找 GenericResourceDictionary
-        var res = dictionary.FindResource(GenericSource1);
-        res ??= dictionary.FindResource(GenericSource2);
-        if (res is null) {
-            throw new KeyNotFoundException("Cannot find CommonUITools Generic Resource");
-        }
-        GenericResourceDictionary = res;
     }
 
     private static void SystemThemeChangedHandler(object? sender, ThemeMode e) => CurrentThemeProperty.Value = e;
 
     private static void SystemAccentColorChangedHandler(object? sender, Windows.UI.Color e) => UpdateTheme();
 
+    /// <summary>
+    /// ThemeChanged
+    /// </summary>
+    /// <param name="oldVal"></param>
+    /// <param name="newVal"></param>
     private static void CurrentThemeChanged(ThemeMode oldVal, ThemeMode newVal) {
-        var oldSource = newVal is ThemeMode.Light ? DarkThemeSource : LightThemeSource;
         var newSource = newVal is ThemeMode.Light ? LightThemeSource : DarkThemeSource;
         var theme = newVal is ThemeMode.Light ? ModernWpf.ApplicationTheme.Light : ModernWpf.ApplicationTheme.Dark;
         ModernWpf.ThemeManager.Current.ApplicationTheme = theme;
-        GenericResourceDictionary.MergedDictionaries.ReplaceResourceDictionary(oldSource, newSource);
+        ThemeResourceDictionary.UpdateResourceDictionary(
+            new(newSource, UriKind.Relative)
+        );
         ThemeChanged?.Invoke(null, newVal);
     }
 
@@ -48,9 +54,8 @@ public static class ThemeManager {
     /// </summary>
     public static void UpdateTheme() {
         var source = CurrentTheme is ThemeMode.Light ? LightThemeSource : DarkThemeSource;
-        GenericResourceDictionary.MergedDictionaries.ReplaceResourceDictionary(
-            source,
-            source
+        ThemeResourceDictionary.UpdateResourceDictionary(
+            new(source, UriKind.Relative)
         );
     }
 

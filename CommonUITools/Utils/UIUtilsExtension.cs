@@ -286,6 +286,17 @@ public static partial class UIUtilsExtension {
     }
 
     /// <summary>
+    /// 更新 ResourceDictionary
+    /// </summary>
+    /// <param name="resource"></param>
+    /// <param name="newSource"></param>
+    public static void UpdateResourceDictionary(this ResourceDictionary resource, Uri newSource) {
+        resource.BeginInit();
+        resource.Source = newSource;
+        resource.EndInit();
+    }
+
+    /// <summary>
     /// 获取 <paramref name="sender"/> 的 <see cref="FrameworkElement.DataContext"/>
     /// </summary>
     /// <typeparam name="T">DataContext type</typeparam>
