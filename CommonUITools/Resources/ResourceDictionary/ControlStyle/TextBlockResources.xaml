@@ -124,7 +124,7 @@
     x:Key="OpenFileTextBlockStyle"
     BasedOn="{StaticResource HyperLinkStyle}"
     TargetType="TextBlock">
-    <EventSetter Event="MouseUp" Handler="OpenFileTextBlockMouseUpHandler" />
+    <!--<EventSetter Event="MouseUp" Handler="OpenFileTextBlockMouseUpHandler" />-->
     <Setter Property="ToolTip" Value="在文件资源管理器中打开" />
   </Style>
   <!--  NavigationContentHeaderStyle  -->

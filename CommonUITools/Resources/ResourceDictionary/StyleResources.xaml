@@ -138,7 +138,7 @@
     x:Key="IntegerNumberBoxStyle"
     BasedOn="{StaticResource GlobalNumberBoxStyle}"
     TargetType="ui:NumberBox">
-    <EventSetter Event="LostFocus" Handler="IntegerNumberBoxLostFocusHandler" />
+    <!--<EventSetter Event="LostFocus" Handler="IntegerNumberBoxLostFocusHandler" />-->
   </Style>
   <!--  GlobalGridSplitterStyle  -->
   <Style x:Key="GlobalGridSplitterStyle" TargetType="GridSplitter">

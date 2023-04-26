@@ -2,14 +2,14 @@
   x:Class="CommonUITools.Controls.IconButton"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:controls="clr-namespace:CommonUITools.Controls"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:local="clr-namespace:CommonUITools.Controls"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   Name="IconButtonRoot"
   d:DesignHeight="450"
   d:DesignWidth="800"
   mc:Ignorable="d">
-  <local:IconButtonContent
+  <controls:IconButtonContent
     FontWeight="{Binding FontWeight, ElementName=IconButtonRoot}"
     Icon="{Binding Icon, ElementName=IconButtonRoot}"
     Text="{Binding Text, ElementName=IconButtonRoot}" />

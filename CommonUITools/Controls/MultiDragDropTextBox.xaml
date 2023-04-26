@@ -2,8 +2,8 @@
   x:Class="CommonUITools.Controls.MultiDragDropTextBox"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:controls="clr-namespace:CommonUITools.Controls"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:local="clr-namespace:CommonUITools.Controls"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
   xmlns:system="clr-namespace:System;assembly=System.Runtime"
@@ -65,7 +65,7 @@
     <!--  文件列表  -->
     <Grid Visibility="{Binding HasFile, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfFalseConverter}}">
       <!--  只有一个文件时不显示列表  -->
-      <local:FileNameSizeBox FileName="{Binding FirstFileName, ElementName=MultiDragDropTextBoxRoot}" Visibility="{Binding FileNameList.Count, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfNotEuqalConverter}, ConverterParameter={StaticResource One}}" />
+      <controls:FileNameSizeBox FileName="{Binding FirstFileName, ElementName=MultiDragDropTextBoxRoot}" Visibility="{Binding FileNameList.Count, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfNotEuqalConverter}, ConverterParameter={StaticResource One}}" />
       <!--  文件列表  -->
       <Grid Visibility="{Binding FileNameList.Count, ElementName=MultiDragDropTextBoxRoot, Converter={StaticResource HideIfEuqalConverter}, ConverterParameter={StaticResource One}}">
         <ListBox
@@ -80,12 +80,12 @@
                   <ColumnDefinition Width="120" />
                 </Grid.ColumnDefinitions>
                 <!--  Name  -->
-                <local:FileNameIconBox
+                <controls:FileNameIconBox
                   Padding="0,8"
                   HorizontalAlignment="Left"
                   FileName="{Binding}" />
                 <!--  Size  -->
-                <local:FileSizeBox
+                <controls:FileSizeBox
                   Grid.Column="1"
                   Padding="8,0"
                   HorizontalAlignment="Right"

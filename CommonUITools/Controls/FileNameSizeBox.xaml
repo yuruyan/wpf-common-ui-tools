@@ -2,8 +2,8 @@
   x:Class="CommonUITools.Controls.FileNameSizeBox"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:controls="clr-namespace:CommonUITools.Controls"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:local="clr-namespace:CommonUITools.Controls"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:ui="http://schemas.modernwpf.com/2019"
   Name="FileNameSizeWidgetRoot"
@@ -39,12 +39,12 @@
     </ContextMenu>
   </ui:SimpleStackPanel.ContextMenu>
 
-  <local:FileNameIconBox
+  <controls:FileNameIconBox
     x:Name="FileNameIconBox"
     HorizontalAlignment="Center"
     FileName="{Binding FileName, ElementName=FileNameSizeWidgetRoot}"
     IconSize="30" />
-  <local:FileSizeBox
+  <controls:FileSizeBox
     x:Name="FileSize"
     HorizontalAlignment="Center"
     FileName="{Binding FileName, ElementName=FileNameSizeWidgetRoot}"
