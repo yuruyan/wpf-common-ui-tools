@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
+using System.Windows.Interop;
 using System.Windows.Markup;
 using System.Windows.Media.Effects;
 
@@ -2393,5 +2394,91 @@ internal static class HelperUtils {
             element = element1;
         }
         return element;
+    }
+}
+
+/// <summary>
+/// WindowHelper
+/// </summary>
+public static class WindowHelper {
+    public const int MinimumBuildVersion = 22523;
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    public static readonly DependencyProperty BackDropStyleProperty = DependencyProperty.RegisterAttached("BackDropStyle", typeof(BackdropStyle), typeof(WindowHelper), new PropertyMetadata(BackdropStyle.None, BackDropStylePropertyChangedHandler));
+
+    public static BackdropStyle GetBackDropStyle(DependencyObject obj) {
+        return (BackdropStyle)obj.GetValue(BackDropStyleProperty);
+    }
+    /// <summary>
+    /// BackDropStyle
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="value"></param>
+    public static void SetBackDropStyle(DependencyObject obj, BackdropStyle value) {
+        obj.SetValue(BackDropStyleProperty, value);
+    }
+
+    static WindowHelper() {
+        CommonUITools.Themes.ThemeManager.ThemeChanged += ThemeChangedHandler;
+    }
+
+    private static void BackDropStylePropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not Window window) {
+            Logger.Info($"{d} is not of type Window");
+            return;
+        }
+        if (Environment.OSVersion.Version.Build < MinimumBuildVersion) {
+            Logger.Info($"System version not supported, minimum required version is {MinimumBuildVersion}");
+            return;
+        }
+
+        if (window.IsLoaded) {
+            WindowLoadedHandler(window, null!);
+            return;
+        }
+        window.Loaded -= WindowLoadedHandler;
+        window.Loaded += WindowLoadedHandler;
+    }
+
+    private static void WindowLoadedHandler(object sender, RoutedEventArgs e) {
+        if (sender is not Window window) {
+            return;
+        }
+        UpdateFrame(window);
+        UpdateBackdrop(window, GetBackDropStyle(window));
+        UpdateTheme(window);
+    }
+
+    private static void ThemeChangedHandler(object? sender, ThemeMode e) {
+        Application.Current.Windows.OfType<Window>().ForEach(window => {
+            if (GetBackDropStyle(window) != BackdropStyle.None) {
+                UpdateTheme(window);
+            }
+        });
+    }
+
+    private static void UpdateFrame(Window window) {
+        IntPtr windowPtr = new WindowInteropHelper(window).Handle;
+        HwndSource windowSource = HwndSource.FromHwnd(windowPtr);
+        windowSource.CompositionTarget.BackgroundColor = Color.FromArgb(0, 0, 0, 0);
+        _ = PInvokeUtils.ExtendFrame(windowSource.Handle, new(-1));
+        PInvokeUtils.HideAllWindowButtons(windowPtr);
+    }
+
+    private static void UpdateBackdrop(Window window, BackdropStyle style) {
+        _ = PInvokeUtils.SetWindowAttribute(
+            new WindowInteropHelper(window).Handle,
+            PInvokeUtils.DwmWindowAttribute.SystembackdropType,
+            (int)style
+        );
+    }
+
+    private static void UpdateTheme(Window window) {
+        var isDark = ThemeManager.Current.ActualApplicationTheme == ApplicationTheme.Dark;
+        int flag = isDark ? 1 : 0;
+        _ = PInvokeUtils.SetWindowAttribute(
+            new WindowInteropHelper(window).Handle,
+            PInvokeUtils.DwmWindowAttribute.UseImmersiveDarkMode,
+            flag
+        );
     }
 }
