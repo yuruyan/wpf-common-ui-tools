@@ -432,6 +432,22 @@ public static partial class ExtensionUtils {
         }
         return false;
     }
+
+    /// <summary>
+    /// 随机排序
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    public static IList<T> Shuffle<T>(this IEnumerable<T> list) {
+        var data = list.ToList();
+        for (int i = 0, total = data.Count; i < total; i++) {
+            var index = Random.Shared.Next(total - i);
+            var replaceIndex = total - i - 1;
+            (data[index], data[replaceIndex]) = (data[replaceIndex], data[index]);
+        }
+        return data;
+    }
 }
 
 /// <summary>
