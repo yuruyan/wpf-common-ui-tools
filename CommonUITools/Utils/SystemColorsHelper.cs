@@ -5,11 +5,10 @@ using Color = Windows.UI.Color;
 namespace CommonUITools.Utils;
 
 public static class SystemColorsHelper {
-    private static readonly Color LightThemeColor = Color.FromArgb(255, 255, 255, 255);
-    private static readonly Color DarkThemeColor = Color.FromArgb(255, 0, 0, 0);
-    private static readonly ObservableProperty<Color> CurrentThemeColorProperty = LightThemeColor;
+    private static readonly ObservableProperty<Color> CurrentThemeColorProperty = new();
     private static readonly ObservableProperty<Color> CurrentAccentColorProperty = new();
     private static readonly UISettings UISettings = new();
+
     /// <summary>
     /// Running on UI thread
     /// </summary>
@@ -18,7 +17,7 @@ public static class SystemColorsHelper {
     /// Running on UI thread
     /// </summary>
     public static event EventHandler<Color>? SystemAccentColorChanged;
-    public static ThemeMode CurrentSystemTheme => CurrentThemeColorProperty.Value == LightThemeColor ? ThemeMode.Light : ThemeMode.Dark;
+    public static ThemeMode CurrentSystemTheme => IsLightThemeColor(CurrentThemeColorProperty.Value) ? ThemeMode.Light : ThemeMode.Dark;
     public static Color CurrentSystemAccentColor => CurrentAccentColorProperty.Value;
 
     static SystemColorsHelper() {
@@ -29,16 +28,14 @@ public static class SystemColorsHelper {
         UISettings.ColorValuesChanged += SystemColorValuesChanged;
     }
 
+    private static bool IsLightThemeColor(Color color) => ((5 * color.G) + (2 * color.R) + color.B) > (8 * 128);
+
     private static void ThemeColorChanged(Color oldVal, Color newVal) {
-        UIUtils.RunOnUIThreadAsync(() => {
-            SystemThemeChanged?.Invoke(null, CurrentSystemTheme);
-        });
+        UIUtils.RunOnUIThreadAsync(() => SystemThemeChanged?.Invoke(null, CurrentSystemTheme));
     }
 
     private static void AccentColorChanged(Color oldVal, Color newVal) {
-        UIUtils.RunOnUIThreadAsync(() => {
-            SystemAccentColorChanged?.Invoke(null, newVal);
-        });
+        UIUtils.RunOnUIThreadAsync(() => SystemAccentColorChanged?.Invoke(null, newVal));
     }
 
     private static void SystemColorValuesChanged(UISettings sender, object args) {
