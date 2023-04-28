@@ -2475,7 +2475,7 @@ public static class WindowHelper {
     }
 
     private static void UpdateTheme(Window window) {
-        var isDark = ThemeManager.Current.ActualApplicationTheme == ApplicationTheme.Dark;
+        var isDark = CommonUITools.Themes.ThemeManager.CurrentTheme == ThemeMode.Dark;
         int flag = isDark ? 1 : 0;
         _ = PInvokeUtils.SetWindowAttribute(
             new WindowInteropHelper(window).Handle,
