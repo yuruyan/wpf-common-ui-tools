@@ -2421,12 +2421,14 @@ public static class WindowHelper {
         CommonUITools.Themes.ThemeManager.ThemeChanged += ThemeChangedHandler;
     }
 
+    public static bool IsSystemSupport => Environment.OSVersion.Version.Build < MinimumBuildVersion;
+
     private static void BackDropStylePropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not Window window) {
             Logger.Info($"{d} is not of type Window");
             return;
         }
-        if (Environment.OSVersion.Version.Build < MinimumBuildVersion) {
+        if (IsSystemSupport) {
             Logger.Info($"System version not supported, minimum required version is {MinimumBuildVersion}");
             return;
         }
