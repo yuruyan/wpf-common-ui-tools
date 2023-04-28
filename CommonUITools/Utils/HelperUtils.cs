@@ -2416,14 +2416,30 @@ public static class WindowHelper {
         CommonUITools.Themes.ThemeManager.ThemeChanged += ThemeChangedHandler;
     }
 
-    public static bool IsSystemSupport => Environment.OSVersion.Version.Build < MinimumBuildVersion;
+    /// <summary>
+    /// Is system support feature
+    /// </summary>
+    public static bool IsSystemSupport => Environment.OSVersion.Version.Build >= MinimumBuildVersion;
+
+    /// <summary>
+    /// Apply the optimal theme
+    /// </summary>
+    /// <param name="window"></param>
+    public static void ApplyOptimalThemeStyle(Window window) {
+        if (IsSystemSupport) {
+            window.Background = new SolidColorBrush(Colors.Transparent);
+            SetBackDropStyle(window, BackdropStyle.Mica);
+        } else {
+            window.SetResourceReference(Control.BackgroundProperty, "ApplicationBackgroundBrush");
+        }
+    }
 
     private static void BackDropStylePropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not Window window) {
             Logger.Info($"{d} is not of type Window");
             return;
         }
-        if (IsSystemSupport) {
+        if (!IsSystemSupport) {
             Logger.Info($"System version not supported, minimum required version is {MinimumBuildVersion}");
             return;
         }
