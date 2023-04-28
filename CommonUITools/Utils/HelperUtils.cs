@@ -1,14 +1,9 @@
 ﻿using CommonUITools.Controls;
 using ModernWpf;
 using ModernWpf.Controls;
-using ModernWpf.Controls.Primitives;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Interop;
-using System.Windows.Markup;
 using System.Windows.Media.Effects;
 
 namespace CommonUITools.Utils;
