@@ -19,8 +19,8 @@ public static partial class ExtensionUtils {
     /// otherwise, false. This method also returns false if item is not found in the
     /// original System.Collections.Generic.ICollection
     /// </returns>
-    public static bool Remove<T>(this ICollection<T> collection, Func<T, bool> predicate) {
-        if (collection.FirstOrDefault(predicate) is T obj) {
+    public static bool Remove<T>(this ICollection<T> collection, Predicate<T> predicate) {
+        if (collection.FirstOrDefault(item => predicate(item)) is T obj) {
             return collection.Remove(obj);
         }
         return false;
@@ -33,14 +33,12 @@ public static partial class ExtensionUtils {
     /// <param name="enumerable"></param>
     /// <param name="predicate"></param>
     /// <returns>移除的元素</returns>
-    public static IList<T> RemoveAll<T>(this ICollection<T> enumerable, Func<T, bool> predicate) {
-        List<T> removedList = new();
-        foreach (var item in enumerable.Where(predicate).ToArray()) {
-            if (enumerable.Remove(item)) {
-                removedList.Add(item);
-            }
+    public static IList<T> RemoveAll<T>(this ICollection<T> enumerable, Predicate<T> predicate) {
+        var tobeRemovedItems = enumerable.Where(item => predicate(item)).ToArray();
+        foreach (var item in tobeRemovedItems) {
+            enumerable.Remove(item);
         }
-        return removedList;
+        return tobeRemovedItems;
     }
 
     /// <summary>
@@ -74,41 +72,13 @@ public static partial class ExtensionUtils {
     /// <typeparam name="T"></typeparam>
     /// <param name="values"></param>
     /// <param name="count">打印输出个数，-1 代表打印所有</param>
-    public static void Print<T>(this IEnumerable<T> values, int count = -1) {
+    /// <param name="separator">分隔符</param>
+    public static void Print<T>(this IEnumerable<T> values, int count = -1, string separator = "\n") {
         if (count == -1) {
-            foreach (var item in values) {
-                Console.WriteLine(item);
-            }
+            Console.WriteLine(string.Join(separator, values));
             return;
         }
-        int index = 1;
-        foreach (var item in values) {
-            Console.WriteLine(item);
-            if (index++ >= count) {
-                return;
-            }
-        }
-    }
-
-    /// <summary>
-    /// 打印数组
-    /// </summary>
-    /// <param name="array"></param>
-    /// <param name="count">打印输出个数，-1 代表打印所有</param>
-    public static void PrintArray(this Array array, int count = -1) {
-        if (count == -1) {
-            foreach (var item in array) {
-                Console.WriteLine(item);
-            }
-            return;
-        }
-        int index = 1;
-        foreach (var item in array) {
-            Console.WriteLine(item);
-            if (index++ >= count) {
-                return;
-            }
-        }
+        Console.WriteLine(string.Join(separator, values.Take(count)));
     }
 
     /// <summary>
@@ -258,7 +228,7 @@ public static partial class ExtensionUtils {
     /// <param name="source"></param>
     /// <param name="func"></param>
     /// <returns></returns>
-    public static IList<Target> Cast<Target>(this IList source, Func<object, Target> func) {
+    public static IList<Target> Cast<Target>(this ICollection source, Func<object, Target> func) {
         var results = new List<Target>(source.Count);
         foreach (var item in source) {
             results.Add(func(item));
