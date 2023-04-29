@@ -279,7 +279,7 @@ public static partial class ExtensionUtils {
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
-    /// <returns></returns>
+    /// <returns>A new array</returns>
     public static T[,] Transpose<T>(this T[,] source) {
         int rowLength = source.GetLength(0);
         int columnLength = source.GetLength(1);
@@ -297,7 +297,7 @@ public static partial class ExtensionUtils {
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
-    /// <returns></returns>
+    /// <returns>A new collection</returns>
     public static ICollection<IList<T>> Transpose<T>(this ICollection<IList<T>> source) {
         int rowLength = source.Count;
         int columnLength = source.First().Count;
@@ -321,12 +321,20 @@ public static partial class ExtensionUtils {
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <param name="data"></param>
-    /// <returns>this</returns>
+    /// <returns><paramref name="source"/></returns>
     public static ICollection<T> AddRange<T>(this ICollection<T> source, params IEnumerable<T>[] data) {
         foreach (var list in data) {
             foreach (var item in list) {
                 source.Add(item);
             }
+        }
+        return source;
+    }
+
+    /// <inheritdoc cref="AddRange{T}(ICollection{T}, IEnumerable{T}[])"/>
+    public static ICollection<T> AddRange<T>(this ICollection<T> source, params T[] data) {
+        foreach (var item in data) {
+            source.Add(item);
         }
         return source;
     }
