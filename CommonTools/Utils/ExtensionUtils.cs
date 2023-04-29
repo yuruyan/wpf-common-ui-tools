@@ -243,10 +243,8 @@ public static partial class ExtensionUtils {
     /// <param name="source"></param>
     /// <param name="length"></param>
     /// <param name="defaultValue">填充默认值</param>
-    /// <returns></returns>
-#pragma warning disable CS8601 // Possible null reference assignment.
-    public static ICollection<T> ResizeToLength<T>(this ICollection<T> source, int length, T defaultValue = default) {
-#pragma warning restore CS8601 // Possible null reference assignment.
+    /// <returns><paramref name="source"/></returns>
+    public static ICollection<T> ResizeToLength<T>(this ICollection<T> source, int length, T defaultValue = default!) {
         // 不需要扩充
         if (length <= source.Count) {
             return source;
@@ -265,10 +263,8 @@ public static partial class ExtensionUtils {
     /// <param name="source"></param>
     /// <param name="count"></param>
     /// <param name="defaultValue">填充默认值</param>
-    /// <returns></returns>
-#pragma warning disable CS8601 // Possible null reference assignment.
-    public static ICollection<T> ResizeByCount<T>(this ICollection<T> source, int count, T defaultValue = default) {
-#pragma warning restore CS8601 // Possible null reference assignment.
+    /// <returns><paramref name="source"/></returns>
+    public static ICollection<T> ResizeByCount<T>(this ICollection<T> source, int count, T defaultValue = default!) {
         if (count < 0) {
             throw new ArgumentOutOfRangeException(nameof(count), "Cannot be less than 0");
         }
