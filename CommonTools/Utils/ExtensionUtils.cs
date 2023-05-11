@@ -33,8 +33,8 @@ public static partial class ExtensionUtils {
     /// <param name="enumerable"></param>
     /// <param name="predicate"></param>
     /// <returns>移除的元素</returns>
-    public static IList<T> RemoveAll<T>(this ICollection<T> enumerable, Predicate<T> predicate) {
-        var tobeRemovedItems = enumerable.Where(item => predicate(item)).ToArray();
+    public static List<T> RemoveAll<T>(this ICollection<T> enumerable, Predicate<T> predicate) {
+        var tobeRemovedItems = enumerable.Where(item => predicate(item)).ToList();
         foreach (var item in tobeRemovedItems) {
             enumerable.Remove(item);
         }
@@ -228,7 +228,7 @@ public static partial class ExtensionUtils {
     /// <param name="source"></param>
     /// <param name="func"></param>
     /// <returns>A new list which contains elements that returned from <paramref name="func"/></returns>
-    public static List<Target> Cast<Target>(this ICollection source, Func<object, Target> func) {
+    public static IList<Target> Cast<Target>(this ICollection source, Func<object, Target> func) {
         var results = new List<Target>(source.Count);
         foreach (var item in source) {
             results.Add(func(item));
@@ -298,7 +298,7 @@ public static partial class ExtensionUtils {
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <returns>A new list</returns>
-    public static ICollection<IList<T>> Transpose<T>(this ICollection<IList<T>> source) {
+    public static List<IList<T>> Transpose<T>(this ICollection<IList<T>> source) {
         int rowLength = source.Count;
         int columnLength = source.First().Count;
         var data = new List<IList<T>>(columnLength);
@@ -346,7 +346,7 @@ public static partial class ExtensionUtils {
     /// <param name="source"></param>
     /// <param name="data"></param>
     /// <returns>A new list which contains all data from <paramref name="source"/> and <paramref name="data"/></returns>
-    public static IList<T> Join<T>(this IEnumerable<T> source, params IEnumerable<T>[] data) {
+    public static List<T> Join<T>(this IEnumerable<T> source, params IEnumerable<T>[] data) {
         var results = new List<T>(source);
         foreach (var item in data) {
             results.AddRange(item);
@@ -413,7 +413,7 @@ public static partial class ExtensionUtils {
     /// <typeparam name="T"></typeparam>
     /// <param name="list"></param>
     /// <returns></returns>
-    public static IList<T> Shuffle<T>(this IEnumerable<T> list) {
+    public static List<T> Shuffle<T>(this IEnumerable<T> list) {
         var data = list.ToList();
         for (int i = 0, total = data.Count; i < total; i++) {
             var index = Random.Shared.Next(total - i);
