@@ -191,7 +191,7 @@ public static partial class ExtensionUtils {
     /// <typeparam name="Source"></typeparam>
     /// <param name="source"></param>
     /// <param name="target"></param>
-    /// <returns></returns>
+    /// <returns>失败返回 -1</returns>
     public static int IndexOf<Source>(this IEnumerable<Source> source, Source target) {
         int index = 0;
         foreach (var item in source) {
@@ -209,7 +209,7 @@ public static partial class ExtensionUtils {
     /// <typeparam name="Source"></typeparam>
     /// <param name="source"></param>
     /// <param name="predicate"></param>
-    /// <returns></returns>
+    /// <returns>失败返回 -1</returns>
     public static int IndexOf<Source>(this IEnumerable<Source> source, Predicate<Source> predicate) {
         int index = 0;
         foreach (var item in source) {
@@ -227,8 +227,8 @@ public static partial class ExtensionUtils {
     /// <typeparam name="Target"></typeparam>
     /// <param name="source"></param>
     /// <param name="func"></param>
-    /// <returns></returns>
-    public static IList<Target> Cast<Target>(this ICollection source, Func<object, Target> func) {
+    /// <returns>A new list which contains elements that returned from <paramref name="func"/></returns>
+    public static List<Target> Cast<Target>(this ICollection source, Func<object, Target> func) {
         var results = new List<Target>(source.Count);
         foreach (var item in source) {
             results.Add(func(item));
@@ -297,7 +297,7 @@ public static partial class ExtensionUtils {
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
-    /// <returns>A new collection</returns>
+    /// <returns>A new list</returns>
     public static ICollection<IList<T>> Transpose<T>(this ICollection<IList<T>> source) {
         int rowLength = source.Count;
         int columnLength = source.First().Count;
