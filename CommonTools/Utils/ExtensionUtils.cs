@@ -422,6 +422,24 @@ public static partial class ExtensionUtils {
         }
         return data;
     }
+
+    /// <summary>
+    /// 移除重复项，保证元素顺序
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static List<T> RemoveDuplicates<T>(this IEnumerable<T> source) {
+        var list = new List<T>();
+        var set = new HashSet<T>();
+        foreach (var item in source) {
+            if (set.Add(item)) {
+                list.Add(item);
+            }
+        }
+        set.Clear();
+        return list;
+    }
 }
 
 /// <summary>
