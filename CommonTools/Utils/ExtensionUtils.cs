@@ -440,6 +440,58 @@ public static partial class ExtensionUtils {
         set.Clear();
         return list;
     }
+
+    /// <summary>
+    /// Int32 序列
+    /// </summary>
+    /// <param name="start">起始值</param>
+    /// <param name="count">个数</param>
+    /// <param name="step">间隔</param>
+    /// <returns></returns>
+    public static IEnumerable<int> Range(this int start, int count, int step = 1) {
+        for (int i = 0; i < count; i++) {
+            yield return start += step;
+        }
+    }
+
+    /// <summary>
+    /// Int64 序列
+    /// </summary>
+    /// <param name="start">起始值</param>
+    /// <param name="count">个数</param>
+    /// <param name="step">间隔</param>
+    /// <returns></returns>
+    public static IEnumerable<long> Range(this long start, int count, long step = 1) {
+        for (int i = 0; i < count; i++) {
+            yield return start += step;
+        }
+    }
+
+    /// <summary>
+    /// Double 序列
+    /// </summary>
+    /// <param name="start">起始值</param>
+    /// <param name="count">个数</param>
+    /// <param name="step">间隔</param>
+    /// <returns></returns>
+    public static IEnumerable<double> Range(this double start, int count, double step = 1) {
+        for (int i = 0; i < count; i++) {
+            yield return start += step;
+        }
+    }
+
+    /// <summary>
+    /// Double 序列
+    /// </summary>
+    /// <param name="start">起始值</param>
+    /// <param name="count">个数</param>
+    /// <param name="step">间隔</param>
+    /// <returns></returns>
+    public static IEnumerable<float> Range(this float start, int count, float step = 1) {
+        for (int i = 0; i < count; i++) {
+            yield return start += step;
+        }
+    }
 }
 
 /// <summary>
