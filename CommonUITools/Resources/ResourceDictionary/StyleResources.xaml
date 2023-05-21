@@ -143,6 +143,7 @@
   <!--  GlobalGridSplitterStyle  -->
   <Style x:Key="GlobalGridSplitterStyle" TargetType="GridSplitter">
     <Setter Property="Background" Value="Transparent" />
+    <Setter Property="utils:GridSplitterHelper.EnableHoverFillVisible" Value="True" />
   </Style>
   <Style BasedOn="{StaticResource GlobalGridSplitterStyle}" TargetType="GridSplitter" />
   <!--  GlobalComboBoxStyle  -->
