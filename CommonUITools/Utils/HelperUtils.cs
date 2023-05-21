@@ -1,10 +1,12 @@
 ﻿using CommonUITools.Controls;
 using ModernWpf;
 using ModernWpf.Controls;
+using System.Timers;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Interop;
 using System.Windows.Media.Effects;
+using Timer = System.Timers.Timer;
 
 namespace CommonUITools.Utils;
 
@@ -2493,5 +2495,123 @@ public static class WindowHelper {
             PInvokeUtils.DwmWindowAttribute.UseImmersiveDarkMode,
             flag
         );
+    }
+}
+
+/// <summary>
+/// GridSplitterHelper，鼠标悬浮一段时间会出现背景
+/// </summary>
+public static class GridSplitterHelper {
+    public static readonly DependencyProperty EnableHoverFillVisibleProperty = DependencyProperty.RegisterAttached("EnableHoverFillVisible", typeof(bool), typeof(GridSplitterHelper), new PropertyMetadata(false, EnableHoverFillVisiblePropertyChangedHandler));
+    public static readonly DependencyProperty HoverBrushProperty = DependencyProperty.RegisterAttached("HoverBrush", typeof(Brush), typeof(GridSplitterHelper), new PropertyMetadata());
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly DependencyProperty TimerProperty = DependencyProperty.RegisterAttached("Timer", typeof(Timer), typeof(GridSplitterHelper), new PropertyMetadata());
+    private static readonly DependencyProperty AnimationProperty = DependencyProperty.RegisterAttached("Animation", typeof(AnimationTimeline), typeof(GridSplitterHelper), new PropertyMetadata());
+    private static readonly IDictionary<Timer, GridSplitter> TimerGridSplitterDict = new Dictionary<Timer, GridSplitter>();
+    private const int HoverDuration = 500;
+    private const string GridSplitterOverBrushKey = "GridSplitterOverBrush";
+
+    public static bool GetEnableHoverFillVisible(DependencyObject obj) {
+        return (bool)obj.GetValue(EnableHoverFillVisibleProperty);
+    }
+    public static void SetEnableHoverFillVisible(DependencyObject obj, bool value) {
+        obj.SetValue(EnableHoverFillVisibleProperty, value);
+    }
+    public static Brush GetHoverBrush(DependencyObject obj) {
+        return (Brush)obj.GetValue(HoverBrushProperty);
+    }
+    public static void SetHoverBrush(DependencyObject obj, Brush value) {
+        obj.SetValue(HoverBrushProperty, value);
+    }
+    private static Timer GetTimer(DependencyObject obj) {
+        return (Timer)obj.GetValue(TimerProperty);
+    }
+    private static void SetTimer(DependencyObject obj, Timer value) {
+        obj.SetValue(TimerProperty, value);
+    }
+    private static AnimationTimeline GetAnimation(DependencyObject obj) {
+        return (AnimationTimeline)obj.GetValue(AnimationProperty);
+    }
+    private static void SetAnimation(DependencyObject obj, AnimationTimeline value) {
+        obj.SetValue(AnimationProperty, value);
+    }
+    private static void EnableHoverFillVisiblePropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is not GridSplitter splitter) {
+            Logger.Info($"{d} is not of type GridSplitter");
+            return;
+        }
+        if (e.NewValue is false) {
+            Dispose(splitter);
+            return;
+        }
+
+        EnableHoverFillVisible(splitter);
+    }
+
+    private static void EnableHoverFillVisible(GridSplitter splitter) {
+        var timer = new Timer(HoverDuration);
+        timer.Elapsed += TimerElapsedHandler;
+        SetTimer(splitter, timer);
+        TimerGridSplitterDict[timer] = splitter;
+        splitter.MouseEnter += GridSplitterMouseEnterHandler;
+        splitter.MouseLeave += GridSplitterMouseLeaveHandler;
+    }
+
+    private static void GridSplitterMouseLeaveHandler(object sender, MouseEventArgs e) {
+        if (sender is GridSplitter splitter && GetTimer(splitter) is Timer timer) {
+            timer.Stop();
+            splitter.ClearValue(Control.BackgroundProperty);
+        }
+    }
+
+    private static void GridSplitterMouseEnterHandler(object sender, MouseEventArgs e) {
+        if (sender is GridSplitter splitter && GetTimer(splitter) is Timer timer) {
+            timer.Start();
+        }
+    }
+
+    /// <summary>
+    /// When this is invoked, timer stops
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private static void TimerElapsedHandler(object? sender, ElapsedEventArgs e) {
+        if (sender is not Timer timer) {
+            return;
+        }
+        timer.Stop();
+        UIUtils.RunOnUIThread(timer => {
+            if (TimerGridSplitterDict.TryGetValue(timer, out var splitter)) {
+                splitter.Background = GetHoverBrush(splitter) ?? (Brush)splitter.FindResource(GridSplitterOverBrushKey);
+                splitter.BeginAnimation(UIElement.OpacityProperty, GetOrInitAnimation(splitter));
+            }
+        }, timer);
+    }
+
+    /// <summary>
+    /// Get or init AnimationTimeline
+    /// </summary>
+    /// <param name="splitter"></param>
+    /// <returns></returns>
+    private static AnimationTimeline GetOrInitAnimation(GridSplitter splitter) {
+        if (GetAnimation(splitter) is not AnimationTimeline animation) {
+            animation = new DoubleAnimation(0, 1, (Duration)splitter.FindResource("AnimationDuration"));
+            SetAnimation(splitter, animation);
+            Storyboard.SetTarget(splitter, animation);
+            Storyboard.SetTargetProperty(splitter, new("Opacity"));
+        }
+        return animation;
+    }
+
+    public static void Dispose(GridSplitter gridSplitter) {
+        gridSplitter.ClearValue(EnableHoverFillVisibleProperty);
+        gridSplitter.ClearValue(AnimationProperty);
+        if (GetTimer(gridSplitter) is Timer timer) {
+            timer.Dispose();
+            TimerGridSplitterDict.Remove(timer);
+        }
+        gridSplitter.ClearValue(TimerProperty);
+        gridSplitter.MouseEnter -= GridSplitterMouseEnterHandler;
+        gridSplitter.MouseLeave -= GridSplitterMouseLeaveHandler;
     }
 }
