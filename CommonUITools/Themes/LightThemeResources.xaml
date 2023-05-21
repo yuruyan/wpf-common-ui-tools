@@ -129,6 +129,7 @@
 
   <SolidColorBrush x:Key="GrayTextForeground" Color="{StaticResource Black8}" />
   <SolidColorBrush x:Key="HoverEffectBackgroundBrush" Color="{StaticResource Gray3}" />
+  <SolidColorBrush x:Key="GridSplitterOverBrush" Color="{StaticResource ApplicationBackgroundDark3}" />
 
   <!--#region BorderBrush-->
   <SolidColorBrush
