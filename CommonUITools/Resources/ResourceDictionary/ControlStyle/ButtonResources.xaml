@@ -97,44 +97,52 @@
   <!--  ErrorButtonStyle  -->
   <Style
     x:Key="GlobalErrorButtonStyle"
-    BasedOn="{StaticResource GlobalButtonStyle}"
+    BasedOn="{StaticResource GlobalAccentButtonStyle}"
     TargetType="Button">
     <Style.Resources>
-      <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource ErrorBackgroundColor}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource ErrorBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{StaticResource ErrorBackgroundDark2Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource ErrorBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{StaticResource ErrorBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{StaticResource ErrorBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="AccentButtonForeground" Color="White" />
+      <SolidColorBrush x:Key="AccentButtonForegroundPointerOver" Color="White" />
+      <SolidColorBrush x:Key="AccentButtonForegroundPressed" Color="White" />
+      <SolidColorBrush x:Key="AccentButtonBackground" Color="{StaticResource ErrorBackgroundColor}" />
+      <SolidColorBrush x:Key="AccentButtonBackgroundPointerOver" Color="{StaticResource ErrorBackgroundLight1Color}" />
+      <SolidColorBrush x:Key="AccentButtonBackgroundPressed" Color="{StaticResource ErrorBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="AccentButtonBorderBrush" Color="{StaticResource ErrorBackgroundColor}" />
+      <SolidColorBrush x:Key="AccentButtonBorderBrushPointerOver" Color="{StaticResource ErrorBackgroundLight1Color}" />
+      <SolidColorBrush x:Key="AccentButtonBorderBrushPressed" Color="{StaticResource ErrorBackgroundDark2Color}" />
     </Style.Resources>
-    <Setter Property="Foreground" Value="{DynamicResource ErrorForeground}" />
   </Style>
   <!--  SuccessButtonStyle  -->
   <Style
     x:Key="GlobalSuccessButtonStyle"
-    BasedOn="{StaticResource GlobalButtonStyle}"
+    BasedOn="{StaticResource GlobalAccentButtonStyle}"
     TargetType="Button">
     <Style.Resources>
-      <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource SuccessBackgroundColor}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource SuccessBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{StaticResource SuccessBackgroundDark2Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource SuccessBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{StaticResource SuccessBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{StaticResource SuccessBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="AccentButtonForeground" Color="White" />
+      <SolidColorBrush x:Key="AccentButtonForegroundPointerOver" Color="White" />
+      <SolidColorBrush x:Key="AccentButtonForegroundPressed" Color="White" />
+      <SolidColorBrush x:Key="AccentButtonBackground" Color="{StaticResource SuccessBackgroundColor}" />
+      <SolidColorBrush x:Key="AccentButtonBackgroundPointerOver" Color="{StaticResource SuccessBackgroundLight1Color}" />
+      <SolidColorBrush x:Key="AccentButtonBackgroundPressed" Color="{StaticResource SuccessBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="AccentButtonBorderBrush" Color="{StaticResource SuccessBackgroundColor}" />
+      <SolidColorBrush x:Key="AccentButtonBorderBrushPointerOver" Color="{StaticResource SuccessBackgroundLight1Color}" />
+      <SolidColorBrush x:Key="AccentButtonBorderBrushPressed" Color="{StaticResource SuccessBackgroundDark2Color}" />
     </Style.Resources>
   </Style>
   <!--  WaringButtonStyle  -->
   <Style
     x:Key="GlobalWaringButtonStyle"
-    BasedOn="{StaticResource GlobalButtonStyle}"
+    BasedOn="{StaticResource GlobalAccentButtonStyle}"
     TargetType="Button">
     <Style.Resources>
-      <SolidColorBrush x:Key="ButtonBackground" Color="{StaticResource WarningBackgroundColor}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource WarningBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{StaticResource WarningBackgroundDark2Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrush" Color="{StaticResource WarningBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="{StaticResource WarningBackgroundDark1Color}" />
-      <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="{StaticResource WarningBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="AccentButtonForeground" Color="White" />
+      <SolidColorBrush x:Key="AccentButtonForegroundPointerOver" Color="White" />
+      <SolidColorBrush x:Key="AccentButtonForegroundPressed" Color="White" />
+      <SolidColorBrush x:Key="AccentButtonBackground" Color="{StaticResource WarningBackgroundColor}" />
+      <SolidColorBrush x:Key="AccentButtonBackgroundPointerOver" Color="{StaticResource WarningBackgroundLight1Color}" />
+      <SolidColorBrush x:Key="AccentButtonBackgroundPressed" Color="{StaticResource WarningBackgroundDark2Color}" />
+      <SolidColorBrush x:Key="AccentButtonBorderBrush" Color="{StaticResource WarningBackgroundColor}" />
+      <SolidColorBrush x:Key="AccentButtonBorderBrushPointerOver" Color="{StaticResource WarningBackgroundLight1Color}" />
+      <SolidColorBrush x:Key="AccentButtonBorderBrushPressed" Color="{StaticResource WarningBackgroundDark2Color}" />
     </Style.Resources>
   </Style>
 </ResourceDictionary>
