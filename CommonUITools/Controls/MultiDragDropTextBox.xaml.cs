@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using System.Windows.Controls;
 
 namespace CommonUITools.Controls;
 
@@ -82,10 +83,10 @@ public partial class MultiDragDropTextBox : UserControl {
                 if (textBox.TryFindResource("MultilineTextBoxStyle") is Style style) {
                     textBox.TextBoxStyle ??= style;
                 }
-                textBox.FileListInfoBorderFadeOutStoryboard = (Storyboard)textBox.Resources[FileListInfoBorderFadeOutStoryboardName];
             }
         });
         InitializeComponent();
+        FileListInfoBorderFadeOutStoryboard = (Storyboard)Resources[FileListInfoBorderFadeOutStoryboardName];
     }
 
     private static void HasFilePropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
