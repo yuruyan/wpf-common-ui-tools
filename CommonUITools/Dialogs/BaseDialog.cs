@@ -29,8 +29,18 @@ public class BaseDialog : ContentDialog {
         if (IsFirstLoadingAnimationDisabled) {
             Unloaded += ViewUnloadedOnceHandler;
         } else {
-            this.SetLoadedOnceEventHandler((_, _) => EnableLoadingAnimation());
+            Opened += DialogOpenedOnceHandler;
         }
+    }
+
+    private void DialogOpenedOnceHandler(ContentDialog sender, ContentDialogOpenedEventArgs args) {
+        Opened -= DialogOpenedOnceHandler;
+        EnableLoadingAnimation();
+    }
+
+    private void ViewUnloadedOnceHandler(object sender, RoutedEventArgs e) {
+        Unloaded -= ViewUnloadedOnceHandler;
+        EnableLoadingAnimation();
     }
 
     private void EnableLoadingAnimation() {
@@ -39,10 +49,4 @@ public class BaseDialog : ContentDialog {
             ScaleAnimationHelper.SetScaleOption(content, ScaleAnimationOption.Center);
         }
     }
-
-    private void ViewUnloadedOnceHandler(object sender, RoutedEventArgs e) {
-        Unloaded -= ViewUnloadedOnceHandler;
-        EnableLoadingAnimation();
-    }
-
 }
