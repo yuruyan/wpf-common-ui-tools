@@ -11,18 +11,38 @@ public class BaseDialog : ContentDialog {
         get { return (string)GetValue(DetailTextProperty); }
         set { SetValue(DetailTextProperty, value); }
     }
+    /// <summary>
+    /// 初次加载动画是否启用
+    /// </summary>
+    public bool IsFirstLoadingAnimationDisabled { get; }
 
-    public BaseDialog() {
+    public BaseDialog() : this(false) { }
+
+    public BaseDialog(bool disableInitializationAnimation) {
+        IsFirstLoadingAnimationDisabled = disableInitializationAnimation;
         PrimaryButtonText = "确定";
         CloseButtonText = "取消";
         PrimaryButtonStyle = (Style)FindResource("GlobalAccentButtonStyle");
         if (TryFindResource("BaseDialogDataTemplate") is DataTemplate titleDataTemplate) {
             TitleTemplate = titleDataTemplate;
         }
-        // 设置 ScaleAnimation
-        Opened += (dialog, _) => TaskUtils.EnsureCalledOnce((dialog, Application.Current), () => {
-            Utils.ScaleAnimationHelper.SetIsEnabled((DependencyObject)dialog.Content, true);
-            Utils.ScaleAnimationHelper.SetScaleOption((DependencyObject)dialog.Content, ScaleAnimationOption.Center);
-        });
+        if (IsFirstLoadingAnimationDisabled) {
+            Unloaded += ViewUnloadedOnceHandler;
+        } else {
+            this.SetLoadedOnceEventHandler((_, _) => EnableLoadingAnimation());
+        }
     }
+
+    private void EnableLoadingAnimation() {
+        if (Content is DependencyObject content) {
+            ScaleAnimationHelper.SetIsEnabled(content, true);
+            ScaleAnimationHelper.SetScaleOption(content, ScaleAnimationOption.Center);
+        }
+    }
+
+    private void ViewUnloadedOnceHandler(object sender, RoutedEventArgs e) {
+        Unloaded -= ViewUnloadedOnceHandler;
+        EnableLoadingAnimation();
+    }
+
 }
