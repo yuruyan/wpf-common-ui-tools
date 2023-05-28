@@ -49,4 +49,10 @@ public class BaseDialog : ContentDialog {
             ScaleAnimationHelper.SetScaleOption(content, ScaleAnimationOption.Center);
         }
     }
+
+    /// <inheritdoc cref="ContentDialog.ShowAsync()"/>
+    public new Task<ContentDialogResult> ShowAsync() => this.ShowSafeAsync();
+
+    /// <inheritdoc cref="ContentDialog.ShowAsync(ContentDialogPlacement)"/>
+    public new Task<ContentDialogResult> ShowAsync(ContentDialogPlacement placement) => this.ShowSafeAsync(placement);
 }

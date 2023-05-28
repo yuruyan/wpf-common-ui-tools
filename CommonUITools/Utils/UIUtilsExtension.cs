@@ -416,7 +416,7 @@ public static partial class UIUtilsExtension {
 }
 
 /// <summary>
-/// For ContentDialogAutoResize
+/// For ContentDialog
 /// </summary>
 public static partial class UIUtilsExtension {
     /// <summary>
@@ -554,5 +554,24 @@ public static partial class UIUtilsExtension {
         if (ContentDialogAutoResizeDict.TryGetValue(window, out var dialogArgList)) {
             dialogArgList.RemoveAll(args => !args.Dialog.TryGetTarget(out _));
         }
+    }
+
+    /// <summary>
+    /// ShowAsync with no exception
+    /// </summary>
+    /// <param name="dialog"></param>
+    /// <returns></returns>
+    public static Task<ContentDialogResult> ShowSafeAsync(this ContentDialog dialog) {
+        return TaskUtils.TryAsync(dialog.ShowAsync);
+    }
+
+    /// <summary>
+    /// ShowAsync with no exception
+    /// </summary>
+    /// <param name="dialog"></param>
+    /// <param name="placement"></param>
+    /// <returns></returns>
+    public static Task<ContentDialogResult> ShowSafeAsync(this ContentDialog dialog, ContentDialogPlacement placement) {
+        return TaskUtils.TryAsync(() => dialog.ShowAsync(placement));
     }
 }
