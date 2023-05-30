@@ -56,6 +56,13 @@ public static partial class UIUtilsExtension {
     }
 
     /// <summary>
+    /// Color to SolidColorBrush
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns></returns>
+    public static SolidColorBrush ToBrush(this Color color) => new(color);
+
+    /// <summary>
     /// <see cref="string"/> 转 <see cref="Color"/>
     /// </summary>
     /// <param name="color"></param>
