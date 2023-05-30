@@ -1323,9 +1323,22 @@ public static class ContextMenuHelper {
             return;
         }
         if (e.NewValue is true) {
-            element.PreviewMouseLeftButtonUp += ShowContextMenuHandler;
+            element.PreviewMouseLeftButtonDown += ShowContextMenuLeftButtonDownHandler;
+            element.PreviewMouseLeftButtonUp += ShowContextMenuLeftButtonUpHandler;
         } else {
-            element.PreviewMouseLeftButtonUp -= ShowContextMenuHandler;
+            element.PreviewMouseLeftButtonDown -= ShowContextMenuLeftButtonDownHandler;
+            element.PreviewMouseLeftButtonUp -= ShowContextMenuLeftButtonUpHandler;
+        }
+    }
+
+    /// <summary>
+    /// Capture mouse
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private static void ShowContextMenuLeftButtonDownHandler(object sender, MouseButtonEventArgs e) {
+        if (sender is IInputElement inputElement) {
+            _ = inputElement.CaptureMouse();
         }
     }
 
@@ -1334,8 +1347,11 @@ public static class ContextMenuHelper {
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private static void ShowContextMenuHandler(object sender, MouseButtonEventArgs e) {
-        if (sender is FrameworkElement element && element.ContextMenu is not null) {
+    private static void ShowContextMenuLeftButtonUpHandler(object sender, MouseButtonEventArgs e) {
+        if (sender is IInputElement inputElement) {
+            inputElement.ReleaseMouseCapture();
+        }
+        if (sender is FrameworkElement element && element.IsMouseOver && element.ContextMenu is not null) {
             element.ContextMenu.PlacementTarget = element;
             element.ContextMenu.IsOpen = true;
             element.UpdateDefaultStyle();
@@ -1376,7 +1392,8 @@ public static class ContextMenuHelper {
             menu.ClearValue(OpeningTopStoryboardProperty);
             menu.ClearValue(EnableOpeningAnimationProperty);
         }
-        element.PreviewMouseLeftButtonUp -= ShowContextMenuHandler;
+        element.PreviewMouseLeftButtonDown -= ShowContextMenuLeftButtonDownHandler;
+        element.PreviewMouseLeftButtonUp -= ShowContextMenuLeftButtonUpHandler;
         element.ClearValue(OpenOnMouseLeftClickProperty);
         element.ClearValue(CenterHorizontalProperty);
     }
