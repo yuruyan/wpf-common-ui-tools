@@ -1158,6 +1158,68 @@ public static class DoubleMouseClickHelper {
 }
 
 /// <summary>
+/// MouseClickHelper
+/// </summary>
+public static class MouseClickHelper {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    /// <summary>
+    /// MouseLeftClick, set null to clear
+    /// </summary>
+    public static readonly DependencyProperty MouseLeftClickProperty = DependencyProperty.RegisterAttached("MouseLeftClick", typeof(MouseButtonEventHandler), typeof(MouseClickHelper), new PropertyMetadata(MouseLeftClickPropertyChangedHandler));
+    private static readonly DependencyProperty IsMouseLeftButtonDownProperty = DependencyProperty.RegisterAttached("IsMouseLeftButtonDown", typeof(bool), typeof(MouseClickHelper), new PropertyMetadata(false));
+
+    public static MouseButtonEventHandler GetMouseLeftClick(DependencyObject obj) {
+        return (MouseButtonEventHandler)obj.GetValue(MouseLeftClickProperty);
+    }
+    public static void SetMouseLeftClick(DependencyObject obj, MouseButtonEventHandler value) {
+        obj.SetValue(MouseLeftClickProperty, value);
+    }
+    private static bool GetIsMouseLeftButtonDown(DependencyObject obj) {
+        return (bool)obj.GetValue(IsMouseLeftButtonDownProperty);
+    }
+    private static void SetIsMouseLeftButtonDown(DependencyObject obj, bool value) {
+        obj.SetValue(IsMouseLeftButtonDownProperty, value);
+    }
+
+    private static void MouseLeftClickPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
+        if (d is FrameworkElement element) {
+            element.MouseLeftButtonDown -= ElementMouseLeftButtonDownHandler;
+            element.MouseLeftButtonUp -= ElementMouseLeftButtonUpHandler;
+            if (e.NewValue is not null) {
+                element.MouseLeftButtonDown += ElementMouseLeftButtonDownHandler;
+                element.MouseLeftButtonUp += ElementMouseLeftButtonUpHandler;
+            }
+        } else if (d is FrameworkContentElement contentElement) {
+            contentElement.MouseLeftButtonDown -= ElementMouseLeftButtonDownHandler;
+            contentElement.MouseLeftButtonUp -= ElementMouseLeftButtonUpHandler;
+            if (e.NewValue is not null) {
+                contentElement.MouseLeftButtonDown += ElementMouseLeftButtonDownHandler;
+                contentElement.MouseLeftButtonUp += ElementMouseLeftButtonUpHandler;
+            }
+        } else {
+            Logger.Info($"{d} is neither of type FrameworkElement nor FrameworkContentElement");
+        }
+    }
+
+    private static void ElementMouseLeftButtonDownHandler(object sender, MouseButtonEventArgs e) {
+        if (sender is DependencyObject dp) {
+            SetIsMouseLeftButtonDown(dp, true);
+        }
+    }
+
+    private static void ElementMouseLeftButtonUpHandler(object sender, MouseButtonEventArgs e) {
+        if (sender is not DependencyObject dp) {
+            return;
+        }
+        if (GetIsMouseLeftButtonDown(dp) && GetMouseLeftClick(dp) is { } handler) {
+            handler(sender, e);
+        }
+        // Clear
+        SetIsMouseLeftButtonDown(dp, false);
+    }
+}
+
+/// <summary>
 /// 设置 ListViewGroup Style
 /// </summary>
 public static class ListViewGroupHelper {
