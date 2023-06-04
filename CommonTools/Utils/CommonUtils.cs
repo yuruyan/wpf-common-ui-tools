@@ -5,8 +5,13 @@ namespace CommonTools.Utils;
 
 public static partial class CommonUtils {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private const string PathSpliterPattern = @"[/\\]";
     private static readonly string _ProcessPath = Environment.ProcessPath!;
     private static readonly string _ProcessDirectory = Path.GetDirectoryName(Environment.ProcessPath!)!;
+    /// <summary>
+    /// 路径分隔符正则
+    /// </summary>
+    private static readonly Regex PathSpliterRegex = GetPathSpliterRegex();
 
     /// <summary>
     /// Current process path
@@ -17,15 +22,11 @@ public static partial class CommonUtils {
     /// </summary>
     public static string ProcessDirectory => _ProcessDirectory;
 
-    /// <summary>
-    /// 路径分隔符正则
-    /// </summary>
 #if NET7_0_OR_GREATER
-    private static readonly Regex PathSpliterRegex = GetPathSpliterRegex();
-    [GeneratedRegex("[/\\\\]")]
+    [GeneratedRegex(PathSpliterPattern)]
     private static partial Regex GetPathSpliterRegex();
-#elif NET6_0_OR_GREATER
-    private static readonly Regex PathSpliterRegex = new(@"[/\\]");
+#else
+    private static Regex GetPathSpliterRegex() => new(PathSpliterPattern);
 #endif
 
     /// <summary>
