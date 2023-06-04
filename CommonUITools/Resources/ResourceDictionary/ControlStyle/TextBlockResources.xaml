@@ -12,7 +12,6 @@
     <Setter Property="FontFamily" Value="{DynamicResource SystemFontFamily}" />
     <Setter Property="VerticalAlignment" Value="Center" />
     <Setter Property="ToolTipService.InitialShowDelay" Value="{DynamicResource ToolTipServiceInitialShowDelay}" />
-    <Setter Property="Foreground" Value="{DynamicResource ApplicationForegroundBrush}" />
     <Style.Triggers>
       <Trigger Property="IsEnabled" Value="False">
         <Setter Property="Foreground" Value="{DynamicResource TextControlBackgroundDisabled}" />
