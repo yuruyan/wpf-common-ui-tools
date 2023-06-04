@@ -5,6 +5,18 @@ namespace CommonTools.Utils;
 
 public static partial class CommonUtils {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly string _ProcessPath = Environment.ProcessPath!;
+    private static readonly string _ProcessDirectory = Path.GetDirectoryName(Environment.ProcessPath!)!;
+
+    /// <summary>
+    /// Current process path
+    /// </summary>
+    public static string ProcessPath => _ProcessPath;
+    /// <summary>
+    /// Current process directory
+    /// </summary>
+    public static string ProcessDirectory => _ProcessDirectory;
+
     /// <summary>
     /// 路径分隔符正则
     /// </summary>
