@@ -171,4 +171,29 @@ public static partial class CommonUtils {
         }
         return null;
     }
+
+    /// <summary>
+    /// 获取唯一文件名称，如果已存在文件，则自动重命名
+    /// </summary>
+    /// <param name="filepath"></param>
+    /// <param name="autoRenameCount">重命名最大次数</param>
+    /// <returns></returns>
+    /// <exception cref="Exception">自动重命名超过最大次数</exception>
+    public static string GetUniqueFileNameFor(string filepath, uint autoRenameCount = uint.MaxValue) {
+        if (!File.Exists(filepath)) {
+            return filepath;
+        }
+        var dir = Path.GetDirectoryName(filepath) ?? throw new ArgumentException($"Path '{filepath}' is not a file path");
+        var name = Path.GetFileNameWithoutExtension(filepath);
+        var ext = Path.GetExtension(filepath);
+        uint i = 1;
+        while (i <= autoRenameCount) {
+            // Rename
+            filepath = Path.Combine(dir, $"{name}({i++}){ext}");
+            if (!File.Exists(filepath)) {
+                return filepath;
+            }
+        }
+        throw new Exception($"File name conflicts for {autoRenameCount} times");
+    }
 }
