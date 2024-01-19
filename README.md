@@ -1,39 +1,31 @@
 # 通用工具库
 
 ## CommonTools 引入
-首先创建 **Lib\Net7，Lib\Net6** 文件夹，然后将相应生成的 **.dll，.xml(文档，非必须)** 文件复制进去
+
+首先创建 **Lib\Net8** 文件夹，然后将相应生成的 **.dll，.xml(文档，非必须)** 文件复制进去
 
 **.csproj** 文件加入如下配置：
+
 ```xml
 <ItemGroup>
   <PackageReference Include="AutoMapper" Version="12.0.1" />
   <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   <PackageReference Include="NLog" Version="5.1.2" />
-  <PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
 </ItemGroup>
 
-<Choose>
-  <When Condition=" '$(TargetFramework.StartsWith(`net7.0`))' == 'true' ">
-    <ItemGroup>
-      <Reference Include="CommonTools">
-        <HintPath>Lib\Net7\CommonTools.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-  </When>
-  <When Condition=" '$(TargetFramework.StartsWith(`net6.0`))' == 'true' ">
-    <ItemGroup>
-      <Reference Include="CommonTools">
-        <HintPath>Lib\Net6\CommonTools.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-  </When>
-</Choose>
+<ItemGroup>
+  <Reference Include="CommonTools">
+    <HintPath>Lib\Net8\CommonTools.dll</HintPath>
+  </Reference>
+</ItemGroup>
 ```
 
 ## CommonUITools 引入
-首先创建 **Lib\Net7，Lib\Net6** 文件夹，然后将相应生成的 **.dll，.xml(文档，非必须)** 文件复制进去
+
+首先创建 **Lib\Net8，Lib\Net6** 文件夹，然后将相应生成的 **.dll，.xml(文档，非必须)** 文件复制进去
 
 1. **.csproj** 文件加入如下配置：
+
 ```xml
 <ItemGroup>
   <PackageReference Include="ModernWpfUI" Version="0.9.6" />
@@ -46,13 +38,13 @@
 </ItemGroup>
 
 <Choose>
-  <When Condition=" '$(TargetFramework.StartsWith(`net7.0`))' == 'true' ">
+  <When Condition=" '$(TargetFramework.StartsWith(`net8.0`))' == 'true' ">
     <ItemGroup>
       <Reference Include="CommonTools">
-        <HintPath>Lib\Net7\CommonTools.dll</HintPath>
+        <HintPath>Lib\Net8\CommonTools.dll</HintPath>
       </Reference>
       <Reference Include="CommonUITools">
-        <HintPath>Lib\Net7\CommonUITools.dll</HintPath>
+        <HintPath>Lib\Net8\CommonUITools.dll</HintPath>
       </Reference>
     </ItemGroup>
   </When>
@@ -60,7 +52,7 @@
     <ItemGroup>
       <Reference Include="CommonTools">
         <HintPath>Lib\Net6\CommonTools.dll</HintPath>
-      </Reference>      
+      </Reference>
       <Reference Include="CommonUITools">
         <HintPath>Lib\Net6\CommonUITools.dll</HintPath>
       </Reference>
@@ -70,7 +62,8 @@
 ```
 
 2. **App.xaml** 文件
-``` xaml
+
+```xaml
 xmlns:ui="http://schemas.modernwpf.com/2019"
 
 <Application.Resources>
