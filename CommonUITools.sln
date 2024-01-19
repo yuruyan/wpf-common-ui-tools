@@ -5,10 +5,6 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonUITools", "CommonUITools\CommonUITools.csproj", "{162311B3-C9AC-432A-8380-7BA68A0344DF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfAppTest", "WpfAppTest\WpfAppTest.csproj", "{620EF3B9-0353-4630-8346-0E817DCA06BB}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppTest", "ConsoleAppTest\ConsoleAppTest.csproj", "{19BBF7FA-B8A8-459C-B064-265E2150012A}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{72A2DAE6-7EEF-4C58-9E55-5112572D6761}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -36,22 +32,6 @@ Global
 		{162311B3-C9AC-432A-8380-7BA68A0344DF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{162311B3-C9AC-432A-8380-7BA68A0344DF}.Release|x64.ActiveCfg = Release|x64
 		{162311B3-C9AC-432A-8380-7BA68A0344DF}.Release|x64.Build.0 = Release|x64
-		{620EF3B9-0353-4630-8346-0E817DCA06BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{620EF3B9-0353-4630-8346-0E817DCA06BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{620EF3B9-0353-4630-8346-0E817DCA06BB}.Debug|x64.ActiveCfg = Debug|x64
-		{620EF3B9-0353-4630-8346-0E817DCA06BB}.Debug|x64.Build.0 = Debug|x64
-		{620EF3B9-0353-4630-8346-0E817DCA06BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{620EF3B9-0353-4630-8346-0E817DCA06BB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{620EF3B9-0353-4630-8346-0E817DCA06BB}.Release|x64.ActiveCfg = Release|Any CPU
-		{620EF3B9-0353-4630-8346-0E817DCA06BB}.Release|x64.Build.0 = Release|Any CPU
-		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Debug|x64.Build.0 = Debug|Any CPU
-		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Release|x64.ActiveCfg = Release|Any CPU
-		{19BBF7FA-B8A8-459C-B064-265E2150012A}.Release|x64.Build.0 = Release|Any CPU
 		{17E6360C-92AD-4256-B997-5FAD2C4CB348}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{17E6360C-92AD-4256-B997-5FAD2C4CB348}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17E6360C-92AD-4256-B997-5FAD2C4CB348}.Debug|x64.ActiveCfg = Debug|x64

@@ -1,7 +1,4 @@
-﻿using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Security;
-using Org.BouncyCastle.Utilities.Encoders;
+﻿using System.Security.Cryptography;
 
 namespace CommonTools.Utils;
 
@@ -14,10 +11,14 @@ public static class CryptoUtils {
     /// <param name="iv">32位16进制字符串</param>
     /// <returns></returns>
     public static byte[] AESEncode(byte[] message, string key, string iv) {
-        KeyParameter keyParam = ParameterUtilities.CreateKeyParameter("AES", Hex.Decode(key));
-        IBufferedCipher inCipher = CipherUtilities.GetCipher("AES/CBC/PKCS7Padding");
-        inCipher.Init(true, new ParametersWithIV(keyParam, Hex.Decode(iv)));
-        return inCipher.DoFinal(message);
+        Aes aes = Aes.Create();
+        aes.KeySize = 256;
+        aes.Mode = CipherMode.CBC;
+        aes.Padding = PaddingMode.PKCS7;
+        aes.Key = Convert.FromHexString(key);
+        aes.IV = Convert.FromHexString(iv);
+        using ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+        return encryptor.TransformFinalBlock(message, 0, message.Length);
     }
 
     /// <summary>
@@ -50,10 +51,14 @@ public static class CryptoUtils {
     /// <param name="iv">32位16进制字符串</param>
     /// <returns></returns>
     public static byte[] AESDecode(byte[] message, string key, string iv) {
-        KeyParameter keyParam = ParameterUtilities.CreateKeyParameter("AES", Hex.Decode(key));
-        IBufferedCipher inCipher = CipherUtilities.GetCipher("AES/CBC/PKCS7Padding");
-        inCipher.Init(false, new ParametersWithIV(keyParam, Hex.Decode(iv)));
-        return inCipher.DoFinal(message);
+        Aes aes = Aes.Create();
+        aes.KeySize = 256;
+        aes.Mode = CipherMode.CBC;
+        aes.Padding = PaddingMode.PKCS7;
+        aes.Key = Convert.FromHexString(key);
+        aes.IV = Convert.FromHexString(iv);
+        using ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+        return decryptor.TransformFinalBlock(message, 0, message.Length);
     }
 
     /// <summary>
