@@ -1,88 +1,116 @@
-﻿using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Digests;
-using Org.BouncyCastle.Utilities.Encoders;
-using System.Collections.Concurrent;
+﻿using System.Security.Cryptography;
 
 namespace CommonTools.Utils;
 
 public static class DigestUtils {
-    /// <summary>
-    /// 默认读取缓冲区大小
-    /// </summary>
-    private const int ReadBufferSize = 1024 * 8;
+    private static string StreamDigest(Func<Stream, byte[]> digest, Stream data) => Convert.ToHexString(digest(data));
+
+    private static string BytesDigest(Func<byte[], byte[]> digest, byte[] data) => Convert.ToHexString(digest(data));
+
+    private static string StringDigest(Func<byte[], string> digest, string data) => digest(Encoding.UTF8.GetBytes(data));
 
     /// <summary>
-    /// 摘要算法
+    /// Md5
     /// </summary>
-    /// <param name="text"></param>
-    /// <param name="digest"></param>
+    /// <param name="data"></param>
     /// <returns></returns>
-    private static string GeneralDigest(string text, IDigest digest) {
-        byte[] sourceBuffer = Encoding.UTF8.GetBytes(text);
-        byte[] resultBuffer = new byte[digest.GetDigestSize()];
-        digest.BlockUpdate(sourceBuffer, 0, sourceBuffer.Length);
-        digest.DoFinal(resultBuffer, 0);
-        return Hex.ToHexString(resultBuffer);
-    }
+    public static string Md5Digest(Stream data) => StreamDigest(MD5.HashData, data);
 
     /// <summary>
-    /// 摘要算法
+    /// Sha1
     /// </summary>
-    /// <param name="stream"></param>
-    /// <param name="digest"></param>
-    /// <returns>digest</returns>
-    /// <remarks>不会自动关闭 stream</remarks>
-    private static string GeneralDigest(Stream stream, IDigest digest) {
-        stream.Position = 0;
-        byte[] resultBuffer = new byte[digest.GetDigestSize()];
-        var readBuffer = new byte[ReadBufferSize];
-        int readCount;
-        while ((readCount = stream.Read(readBuffer, 0, readBuffer.Length)) > 0) {
-            digest.BlockUpdate(readBuffer, 0, readCount);
-        }
-        digest.DoFinal(resultBuffer, 0);
-        return Hex.ToHexString(resultBuffer);
-    }
-
-    /// <summary>
-    /// md5 摘要
-    /// </summary>
-    /// <param name="text"></param>
+    /// <param name="data"></param>
     /// <returns></returns>
-    public static string MD5Digest(string text) => GeneralDigest(text, new MD5Digest());
+    public static string Sha1Digest(Stream data) => StreamDigest(SHA1.HashData, data);
 
     /// <summary>
-    /// md5 摘要
+    /// Sha256
     /// </summary>
-    /// <param name="stream"></param>
-    /// <inheritdoc cref="GeneralDigest(Stream, IDigest)"/>
-    public static string MD5Digest(Stream stream) => GeneralDigest(stream, new MD5Digest());
-
-    /// <summary>
-    /// Sha256Digest 摘要
-    /// </summary>
-    /// <param name="text"></param>
+    /// <param name="data"></param>
     /// <returns></returns>
-    public static string Sha256Digest(string text) => GeneralDigest(text, new Sha256Digest());
+    public static string Sha256Digest(Stream data) => StreamDigest(SHA256.HashData, data);
 
     /// <summary>
-    /// Sha256Digest 摘要
+    /// Sha384
     /// </summary>
-    /// <param name="stream"></param>
-    /// <inheritdoc cref="GeneralDigest(Stream, IDigest)"/>
-    public static string Sha256Digest(Stream stream) => GeneralDigest(stream, new Sha256Digest());
-
-    /// <summary>
-    /// Sha512Digest 摘要
-    /// </summary>
-    /// <param name="text"></param>
+    /// <param name="data"></param>
     /// <returns></returns>
-    public static string Sha512Digest(string text) => GeneralDigest(text, new Sha512Digest());
+    public static string Sha384Digest(Stream data) => StreamDigest(SHA384.HashData, data);
 
     /// <summary>
-    /// Sha512Digest 摘要
+    /// Sha512
     /// </summary>
-    /// <param name="stream"></param>
-    /// <inheritdoc cref="GeneralDigest(Stream, IDigest)"/>
-    public static string Sha512Digest(Stream stream) => GeneralDigest(stream, new Sha512Digest());
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static string Sha512Digest(Stream data) => StreamDigest(SHA512.HashData, data);
+
+    /// <summary>
+    /// Md5
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static string Md5Digest(byte[] data) => BytesDigest(MD5.HashData, data);
+
+    /// <summary>
+    /// Sha1
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static string Sha1Digest(byte[] data) => BytesDigest(SHA1.HashData, data);
+
+    /// <summary>
+    /// Sha256
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static string Sha256Digest(byte[] data) => BytesDigest(SHA256.HashData, data);
+
+    /// <summary>
+    /// Sha384
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static string Sha384Digest(byte[] data) => BytesDigest(SHA384.HashData, data);
+
+    /// <summary>
+    /// Sha512
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static string Sha512Digest(byte[] data) => BytesDigest(SHA512.HashData, data);
+
+    /// <summary>
+    /// Md5
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static string Md5Digest(string input) => StringDigest(Md5Digest, input);
+
+    /// <summary>
+    /// Sha1
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static string Sha1Digest(string input) => StringDigest(Sha1Digest, input);
+
+    /// <summary>
+    /// Sha256
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static string Sha256Digest(string input) => StringDigest(Sha256Digest, input);
+
+    /// <summary>
+    /// Sha384
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static string Sha384Digest(string input) => StringDigest(Sha384Digest, input);
+
+    /// <summary>
+    /// Sha512
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static string Sha512Digest(string input) => StringDigest(Sha512Digest, input);
 }
