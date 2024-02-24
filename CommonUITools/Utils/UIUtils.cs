@@ -6,8 +6,6 @@ namespace CommonUITools.Utils;
 /// UI 工具类
 /// </summary>
 public static class UIUtils {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
     /// <summary>
     /// 对齐 ContextMenu 位置、调整宽度
     /// </summary>

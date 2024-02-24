@@ -7,8 +7,6 @@ namespace CommonUITools.Utils;
 /// 文件 Icon 工具
 /// </summary>
 public static class FileIconUtils {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
     /// <summary>
     /// 文件后缀-图标路径
     /// [extension, filepathWithoutExtension]
@@ -42,13 +40,11 @@ public static class FileIconUtils {
         }
         ConvertToImagePath(iconDict);
         IconDict = iconDict;
-        Logger.Debug("加载 FileIcon 配置文件成功");
         // 对 SortedIconList 进行降序排序
         var list = new List<KeyValuePair<string, string>>(iconDict);
         list.Sort((x, y) => y.Key.Length - x.Key.Length);
         SortedIconList = list;
         CheckAndDecompressFileIcons();
-        Logger.Debug("加载 FileIcon 文件成功");
     }
 
     /// <summary>
@@ -86,7 +82,6 @@ public static class FileIconUtils {
         if (iconNameList.Any(f => !existFileIconNames.Contains(f!))) {
             // 解压文件
             ZipFile.ExtractToDirectory(CompressedIconFile, DeCompressedIconFolder, true);
-            Logger.Debug("解压文件 icon 完毕");
         }
     }
 

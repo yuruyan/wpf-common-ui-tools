@@ -3,7 +3,6 @@
 namespace CommonUITools.Themes;
 
 public static class ThemeManager {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private static readonly ResourceDictionary ThemeResourceDictionary;
     private static readonly ObservableProperty<ThemeMode> CurrentThemeProperty = new(ThemeMode.Light);
 

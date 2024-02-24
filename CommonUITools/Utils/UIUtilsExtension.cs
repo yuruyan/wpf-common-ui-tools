@@ -12,8 +12,6 @@ namespace CommonUITools.Utils;
 /// Extention for UIUtils
 /// </summary>
 public static partial class UIUtilsExtension {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
     /// <summary>
     /// 左键是否单击
     /// </summary>
@@ -94,7 +92,6 @@ public static partial class UIUtilsExtension {
                 return;
             }
             MessageBoxUtils.Error("打开失败," + error.Message);
-            Logger.Info(error);
         }
     }
 
@@ -119,7 +116,6 @@ public static partial class UIUtilsExtension {
                 return;
             }
             MessageBoxUtils.Error("打开失败," + error.Message);
-            Logger.Info(error);
         }
     }
 
@@ -137,7 +133,6 @@ public static partial class UIUtilsExtension {
                 return;
             }
             MessageBoxUtils.Error("打开失败," + error.Message);
-            Logger.Info(error);
         }
     }
 
@@ -283,7 +278,6 @@ public static partial class UIUtilsExtension {
     public static bool ReplaceResourceDictionary(this Collection<ResourceDictionary> mergedDictionaries, string oldSource, string newSource) {
         var oldResource = mergedDictionaries.FindResource(oldSource);
         if (oldResource is null) {
-            Logger.Error($"Cannot find resource {oldSource}");
             return false;
         }
         oldResource.BeginInit();

@@ -136,7 +136,7 @@ public static class TaskUtils {
                 return false;
             }
             if (hasParameters) {
-                callback.DynamicInvoke(new object[] { args });
+                callback.DynamicInvoke([args!]);
             } else {
                 callback.DynamicInvoke();
             }

@@ -29,7 +29,7 @@ internal static partial class PInvokeUtils {
     /// Retrieves the current double-click time for the mouse. A double-click is a series of two clicks of the mouse button, the second occurring within a specified time after the first. The double-click time is the maximum number of milliseconds that may occur between the first and second click of a double-click. The maximum double-click time is 5000 milliseconds.
     /// </summary>
     /// <returns></returns>
-    /// <see cref="https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getdoubleclicktime"/>
+    /// <remarks>see https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getdoubleclicktime</remarks>
     [LibraryImport("user32.dll")]
     public static partial ushort GetDoubleClickTime();
 #elif NET5_0_OR_GREATER

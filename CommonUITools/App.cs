@@ -3,8 +3,6 @@
 namespace CommonUITools;
 
 internal static class App {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
     /// <summary>
     /// 注册 MessageBox 和 NotificationBox 界面
     /// </summary>
@@ -17,11 +15,9 @@ internal static class App {
                 }
                 // 不是 FrameworkElement
                 if (window.Content is not FrameworkElement mainContent) {
-                    Logger.Error("Window Content is not of type FrameworkElement");
                     return;
                 }
                 if (AdornerLayer.GetAdornerLayer(mainContent) is not AdornerLayer adornerLayer) {
-                    Logger.Error("Window Content has no adornerLayer");
                     return;
                 }
 

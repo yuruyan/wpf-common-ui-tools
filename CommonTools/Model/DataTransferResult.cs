@@ -44,7 +44,6 @@ public record DTResults<T> {
     /// 根据 result 创建 DataTransferResults
     /// </summary>
     /// <typeparam name="Source"></typeparam>
-    /// <typeparam name="Destination"></typeparam>
     /// <param name="result"></param>
     /// <returns></returns>
     public static DTResults<T> FromResult<Source>(DTResults<Source> result) {

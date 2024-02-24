@@ -3,7 +3,6 @@
 namespace CommonUITools.Controls;
 
 public partial class NotificationBox : UserControl {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private static readonly DependencyProperty BoxForegroundProperty = DependencyProperty.Register("BoxForeground", typeof(string), typeof(NotificationBox), new PropertyMetadata("White"));
     private static readonly DependencyProperty MessageProperty = DependencyProperty.Register("Message", typeof(string), typeof(NotificationBox), new PropertyMetadata(""));
     private static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(NotificationBox), new PropertyMetadata(""));
@@ -85,7 +84,6 @@ public partial class NotificationBox : UserControl {
     /// <param name="callback">回调</param>
     internal static void ShowNotification(string title, string message, DependencyObject? @this = null, uint displayDuration = DefaultDisplayDuration, MessageType messageType = MessageType.Info, Action? callback = null) {
         if (WindowPanelDict.Count == 0) {
-            Logger.Error("No window has registered NotificationPanel");
             return;
         }
         // 单窗口
@@ -99,7 +97,6 @@ public partial class NotificationBox : UserControl {
         // 多窗口
         if (Window.GetWindow(@this) is Window window) {
             if (!WindowPanelDict.TryGetValue(window, out var panel)) {
-                Logger.Error("No NotificationPanel has registered with this window");
                 return;
             }
             UIUtils.RunOnUIThread(() => {

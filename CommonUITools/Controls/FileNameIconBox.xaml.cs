@@ -6,7 +6,6 @@ namespace CommonUITools.Controls;
 /// 文件名、图标 widget
 /// </summary>
 public partial class FileNameIconBox : UserControl {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty FileNameProperty = DependencyProperty.Register("FileName", typeof(string), typeof(FileNameIconBox), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty IconPathProperty = DependencyProperty.Register("IconPath", typeof(string), typeof(FileNameIconBox), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty IconSizeProperty = DependencyProperty.Register("IconSize", typeof(double), typeof(FileNameIconBox), new PropertyMetadata(20.0));

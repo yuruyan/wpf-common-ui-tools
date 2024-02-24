@@ -3,7 +3,6 @@
 namespace CommonUITools.Controls;
 
 public partial class MessageBox : UserControl {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private static readonly DependencyProperty BoxBackgroundProperty = DependencyProperty.Register("BoxBackground", typeof(SolidColorBrush), typeof(MessageBox), new PropertyMetadata());
     private static readonly DependencyProperty BoxForegroundProperty = DependencyProperty.Register("BoxForeground", typeof(SolidColorBrush), typeof(MessageBox), new PropertyMetadata());
     private static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(SolidColorBrush), typeof(MessageBox), new PropertyMetadata());
@@ -88,7 +87,6 @@ public partial class MessageBox : UserControl {
     /// <param name="type">消息类型</param>
     internal static void ShowMessage(string message, DependencyObject? @this = null, uint displayDuration = DefaultDisplayDuration, MessageType type = MessageType.Info) {
         if (WindowPanelDict.Count == 0) {
-            Logger.Error("No window has registered MessagePanel");
             return;
         }
         // 单窗口
@@ -102,7 +100,6 @@ public partial class MessageBox : UserControl {
         // 多窗口
         if (Window.GetWindow(@this) is Window window) {
             if (!WindowPanelDict.TryGetValue(window, out var panel)) {
-                Logger.Error("No MessagePanel has registered with this window");
                 return;
             }
             UIUtils.RunOnUIThread(() => {

@@ -59,6 +59,7 @@ public interface ISortable<TResult> {
 }
 
 public interface ISortable<TSorter, TResult> {
+    /// <summary>
     /// 升序
     /// </summary>
     /// <param name="sorter"></param>

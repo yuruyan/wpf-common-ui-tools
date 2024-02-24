@@ -164,6 +164,7 @@ public static class ScaleAnimationHelper {
     /// 创建 ScaleTransform
     /// </summary>
     /// <param name="element"></param>
+    /// <param name="scaleOption"></param>
     /// <returns></returns>
     private static ScaleTransform CreateScaleTransform(FrameworkElement element, ScaleAnimationOption scaleOption) {
         return ScaleTransformFactory.CreateScaleTransform(element, scaleOption);
@@ -635,7 +636,6 @@ public static class DragDropHelper {
 /// 加载状态，无法作用于 <see cref="Window"/>
 /// </summary>
 public static class LoadingBoxHelper {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.RegisterAttached("IsLoading", typeof(bool), typeof(LoadingBoxHelper), new PropertyMetadata(false, IsLoadingPropertyChangedHandler));
     public static readonly DependencyProperty SizeProperty = DependencyProperty.RegisterAttached("Size", typeof(double), typeof(LoadingBoxHelper), new PropertyMetadata(LoadingBox.DefaultSize, SizePropertyChangedHandler));
     private static readonly IDictionary<FrameworkElement, LoadingBox> LoadingBoxDict = new Dictionary<FrameworkElement, LoadingBox>();
@@ -734,7 +734,6 @@ public static class LoadingBoxHelper {
             return;
         }
         if (AdornerLayer.GetAdornerLayer(element) is not AdornerLayer adornerLayer) {
-            Logger.Error($"The AdornerLayer of {element.GetType()} is null");
             return;
         }
         var loadingBox = new LoadingBox();
@@ -1161,7 +1160,6 @@ public static class DoubleMouseClickHelper {
 /// MouseClickHelper
 /// </summary>
 public static class MouseClickHelper {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     /// <summary>
     /// MouseLeftClick, set null to clear
     /// </summary>
@@ -1196,8 +1194,6 @@ public static class MouseClickHelper {
                 contentElement.MouseLeftButtonDown += ElementMouseLeftButtonDownHandler;
                 contentElement.MouseLeftButtonUp += ElementMouseLeftButtonUpHandler;
             }
-        } else {
-            Logger.Info($"{d} is neither of type FrameworkElement nor FrameworkContentElement");
         }
     }
 
@@ -1274,7 +1270,6 @@ public static class ListViewGroupHelper {
 /// ContextMenuHelper
 /// </summary>
 public static class ContextMenuHelper {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty OpenOnMouseLeftClickProperty = DependencyProperty.RegisterAttached("OpenOnMouseLeftClick", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, OpenOnMouseLeftClickPropertyChangedHandler));
     public static readonly DependencyProperty EnableOpeningAnimationProperty = DependencyProperty.RegisterAttached("EnableOpeningAnimation", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, EnableOpeningAnimationPropertyChangedHandler));
     public static readonly DependencyProperty CenterHorizontalProperty = DependencyProperty.RegisterAttached("CenterHorizontal", typeof(bool), typeof(ContextMenuHelper), new PropertyMetadata(false, CenterHorizontalPropertyChangedHandler));
@@ -1343,7 +1338,6 @@ public static class ContextMenuHelper {
 
     private static void EnableOpeningAnimationPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not ContextMenu menu) {
-            Logger.Warn($"Element is not of type ContextMenu");
             return;
         }
         if (e.NewValue is true) {
@@ -1381,7 +1375,6 @@ public static class ContextMenuHelper {
 
     private static void OpenOnMouseLeftClickPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not FrameworkElement element) {
-            Logger.Warn($"{d} is not of type FrameworkElement");
             return;
         }
         if (e.NewValue is true) {
@@ -1422,7 +1415,6 @@ public static class ContextMenuHelper {
 
     private static void CenterHorizontalPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not ContextMenu menu) {
-            Logger.Error($"Element is not ContextMenu");
             return;
         }
         if (e.NewValue is true) {
@@ -1621,7 +1613,6 @@ public static class AutoHideHelper {
 /// 鼠标移入显示，移除隐藏 TargetElement
 /// </summary>
 public static class HoverVisibleHelper {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty TargetElementProperty = DependencyProperty.RegisterAttached("TargetElement", typeof(FrameworkElement), typeof(HoverVisibleHelper), new PropertyMetadata(TargetElementPropertyChangedHandler));
 
     public static FrameworkElement GetTargetElement(DependencyObject obj) {
@@ -1638,7 +1629,6 @@ public static class HoverVisibleHelper {
 
     private static void TargetElementPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not UIElement element) {
-            Logger.Error($"{d} is not UIElement");
             return;
         }
         if (e.NewValue is not null) {
@@ -2133,7 +2123,6 @@ public static class AutoSizeHelper {
 /// 添加 Password 附加属性，OneWayToSource
 /// </summary>
 public static class PasswordBoxHelper {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty TargetProperty = DependencyProperty.RegisterAttached("Target", typeof(DependencyObject), typeof(PasswordBoxHelper), new PropertyMetadata(TargetPropertyChangedHandler));
     public static readonly DependencyProperty PasswordPropertyProperty = DependencyProperty.RegisterAttached("PasswordProperty", typeof(DependencyProperty), typeof(PasswordBoxHelper), new PropertyMetadata());
 
@@ -2162,7 +2151,6 @@ public static class PasswordBoxHelper {
 
     private static void TargetPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not PasswordBox box) {
-            Logger.Info($"Object '{d}' is not of type PasswordBox");
             return;
         }
         box.PasswordChanged -= PasswordChangedHandler;
@@ -2193,7 +2181,6 @@ public static class PasswordBoxHelper {
 /// NumberBoxStyleHelper
 /// </summary>
 public static class NumberBoxStyleHelper {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static readonly DependencyProperty EnabledProperty = DependencyProperty.RegisterAttached("Enabled", typeof(bool), typeof(NumberBoxStyleHelper), new PropertyMetadata(false, EnabledPropertyChangedHandler));
     private static readonly IList<NumberBox> NumberBoxes = new List<NumberBox>();
 
@@ -2215,7 +2202,6 @@ public static class NumberBoxStyleHelper {
 
     private static void EnabledPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not NumberBox box) {
-            Logger.Info($"{d} is not of type NumberBox");
             return;
         }
         if (e.NewValue is false) {
@@ -2291,7 +2277,6 @@ public static class NumberBoxStyleHelper {
 /// ControlHelper
 /// </summary>
 public static class PopupHelper {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private static readonly DependencyProperty PopupBottomStoryboardProperty = DependencyProperty.RegisterAttached("PopupBottomStoryboard", typeof(Storyboard), typeof(PopupHelper), new PropertyMetadata());
     private static readonly DependencyProperty PopupTopStoryboardProperty = DependencyProperty.RegisterAttached("PopupTopStoryboard", typeof(Storyboard), typeof(PopupHelper), new PropertyMetadata());
     private static readonly DependencyProperty PopupParentProperty = DependencyProperty.RegisterAttached("PopupParent", typeof(Control), typeof(PopupHelper), new PropertyMetadata());
@@ -2356,7 +2341,6 @@ public static class PopupHelper {
 
     private static void EnableStylePopupPropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not Control box) {
-            Logger.Info($"{d} is not of type Control");
             return;
         }
 
@@ -2398,7 +2382,6 @@ public static class PopupHelper {
         }
         if (popup.PlacementTarget is null) {
             if (GetPlacementTarget(GetPopupParent(popup)) is not UIElement target) {
-                Logger.Info("Popup.PlacementTarget is null");
                 return;
             }
             popup.PlacementTarget = target;
@@ -2478,7 +2461,7 @@ internal static class HelperUtils {
 /// </summary>
 public static class WindowHelper {
     public const int MinimumBuildVersion = 22523;
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
     public static readonly DependencyProperty BackDropStyleProperty = DependencyProperty.RegisterAttached("BackDropStyle", typeof(BackdropStyle), typeof(WindowHelper), new PropertyMetadata(BackdropStyle.None, BackDropStylePropertyChangedHandler));
 
     public static BackdropStyle GetBackDropStyle(DependencyObject obj) {
@@ -2517,11 +2500,9 @@ public static class WindowHelper {
 
     private static void BackDropStylePropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not Window window) {
-            Logger.Info($"{d} is not of type Window");
             return;
         }
         if (!IsSystemSupport) {
-            Logger.Info($"System version not supported, minimum required version is {MinimumBuildVersion}");
             return;
         }
 
@@ -2583,7 +2564,7 @@ public static class WindowHelper {
 public static class GridSplitterHelper {
     public static readonly DependencyProperty EnableHoverFillVisibleProperty = DependencyProperty.RegisterAttached("EnableHoverFillVisible", typeof(bool), typeof(GridSplitterHelper), new PropertyMetadata(false, EnableHoverFillVisiblePropertyChangedHandler));
     public static readonly DependencyProperty HoverBrushProperty = DependencyProperty.RegisterAttached("HoverBrush", typeof(Brush), typeof(GridSplitterHelper), new PropertyMetadata());
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
     private static readonly DependencyProperty TimerProperty = DependencyProperty.RegisterAttached("Timer", typeof(Timer), typeof(GridSplitterHelper), new PropertyMetadata());
     private static readonly DependencyProperty AnimationProperty = DependencyProperty.RegisterAttached("Animation", typeof(AnimationTimeline), typeof(GridSplitterHelper), new PropertyMetadata());
     private static readonly IDictionary<Timer, GridSplitter> TimerGridSplitterDict = new Dictionary<Timer, GridSplitter>();
@@ -2616,7 +2597,6 @@ public static class GridSplitterHelper {
     }
     private static void EnableHoverFillVisiblePropertyChangedHandler(DependencyObject d, DependencyPropertyChangedEventArgs e) {
         if (d is not GridSplitter splitter) {
-            Logger.Info($"{d} is not of type GridSplitter");
             return;
         }
         if (e.NewValue is false) {

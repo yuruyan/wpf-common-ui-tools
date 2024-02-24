@@ -11,8 +11,6 @@ public class ParseException : Exception {
     public ParseException(string? message) : base(message) { }
 
     public ParseException(string? message, Exception? innerException) : base(message, innerException) { }
-
-    protected ParseException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 }
 
 /// <summary>
@@ -24,6 +22,4 @@ public class LoadException : Exception {
     public LoadException(string? message) : base(message) { }
 
     public LoadException(string? message, Exception? innerException) : base(message, innerException) { }
-
-    protected LoadException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 }
