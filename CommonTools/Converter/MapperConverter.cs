@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using CommonTools.Utils;
 
+namespace CommonTools.Converter;
+
 /// <summary>
 /// AutoMapper Type Converter
 /// </summary>
-namespace CommonTools.Converter;
-
 public static class MapperUtils {
     /// <summary>
     /// 添加常见类型转换器
