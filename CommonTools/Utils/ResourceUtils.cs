@@ -1,4 +1,7 @@
-﻿namespace CommonTools.Utils;
+﻿using CommonTools.Model;
+using System.Text.Json;
+
+namespace CommonTools.Utils;
 
 /// <summary>
 /// 资源工具
@@ -7,8 +10,8 @@ public static class ResourceUtils {
     /// <summary>
     /// 中文汉字拼音
     /// </summary>
-    public static readonly IReadOnlyDictionary<char, string> ChineseCharacterPinYinDict = JsonConvert.DeserializeObject<Dictionary<char, string>>(
-        Encoding.UTF8.GetString(Resources.Resource.ChineseCharacterPinYin)
+    public static readonly IReadOnlyDictionary<char, string> ChineseCharacterPinYinDict = JsonSerializer.Deserialize(
+        Encoding.UTF8.GetString(Resources.Resource.ChineseCharacterPinYin), SourceGenerationContext.Default.DictionaryCharString
     )!;
     /// <summary>
     /// 声调对应字母

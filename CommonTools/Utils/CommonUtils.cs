@@ -1,10 +1,8 @@
-﻿using NLog;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace CommonTools.Utils;
 
 public static partial class CommonUtils {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private const string PathSpliterPattern = @"[/\\]";
     private static readonly string _ProcessPath = Environment.ProcessPath!;
     private static readonly string _ProcessDirectory = Path.GetDirectoryName(Environment.ProcessPath!)!;
@@ -28,16 +26,6 @@ public static partial class CommonUtils {
 #else
     private static Regex GetPathSpliterRegex() => new(PathSpliterPattern);
 #endif
-
-    /// <summary>
-    /// 拷贝对象
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static T? Copy<T>(T obj) {
-        return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(obj));
-    }
 
     /// <summary>
     /// 单例模式对象 Dict
