@@ -8,9 +8,7 @@
 
 ```xml
 <ItemGroup>
-  <PackageReference Include="AutoMapper" Version="12.0.1" />
-  <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-  <PackageReference Include="NLog" Version="5.1.2" />
+  <PackageReference Include="AutoMapper" Version="13.0.1" />
 </ItemGroup>
 
 <ItemGroup>
@@ -28,12 +26,11 @@
 
 ```xml
 <ItemGroup>
+  <PackageReference Include="AutoMapper" Version="13.0.1" />
   <PackageReference Include="ModernWpfUI" Version="0.9.6" />
   <PackageReference Include="SharpVectors" Version="1.8.1" />
   <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-  <PackageReference Include="AutoMapper" Version="12.0.1" />
   <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-  <PackageReference Include="NLog" Version="5.1.2" />
 </ItemGroup>
 
 <ItemGroup>
