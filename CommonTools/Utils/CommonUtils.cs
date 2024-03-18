@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 namespace CommonTools.Utils;
 
@@ -38,18 +39,15 @@ public static partial class CommonUtils {
     /// <param name="type"></param>
     /// <returns></returns>
     /// <exception cref="Exception">对象创建失败</exception>
-    public static object GetSingletonInstance(Type type) {
-        if (SingletonDict.ContainsKey(type)) {
-            return SingletonDict[type];
+    public static object GetSingletonInstance([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] Type type) {
+        if (SingletonDict.TryGetValue(type, out object? value)) {
+            return value;
         }
         lock (type) {
-            if (SingletonDict.ContainsKey(type)) {
-                return SingletonDict[type];
+            if (SingletonDict.TryGetValue(type, out object? value2)) {
+                return value2;
             }
-            object? obj = Activator.CreateInstance(type, true);
-            if (obj is null) {
-                throw new Exception($"Create object {type} failed");
-            }
+            object? obj = Activator.CreateInstance(type) ?? throw new Exception($"Create object {type} failed");
             SingletonDict[type] = obj;
             return obj;
         }
@@ -61,7 +59,7 @@ public static partial class CommonUtils {
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
     /// <exception cref="Exception">对象创建失败</exception>
-    public static T GetSingletonInstance<T>() => (T)GetSingletonInstance(typeof(T));
+    public static T GetSingletonInstance<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] T>() => (T)GetSingletonInstance(typeof(T));
 
     /// <summary>
     /// 根据 init 函数创建单例对象
@@ -70,12 +68,12 @@ public static partial class CommonUtils {
     /// <param name="init"></param>
     /// <returns></returns>
     public static object GetSingletonInstance(Type type, Func<object> init) {
-        if (SingletonDict.ContainsKey(type)) {
-            return SingletonDict[type];
+        if (SingletonDict.TryGetValue(type, out object? value)) {
+            return value;
         }
         lock (type) {
-            if (SingletonDict.ContainsKey(type)) {
-                return SingletonDict[type];
+            if (SingletonDict.TryGetValue(type, out object? value2)) {
+                return value2;
             }
             object obj = init();
             SingletonDict[type] = obj;
