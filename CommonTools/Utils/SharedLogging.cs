@@ -1,7 +1,7 @@
 ﻿using Karambolo.Extensions.Logging.File;
 using Microsoft.Extensions.Logging;
 
-namespace CommonTools;
+namespace CommonTools.Utils;
 
 public static class SharedLogging {
     public static readonly ILogger FileLogger;
