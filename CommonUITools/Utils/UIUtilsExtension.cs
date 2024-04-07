@@ -175,14 +175,22 @@ public static partial class UIUtilsExtension {
     /// 获取 <see cref="ImageSource"/>
     /// </summary>
     /// <param name="filepath">图像路径</param>
+    /// <param name="width">指定宽度，0 为原图</param>
+    /// <param name="height">指定高度，0 为原图</param>
     /// <returns></returns>
-    public static BitmapImage GetImageSource(this string filepath) {
+    public static BitmapImage GetImageSource(this string filepath, int width = 0, int height = 0) {
         var bi = new BitmapImage();
         using var bitmap = new SysDrawBitmap(filepath);
         var memoryStream = new MemoryStream();
         bitmap.Save(memoryStream, SysDrawImg.ImageFormat.Png);
         memoryStream.Position = 0;
         bi.BeginInit();
+        if (width > 0) {
+            bi.DecodePixelWidth = width;
+        }
+        if (height > 0) {
+            bi.DecodePixelHeight = height;
+        }
         bi.StreamSource = memoryStream;
         bi.EndInit();
         return bi;
