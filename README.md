@@ -9,6 +9,10 @@
 ```xml
 <ItemGroup>
   <PackageReference Include="AutoMapper" Version="13.0.1" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0" />
+  <PackageReference Include="Karambolo.Extensions.Logging.File" Version="3.5.0" />
+  <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
 </ItemGroup>
 
 <ItemGroup>
@@ -27,9 +31,13 @@
 ```xml
 <ItemGroup>
   <PackageReference Include="AutoMapper" Version="13.0.1" />
+  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0" />
+  <PackageReference Include="Karambolo.Extensions.Logging.File" Version="3.5.0" />
+  <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
   <PackageReference Include="ModernWpfUI" Version="0.9.6" />
   <PackageReference Include="SharpVectors" Version="1.8.1" />
-  <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+  <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
   <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 </ItemGroup>
 
