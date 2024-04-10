@@ -86,6 +86,8 @@
   <!--  ContentDialog  -->
   <system:Double x:Key="ContentDialogMaxWidth">1000</system:Double>
 
+  <system:Double x:Key="ToggleSwitchThemeMinWidth">60</system:Double>
+
   <!--#region ScrollBar-->
   <system:Double x:Key="{x:Static SystemParameters.VerticalScrollBarButtonHeightKey}">48</system:Double>
   <system:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarButtonWidthKey}">48</system:Double>
