@@ -140,7 +140,14 @@ public partial class NotificationBox : UserControl {
         }
         unLoadStoryboard.Completed += (s, e) => {
             Visibility = Visibility.Collapsed;
-            WindowPanelDict[Window.GetWindow(this)].Remove(this);
+            var window = Window.GetWindow(this);
+            // Cannot get window
+            if (window is null) {
+                return;
+            }
+            if (WindowPanelDict.TryGetValue(window, out var panel)) {
+                panel.Remove(this);
+            }
         };
         unLoadStoryboard.Begin();
     }
