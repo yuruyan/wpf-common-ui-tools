@@ -182,4 +182,16 @@ public static partial class CommonUtils {
         }
         throw new Exception($"File name conflicts for {autoRenameCount} times");
     }
+
+    /// <summary>
+    /// 使用 StreamReader 将字节数组转换为指定的编码字符串
+    /// </summary>
+    /// <param name="bytes"></param>
+    /// <param name="encoding"></param>
+    /// <returns></returns>
+    public static string EncodeBytesUsingReader(byte[] bytes, Encoding encoding) {
+        using var stream = new MemoryStream(bytes);
+        using var reader = new StreamReader(stream, encoding);
+        return reader.ReadToEnd();
+    }
 }
