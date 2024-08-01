@@ -31,11 +31,25 @@ public static class ArgumentUtils {
     /// </summary>
     /// <param name="args"></param>
     /// <returns></returns>
-    public static bool ContainsWaitArgument(this string[] args) {
-        args = args.Select(arg => arg.ToLowerInvariant()).ToArray();
-        return args.Contains("--wait") || args.Contains("/wait");
-    }
+    public static bool ContainsWaitArgument(this string[] args) => ContainsArgument(args, "wait");
 
+    /// <summary>
+    /// 是否包含 help 参数
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    public static bool ContainsHelpArgument(this string[] args) => ContainsArgument(args, "help");
+
+    /// <summary>
+    /// 是否包含指定参数
+    /// </summary>
+    /// <param name="args"></param>
+    /// <param name="argument"></param>
+    /// <returns></returns>
+    public static bool ContainsArgument(this string[] args, string argument) {
+        return args.Contains($"--{argument}", StringComparer.InvariantCultureIgnoreCase)
+            || args.Contains($"/{argument}", StringComparer.InvariantCultureIgnoreCase);
+    }
 
     /// <summary>
     /// 检查文件是否存在
