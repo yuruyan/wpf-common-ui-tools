@@ -47,4 +47,13 @@ public static class ConsoleUtils {
         Console.WriteLine(message);
         Console.ForegroundColor = oldColor;
     }
+
+    /// <summary>
+    /// 打印分割线
+    /// </summary>
+    /// <param name="separator"></param>
+    public static void PrintSeparator(char separator = '-') {
+        int consoleWidth = Console.WindowWidth;
+        Console.WriteLine(new string(separator, consoleWidth));
+    }
 }
