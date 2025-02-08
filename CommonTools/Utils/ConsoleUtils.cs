@@ -49,6 +49,17 @@ public static class ConsoleUtils {
     }
 
     /// <summary>
+    /// 打印信息
+    /// </summary>
+    /// <param name="message"></param>
+    public static void WriteInfo(string message) {
+        var oldColor = Console.ForegroundColor;
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(message);
+        Console.ForegroundColor = oldColor;
+    }
+
+    /// <summary>
     /// 打印分割线
     /// </summary>
     /// <param name="separator"></param>
